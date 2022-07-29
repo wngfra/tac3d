@@ -1,5 +1,4 @@
-# tac3d
-Tactile 3D Exploration and Perception Project
+# Tactile 3D Exploration and Perception Project
 
 1. `objects` contains the CAD design
 2. `sensor_readout` contains the Arduino readout scheme for event-based tactile sensors
