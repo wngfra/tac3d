@@ -2,7 +2,7 @@ const int M = 5;
 int analog_pins[M] = { A0, A1, A2, A3, A4 };
 
 const int N = M*M;  //number of taxiles
-float values[N];
+uint16_t values[N];
 float v[N];
 float v_prev[N];
 float u[N];
@@ -39,12 +39,14 @@ void setup() {
     u[i] = B * V_res;
     u_prev[i] = B * V_res;
   }
+
+  Serial.begin(115200);
 }
 
 void analog2spike() {
   // izhikevich model
   for (int i = 0; i < N; ++i) {
-    I = values[i];
+    I = (float)values[i];
     v[i] = v_prev[i] + (0.04 * pow(v_prev[i], 2) + 5.0 * v_prev[i] + 140.0 - u_prev[i] + K * I);
     u[i] = u_prev[i] + (A * (B * v[i] - u_prev[i]));
 
@@ -82,12 +84,11 @@ void loop() {
   analog2spike();
 
   // raw analog values
-  for (int K = 0; K < N; ++K) {
-    Serial.print(values[K]);
+  for (int i = 0; i < N; ++i) {
+    Serial.print(values[i]);
     Serial.print(' ');
-    delayMicroseconds(10);
   }
-  Serial.println();
+  Serial.write('\n');
 
   while (micros() - t < samp_period) {
     // wait until its time to make sure each loop happens in A sampling period
