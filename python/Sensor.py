@@ -1,3 +1,4 @@
+from timeit import repeat
 import numpy as np
 import pylab as plt
 import serial
@@ -6,7 +7,7 @@ from matplotlib.animation import FuncAnimation
 
 
 class Sensor:
-    def __init__(self, shape, port='/dev/ttyACM0', baudrate=115200):
+    def __init__(self, shape, port='/dev/ttyACM0', baudrate=115200, animated=False):
         self.__ser = serial.Serial(port=port, baudrate=baudrate, timeout=1)
         self.__shape = shape
         self.__values = np.random.random(shape)
@@ -14,9 +15,14 @@ class Sensor:
         self.__activated = True
         self.__update_thread = threading.Thread(target=self.__update_values, args=(), daemon=True)
         self.__update_thread.start()
-        self.animate()
+
+        if animated:
+            self.animate()
 
     def __del__(self):
+        if hasattr(self, '__anim'):
+            self.__anim.event_source.stop()
+
         self.__activated = False
         self.__update_thread.join()
         self.__ser.close()
@@ -46,7 +52,7 @@ class Sensor:
         self.__im = ax.imshow(self.values)
         ax.set_title('Sensor View')
 
-        self.__anim = FuncAnimation(self.__fig, self.__animation, interval=10)
+        self.__anim = FuncAnimation(self.__fig, self.__animation, interval=10, repeat=False)
         
         plt.show(block=False)
 
@@ -57,3 +63,8 @@ class Sensor:
 
 if __name__ == '__main__':
     sensor = Sensor((5, 5), '/dev/ttyACM0')
+    import time
+    t0 = time.time()
+    while time.time() - t0 < 5.0:
+        print(sensor.values)
+        time.sleep(0.1)
