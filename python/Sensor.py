@@ -9,7 +9,17 @@ from matplotlib.animation import FuncAnimation
 
 class Sensor:
     def __init__(self, shape, port='/dev/ttyACM0', baudrate=115200, animated=False):
-        self.__ser = serial.Serial(port=port, baudrate=baudrate, timeout=1)
+        try:
+            if port is None:
+                raise serial.SerialException('Serial port is not specified.\n')
+            self.__ser = serial.Serial(port=port, baudrate=baudrate, timeout=1)
+            self.__simulated = False
+        except serial.SerialException as e:
+            print(e)
+            print('Sensor interface operated in simulation mode.\n')
+            
+            self.__simulated = True
+            
         self.__shape = shape
         self.__values = -1*np.ones(shape, dtype=int)
 
@@ -67,9 +77,25 @@ class Sensor:
         plt.show(block=False)
 
     @property
+    def mode(self):
+        if self.__simulated:
+            return 'simulation'
+        else:
+            return 'sensing'
+
+    @property
     def values(self):
         return self.__values
 
 
+def print_values(sensor, duration, delay=0.1):
+    import time
+    t0 = time.time()
+    while time.time() - t0 < duration:
+        print(sensor.values)
+        time.sleep(delay)
+
 if __name__ == '__main__':
-    sensor = Sensor((5, 5), '/dev/ttyACM0', animated=True)
+    sensor = Sensor((5, 5), None)
+    
+    print_values(sensor, 10.0)
