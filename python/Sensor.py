@@ -1,4 +1,5 @@
 from timeit import repeat
+from matplotlib import artist, style
 import numpy as np
 import pylab as plt
 import serial
@@ -10,7 +11,7 @@ class Sensor:
     def __init__(self, shape, port='/dev/ttyACM0', baudrate=115200, animated=False):
         self.__ser = serial.Serial(port=port, baudrate=baudrate, timeout=1)
         self.__shape = shape
-        self.__values = np.random.random(shape)
+        self.__values = -1*np.ones(shape, dtype=int)
 
         self.__activated = True
         self.__update_thread = threading.Thread(target=self.__update_values, args=(), daemon=True)
@@ -44,13 +45,22 @@ class Sensor:
                 print(e)
 
     def __animation(self, i):
-        self.__im.set_data(self.values)
-        return self.__im
+        self.__artists[0].set_data(self.values)
+        
+        k = 1
+        for (_, _), label in np.ndenumerate(self.values):
+            self.__artists[k].set_text(label)
+            k += 1
 
-    def animate(self, figsize=(6, 6)):
+        return self.__artists,
+
+    def animate(self, figsize=(10, 10)):
         self.__fig, ax = plt.subplots(1, 1, figsize=figsize)
-        self.__im = ax.imshow(self.values)
         ax.set_title('Sensor View')
+        self.__artists = [ax.imshow(self.values)]
+        for (j, i), label in np.ndenumerate(self.values):
+            text = ax.text(i, j, label, ha='center', va='center', color='red', size='x-large', weight='bold')
+            self.__artists.append(text)
 
         self.__anim = FuncAnimation(self.__fig, self.__animation, interval=10, repeat=False)
         
@@ -62,9 +72,4 @@ class Sensor:
 
 
 if __name__ == '__main__':
-    sensor = Sensor((5, 5), '/dev/ttyACM0')
-    import time
-    t0 = time.time()
-    while time.time() - t0 < 5.0:
-        print(sensor.values)
-        time.sleep(0.1)
+    sensor = Sensor((5, 5), '/dev/ttyACM0', animated=True)
