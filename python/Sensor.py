@@ -49,8 +49,8 @@ class Sensor:
             values = np.asarray(data, dtype=int)
 
             try:
-                values = values.reshape(self.__shape)
-                self.__values = values
+                self.__values = values.reshape(self.__shape)
+                print(self.__values)
             except ValueError as e:
                 print(e)
 
@@ -72,7 +72,7 @@ class Sensor:
             text = ax.text(i, j, label, ha='center', va='center', color='red', size='x-large', weight='bold')
             self.__artists.append(text)
 
-        self.__anim = FuncAnimation(self.__fig, self.__animation, interval=10, repeat=False)
+        self.__anim = FuncAnimation(self.__fig, self.__animation, interval=1, repeat=False)
         
         plt.show(block=False)
 
@@ -92,10 +92,24 @@ def print_values(sensor, duration, delay=0.1):
     import time
     t0 = time.time()
     while time.time() - t0 < duration:
-        print(sensor.values)
+        # print(sensor.values)
         time.sleep(delay)
 
 if __name__ == '__main__':
-    sensor = Sensor((5, 5), None)
+    import glob
+
+    ports = glob.glob('/dev/ttyACM[0-9]*')
+    p = None
+
+    for port in ports:
+        try:
+            s = serial.Serial(port)
+            s.close()
+            p = port
+            break
+        except:
+            pass
+
+    sensor = Sensor((5, 5), p)
     
-    print_values(sensor, 10.0)
+    print_values(sensor, 60.0)
