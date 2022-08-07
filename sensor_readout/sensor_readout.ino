@@ -1,7 +1,7 @@
 const int M = 5;
 int analog_pins[M] = { A0, A1, A2, A3, A4 };
 
-const int N = M*M;  //number of taxiles
+const int N = M * M; //number of taxiles
 uint16_t values[N];
 float v[N];
 float v_prev[N];
@@ -26,11 +26,9 @@ float I = 0.0;
 
 void setup() {
   // setup digital write pins
-  pinMode(0, OUTPUT);
-  pinMode(1, OUTPUT);
-  pinMode(2, OUTPUT);
-  pinMode(3, OUTPUT);
-  pinMode(4, OUTPUT);
+  for (int p = 0; p < M; ++p) {
+    pinMode(p, OUTPUT);
+  }
 
   // starting voltages
   for (int i = 0; i < N; ++i) {
@@ -60,25 +58,23 @@ void analog2spike() {
   }
 }
 
-inline void readout(int idx, int multiplier) {
+inline void readout(int idx) {
   for (int i = 0; i < M; ++i) {
     if (i != idx) {
-      digitalWrite(idx, LOW);
+      digitalWrite(i, LOW);
     } else {
-      digitalWrite(idx, HIGH);
+      digitalWrite(i, HIGH);
     }
   }
   for (int j = 0; j < M; ++j) {
-    values[j + multiplier * M] = analogRead(analog_pins[j]);
+    values[j + idx * M] = analogRead(analog_pins[j]);
   }
 }
 
 void loop() {
   // obtain pressure values
-  for (int i = 0; i < M; ++i) {
-    for (int j = 0; j < M; ++j) {
-      readout(i, j);
-    }
+  for (int r = 0; r < M; ++r) {
+    readout(r);
   }
 
   analog2spike();
