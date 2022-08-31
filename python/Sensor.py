@@ -17,19 +17,28 @@ class Sensor:
         except serial.SerialException as e:
             print(e)
             print('Sensor interface operated in simulation mode.\n')
-            
+
             self.__mode = 'simulation'
             self.init_simulation()
-            
+
         self.__shape = shape
         self.__values = -1*np.ones(shape, dtype=int)
 
         self.__activated = True
-        self.__update_thread = threading.Thread(target=self.__update_values, args=(), daemon=True)
+        self.__update_thread = threading.Thread(
+            target=self.__update_values, args=(), daemon=True)
         self.__update_thread.start()
 
         if animated:
             self.animate()
+
+    @property
+    def mode(self):
+        return self.__mode
+
+    @property
+    def values(self):
+        return self.__values
 
     def __del__(self):
         if hasattr(self, '__anim'):
@@ -37,7 +46,7 @@ class Sensor:
 
         self.__activated = False
         self.__update_thread.join()
-        
+
         if self.__mode == 'serial':
             self.__ser.close()
 
@@ -58,11 +67,10 @@ class Sensor:
                 self.__values = values.reshape(self.__shape)
             except ValueError as e:
                 print(e)
-                
 
     def __animation(self, i):
         self.__artists[0].set_data(self.values)
-        
+
         k = 1
         for (_, _), label in np.ndenumerate(self.values):
             self.__artists[k].set_text(label)
@@ -75,23 +83,17 @@ class Sensor:
         ax.set_title('Sensor View')
         self.__artists = [ax.imshow(self.values)]
         for (j, i), label in np.ndenumerate(self.values):
-            text = ax.text(i, j, label, ha='center', va='center', color='red', size='x-large', weight='bold')
+            text = ax.text(i, j, label, ha='center', va='center',
+                           color='red', size='x-large', weight='bold')
             self.__artists.append(text)
 
-        self.__anim = FuncAnimation(self.__fig, self.__animation, interval=1, repeat=False)
-        
+        self.__anim = FuncAnimation(
+            self.__fig, self.__animation, interval=1, repeat=False)
+
         plt.show(block=False)
 
     def init_simulation(self):
         pass
-
-    @property
-    def mode(self):
-        return self.__mode
-
-    @property
-    def values(self):
-        return self.__values
 
 
 def print_values(sensor, duration, delay=0.1):
@@ -101,10 +103,11 @@ def print_values(sensor, duration, delay=0.1):
         print(sensor.values)
         time.sleep(delay)
 
+
 if __name__ == '__main__':
     import sys
     import glob
-    
+
     if len(sys.argv) > 2:
         ports = glob.glob('/dev/ttyACM[0-9]*')
         p = None
@@ -122,5 +125,5 @@ if __name__ == '__main__':
 
     sensor = Sensor((5, 5), p)
     print(sensor.mode)
-    
+
     print_values(sensor, 60.0)
