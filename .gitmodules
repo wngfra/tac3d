@@ -1,0 +1,3 @@
+[submodule "SpikyMotion"]
+	path = SpikyMotion
+	url = git@github.com:wngfra/SpikyMotion.git
