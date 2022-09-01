@@ -1,11 +1,11 @@
 services:
-  app:
-    image: ros2cuda:coppeliasim
+  coppeliasim:
+    image: wngfra/ros2cuda:coppeliasim
     environment:
       - DISPLAY=${DISPLAY}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
     network_mode: host
-    command: bash 
+    command: /bin/bash
     stdin_open: true
     tty: true
