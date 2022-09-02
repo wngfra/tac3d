@@ -1,11 +1,17 @@
 services:
-  coppeliasim:
+  simulation:
     image: wngfra/ros2cuda:coppeliasim
     environment:
       - DISPLAY=${DISPLAY}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
+      - ${PWD}/scenes:/shared/scenes
     network_mode: host
-    command: /bin/bash
-    stdin_open: true
-    tty: true
+    command: bash /opt/CoppeliaSim_Edu_V4_3_0_rev12_Ubuntu20_04/coppeliaSim.sh
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
