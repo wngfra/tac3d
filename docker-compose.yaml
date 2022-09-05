@@ -5,9 +5,8 @@ services:
       - DISPLAY=${DISPLAY}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - ${PWD}/scenes:/shared/scenes
+      - ${PWD}:/workspace/src/tac3d
     network_mode: host
-    command: bash /opt/CoppeliaSim_Edu_V4_3_0_rev12_Ubuntu20_04/coppeliaSim.sh
     deploy:
       resources:
         reservations:
@@ -15,3 +14,4 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+    command: ["bash", "src/tac3d/scripts/startup.sh"]
