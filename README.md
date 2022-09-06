@@ -25,4 +25,5 @@
   docker exec -it <container-name> bash
   ```
   Happy hacking!
+* Custom message and service types need to be inserted in `scripts/interfaces.txt` and they will be compiled after the container is launched.
 * Check detailed [ROS2 Tutorials](https://docs.ros.org/en/humble/Tutorials.html).

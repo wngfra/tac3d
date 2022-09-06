@@ -7,11 +7,12 @@ from matplotlib.animation import FuncAnimation
 
 import rclpy
 from rclpy.executors import MultiThreadedExecutor
-from rclpy.node import Node
+from rclpy.lifecycle import LifecycleNode
+from sensor_msgs.msg import Image
 
 
 
-class SensorInterface(Node):
+class SensorInterface(LifecycleNode):
     def __init__(self, shape, port=None, baudrate=115200, animated=False):
         super().__init__('sensor_interface_node')
 
@@ -32,14 +33,13 @@ class SensorInterface(Node):
 
             self.__mode = 'simulation'
             self.init_simulation()
+        
+        self.__sub = self.create_subscription(Image, '/sensors/tactile_image', self.__tactile_callback, 20)
 
         self.__shape = shape
         self.__values = -1*np.ones(shape, dtype=int)
 
         self.__activated = True
-        self.__update_thread = threading.Thread(
-            target=self.__update_values, args=(), daemon=True)
-        self.__update_thread.start()
 
         if animated:
             self.animate()
@@ -61,6 +61,10 @@ class SensorInterface(Node):
 
         if self.__mode == 'serial':
             self.__ser.close()
+
+    def __tactile_callback(self, msg):
+        # Acquires the tactile image and converts to spiking signals
+        values = msg.data
 
     def __update_values(self):
         while self.__activated:
