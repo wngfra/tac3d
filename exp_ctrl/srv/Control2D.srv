@@ -1,0 +1,6 @@
+# Request
+float32 x
+float32 y
+---
+# Return
+bool success
