@@ -3,9 +3,14 @@ services:
     image: wngfra/ros2cuda:coppeliasim
     environment:
       - DISPLAY=${DISPLAY}
+      - __NV_PRIME_RENDER_OFFLOAD=1
+      - __GLX_VENDOR_LIBRARY_NAME=nvidia
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - ${PWD}:/workspace/src/tac3d
+      - ${PWD}/scenes:/shared/scenes
+      - ${PWD}/scripts:/shared/scripts
+      - ${PWD}/sensor_interfaces:/workspace/src/sensor_interfaces
+      - ${PWD}/exp_ctrl:/workspace/src/exp_ctrl
     network_mode: host
     deploy:
       resources:
@@ -14,4 +19,6 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
-    command: ["bash", "src/tac3d/scripts/startup.sh"]
+    command: ["bash", "/shared/scripts/startup.sh"]
+    devices:
+      - "/dev/dri:/dev/dri"

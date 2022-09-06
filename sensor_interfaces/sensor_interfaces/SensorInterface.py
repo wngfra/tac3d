@@ -1,22 +1,34 @@
-from timeit import repeat
-from matplotlib import artist, style
 import numpy as np
 import pylab as plt
 import serial
 import threading
+from matplotlib import artist, style
 from matplotlib.animation import FuncAnimation
 
+import rclpy
+from rclpy.executors import MultiThreadedExecutor
+from rclpy.node import Node
 
-class Sensor:
+
+
+class SensorInterface(Node):
     def __init__(self, shape, port=None, baudrate=115200, animated=False):
+        super().__init__('sensor_interface_node')
+
+        self.declare_parameters(
+            namespace='tac3d',
+            parameters=[
+                ('mode', '')
+            ],
+        )
+
         try:
             if port is None:
                 raise serial.SerialException("No serial port specified.")
             self.__ser = serial.Serial(port=port, baudrate=baudrate, timeout=1)
             self.__mode = 'serial'
         except serial.SerialException as e:
-            print(e)
-            print('Sensor interface operated in simulation mode.\n')
+            self.get_logger().info('{}\nThe sensor interface operating in simulation mode.'.format(e))
 
             self.__mode = 'simulation'
             self.init_simulation()
@@ -52,21 +64,24 @@ class Sensor:
 
     def __update_values(self):
         while self.__activated:
-            if self.__mode == 'serial':
-                if not self.__ser.is_open:
-                    self.__ser.open()
+            match self.__mode:
+                case 'serial':
+                    if not self.__ser.is_open:
+                        self.__ser.open()
 
-                # Convert bytes to numpy int array
-                stream = self.__ser.readline().decode('utf-8')
-                data = [int(d) for d in stream.split(' ')[:-1]]
-                values = np.asarray(data, dtype=int)
-            elif self.__mode == 'simulation':
-                values = np.random.randint(0, 1024, self.__shape)
-
-            try:
-                self.__values = values.reshape(self.__shape)
-            except ValueError as e:
-                print(e)
+                    # Convert bytes to numpy int array
+                    stream = self.__ser.readline().decode('utf-8')
+                    data = [int(d) for d in stream.split(' ')[:-1]]
+                    values = np.asarray(data, dtype=int)
+                    try:
+                        self.__values = values.reshape(self.__shape)
+                    except ValueError as e:
+                        print(e)
+                case 'simulation':
+                    values = np.random.randint(0, 1024, self.__shape)
+                case _:
+                    print('Sensor interface mode is not specified.')
+                    values = -1*np.ones(self.__shape)
 
     def __animation(self, i):
         self.__artists[0].set_data(self.values)
@@ -123,7 +138,7 @@ if __name__ == '__main__':
     else:
         p = None
 
-    sensor = Sensor((5, 5), p)
+    sensor = SensorInterface((5, 5), p)
     print(sensor.mode)
 
     print_values(sensor, 60.0)
