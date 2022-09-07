@@ -28,4 +28,4 @@ std_srvs/srv/SetBool
 std_srvs/srv/Trigger
 example_interfaces/srv/AddTwoInts
 example_interfaces/action/Fibonacci
-exp_ctrl/srv/Control2D
+control_interfaces/srv/Control2D

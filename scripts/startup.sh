@@ -4,7 +4,7 @@
 cp /shared/scripts/CMakeLists.txt /shared/scripts/package.xml src/ros2_packages/sim_ros2_interface/
 cp /shared/scripts/interfaces.txt src/ros2_packages/sim_ros2_interface/meta/
 source install/setup.bash
-colcon build --symlink-install --packages-select exp_ctrl
+colcon build --symlink-install --packages-select control_interfaces
 source install/setup.bash
 colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-select sim_ros2_interface
 source install/setup.bash

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(exp_ctrl)
+project(control_interfaces)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic -O3)
@@ -7,29 +7,20 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(control_interfaces REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 find_package(rclcpp REQUIRED)
 # find_package(std_msgs REQUIRED)
 
-include_directories(include)
-
-# Build apps
-set(EXE motion_control_client)
-
-add_executable(${EXE}
-  src/MotionControlClient.cpp)
-ament_target_dependencies(${EXE}
-  "control_interfaces"
-  "rclcpp")
-install(TARGETS
-  ${EXE}
-  DESTINATION lib/${PROJECT_NAME})
-
-# Install launch files
-install(DIRECTORY
-  launch
-  DESTINATION share/${PROJECT_NAME}/
+set(srv_files
+  "srv/Control2D.srv"
 )
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  ${srv_files}
+  # DEPENDENCIES std_msgs
+)
+
+ament_export_dependencies(rosidl_default_runtime)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

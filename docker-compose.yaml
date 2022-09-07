@@ -11,6 +11,7 @@ services:
       - ${PWD}/scenes:/shared/scenes
       - ${PWD}/scripts:/shared/scripts
       - ${PWD}/sensor_interfaces:/workspace/src/sensor_interfaces
+      - ${PWD}/control_interfaces:/workspace/src/control_interfaces
       - ${PWD}/exp_ctrl:/workspace/src/exp_ctrl
     network_mode: host
     deploy:

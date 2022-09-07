@@ -47,7 +47,7 @@ find_package(visualization_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(example_interfaces REQUIRED)
 find_package(image_transport)
-find_package(exp_ctrl REQUIRED)
+find_package(control_interfaces REQUIRED)
 
 if(NOT LIBPLUGIN_DIR)
     if(DEFINED ENV{COPPELIASIM_ROOT_DIR})
@@ -116,7 +116,7 @@ ament_target_dependencies(
     "visualization_msgs"
     "std_srvs"
     "example_interfaces"
-    "exp_ctrl"
+    "control_interfaces"
 )
 if(image_transport_FOUND)
     ament_target_dependencies(

@@ -14,14 +14,14 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='wngfra',
-    maintainer_email='wngfra@gmail.com',
+    author='wngfra',
+    author_email='wngfra@gmail.com',
     description='TODO: Package description',
     license='LGPLv2.1',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'sensor_interface = sensor_interfaces.SensorInterface:main'
+            'tactile_interface = sensor_interfaces.TactileInterface:main'
         ],
     },
 )

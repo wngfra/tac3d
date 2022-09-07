@@ -9,7 +9,7 @@
 
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
 	
-  <depend>exp_ctrl</depend>
+  <depend>control_interfaces</depend>
   <depend>actionlib_msgs</depend>
   <depend>action_msgs</depend>
   <depend>diagnostic_msgs</depend>
