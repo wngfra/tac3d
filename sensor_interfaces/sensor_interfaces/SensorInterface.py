@@ -2,7 +2,6 @@ import numpy as np
 import pylab as plt
 import serial
 import threading
-from matplotlib import artist, style
 from matplotlib.animation import FuncAnimation
 
 import rclpy
@@ -11,138 +10,128 @@ from rclpy.lifecycle import LifecycleNode
 from sensor_msgs.msg import Image
 
 
-
 class SensorInterface(LifecycleNode):
-    def __init__(self, shape, port=None, baudrate=115200, animated=False):
+    def __init__(self):
         super().__init__('sensor_interface_node')
 
         self.declare_parameters(
             namespace='tac3d',
             parameters=[
-                ('mode', '')
+                ('animated', False),
+                ('baudrate', 115200),
+                ('dim', None),
+                ('port', None),
             ],
         )
 
+        # Get parameters
+        animated = self.get_parameter('animated').value
+        baudrate = self.get_parameter('baudrate').value
+        dim = self.get_parameter('dim').value
+        port = self.get_parameter('port').value
+
         try:
             if port is None:
-                raise serial.SerialException("No serial port specified.")
-            self.__ser = serial.Serial(port=port, baudrate=baudrate, timeout=1)
-            self.__mode = 'serial'
+                raise serial.SerialException("No serial port found.")
+            self._port = port
+            self._baudrate = baudrate
+            self._dim = dim
+            self.init_serial()
+            self.get_logger().info('The sensor interface operating in serial mode.')
+            
         except serial.SerialException as e:
-            self.get_logger().info('{}\nThe sensor interface operating in simulation mode.'.format(e))
-
-            self.__mode = 'simulation'
             self.init_simulation()
-        
-        self.__sub = self.create_subscription(Image, '/sensors/tactile_image', self.__tactile_callback, 20)
-
-        self.__shape = shape
-        self.__values = -1*np.ones(shape, dtype=int)
-
-        self.__activated = True
+            self.get_logger().info('{}\nThe sensor interface operating in simulation mode.'.format(e))
+                
+        self._activated = True
 
         if animated:
             self.animate()
 
     @property
+    def dim(self):
+        return self._dim
+
+    @property
     def mode(self):
-        return self.__mode
+        return self._mode
 
     @property
     def values(self):
-        return self.__values
+        return self._values
 
     def __del__(self):
-        if hasattr(self, '__anim'):
-            self.__anim.event_source.stop()
+        if hasattr(self, '_anim'):
+            self._anim.event_source.stop()
 
-        self.__activated = False
-        self.__update_thread.join()
+        self._activated = False
 
-        if self.__mode == 'serial':
-            self.__ser.close()
+        match self.mode:
+            case 'serial':
+                self._update_thread.join()
+                self._ser.close()
+            case 'simulation':
+                pass
+            case _:
+                pass
 
-    def __tactile_callback(self, msg):
-        # Acquires the tactile image and converts to spiking signals
-        values = msg.data
+    def _update_values(self):
+        while self._activated:
+            if not self._ser.is_open:
+                self._ser.open()
+            
+            # Convert bytes to numpy int array
+            stream = self._ser.readline().decode('utf-8')
+            data = [int(d) for d in stream.split(' ')[:-1]]
+            values = np.asarray(data, dtype=int)
 
-    def __update_values(self):
-        while self.__activated:
-            match self.__mode:
-                case 'serial':
-                    if not self.__ser.is_open:
-                        self.__ser.open()
+            try:
+                self._values = values.reshape(self.dim)
+            except ValueError as e:
+                print(e)
 
-                    # Convert bytes to numpy int array
-                    stream = self.__ser.readline().decode('utf-8')
-                    data = [int(d) for d in stream.split(' ')[:-1]]
-                    values = np.asarray(data, dtype=int)
-                    try:
-                        self.__values = values.reshape(self.__shape)
-                    except ValueError as e:
-                        print(e)
-                case 'simulation':
-                    values = np.random.randint(0, 1024, self.__shape)
-                case _:
-                    print('Sensor interface mode is not specified.')
-                    values = -1*np.ones(self.__shape)
-
-    def __animation(self, i):
-        self.__artists[0].set_data(self.values)
+    def _animation(self, i):
+        self._artists[0].set_data(self.values)
 
         k = 1
         for (_, _), label in np.ndenumerate(self.values):
-            self.__artists[k].set_text(label)
+            self._artists[k].set_text(label)
             k += 1
 
-        return self.__artists,
+        return self._artists,
 
     def animate(self, figsize=(10, 10)):
-        self.__fig, ax = plt.subplots(1, 1, figsize=figsize)
+        self._fig, ax = plt.subplots(1, 1, figsize=figsize)
         ax.set_title('Sensor View')
-        self.__artists = [ax.imshow(self.values)]
+        self._artists = [ax.imshow(self.values)]
         for (j, i), label in np.ndenumerate(self.values):
             text = ax.text(i, j, label, ha='center', va='center',
                            color='red', size='x-large', weight='bold')
-            self.__artists.append(text)
+            self._artists.append(text)
 
-        self.__anim = FuncAnimation(
-            self.__fig, self.__animation, interval=1, repeat=False)
+        self._anim = FuncAnimation(
+            self._fig, self._animation, interval=1, repeat=False)
 
         plt.show(block=False)
 
+    def init_serial(self):
+        self._mode = 'serial'
+        self._values = -1*np.ones(self.dim, dtype=int)
+        self._ser = serial.Serial(port=self._port, baudrate=self._baudrate, timeout=1)
+
     def init_simulation(self):
-        pass
+        self._mode = 'simulation'
+        self._sub = self.create_subscription(Image, '/sensors/tactile_image', self._tactile_callback, 20)
+
+    def _tactile_callback(self, msg):
+        self._values = np.asarray(msg.data, dtype=int).reshape(self._dim)
 
 
-def print_values(sensor, duration, delay=0.1):
-    import time
-    t0 = time.time()
-    while time.time() - t0 < duration:
-        print(sensor.values)
-        time.sleep(delay)
-
+def main(args=None):
+    rclpy.init(args=args)
+    node = SensorInterface()
+    executor = MultiThreadedExecutor(num_threads=2)
+    executor.add_node(node)
 
 if __name__ == '__main__':
-    import sys
-    import glob
-
-    if len(sys.argv) > 2:
-        ports = glob.glob('/dev/ttyACM[0-9]*')
-        p = None
-
-        for port in ports:
-            try:
-                s = serial.Serial(port)
-                s.close()
-                p = port
-                break
-            except:
-                pass
-    else:
-        p = None
-
-    sensor = SensorInterface((5, 5), p)
-    print(sensor.mode)
-
-    print_values(sensor, 60.0)
+    main()

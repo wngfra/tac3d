@@ -7,6 +7,7 @@ services:
       - __GLX_VENDOR_LIBRARY_NAME=nvidia
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
+      - ${PWD}/mesh:/shared/mesh
       - ${PWD}/scenes:/shared/scenes
       - ${PWD}/scripts:/shared/scripts
       - ${PWD}/sensor_interfaces:/workspace/src/sensor_interfaces

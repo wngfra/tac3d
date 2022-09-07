@@ -5,7 +5,7 @@
   <version>0.1.0</version>
   <description>ROS2 interfaces for the tactile sensor.</description>
   <maintainer email="wngfra@gmail.com">wngfra</maintainer>
-  <license>Lesser GPL 2.1</license>
+  <license>LGPLv2.1</license>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
