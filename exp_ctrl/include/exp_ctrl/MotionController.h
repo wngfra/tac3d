@@ -20,25 +20,24 @@
 #include <string>
 
 #include <rclcpp/rclcpp.hpp>
-#include <sensor_msgs/msg/Image.hpp>
+#include <sensor_msgs/msg/image.hpp>
 
-#include "control_interfaces/srv/control2_d.hpp"
+#include "control_interfaces/srv/control2d.hpp"
 
 namespace tac3d
 {
-    class MotionControlClient
+    class MotionController : public rclcpp::Node
     {
     public:
-        MotionControlClient(std::string node_name, std::string service_name);
-        ~MotionControlClient();
+        MotionController(const std::string service_name);
+        //~MotionController();
+        void sendControlRequest(const float dx, const float dy);
 
-        void setVelocity(double x, double y, double theta);
-        void setVelocity(double x, double y);
-        void setVelocity(double theta);
-
-    private:
         rclcpp::Node::SharedPtr m_node;
-        rclcpp::Client<control_interfaces::srv::Control2D>::SharedPtr m_client;
+    private:
+        void tactilePublisherCallback(const sensor_msgs::msg::Image::SharedPtr msg);
+
+        rclcpp::Client<control_interfaces::srv::Control2d>::SharedPtr m_client;
         rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr tactile_sub;
     };
 }  // namespace tac3d

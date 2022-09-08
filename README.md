@@ -15,7 +15,7 @@
     * [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) and `CUDA-11.7` needed
 * Build a specific package (otherwise all packages will be rebuilt, it takes ages) inside the container with
   ```bash
-  cd /workspace # if you are there
+  cd /workspace # if you are not there
   colcon build --packages-select <package-name> --symlink-install
   . install/setup.bash # source the environment
   ```
@@ -24,7 +24,12 @@
   ```bash
   docker exec -it <container-name> bash
   ```
-  Happy hacking!
+  Then start the simulation and run
+  ```bash
+  . install/setup.bash
+  ros2 launch exp_ctrl explore_launch
+  ```
+  Happy simulating!
 * Custom message and service types need to be inserted in `scripts/interfaces.txt` and they will be compiled after the container is launched.
 * Remember to run `docker-compose down` when you are done to remove the shit container!
 * Check detailed [ROS2 Tutorials](https://docs.ros.org/en/humble/Tutorials.html).

@@ -14,10 +14,10 @@ find_package(sensor_msgs REQUIRED)
 include_directories(include)
 
 # Build apps
-set(EXE motion_control_client)
+set(EXE motion_controller)
 
 add_executable(${EXE}
-  src/MotionControlClient.cpp)
+  src/MotionController.cpp)
 ament_target_dependencies(${EXE}
   "control_interfaces"
   "sensor_msgs"

@@ -1,5 +1,5 @@
 from launch import LaunchDescription
-from launch_ros.actions import Node, LifecycleNode
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -20,7 +20,15 @@ def generate_launch_description():
         emulate_tty=True
     )
 
+    motion_controller_node = Node(
+        namespace='tac3d',
+        name='motion_controller_node',
+        package='exp_ctrl',
+        executable='motion_controller',
+        arguments=[],
+    )
 
     ld.add_action(tactile_interface_node)
+    ld.add_action(motion_controller_node)
 
     return ld
