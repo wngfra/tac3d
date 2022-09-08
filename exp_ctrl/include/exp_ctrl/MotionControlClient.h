@@ -15,6 +15,30 @@
 
 #pragma once
 
-#include <rclcpp/rclcpp.hpp>
+#include <chrono>
+#include <memory>
+#include <string>
 
-#include "exp_ctrl/srv/motion_control.hpp"
+#include <rclcpp/rclcpp.hpp>
+#include <sensor_msgs/msg/Image.hpp>
+
+#include "control_interfaces/srv/control2_d.hpp"
+
+namespace tac3d
+{
+    class MotionControlClient
+    {
+    public:
+        MotionControlClient(std::string node_name, std::string service_name);
+        ~MotionControlClient();
+
+        void setVelocity(double x, double y, double theta);
+        void setVelocity(double x, double y);
+        void setVelocity(double theta);
+
+    private:
+        rclcpp::Node::SharedPtr m_node;
+        rclcpp::Client<control_interfaces::srv::Control2D>::SharedPtr m_client;
+        rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr tactile_sub;
+    };
+}  // namespace tac3d

@@ -11,8 +11,8 @@
 
 ## Quick Guide
 ### Simulation
-* Run `docker-compose up` in the repo root directory to launch CoppeliaSim in the docker container with the prebuilt image [ros2cuda:coppeliasim](https://hub.docker.com/r/wngfra/ros2cuda/tags).
-  * [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) and `CUDA-11.7` needed
+* Run `xhost + && docker-compose up` in the repo root directory to launch CoppeliaSim in the docker container with the prebuilt image [ros2cuda:coppeliasim](https://hub.docker.com/r/wngfra/ros2cuda/tags).
+    * [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) and `CUDA-11.7` needed
 * Build a specific package (otherwise all packages will be rebuilt, it takes ages) inside the container with
   ```bash
   cd /workspace # if you are there

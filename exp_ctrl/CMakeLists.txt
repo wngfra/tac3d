@@ -9,7 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(control_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
-# find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 include_directories(include)
 
@@ -20,6 +20,7 @@ add_executable(${EXE}
   src/MotionControlClient.cpp)
 ament_target_dependencies(${EXE}
   "control_interfaces"
+  "sensor_msgs"
   "rclcpp")
 install(TARGETS
   ${EXE}

@@ -1,3 +1,4 @@
+version: "3"
 services:
   simulation:
     image: wngfra/ros2cuda:coppeliasim
