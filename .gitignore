@@ -130,3 +130,5 @@ dmypy.json
 
 meshes/
 robots/
+
+*.gz

@@ -42,3 +42,16 @@ services:
     command: ["bash", "/shared/scripts/start_per.sh"]
     stdin_open: true
     tty: true
+  loihi:
+    build: ./docker
+    privileged: true
+    volumes:
+      - ${PWD}/scripts:/shared/scripts
+      - ${PWD}/notebooks:/loihi/notebooks
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=${DISPLAY}
+    network_mode: host
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    command: ["jupyter", "lab", "--allow-root", "--no-browser", "--notebook-dir=/loihi/notebooks"]
