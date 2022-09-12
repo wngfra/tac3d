@@ -1,0 +1,13 @@
+  services:
+    loihi:
+      build: ../docker
+      privileged: true
+      volumes:
+        - ${PWD}:/loihi/notebooks
+        - /tmp/.X11-unix:/tmp/.X11-unix
+      environment:
+        - DISPLAY=${DISPLAY}
+      network_mode: host
+      devices:
+        - /dev/bus/usb:/dev/bus/usb
+      command: ["jupyter", "lab", "--allow-root", "--no-browser", "--notebook-dir=/loihi/notebooks"]
