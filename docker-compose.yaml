@@ -23,5 +23,4 @@ services:
               count: 1
               capabilities: [gpu]
     command: ["bash", "/shared/scripts/startup.sh"]
-    devices:
-      - "/dev/dri:/dev/dri"
+    # devices: "/dev/dri:/dev/dri"

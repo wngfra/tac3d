@@ -1,4 +1,3 @@
-from Cython.Build import cythonize
 from setuptools import setup
 
 package_name = 'sensor_interfaces'

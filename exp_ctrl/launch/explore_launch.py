@@ -13,6 +13,7 @@ def generate_launch_description():
         parameters=[
             {'animated' : False},
             {'baudrate' : 115200},
+            {'device'   : 'cpu'},
             {'dim'      : [-1, -1]},
             {'port'     : ''}
         ],
