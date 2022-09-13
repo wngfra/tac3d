@@ -29,3 +29,4 @@ std_srvs/srv/Trigger
 example_interfaces/srv/AddTwoInts
 example_interfaces/action/Fibonacci
 control_interfaces/srv/Control2d
+control_interfaces/srv/Control3d

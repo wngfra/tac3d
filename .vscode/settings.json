@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.pyx": "python",
+        "chrono": "cpp",
+        "algorithm": "cpp",
+        "cmath": "cpp"
+    }
+}

@@ -32,6 +32,7 @@ namespace tac3d
         MotionController(const std::string service_name);
         //~MotionController();
         void sendControlRequest(const float dx, const float dy);
+        rclcpp::Duration timeLapse();
 
         rclcpp::Node::SharedPtr m_node;
     private:
@@ -39,5 +40,6 @@ namespace tac3d
 
         rclcpp::Client<control_interfaces::srv::Control2d>::SharedPtr m_client;
         rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr tactile_sub;
+        rclcpp::Time start_time;
     };
 }  // namespace tac3d

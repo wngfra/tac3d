@@ -13,6 +13,7 @@ find_package(rclcpp REQUIRED)
 
 set(srv_files
   "srv/Control2d.srv"
+  "srv/Control3d.srv"
 )
 
 rosidl_generate_interfaces(${PROJECT_NAME}
