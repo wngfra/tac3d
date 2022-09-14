@@ -14,7 +14,7 @@ def generate_launch_description():
             {'animated' : False},
             {'baudrate' : 115200},
             {'device'   : 'cpu'},
-            {'dim'      : [-1, -1]},
+            {'dim'      : [25, 20]},
             {'port'     : ''}
         ],
         output='screen',

@@ -23,7 +23,7 @@ SHELL [ "/bin/bash", "-c" ]
 RUN apt-get update && apt-get install -y --no-install-recommends \
     g++ g++-multilib libgflags-dev libgoogle-glog-dev wget \
     python3-dev python3-pip python3-venv python3-wheel \
-    libusb-1.0-0 libgrpc++1 libi2c0 \
+    libusb-1.0-0 libgrpc++1 libi2c0 usbutils \
     tmux vim && \
     apt-get autoclean && apt-get autoremove && \
     rm -rf /var/lib/apt/lists/*

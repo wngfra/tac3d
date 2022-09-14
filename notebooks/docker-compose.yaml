@@ -9,5 +9,5 @@
         - DISPLAY=${DISPLAY}
       network_mode: host
       devices:
-        - /dev/bus/usb:/dev/bus/usb
+        - "/dev/bus/usb:/dev/bus/usb"
       command: ["jupyter", "lab", "--allow-root", "--no-browser", "--notebook-dir=/loihi/notebooks"]

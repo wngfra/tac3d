@@ -22,7 +22,7 @@ namespace tac3d
 {
     MotionController::MotionController(const std::string service_name) : Node("motion_controller_node")
     {
-        m_client = this->create_client<control_interfaces::srv::Control2d>(service_name);
+        m_client = this->create_client<control_interfaces::srv::Control3d>(service_name);
         while (!m_client->wait_for_service(std::chrono::seconds(1)))
         {
             if (!rclcpp::ok())
@@ -43,18 +43,20 @@ namespace tac3d
         double t = this->timeLapse().seconds();
         auto dx = cos(t)*2e-3;
         auto dy = sin(t)*2e-3;
-        RCLCPP_INFO(this->get_logger(), "dx: %f, dy: %f", dx, dy);
-        sendControlRequest(dx, dy);
+        auto dz = t<=1.48? -0.05/(1 + exp(t)):0.0;
+        RCLCPP_INFO(this->get_logger(), "dx: %f, dy: %f, dz: %f", dx, dy, dz);
+        sendControlRequest(dx, dy, dz);
     }
 
-    void MotionController::sendControlRequest(const float dx, const float dy)
+    void MotionController::sendControlRequest(const float dx, const float dy, const float dz)
     {
-        auto request = std::make_shared<control_interfaces::srv::Control2d::Request>();
+        auto request = std::make_shared<control_interfaces::srv::Control3d::Request>();
         request->dx = dx;
         request->dy = dy;
+        request->dz = dz;
 
         using ServiceResponseFuture =
-            rclcpp::Client<control_interfaces::srv::Control2d>::SharedFutureWithRequest;
+            rclcpp::Client<control_interfaces::srv::Control3d>::SharedFutureWithRequest;
         auto responseReceivedCallback =
             [logger = this->get_logger()](ServiceResponseFuture future)
         {
@@ -72,7 +74,7 @@ namespace tac3d
 int main(int argc, char **argv)
 {
     rclcpp::init(argc, argv);
-    auto node = std::make_shared<tac3d::MotionController>("/sim_ros2_interface/franka_control2d");
+    auto node = std::make_shared<tac3d::MotionController>("/sim_ros2_interface/franka_control");
     rclcpp::executors::MultiThreadedExecutor executor;
     executor.add_node(node);
     executor.spin();

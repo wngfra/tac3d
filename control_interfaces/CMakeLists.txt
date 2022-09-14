@@ -12,7 +12,6 @@ find_package(rclcpp REQUIRED)
 # find_package(std_msgs REQUIRED)
 
 set(srv_files
-  "srv/Control2d.srv"
   "srv/Control3d.srv"
 )
 

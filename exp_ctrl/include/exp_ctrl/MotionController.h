@@ -22,7 +22,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/image.hpp>
 
-#include "control_interfaces/srv/control2d.hpp"
+#include "control_interfaces/srv/control3d.hpp"
 
 namespace tac3d
 {
@@ -31,14 +31,14 @@ namespace tac3d
     public:
         MotionController(const std::string service_name);
         //~MotionController();
-        void sendControlRequest(const float dx, const float dy);
+        void sendControlRequest(const float dx, const float dy, const float dz);
         rclcpp::Duration timeLapse();
 
         rclcpp::Node::SharedPtr m_node;
     private:
         void tactilePublisherCallback(const sensor_msgs::msg::Image::SharedPtr msg);
 
-        rclcpp::Client<control_interfaces::srv::Control2d>::SharedPtr m_client;
+        rclcpp::Client<control_interfaces::srv::Control3d>::SharedPtr m_client;
         rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr tactile_sub;
         rclcpp::Time start_time;
     };
