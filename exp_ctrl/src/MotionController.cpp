@@ -44,7 +44,6 @@ namespace tac3d
         auto dx = cos(t)*2e-3;
         auto dy = sin(t)*2e-3;
         auto dz = t<=1.48? -0.05/(1 + exp(t)):0.0;
-        RCLCPP_INFO(this->get_logger(), "dx: %f, dy: %f, dz: %f", dx, dy, dz);
         sendControlRequest(dx, dy, dz);
     }
 

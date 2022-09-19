@@ -33,7 +33,10 @@
 * Custom message and service types need to be inserted in `scripts/interfaces.txt` and they will be compiled after the container is launched.
 * Remember to run `docker-compose down` when you are done to remove the shit container!
 * Check detailed [ROS2 Tutorials](https://docs.ros.org/en/humble/Tutorials.html).
-* Added Intel Lohi support, copy NxSDK tarballs to `docker` directory and bring up the container with
+
+## To-dos
+* Add Intel Lohi support, copy NxSDK tarballs to `docker` directory and bring up the container with
   ```bash
     docker-compose up loihi
   ```
+* Add raw tactile image visualization with `rqt`

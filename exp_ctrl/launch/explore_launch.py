@@ -11,10 +11,9 @@ def generate_launch_description():
         package='sensor_interfaces',
         executable='tactile_interface',
         parameters=[
-            {'animated' : False},
             {'baudrate' : 115200},
             {'device'   : 'cpu'},
-            {'dim'      : [25, 20]},
+            {'dim'      : [10, 10]},
             {'port'     : ''}
         ],
         output='screen',

@@ -1,6 +1,5 @@
-import threading
+import multiprocessing
 from collections import deque
-import time
 import nengo
 import numpy as np
 import pylab as plt
@@ -23,23 +22,20 @@ class TactileInterface(Node):
         self.declare_parameters(
             namespace='tac3d',
             parameters=[
-                ('animated', False),
                 ('baudrate', 115200),
                 ('device', 'cpu'),
-                ('dim', [25, 20]),
+                ('dim', [10, 10]),
                 ('port', ''),
             ],
         )
 
         # Get parameters
-        animated = self.get_parameter('tac3d.animated').value
         baudrate = self.get_parameter('tac3d.baudrate').value
         device = str(self.get_parameter('tac3d.device').value)
         dim = self.get_parameter('tac3d.dim').value
         port = str(self.get_parameter('tac3d.port').value)
         # Setup
         self._activated = True
-        self._animated = animated
         self._buffer = deque(maxlen=10)
         self._dim = dim
         self._device = device
@@ -54,8 +50,8 @@ class TactileInterface(Node):
             self._port = port
             self._ser = serial.Serial(
                 port=self._port, baudrate=self._baudrate, timeout=1)
-            self._update_thread = threading.Thread(target=self._serial2buffer)
-            self._update_thread.start()
+            self._update_process = multiprocessing.Process(target=self._serial2buffer)
+            self._update_process.start()
             self.get_logger().info('The sensor interface operating in serial mode.')
         except serial.SerialException as e:
             # Initialize interface in simulation mode
@@ -73,16 +69,13 @@ class TactileInterface(Node):
         self._net_pub = self.create_publisher(
             Float32MultiArray, '/perception/touch', 10)
 
-        if self._animated:
-            self.animate()
-
     def __del__(self):
         self._activated = False
 
         if hasattr(self, '_anim'):
             self._anim.event_source.stop()
-        if hasattr(self, '_update_thread'):
-            self._update_thread.join()
+        if hasattr(self, '_update_process'):
+            self._update_process.join()
         if hasattr(self, '_ser'):
             self._ser.close()
         if hasattr(self, '_sim'):
@@ -90,19 +83,7 @@ class TactileInterface(Node):
         if hasattr(self, '_sub'):
             self._sub.destroy()
 
-    def _animation(self, i):
-        data = self.read_buffer(pop=False)
-        self._artists[0].set_data(data)
-
-        k = 1
-        for (_, _), label in np.ndenumerate(data):
-            self._artists[k].set_text(label)
-            k += 1
-
-        return self._artists,
-
     def _timer_callback(self):
-        # ! FIX: Setup simulator running, semi-syncrhonous with the subscriber
         self._sim.run(duration)
         output = self._sim.data[self._probes[-1]].flatten()
         msg = Float32MultiArray(data=output)
@@ -114,7 +95,6 @@ class TactileInterface(Node):
         Args:
             msg (Image): Incoming message as Image.
         """
-        # TODO: setup dim with the first subscribed sensory msg
         self._dim = [msg.height, msg.width]
         try:
             data = np.frombuffer(msg.data, dtype=np.uint8)
@@ -138,28 +118,6 @@ class TactileInterface(Node):
                 self._buffer.append(values)
             except ValueError as e:
                 self.get_logger().error('Invalid data received from sensor: {}'.format(e))
-
-    def animate(self, figsize=(10, 10)):
-        """Animate the tactile image.
-
-        Args:
-            figsize (tuple, optional): Figure size to animate tactile image. Defaults to (10, 10).
-        """
-
-        data = self.read_buffer(pop=False)
-
-        self._fig, ax = plt.subplots(1, 1, figsize=figsize)
-        self._artists = [ax.imshow(data)]
-
-        for (j, i), label in np.ndenumerate(data):
-            text = ax.text(i, j, label, ha='center', va='center',
-                           color='red', size='x-large', weight='bold')
-            self._artists.append(text)
-
-        self._anim = FuncAnimation(
-            self._fig, self._animation, interval=1, repeat=False)
-        ax.set_title('Sensor View')
-        plt.show(block=False)
 
     def create_tacnet(self, n_neurons):
         """Create the TacNet(SNN) for asyncronous tactile perception.
