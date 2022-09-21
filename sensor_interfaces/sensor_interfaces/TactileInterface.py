@@ -5,14 +5,15 @@ import numpy as np
 import pylab as plt
 import rclpy
 import serial
-from matplotlib.animation import FuncAnimation
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from std_msgs.msg import Float32MultiArray
 
 
-duration = 2.5e-2
+params = {
+    'dt': 2.5e-2,
+}
 
 
 class TactileInterface(Node):
@@ -65,7 +66,7 @@ class TactileInterface(Node):
         self.create_tacnet(n_neurons=[100, 12, 36])
         self.set_device()
         # Prepare SNN output publisher
-        self._timer = self.create_timer(duration, self._timer_callback)
+        self._timer = self.create_timer(params['dt'], self._timer_callback)
         self._net_pub = self.create_publisher(
             Float32MultiArray, '/perception/touch', 10)
 
@@ -84,7 +85,7 @@ class TactileInterface(Node):
             self._sub.destroy()
 
     def _timer_callback(self):
-        self._sim.run(duration)
+        self._sim.run(params['dt'])
         output = self._sim.data[self._probes[-1]].flatten()
         msg = Float32MultiArray(data=output)
         self._net_pub.publish(msg)
