@@ -9,6 +9,7 @@ from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from std_msgs.msg import Float32MultiArray
+from sensor_interfaces.DigitalProcessor import Grayscale
 
 
 params = {
@@ -57,8 +58,9 @@ class TactileInterface(Node):
         except serial.SerialException as e:
             # Initialize interface in simulation mode
             self._mode = 'simulation'
-            self._sub = self.create_subscription(
-                Image, '/sensors/tactile_image', self._subscriber_callback, 10)
+            self._processor = Grayscale(keep_dim=False)
+            self._tacImg_pub = self.create_publisher(Image, '/sensors/tactile_sensors/image', 10)
+            self._sub = self.create_subscription(Image, '/sensors/tactile_sensors/raw', self._subscriber_callback, 10)
             self.get_logger().warn('{}'.format(e))
             self.get_logger().info('The sensor interface operating in simulation mode.')
 
@@ -67,8 +69,7 @@ class TactileInterface(Node):
         self.set_device()
         # Prepare SNN output publisher
         self._timer = self.create_timer(params['dt'], self._timer_callback)
-        self._net_pub = self.create_publisher(
-            Float32MultiArray, '/perception/touch', 10)
+        self._net_pub = self.create_publisher(Float32MultiArray, '/perception/touch', 10)
 
     def __del__(self):
         self._activated = False
@@ -100,10 +101,19 @@ class TactileInterface(Node):
         try:
             data = np.frombuffer(msg.data, dtype=np.uint8)
             values = data.view('<f4').reshape(self._dim)
-            self._buffer.append(values)
         except ValueError as e:
             self.get_logger().error('Invalid data received from sensor: {}'.format(e))
-
+            
+        if hasattr(self, '_transform'):
+            values = self._transform(values)
+        
+        self._buffer.append(values)
+        newMsg = msg
+        newMsg.encoding = '8UC1'
+        #! Fix data type error
+        newMsg.data = self._processor(values)
+        self._tacImg_pub.publish(newMsg)
+            
     def _serial2buffer(self):
         """Update the buffer from the serial port.
         """
