@@ -177,7 +177,7 @@ class TactileInterface(Node):
         return data
 
     def set_device(self):
-        """Set device. Currently supports CPU, GPU and Intel Loihi.
+        """Set device. Currently supports CPU, Intel Loihi.
         """
 
         if self._device == 'loihi':

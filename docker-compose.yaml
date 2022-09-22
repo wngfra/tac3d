@@ -1,4 +1,3 @@
-version: "3"
 services:
   simulation:
     image: wngfra/ros2cuda:coppeliasim
@@ -6,13 +5,14 @@ services:
       - DISPLAY=${DISPLAY}
       - __NV_PRIME_RENDER_OFFLOAD=1
       - __GLX_VENDOR_LIBRARY_NAME=nvidia
+      - FASTRTPS_DEFAULT_PROFILES_FILE=/shared/scripts/fastrtps-profile.xml
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
+      - ${PWD}/control_interfaces:/workspace/src/control_interfaces
       - ${PWD}/mesh:/shared/mesh
       - ${PWD}/scenes:/shared/scenes
       - ${PWD}/scripts:/shared/scripts
-      - ${PWD}/control_interfaces:/workspace/src/control_interfaces
-    network_mode: host
+    #network_mode: host
     deploy:
       resources:
         reservations:
@@ -20,30 +20,23 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
-    command: ["bash", "/shared/scripts/startup.sh"]
+    command: ["bash", "/shared/scripts/start_sim.sh"]
     devices: 
         - "/dev/dri:/dev/dri"
   ml:
     image: wngfra/ros2cuda:ml
     environment:
       - DISPLAY=${DISPLAY}
-      - __NV_PRIME_RENDER_OFFLOAD=1
-      - __GLX_VENDOR_LIBRARY_NAME=nvidia
+      - FASTRTPS_DEFAULT_PROFILES_FILE=/shared/scripts/fastrtps-profile.xml
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ${PWD}/control_interfaces:/workspace/src/control_interfaces
       - ${PWD}/exp_ctrl:/workspace/src/exp_ctrl
+      - ${PWD}/scripts:/shared/scripts
       - ${PWD}/sensor_interfaces:/workspace/src/sensor_interfaces
-    network_mode: host
+    #network_mode: host
     depends_on: 
       - simulation
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
     command: ["bash"]
     stdin_open: true
     tty: true
