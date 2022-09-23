@@ -21,8 +21,8 @@ services:
               count: 1
               capabilities: [gpu]
     command: ["bash", "/shared/scripts/start_sim.sh"]
-    devices: 
-        - "/dev/dri:/dev/dri"
+    #devices: 
+    #    - "/dev/dri:/dev/dri"
   ml:
     image: wngfra/ros2cuda:ml
     environment:
@@ -40,5 +40,5 @@ services:
     command: ["bash"]
     stdin_open: true
     tty: true
-    devices: 
-      - "/dev/dri:/dev/dri"
+    #devices: 
+    #  - "/dev/dri:/dev/dri"
