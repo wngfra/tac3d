@@ -33,7 +33,7 @@ namespace tac3d
             RCLCPP_INFO(this->get_logger(), "service not available, waiting again...");
         }
         tactile_sub = this->create_subscription<sensor_msgs::msg::Image>(
-            "/sensors/tactile_sensors/image", 10, std::bind(&MotionController::tactilePublisherCallback, this, std::placeholders::_1));
+            "/sensors/tactile_sensors/raw", 10, std::bind(&MotionController::tactilePublisherCallback, this, std::placeholders::_1));
         start_time = this->now();
     }
 
