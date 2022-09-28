@@ -31,7 +31,7 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ${PWD}/control_interfaces:/workspace/src/control_interfaces
-      - ${PWD}/exp_ctrl:/workspace/src/exp_ctrl
+      - ${PWD}/explore_control:/workspace/src/explore_control
       - ${PWD}/scripts:/shared/scripts
       - ${PWD}/sensor_interfaces:/workspace/src/sensor_interfaces
     #network_mode: host

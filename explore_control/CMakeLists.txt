@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(exp_ctrl)
+project(explore_control)
 
 SET(CMAKE_BUILD_TYPE "RelWithDebInfo") 
 

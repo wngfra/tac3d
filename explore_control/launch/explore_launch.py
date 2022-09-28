@@ -23,7 +23,7 @@ def generate_launch_description():
     motion_controller_node = Node(
         namespace='tac3d',
         name='motion_controller_node',
-        package='exp_ctrl',
+        package='explore_control',
         executable='motion_controller',
         arguments=[],
     )

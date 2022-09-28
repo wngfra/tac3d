@@ -14,7 +14,7 @@
 // along with tac3d. If not, see <http://www.gnu.org/licenses/>.
 #include <math.h>
 
-#include "exp_ctrl/MotionController.h"
+#include "explore_control/MotionController.h"
 
 using namespace std::chrono_literals;
 
@@ -43,7 +43,7 @@ namespace tac3d
         double t = this->timeLapse().seconds();
         auto dx = cos(t)*2e-3;
         auto dy = sin(t)*2e-3;
-        auto dz = t<=1.48? -0.05/(1 + exp(t)):0.0;
+        auto dz = t<=1.01? -0.05/(1 + exp(t)):0.0;
         sendControlRequest(dx, dy, dz);
     }
 

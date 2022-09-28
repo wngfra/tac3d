@@ -30,7 +30,7 @@ class TactileInterface(Node):
             parameters=[
                 ('baudrate', 115200),
                 ('device', 'cpu'),
-                ('dim', [100, 100]),
+                ('dim', [10, 10]),
                 ('port', ''),
             ],
         )
@@ -78,10 +78,11 @@ class TactileInterface(Node):
             self._sub.destroy()
 
     def _timer_callback(self):
-        self._sim.run(params['dt'])
-        output = self._sim.data[self._probes[-1]].flatten()
-        msg = Float32MultiArray(data=output)
-        self._net_pub.publish(msg)
+        if len(self._buffer) > 0:
+            self._sim.run(params['dt'])
+            output = self._sim.data[self._probes[-1]].flatten()
+            msg = Float32MultiArray(data=output)
+            self._net_pub.publish(msg)
 
     def _subscriber_callback(self, msg):
         """Callback function for the tactile image subscriber.
@@ -93,16 +94,15 @@ class TactileInterface(Node):
         try:
             data = np.frombuffer(msg.data, dtype=np.uint8)
             values = data.view('<f4').reshape(self._dim) / 1.0 * 255
-            
+            if hasattr(self, '_dsps'):
+                values = [dsp(values) for dsp in self._dsps]
+                
+            self._buffer.append(values)
+            self.get_logger().warn("data: {}".format(values)) # ! debug
+            imgMsg = self.bridge.cv2_to_imgmsg(values)
+            self._tacImg_pub.publish(imgMsg)
         except ValueError as e:
             self.get_logger().error('Invalid data received from sensor: {}'.format(e))
-            values = np.zeros(self._dim)
-        
-        if hasattr(self, '_dsps'):
-            values = [dsp(values) for dsp in self._dsps]
-        self._buffer.append(values)
-        imgMsg = self.bridge.cv2_to_imgmsg(values)
-        self._tacImg_pub.publish(imgMsg)
             
     def _serial2buffer(self):
         """Update the buffer from the serial port.
@@ -188,7 +188,7 @@ class TactileInterface(Node):
             return 'simulation'
         
     def read_buffer(self, pop=False):
-        """Read the buffer(deque) from the right.
+        """Read the buffer(deque) from the right. Output zero in case of empty buffer.
 
         Args:
             pop (bool, optional): Option to pop the buffer. Defaults to False.
@@ -201,7 +201,7 @@ class TactileInterface(Node):
                 data = self._buffer.pop()
             else:
                 data = self._buffer[-1]
-        except IndexError as e:
+        except Exception as _:
             data = np.zeros(self._dim)
 
         return data
