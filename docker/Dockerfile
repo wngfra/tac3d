@@ -28,24 +28,27 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get autoclean && apt-get autoremove && \
     rm -rf /var/lib/apt/lists/*
 
+#RUN wget http://ftp.debian.org/debian/pool/main/p/protobuf/libprotobuf17_3.6.1-4~bpo9+1_amd64.deb && \
+#    dpkg -i libprotobuf17_3.6.1-4~bpo9+1_amd64.deb
+
 RUN python3 -m venv /loihi
 WORKDIR /loihi
 ENV PATH=/loihi/bin:$PATH
 RUN pip3 install -U --quiet pip wheel setuptools
-
-RUN wget http://ftp.debian.org/debian/pool/main/p/protobuf/libprotobuf17_3.6.1-4~bpo9+1_amd64.deb && \
-    dpkg -i libprotobuf17_3.6.1-4~bpo9+1_amd64.deb
 
 COPY *.tar.gz /loihi/
 RUN mkdir nxsdk-apps && \
     tar xzf nxsdk-apps-1.0.0.tar.gz -C nxsdk-apps --strip-components 1
 
 RUN pip3 install --quiet \
-    ./nxsdk-1.0.0.tar.gz \
     numpy==1.21 \
     cython \
-    nengo-loihi \
+    grpcio-tools==1.16 \
+    protobuf==3.20 \
     jupyterlab \
-    ipympl
+    ipympl \
+    nengo-extras \
+    nengo-loihi \
+    ./nxsdk-1.0.0.tar.gz
 
 ENV KAPOHOBAY=1

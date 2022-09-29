@@ -62,7 +62,7 @@ class TactileInterface(Node):
             self.get_logger().warn('{}\nThe sensor interface operating in simulation mode.'.format(e))
 
         # Prepare SNN model and output publisher
-        self.create_tacnet(n_neurons=[100, 12, 36])
+        self.create_tacnet(n_neurons=[np.prod(self._dim), 12, 36])
         self.device = device
         self._timer = self.create_timer(params['dt'], self._timer_callback)
         self._net_pub = self.create_publisher(Float32MultiArray, '/perception/touch', 10)
@@ -98,7 +98,6 @@ class TactileInterface(Node):
                 values = [dsp(values) for dsp in self._dsps]
                 
             self._buffer.append(values)
-            self.get_logger().warn("data: {}".format(values)) # ! debug
             imgMsg = self.bridge.cv2_to_imgmsg(values)
             self._tacImg_pub.publish(imgMsg)
         except ValueError as e:
