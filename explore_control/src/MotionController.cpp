@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with tac3d. If not, see <http://www.gnu.org/licenses/>.
 #include <math.h>
+#include <stdlib.h>
 
 #include "explore_control/MotionController.h"
 
@@ -35,15 +36,17 @@ namespace tac3d
         tactile_sub = this->create_subscription<sensor_msgs::msg::Image>(
             "/sensors/tactile_sensors/raw", 10, std::bind(&MotionController::tactilePublisherCallback, this, std::placeholders::_1));
         start_time = this->now();
+        p.fill(0.0);
     }
 
     void MotionController::tactilePublisherCallback(const sensor_msgs::msg::Image::SharedPtr msg)
     {
         auto data = msg->data;
         double t = this->timeLapse().seconds();
-        auto dx = cos(t)*2e-3;
-        auto dy = sin(t)*2e-3;
-        auto dz = t<=1.01? -0.05/(1 + exp(t)):0.0;
+        auto dx = std::cos(t)*2e-3;
+        auto dy = std::sin(t)*2e-3;
+        auto dz = std::abs(p[2]) < 0.51? -1e-2:0.0;
+        p[2] += dz;
         sendControlRequest(dx, dy, dz);
     }
 

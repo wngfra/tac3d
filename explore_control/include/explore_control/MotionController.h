@@ -15,6 +15,7 @@
 
 #pragma once
 
+#include <array>
 #include <chrono>
 #include <memory>
 #include <string>
@@ -41,5 +42,6 @@ namespace tac3d
         rclcpp::Client<control_interfaces::srv::Control3d>::SharedPtr m_client;
         rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr tactile_sub;
         rclcpp::Time start_time;
+        std::array<float, 3> p;
     };
 }  // namespace tac3d
