@@ -12,7 +12,7 @@ services:
       - ${PWD}/mesh:/shared/mesh
       - ${PWD}/scenes:/shared/scenes
       - ${PWD}/scripts:/shared/scripts
-    #network_mode: host
+    network_mode: host
     deploy:
       resources:
         reservations:
