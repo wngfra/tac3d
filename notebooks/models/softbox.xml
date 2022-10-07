@@ -23,10 +23,10 @@
   <size nconmax="500" njmax="5000" nstack="5000000"/>
 
   <worldbody>
-    <body pos="-.6 0 .3">
+    <body pos=".6 0 .3">
       <freejoint/>
-      <composite type="box" count="7 7 7" spacing="0.04">
-        <skin texcoord="true" rgba=".7 .7 .7 1"/>
+      <composite type="box" count="5 5 2" spacing="0.02">
+        <skin texcoord="true" rgba=".9 .6 .3 1"/>
         <geom type="capsule" size=".015 0.05" rgba=".8 .2 .1 1"/>
         <joint kind="main" solreffix="0.03 1" solimpfix="0 .1 .01"/>
       </composite>
