@@ -13,7 +13,7 @@
      limitations under the License.
 -->
 
-<mujoco model="Soft box">
+<mujoco model="tactile_sensor">
 <!-- Degree of Freedom: 224
      Actuators: 0
      Equality constraints: 651
@@ -21,6 +21,11 @@
   <option solver="CG" tolerance="1e-6"/>
 
   <size nconmax="500" njmax="5000" nstack="5000000"/>
+    
+  <asset>
+    <!-- Collision meshes -->
+    <mesh name="tactile_sensor_base" file="tactile_sensor_base.obj"/>
+  </asset>
 
   <worldbody>
     <body pos=".6 0 .3">
