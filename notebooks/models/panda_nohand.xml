@@ -2,6 +2,7 @@
   <compiler angle="radian" meshdir="assets" autolimits="true"/>
 
   <option integrator="implicit"/>
+  <size nconmax="1000" njmax="10000" nstack="10000000"/>
 
   <default>
     <default class="panda">
@@ -40,6 +41,7 @@
     <mesh name="link5_c2" file="link5_collision_2.obj"/>
     <mesh name="link6_c" file="link6.stl"/>
     <mesh name="link7_c" file="link7.stl"/>
+    <mesh name="tactile_sensor_base" file="tactile_sensor_base.obj"/>
 
     <!-- Visual meshes -->
     <mesh file="link0_0.obj"/>
@@ -185,7 +187,17 @@
                     <geom mesh="link7_6" material="black" class="visual"/>
                     <geom mesh="link7_7" material="white" class="visual"/>
                     <geom mesh="link7_c" class="collision"/>
-                    <site name="attachment_site" pos="0 0 0.107" quat="0.3826834 0 0 0.9238795"/>
+                    <body name="tactile_sensor" pos="0 0 0.12" euler="3.141593 0 0.785398">
+                      <body pos="0 0 0" euler="1.570796 0 0">
+                        <geom mesh="tactile_sensor_base" rgba=".9 .6 .2 1" class="visual"/>
+                      </body>
+                      <composite type="box" count="10 10 2" spacing="0.003">
+                        <skin texcoord="true" rgba=".9 .6 .3 1"/>
+                        <geom type="capsule" size=".01 0.02" rgba=".8 .2 .1 1"/>
+                        <joint kind="main" solreffix="0.03 1" solimpfix="0 .1 .01"/>
+                      </composite>
+                      <site name="attachment_site" pos="0 0 0.107" quat="0.3826834 0 0 0.9238795"/>
+                    </body>  
                   </body>
                 </body>
               </body>

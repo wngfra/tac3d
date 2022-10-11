@@ -18,7 +18,7 @@
   </asset>
 
   <worldbody>
-    <body pos="-.6 0 .01" euler="1.5707963267948966 1.5707963267948966 0" childclass="platform">
+    <body pos="-.6 0 .01" euler="1.570796 1.570796 0" childclass="platform">
       <inertial mass="4.970684" pos="0 0 0"
             fullinertia="0.70337 0.70661 0.0091170 -0.00013900 0.0067720 0.019169"/>
       <geom mesh="rotational_platform" size=".1 .1 .1" rgba=".5 .5 .5 1" class="visual"/>
