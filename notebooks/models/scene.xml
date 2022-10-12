@@ -23,7 +23,7 @@
   <worldbody>
     <light pos="0 0 1.5" dir="0 0 -1" directional="true"/>
     <geom name="floor" size="0 0 0.05" type="plane" material="groundplane"/>
-    <camera name="closeup" pos=".5 -1 1.2" xyaxes="1 0.5 0 0 1 2"/>
-    <camera name="prospective" pos="1 -2 1.5" xyaxes="1 0.5 0 0 1 2"/>
+    <camera name="closeup" pos="0.5 -0.5 0.2" euler="2.2 0 0"/>
+    <camera name="prospective" pos="1 -1.5 1" xyaxes="1 0.5 0 0 1 2"/>
   </worldbody>
 </mujoco>
