@@ -196,7 +196,7 @@
                         <geom type="capsule" size=".01 0.02" rgba=".8 .2 .1 1"/>
                         <joint kind="main" solreffix="0.03 1" solimpfix="0 .1 .01"/>
                       </composite>
-                      <site name="attachment_site" pos="0 0 0.107" quat="0.3826834 0 0 0.9238795"/>
+                      <site name="attachment_site" pos="0 0 0.1" quat="0 0 0 0"/>
                     </body>  
                   </body>
                 </body>

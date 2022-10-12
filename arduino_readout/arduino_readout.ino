@@ -1,7 +1,7 @@
-const int M = 5;
+const int M = 5; // For a squared array of 5x5
 int analog_pins[M] = { A0, A1, A2, A3, A4 };
 
-const int N = M * M; //number of taxiles
+const int N = M * M; // Number of taxels
 uint16_t values[N];
 float v[N];
 float v_prev[N];
@@ -9,8 +9,8 @@ float u[N];
 float u_prev[N];
 
 unsigned long t;
-float sampling_rate = 1000;
-float samp_period = (1 / sampling_rate) * 1E6;  //samp_period in microseconds
+float Fs = 1000; // Hz
+float dt = (1 / Fs) * 1E6;  // Sampling period in microseconds
 
 // Izhikevich parameters
 const float A = 0.02;
@@ -21,11 +21,11 @@ const float D = 0.05;
 const float K = 1;
 const float MAX_POTENTIAL = 30.0;
 
-// input current
+// Input current
 float I = 0.0;
 
 void setup() {
-  // setup digital write pins
+  // Setup digital write pins
   for (int p = 0; p < M; ++p) {
     pinMode(p, OUTPUT);
   }
@@ -41,8 +41,9 @@ void setup() {
   Serial.begin(115200);
 }
 
-void analog2spike() {
-  // izhikevich model
+// Analogue-to-Spikes Converter
+void asc() {
+  // Izhikevich model
   for (int i = 0; i < N; ++i) {
     I = (float)values[i];
     v[i] = v_prev[i] + (0.04 * pow(v_prev[i], 2) + 5.0 * v_prev[i] + 140.0 - u_prev[i] + K * I);
@@ -51,7 +52,6 @@ void analog2spike() {
     if (v[i] > MAX_POTENTIAL) {
       v[i] = V_theta;
       u[i] = u[i] + D;
-      // maybe set v prev to the MAX_POTENTIAL ?
     }
     v_prev[i] = v[i];
     u_prev[i] = u[i];
@@ -72,21 +72,21 @@ inline void readout(int idx) {
 }
 
 void loop() {
-  // obtain pressure values
+  // Read pressure values
   for (int r = 0; r < M; ++r) {
     readout(r);
   }
 
-  analog2spike();
+  asc();
 
-  // raw analog values
+  // Print analogue values
   for (int i = 0; i < N; ++i) {
     Serial.print(values[i]);
     Serial.print(' ');
   }
   Serial.write('\n');
 
-  while (micros() - t < samp_period) {
-    // wait until its time to make sure each loop happens in A sampling period
+  while (micros() - t < dt) {
+    // Match the sampling period
   }
 }
