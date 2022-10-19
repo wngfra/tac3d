@@ -1,309 +1,202 @@
 <mujoco model="panda">
-  <compiler angle="radian" meshdir="assets" autolimits="true"/>
+  <compiler angle="radian" meshdir="assets" autolimits="true" />
 
-  <option integrator="implicit"/>
-  <size nconmax="1000" njmax="10000" nstack="10000000"/>
+  <option integrator="implicit" />
+  <size nconmax="1000" njmax="10000" nstack="10000000" />
 
   <default>
     <default class="panda">
-      <material specular="0.5" shininess="0.25"/>
-      <joint armature="0.1" damping="1" axis="0 0 1" range="-2.8973 2.8973"/>
-      <general dyntype="none" biastype="affine" ctrlrange="-2.8973 2.8973" forcerange="-87 87"/>
+      <material specular="0.5" shininess="0.25" />
+      <joint armature="0.1" damping="1" axis="0 0 1" range="-2.8973 2.8973" />
+      <general dyntype="none" biastype="affine" ctrlrange="-2.8973 2.8973" forcerange="-87 87" />
       <default class="finger">
-        <joint axis="0 1 0" type="slide" range="0 0.04"/>
+        <joint axis="0 1 0" type="slide" range="0 0.04" />
       </default>
 
       <default class="visual">
-        <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+        <geom type="mesh" contype="0" conaffinity="0" group="2" />
       </default>
       <default class="collision">
-        <geom type="mesh" group="3"/>
+        <geom type="mesh" group="3" />
       </default>
-      <site size="0.001" rgba="0.5 0.5 0.5 0.3" group="4"/>
+      <site size="0.001" rgba="0.5 0.5 0.5 0.3" group="4" />
     </default>
   </default>
 
   <asset>
-    <material class="panda" name="white" rgba="1 1 1 1"/>
-    <material class="panda" name="off_white" rgba="0.901961 0.921569 0.929412 1"/>
-    <material class="panda" name="black" rgba="0.25 0.25 0.25 1"/>
-    <material class="panda" name="green" rgba="0 1 0 1"/>
-    <material class="panda" name="light_blue" rgba="0.039216 0.541176 0.780392 1"/>
+    <material class="panda" name="white" rgba="1 1 1 1" />
+    <material class="panda" name="off_white" rgba="0.901961 0.921569 0.929412 1" />
+    <material class="panda" name="black" rgba="0.25 0.25 0.25 1" />
+    <material class="panda" name="green" rgba="0 1 0 1" />
+    <material class="panda" name="light_blue" rgba="0.039216 0.541176 0.780392 1" />
 
     <!-- Collision meshes -->
-    <mesh name="link0_c" file="link0.stl"/>
-    <mesh name="link1_c" file="link1.stl"/>
-    <mesh name="link2_c" file="link2.stl"/>
-    <mesh name="link3_c" file="link3.stl"/>
-    <mesh name="link4_c" file="link4.stl"/>
-    <mesh name="link5_c0" file="link5_collision_0.obj"/>
-    <mesh name="link5_c1" file="link5_collision_1.obj"/>
-    <mesh name="link5_c2" file="link5_collision_2.obj"/>
-    <mesh name="link6_c" file="link6.stl"/>
-    <mesh name="link7_c" file="link7.stl"/>
-    <mesh name="tactile_sensor_base" file="tactile_sensor_base.obj"/>
+    <mesh name="link0_c" file="link0.stl" />
+    <mesh name="link1_c" file="link1.stl" />
+    <mesh name="link2_c" file="link2.stl" />
+    <mesh name="link3_c" file="link3.stl" />
+    <mesh name="link4_c" file="link4.stl" />
+    <mesh name="link5_c0" file="link5_collision_0.obj" />
+    <mesh name="link5_c1" file="link5_collision_1.obj" />
+    <mesh name="link5_c2" file="link5_collision_2.obj" />
+    <mesh name="link6_c" file="link6.stl" />
+    <mesh name="link7_c" file="link7.stl" />
+    <mesh name="tactile_sensor_base" file="tactile_sensor_base.obj" />
 
     <!-- Visual meshes -->
-    <mesh file="link0_0.obj"/>
-    <mesh file="link0_1.obj"/>
-    <mesh file="link0_2.obj"/>
-    <mesh file="link0_3.obj"/>
-    <mesh file="link0_4.obj"/>
-    <mesh file="link0_5.obj"/>
-    <mesh file="link0_7.obj"/>
-    <mesh file="link0_8.obj"/>
-    <mesh file="link0_9.obj"/>
-    <mesh file="link0_10.obj"/>
-    <mesh file="link0_11.obj"/>
-    <mesh file="link1.obj"/>
-    <mesh file="link2.obj"/>
-    <mesh file="link3_0.obj"/>
-    <mesh file="link3_1.obj"/>
-    <mesh file="link3_2.obj"/>
-    <mesh file="link3_3.obj"/>
-    <mesh file="link4_0.obj"/>
-    <mesh file="link4_1.obj"/>
-    <mesh file="link4_2.obj"/>
-    <mesh file="link4_3.obj"/>
-    <mesh file="link5_0.obj"/>
-    <mesh file="link5_1.obj"/>
-    <mesh file="link5_2.obj"/>
-    <mesh file="link6_0.obj"/>
-    <mesh file="link6_1.obj"/>
-    <mesh file="link6_2.obj"/>
-    <mesh file="link6_3.obj"/>
-    <mesh file="link6_4.obj"/>
-    <mesh file="link6_5.obj"/>
-    <mesh file="link6_6.obj"/>
-    <mesh file="link6_7.obj"/>
-    <mesh file="link6_8.obj"/>
-    <mesh file="link6_9.obj"/>
-    <mesh file="link6_10.obj"/>
-    <mesh file="link6_11.obj"/>
-    <mesh file="link6_12.obj"/>
-    <mesh file="link6_13.obj"/>
-    <mesh file="link6_14.obj"/>
-    <mesh file="link6_15.obj"/>
-    <mesh file="link6_16.obj"/>
-    <mesh file="link7_0.obj"/>
-    <mesh file="link7_1.obj"/>
-    <mesh file="link7_2.obj"/>
-    <mesh file="link7_3.obj"/>
-    <mesh file="link7_4.obj"/>
-    <mesh file="link7_5.obj"/>
-    <mesh file="link7_6.obj"/>
-    <mesh file="link7_7.obj"/>
+    <mesh file="link0_0.obj" />
+    <mesh file="link0_1.obj" />
+    <mesh file="link0_2.obj" />
+    <mesh file="link0_3.obj" />
+    <mesh file="link0_4.obj" />
+    <mesh file="link0_5.obj" />
+    <mesh file="link0_7.obj" />
+    <mesh file="link0_8.obj" />
+    <mesh file="link0_9.obj" />
+    <mesh file="link0_10.obj" />
+    <mesh file="link0_11.obj" />
+    <mesh file="link1.obj" />
+    <mesh file="link2.obj" />
+    <mesh file="link3_0.obj" />
+    <mesh file="link3_1.obj" />
+    <mesh file="link3_2.obj" />
+    <mesh file="link3_3.obj" />
+    <mesh file="link4_0.obj" />
+    <mesh file="link4_1.obj" />
+    <mesh file="link4_2.obj" />
+    <mesh file="link4_3.obj" />
+    <mesh file="link5_0.obj" />
+    <mesh file="link5_1.obj" />
+    <mesh file="link5_2.obj" />
+    <mesh file="link6_0.obj" />
+    <mesh file="link6_1.obj" />
+    <mesh file="link6_2.obj" />
+    <mesh file="link6_3.obj" />
+    <mesh file="link6_4.obj" />
+    <mesh file="link6_5.obj" />
+    <mesh file="link6_6.obj" />
+    <mesh file="link6_7.obj" />
+    <mesh file="link6_8.obj" />
+    <mesh file="link6_9.obj" />
+    <mesh file="link6_10.obj" />
+    <mesh file="link6_11.obj" />
+    <mesh file="link6_12.obj" />
+    <mesh file="link6_13.obj" />
+    <mesh file="link6_14.obj" />
+    <mesh file="link6_15.obj" />
+    <mesh file="link6_16.obj" />
+    <mesh file="link7_0.obj" />
+    <mesh file="link7_1.obj" />
+    <mesh file="link7_2.obj" />
+    <mesh file="link7_3.obj" />
+    <mesh file="link7_4.obj" />
+    <mesh file="link7_5.obj" />
+    <mesh file="link7_6.obj" />
+    <mesh file="link7_7.obj" />
   </asset>
 
   <worldbody>
-    <light name="top" pos="0 0 2" mode="trackcom"/>
+    <light name="top" pos="0 0 2" mode="trackcom" />
     <body name="link0" childclass="panda">
-      <inertial mass="0.629769" pos="-0.041018 -0.00014 0.049974"
-          fullinertia="0.00315 0.00388 0.004285 8.2904e-7 0.00015 8.2299e-6"/>
-      <geom mesh="link0_0" material="off_white" class="visual"/>
-      <geom mesh="link0_1" material="black" class="visual"/>
-      <geom mesh="link0_2" material="off_white" class="visual"/>
-      <geom mesh="link0_3" material="black" class="visual"/>
-      <geom mesh="link0_4" material="off_white" class="visual"/>
-      <geom mesh="link0_5" material="black" class="visual"/>
-      <geom mesh="link0_7" material="white" class="visual"/>
-      <geom mesh="link0_8" material="white" class="visual"/>
-      <geom mesh="link0_9" material="black" class="visual"/>
-      <geom mesh="link0_10" material="off_white" class="visual"/>
-      <geom mesh="link0_11" material="white" class="visual"/>
-      <geom mesh="link0_c" class="collision"/>
+      <inertial mass="0.629769" pos="-0.041018 -0.00014 0.049974" fullinertia="0.00315 0.00388 0.004285 8.2904e-7 0.00015 8.2299e-6" />
+      <geom mesh="link0_0" material="off_white" class="visual" />
+      <geom mesh="link0_1" material="black" class="visual" />
+      <geom mesh="link0_2" material="off_white" class="visual" />
+      <geom mesh="link0_3" material="black" class="visual" />
+      <geom mesh="link0_4" material="off_white" class="visual" />
+      <geom mesh="link0_5" material="black" class="visual" />
+      <geom mesh="link0_7" material="white" class="visual" />
+      <geom mesh="link0_8" material="white" class="visual" />
+      <geom mesh="link0_9" material="black" class="visual" />
+      <geom mesh="link0_10" material="off_white" class="visual" />
+      <geom mesh="link0_11" material="white" class="visual" />
+      <geom mesh="link0_c" class="collision" />
       <body name="link1" pos="0 0 0.333">
-        <inertial mass="4.970684" pos="0.003875 0.002081 -0.04762"
-            fullinertia="0.70337 0.70661 0.0091170 -0.00013900 0.0067720 0.019169"/>
-        <joint name="joint1"/>
-        <geom material="white" mesh="link1" class="visual"/>
-        <geom mesh="link1_c" class="collision"/>
+        <inertial mass="4.970684" pos="0.003875 0.002081 -0.04762" fullinertia="0.70337 0.70661 0.0091170 -0.00013900 0.0067720 0.019169" />
+        <joint name="joint1" />
+        <geom material="white" mesh="link1" class="visual" />
+        <geom mesh="link1_c" class="collision" />
         <body name="link2" quat="1 -1 0 0">
-          <inertial mass="0.646926" pos="-0.003141 -0.02872 0.003495"
-              fullinertia="0.0079620 2.8110e-2 2.5995e-2 -3.925e-3 1.0254e-2 7.04e-4"/>
-          <joint name="joint2" range="-1.7628 1.7628"/>
-          <geom material="white" mesh="link2" class="visual"/>
-          <geom mesh="link2_c" class="collision"/>
+          <inertial mass="0.646926" pos="-0.003141 -0.02872 0.003495" fullinertia="0.0079620 2.8110e-2 2.5995e-2 -3.925e-3 1.0254e-2 7.04e-4" />
+          <joint name="joint2" range="-1.7628 1.7628" />
+          <geom material="white" mesh="link2" class="visual" />
+          <geom mesh="link2_c" class="collision" />
           <body name="link3" pos="0 -0.316 0" quat="1 1 0 0">
-            <joint name="joint3"/>
-            <inertial mass="3.228604" pos="2.7518e-2 3.9252e-2 -6.6502e-2"
-                fullinertia="3.7242e-2 3.6155e-2 1.083e-2 -4.761e-3 -1.1396e-2 -1.2805e-2"/>
-            <geom mesh="link3_0" material="white" class="visual"/>
-            <geom mesh="link3_1" material="white" class="visual"/>
-            <geom mesh="link3_2" material="white" class="visual"/>
-            <geom mesh="link3_3" material="black" class="visual"/>
-            <geom mesh="link3_c" class="collision"/>
+            <joint name="joint3" />
+            <inertial mass="3.228604" pos="2.7518e-2 3.9252e-2 -6.6502e-2" fullinertia="3.7242e-2 3.6155e-2 1.083e-2 -4.761e-3 -1.1396e-2 -1.2805e-2" />
+            <geom mesh="link3_0" material="white" class="visual" />
+            <geom mesh="link3_1" material="white" class="visual" />
+            <geom mesh="link3_2" material="white" class="visual" />
+            <geom mesh="link3_3" material="black" class="visual" />
+            <geom mesh="link3_c" class="collision" />
             <body name="link4" pos="0.0825 0 0" quat="1 1 0 0">
-              <inertial mass="3.587895" pos="-5.317e-2 1.04419e-1 2.7454e-2"
-                  fullinertia="2.5853e-2 1.9552e-2 2.8323e-2 7.796e-3 -1.332e-3 8.641e-3"/>
-              <joint name="joint4" range="-3.0718 -0.0698"/>
-              <geom mesh="link4_0" material="white" class="visual"/>
-              <geom mesh="link4_1" material="white" class="visual"/>
-              <geom mesh="link4_2" material="black" class="visual"/>
-              <geom mesh="link4_3" material="white" class="visual"/>
-              <geom mesh="link4_c" class="collision"/>
+              <inertial mass="3.587895" pos="-5.317e-2 1.04419e-1 2.7454e-2" fullinertia="2.5853e-2 1.9552e-2 2.8323e-2 7.796e-3 -1.332e-3 8.641e-3" />
+              <joint name="joint4" range="-3.0718 -0.0698" />
+              <geom mesh="link4_0" material="white" class="visual" />
+              <geom mesh="link4_1" material="white" class="visual" />
+              <geom mesh="link4_2" material="black" class="visual" />
+              <geom mesh="link4_3" material="white" class="visual" />
+              <geom mesh="link4_c" class="collision" />
               <body name="link5" pos="-0.0825 0.384 0" quat="1 -1 0 0">
-                <inertial mass="1.225946" pos="-1.1953e-2 4.1065e-2 -3.8437e-2"
-                    fullinertia="3.5549e-2 2.9474e-2 8.627e-3 -2.117e-3 -4.037e-3 2.29e-4"/>
-                <joint name="joint5"/>
-                <geom mesh="link5_0" material="black" class="visual"/>
-                <geom mesh="link5_1" material="white" class="visual"/>
-                <geom mesh="link5_2" material="white" class="visual"/>
-                <geom mesh="link5_c0" class="collision"/>
-                <geom mesh="link5_c1" class="collision"/>
-                <geom mesh="link5_c2" class="collision"/>
+                <inertial mass="1.225946" pos="-1.1953e-2 4.1065e-2 -3.8437e-2" fullinertia="3.5549e-2 2.9474e-2 8.627e-3 -2.117e-3 -4.037e-3 2.29e-4" />
+                <joint name="joint5" />
+                <geom mesh="link5_0" material="black" class="visual" />
+                <geom mesh="link5_1" material="white" class="visual" />
+                <geom mesh="link5_2" material="white" class="visual" />
+                <geom mesh="link5_c0" class="collision" />
+                <geom mesh="link5_c1" class="collision" />
+                <geom mesh="link5_c2" class="collision" />
                 <body name="link6" quat="1 1 0 0">
-                  <inertial mass="1.666555" pos="6.0149e-2 -1.4117e-2 -1.0517e-2"
-                      fullinertia="1.964e-3 4.354e-3 5.433e-3 1.09e-4 -1.158e-3 3.41e-4"/>
-                  <joint name="joint6" range="-0.0175 3.7525"/>
-                  <geom mesh="link6_0" material="off_white" class="visual"/>
-                  <geom mesh="link6_1" material="white" class="visual"/>
-                  <geom mesh="link6_2" material="black" class="visual"/>
-                  <geom mesh="link6_3" material="white" class="visual"/>
-                  <geom mesh="link6_4" material="white" class="visual"/>
-                  <geom mesh="link6_5" material="white" class="visual"/>
-                  <geom mesh="link6_6" material="white" class="visual"/>
-                  <geom mesh="link6_7" material="light_blue" class="visual"/>
-                  <geom mesh="link6_8" material="light_blue" class="visual"/>
-                  <geom mesh="link6_9" material="black" class="visual"/>
-                  <geom mesh="link6_10" material="black" class="visual"/>
-                  <geom mesh="link6_11" material="white" class="visual"/>
-                  <geom mesh="link6_12" material="green" class="visual"/>
-                  <geom mesh="link6_13" material="white" class="visual"/>
-                  <geom mesh="link6_14" material="black" class="visual"/>
-                  <geom mesh="link6_15" material="black" class="visual"/>
-                  <geom mesh="link6_16" material="white" class="visual"/>
-                  <geom mesh="link6_c" class="collision"/>
+                  <inertial mass="1.666555" pos="6.0149e-2 -1.4117e-2 -1.0517e-2" fullinertia="1.964e-3 4.354e-3 5.433e-3 1.09e-4 -1.158e-3 3.41e-4" />
+                  <joint name="joint6" range="-0.0175 3.7525" />
+                  <geom mesh="link6_0" material="off_white" class="visual" />
+                  <geom mesh="link6_1" material="white" class="visual" />
+                  <geom mesh="link6_2" material="black" class="visual" />
+                  <geom mesh="link6_3" material="white" class="visual" />
+                  <geom mesh="link6_4" material="white" class="visual" />
+                  <geom mesh="link6_5" material="white" class="visual" />
+                  <geom mesh="link6_6" material="white" class="visual" />
+                  <geom mesh="link6_7" material="light_blue" class="visual" />
+                  <geom mesh="link6_8" material="light_blue" class="visual" />
+                  <geom mesh="link6_9" material="black" class="visual" />
+                  <geom mesh="link6_10" material="black" class="visual" />
+                  <geom mesh="link6_11" material="white" class="visual" />
+                  <geom mesh="link6_12" material="green" class="visual" />
+                  <geom mesh="link6_13" material="white" class="visual" />
+                  <geom mesh="link6_14" material="black" class="visual" />
+                  <geom mesh="link6_15" material="black" class="visual" />
+                  <geom mesh="link6_16" material="white" class="visual" />
+                  <geom mesh="link6_c" class="collision" />
                   <body name="link7" pos="0.088 0 0" quat="1 1 0 0">
-                    <inertial mass="7.35522e-01" pos="1.0517e-2 -4.252e-3 6.1597e-2"
-                        fullinertia="1.2516e-2 1.0027e-2 4.815e-3 -4.28e-4 -1.196e-3 -7.41e-4"/>
-                    <joint name="joint7"/>
-                    <geom mesh="link7_0" material="white" class="visual"/>
-                    <geom mesh="link7_1" material="black" class="visual"/>
-                    <geom mesh="link7_2" material="black" class="visual"/>
-                    <geom mesh="link7_3" material="black" class="visual"/>
-                    <geom mesh="link7_4" material="black" class="visual"/>
-                    <geom mesh="link7_5" material="black" class="visual"/>
-                    <geom mesh="link7_6" material="black" class="visual"/>
-                    <geom mesh="link7_7" material="white" class="visual"/>
-                    <geom mesh="link7_c" class="collision"/>
+                    <inertial mass="7.35522e-01" pos="1.0517e-2 -4.252e-3 6.1597e-2" fullinertia="1.2516e-2 1.0027e-2 4.815e-3 -4.28e-4 -1.196e-3 -7.41e-4" />
+                    <joint name="joint7" />
+                    <geom mesh="link7_0" material="white" class="visual" />
+                    <geom mesh="link7_1" material="black" class="visual" />
+                    <geom mesh="link7_2" material="black" class="visual" />
+                    <geom mesh="link7_3" material="black" class="visual" />
+                    <geom mesh="link7_4" material="black" class="visual" />
+                    <geom mesh="link7_5" material="black" class="visual" />
+                    <geom mesh="link7_6" material="black" class="visual" />
+                    <geom mesh="link7_7" material="white" class="visual" />
+                    <geom mesh="link7_c" class="collision" />
                     <body name="tactile_sensor" pos="0 0 0.145" euler="3.141593 0 0.785398">
                       <body name="sensor_base" pos="0 0 0" euler="1.570796 0 0">
-                        <geom mesh="tactile_sensor_base" material="white" class="visual"/>
-                        
+                        <inertial mass="1e-3" pos="0 0 0"/>
+                        <geom mesh="tactile_sensor_base" material="white" class="visual" />
+                        <geom mesh="tactile_sensor_base" material="white" class="collision" />
                         <!-- Define Touch Sensor Array Sites -->
-                        <site name="taxel_site1" type="capsule" size=".001 .001" pos="-0.01350 -.002 -0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site2" type="capsule" size=".001 .001" pos="-0.01350 -.002 -0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site3" type="capsule" size=".001 .001" pos="-0.01350 -.002 -0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site4" type="capsule" size=".001 .001" pos="-0.01350 -.002 -0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site5" type="capsule" size=".001 .001" pos="-0.01350 -.002 -0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site6" type="capsule" size=".001 .001" pos="-0.01350 -.002 0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site7" type="capsule" size=".001 .001" pos="-0.01350 -.002 0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site8" type="capsule" size=".001 .001" pos="-0.01350 -.002 0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site9" type="capsule" size=".001 .001" pos="-0.01350 -.002 0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site10" type="capsule" size=".001 .001" pos="-0.01350 -.002 0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site11" type="capsule" size=".001 .001" pos="-0.01050 -.002 -0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site12" type="capsule" size=".001 .001" pos="-0.01050 -.002 -0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site13" type="capsule" size=".001 .001" pos="-0.01050 -.002 -0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site14" type="capsule" size=".001 .001" pos="-0.01050 -.002 -0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site15" type="capsule" size=".001 .001" pos="-0.01050 -.002 -0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site16" type="capsule" size=".001 .001" pos="-0.01050 -.002 0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site17" type="capsule" size=".001 .001" pos="-0.01050 -.002 0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site18" type="capsule" size=".001 .001" pos="-0.01050 -.002 0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site19" type="capsule" size=".001 .001" pos="-0.01050 -.002 0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site20" type="capsule" size=".001 .001" pos="-0.01050 -.002 0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site21" type="capsule" size=".001 .001" pos="-0.00750 -.002 -0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site22" type="capsule" size=".001 .001" pos="-0.00750 -.002 -0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site23" type="capsule" size=".001 .001" pos="-0.00750 -.002 -0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site24" type="capsule" size=".001 .001" pos="-0.00750 -.002 -0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site25" type="capsule" size=".001 .001" pos="-0.00750 -.002 -0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site26" type="capsule" size=".001 .001" pos="-0.00750 -.002 0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site27" type="capsule" size=".001 .001" pos="-0.00750 -.002 0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site28" type="capsule" size=".001 .001" pos="-0.00750 -.002 0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site29" type="capsule" size=".001 .001" pos="-0.00750 -.002 0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site30" type="capsule" size=".001 .001" pos="-0.00750 -.002 0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site31" type="capsule" size=".001 .001" pos="-0.00450 -.002 -0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site32" type="capsule" size=".001 .001" pos="-0.00450 -.002 -0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site33" type="capsule" size=".001 .001" pos="-0.00450 -.002 -0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site34" type="capsule" size=".001 .001" pos="-0.00450 -.002 -0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site35" type="capsule" size=".001 .001" pos="-0.00450 -.002 -0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site36" type="capsule" size=".001 .001" pos="-0.00450 -.002 0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site37" type="capsule" size=".001 .001" pos="-0.00450 -.002 0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site38" type="capsule" size=".001 .001" pos="-0.00450 -.002 0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site39" type="capsule" size=".001 .001" pos="-0.00450 -.002 0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site40" type="capsule" size=".001 .001" pos="-0.00450 -.002 0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site41" type="capsule" size=".001 .001" pos="-0.00150 -.002 -0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site42" type="capsule" size=".001 .001" pos="-0.00150 -.002 -0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site43" type="capsule" size=".001 .001" pos="-0.00150 -.002 -0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site44" type="capsule" size=".001 .001" pos="-0.00150 -.002 -0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site45" type="capsule" size=".001 .001" pos="-0.00150 -.002 -0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site46" type="capsule" size=".001 .001" pos="-0.00150 -.002 0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site47" type="capsule" size=".001 .001" pos="-0.00150 -.002 0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site48" type="capsule" size=".001 .001" pos="-0.00150 -.002 0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site49" type="capsule" size=".001 .001" pos="-0.00150 -.002 0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site50" type="capsule" size=".001 .001" pos="-0.00150 -.002 0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site51" type="capsule" size=".001 .001" pos="0.00150 -.002 -0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site52" type="capsule" size=".001 .001" pos="0.00150 -.002 -0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site53" type="capsule" size=".001 .001" pos="0.00150 -.002 -0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site54" type="capsule" size=".001 .001" pos="0.00150 -.002 -0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site55" type="capsule" size=".001 .001" pos="0.00150 -.002 -0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site56" type="capsule" size=".001 .001" pos="0.00150 -.002 0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site57" type="capsule" size=".001 .001" pos="0.00150 -.002 0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site58" type="capsule" size=".001 .001" pos="0.00150 -.002 0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site59" type="capsule" size=".001 .001" pos="0.00150 -.002 0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site60" type="capsule" size=".001 .001" pos="0.00150 -.002 0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site61" type="capsule" size=".001 .001" pos="0.00450 -.002 -0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site62" type="capsule" size=".001 .001" pos="0.00450 -.002 -0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site63" type="capsule" size=".001 .001" pos="0.00450 -.002 -0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site64" type="capsule" size=".001 .001" pos="0.00450 -.002 -0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site65" type="capsule" size=".001 .001" pos="0.00450 -.002 -0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site66" type="capsule" size=".001 .001" pos="0.00450 -.002 0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site67" type="capsule" size=".001 .001" pos="0.00450 -.002 0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site68" type="capsule" size=".001 .001" pos="0.00450 -.002 0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site69" type="capsule" size=".001 .001" pos="0.00450 -.002 0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site70" type="capsule" size=".001 .001" pos="0.00450 -.002 0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site71" type="capsule" size=".001 .001" pos="0.00750 -.002 -0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site72" type="capsule" size=".001 .001" pos="0.00750 -.002 -0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site73" type="capsule" size=".001 .001" pos="0.00750 -.002 -0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site74" type="capsule" size=".001 .001" pos="0.00750 -.002 -0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site75" type="capsule" size=".001 .001" pos="0.00750 -.002 -0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site76" type="capsule" size=".001 .001" pos="0.00750 -.002 0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site77" type="capsule" size=".001 .001" pos="0.00750 -.002 0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site78" type="capsule" size=".001 .001" pos="0.00750 -.002 0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site79" type="capsule" size=".001 .001" pos="0.00750 -.002 0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site80" type="capsule" size=".001 .001" pos="0.00750 -.002 0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site81" type="capsule" size=".001 .001" pos="0.01050 -.002 -0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site82" type="capsule" size=".001 .001" pos="0.01050 -.002 -0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site83" type="capsule" size=".001 .001" pos="0.01050 -.002 -0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site84" type="capsule" size=".001 .001" pos="0.01050 -.002 -0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site85" type="capsule" size=".001 .001" pos="0.01050 -.002 -0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site86" type="capsule" size=".001 .001" pos="0.01050 -.002 0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site87" type="capsule" size=".001 .001" pos="0.01050 -.002 0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site88" type="capsule" size=".001 .001" pos="0.01050 -.002 0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site89" type="capsule" size=".001 .001" pos="0.01050 -.002 0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site90" type="capsule" size=".001 .001" pos="0.01050 -.002 0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site91" type="capsule" size=".001 .001" pos="0.01350 -.002 -0.01350" euler="1.570796 0 0"/>
-                        <site name="taxel_site92" type="capsule" size=".001 .001" pos="0.01350 -.002 -0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site93" type="capsule" size=".001 .001" pos="0.01350 -.002 -0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site94" type="capsule" size=".001 .001" pos="0.01350 -.002 -0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site95" type="capsule" size=".001 .001" pos="0.01350 -.002 -0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site96" type="capsule" size=".001 .001" pos="0.01350 -.002 0.00150" euler="1.570796 0 0"/>
-                        <site name="taxel_site97" type="capsule" size=".001 .001" pos="0.01350 -.002 0.00450" euler="1.570796 0 0"/>
-                        <site name="taxel_site98" type="capsule" size=".001 .001" pos="0.01350 -.002 0.00750" euler="1.570796 0 0"/>
-                        <site name="taxel_site99" type="capsule" size=".001 .001" pos="0.01350 -.002 0.01050" euler="1.570796 0 0"/>
-                        <site name="taxel_site100" type="capsule" size=".001 .001" pos="0.01350 -.002 0.01350" euler="1.570796 0 0"/>
-                        <!-- Definition ends. -->
-                        <body name="sensor_pad" pos="0 -0.0037 0" euler="1.570796 0 0">
+                        <site name="taxel_site1" type="capsule" size=".02 .002" pos="0 -.0025 0" euler="1.570796 0 0"/>
+                        
+                        <!--body name="sensor_pad" pos="0 -0.0037 0" euler="1.570796 0 0">
                           <composite type="box" count="11 11 2" spacing="0.003">
                             <skin texcoord="true" rgba=".9 .6 .3 1"/>
                             <geom type="capsule" size=".001 .002" rgba=".8 .2 .1 1"/>
                             <joint kind="main" solreffix="0.03 1" solimpfix="0 .1 .01"/>
                           </composite>
-                        </body>
+                        </body-->
                       </body>
-                      
-                      <site name="attachment_site" type="sphere" pos="0 0 -0.005" quat="0 0 0 0" size=".001 .001 .001"/>
-                    </body>  
+                      <site name="attachment_site" type="sphere" pos="0 0 -0.005" quat="0 0 0 0" size=".001 .001 .001" />
+                    </body>
                   </body>
                 </body>
               </body>
@@ -315,123 +208,19 @@
   </worldbody>
 
   <actuator>
-    <general class="panda" name="actuator1" joint="joint1" gainprm="4500" biasprm="0 -4500 -450"/>
-    <general class="panda" name="actuator2" joint="joint2" gainprm="4500" biasprm="0 -4500 -450"
-        ctrlrange="-1.7628 1.7628"/>
-    <general class="panda" name="actuator3" joint="joint3" gainprm="3500" biasprm="0 -3500 -350"/>
-    <general class="panda" name="actuator4" joint="joint4" gainprm="3500" biasprm="0 -3500 -350"
-        ctrlrange="-3.0718 -0.0698"/>
-    <general class="panda" name="actuator5" joint="joint5" gainprm="2000" biasprm="0 -2000 -200"
-        forcerange="-12 12"/>
-    <general class="panda" name="actuator6" joint="joint6" gainprm="2000" biasprm="0 -2000 -200"
-        forcerange="-12 12" ctrlrange="-0.0175 3.7525"/>
-    <general class="panda" name="actuator7" joint="joint7" gainprm="2000" biasprm="0 -2000 -200"
-        forcerange="-12 12"/>
+    <general class="panda" name="actuator1" joint="joint1" gainprm="4500" biasprm="0 -4500 -450" />
+    <general class="panda" name="actuator2" joint="joint2" gainprm="4500" biasprm="0 -4500 -450" ctrlrange="-1.7628 1.7628" />
+    <general class="panda" name="actuator3" joint="joint3" gainprm="3500" biasprm="0 -3500 -350" />
+    <general class="panda" name="actuator4" joint="joint4" gainprm="3500" biasprm="0 -3500 -350" ctrlrange="-3.0718 -0.0698" />
+    <general class="panda" name="actuator5" joint="joint5" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
+    <general class="panda" name="actuator6" joint="joint6" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" ctrlrange="-0.0175 3.7525" />
+    <general class="panda" name="actuator7" joint="joint7" gainprm="2000" biasprm="0 -2000 -200" forcerange="-12 12" />
   </actuator>
-  
+
   <sensor>
     <!-- Define Touch Sensor Array -->
     <touch name="taxel1" site="taxel_site1"/>
-    <touch name="taxel2" site="taxel_site2"/>
-    <touch name="taxel3" site="taxel_site3"/>
-    <touch name="taxel4" site="taxel_site4"/>
-    <touch name="taxel5" site="taxel_site5"/>
-    <touch name="taxel6" site="taxel_site6"/>
-    <touch name="taxel7" site="taxel_site7"/>
-    <touch name="taxel8" site="taxel_site8"/>
-    <touch name="taxel9" site="taxel_site9"/>
-    <touch name="taxel10" site="taxel_site10"/>
-    <touch name="taxel11" site="taxel_site11"/>
-    <touch name="taxel12" site="taxel_site12"/>
-    <touch name="taxel13" site="taxel_site13"/>
-    <touch name="taxel14" site="taxel_site14"/>
-    <touch name="taxel15" site="taxel_site15"/>
-    <touch name="taxel16" site="taxel_site16"/>
-    <touch name="taxel17" site="taxel_site17"/>
-    <touch name="taxel18" site="taxel_site18"/>
-    <touch name="taxel19" site="taxel_site19"/>
-    <touch name="taxel20" site="taxel_site20"/>
-    <touch name="taxel21" site="taxel_site21"/>
-    <touch name="taxel22" site="taxel_site22"/>
-    <touch name="taxel23" site="taxel_site23"/>
-    <touch name="taxel24" site="taxel_site24"/>
-    <touch name="taxel25" site="taxel_site25"/>
-    <touch name="taxel26" site="taxel_site26"/>
-    <touch name="taxel27" site="taxel_site27"/>
-    <touch name="taxel28" site="taxel_site28"/>
-    <touch name="taxel29" site="taxel_site29"/>
-    <touch name="taxel30" site="taxel_site30"/>
-    <touch name="taxel31" site="taxel_site31"/>
-    <touch name="taxel32" site="taxel_site32"/>
-    <touch name="taxel33" site="taxel_site33"/>
-    <touch name="taxel34" site="taxel_site34"/>
-    <touch name="taxel35" site="taxel_site35"/>
-    <touch name="taxel36" site="taxel_site36"/>
-    <touch name="taxel37" site="taxel_site37"/>
-    <touch name="taxel38" site="taxel_site38"/>
-    <touch name="taxel39" site="taxel_site39"/>
-    <touch name="taxel40" site="taxel_site40"/>
-    <touch name="taxel41" site="taxel_site41"/>
-    <touch name="taxel42" site="taxel_site42"/>
-    <touch name="taxel43" site="taxel_site43"/>
-    <touch name="taxel44" site="taxel_site44"/>
-    <touch name="taxel45" site="taxel_site45"/>
-    <touch name="taxel46" site="taxel_site46"/>
-    <touch name="taxel47" site="taxel_site47"/>
-    <touch name="taxel48" site="taxel_site48"/>
-    <touch name="taxel49" site="taxel_site49"/>
-    <touch name="taxel50" site="taxel_site50"/>
-    <touch name="taxel51" site="taxel_site51"/>
-    <touch name="taxel52" site="taxel_site52"/>
-    <touch name="taxel53" site="taxel_site53"/>
-    <touch name="taxel54" site="taxel_site54"/>
-    <touch name="taxel55" site="taxel_site55"/>
-    <touch name="taxel56" site="taxel_site56"/>
-    <touch name="taxel57" site="taxel_site57"/>
-    <touch name="taxel58" site="taxel_site58"/>
-    <touch name="taxel59" site="taxel_site59"/>
-    <touch name="taxel60" site="taxel_site60"/>
-    <touch name="taxel61" site="taxel_site61"/>
-    <touch name="taxel62" site="taxel_site62"/>
-    <touch name="taxel63" site="taxel_site63"/>
-    <touch name="taxel64" site="taxel_site64"/>
-    <touch name="taxel65" site="taxel_site65"/>
-    <touch name="taxel66" site="taxel_site66"/>
-    <touch name="taxel67" site="taxel_site67"/>
-    <touch name="taxel68" site="taxel_site68"/>
-    <touch name="taxel69" site="taxel_site69"/>
-    <touch name="taxel70" site="taxel_site70"/>
-    <touch name="taxel71" site="taxel_site71"/>
-    <touch name="taxel72" site="taxel_site72"/>
-    <touch name="taxel73" site="taxel_site73"/>
-    <touch name="taxel74" site="taxel_site74"/>
-    <touch name="taxel75" site="taxel_site75"/>
-    <touch name="taxel76" site="taxel_site76"/>
-    <touch name="taxel77" site="taxel_site77"/>
-    <touch name="taxel78" site="taxel_site78"/>
-    <touch name="taxel79" site="taxel_site79"/>
-    <touch name="taxel80" site="taxel_site80"/>
-    <touch name="taxel81" site="taxel_site81"/>
-    <touch name="taxel82" site="taxel_site82"/>
-    <touch name="taxel83" site="taxel_site83"/>
-    <touch name="taxel84" site="taxel_site84"/>
-    <touch name="taxel85" site="taxel_site85"/>
-    <touch name="taxel86" site="taxel_site86"/>
-    <touch name="taxel87" site="taxel_site87"/>
-    <touch name="taxel88" site="taxel_site88"/>
-    <touch name="taxel89" site="taxel_site89"/>
-    <touch name="taxel90" site="taxel_site90"/>
-    <touch name="taxel91" site="taxel_site91"/>
-    <touch name="taxel92" site="taxel_site92"/>
-    <touch name="taxel93" site="taxel_site93"/>
-    <touch name="taxel94" site="taxel_site94"/>
-    <touch name="taxel95" site="taxel_site95"/>
-    <touch name="taxel96" site="taxel_site96"/>
-    <touch name="taxel97" site="taxel_site97"/>
-    <touch name="taxel98" site="taxel_site98"/>
-    <touch name="taxel99" site="taxel_site99"/>
-    <touch name="taxel100" site="taxel_site100"/>
-    
+
     <!-- Definition ends. -->
   </sensor>
 </mujoco>
