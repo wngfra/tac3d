@@ -192,116 +192,117 @@
                         <geom mesh="tactile_sensor_base" material="white" class="visual"/>
                         
                         <!-- Define Touch Sensor Array Sites -->
-                        <site name="taxel_site1" type="sphere" pos="-0.01350 -.002 -0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site2" type="sphere" pos="-0.01350 -.002 -0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site3" type="sphere" pos="-0.01350 -.002 -0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site4" type="sphere" pos="-0.01350 -.002 -0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site5" type="sphere" pos="-0.01350 -.002 -0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site6" type="sphere" pos="-0.01350 -.002 0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site7" type="sphere" pos="-0.01350 -.002 0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site8" type="sphere" pos="-0.01350 -.002 0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site9" type="sphere" pos="-0.01350 -.002 0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site10" type="sphere" pos="-0.01350 -.002 0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site11" type="sphere" pos="-0.01050 -.002 -0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site12" type="sphere" pos="-0.01050 -.002 -0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site13" type="sphere" pos="-0.01050 -.002 -0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site14" type="sphere" pos="-0.01050 -.002 -0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site15" type="sphere" pos="-0.01050 -.002 -0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site16" type="sphere" pos="-0.01050 -.002 0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site17" type="sphere" pos="-0.01050 -.002 0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site18" type="sphere" pos="-0.01050 -.002 0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site19" type="sphere" pos="-0.01050 -.002 0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site20" type="sphere" pos="-0.01050 -.002 0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site21" type="sphere" pos="-0.00750 -.002 -0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site22" type="sphere" pos="-0.00750 -.002 -0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site23" type="sphere" pos="-0.00750 -.002 -0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site24" type="sphere" pos="-0.00750 -.002 -0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site25" type="sphere" pos="-0.00750 -.002 -0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site26" type="sphere" pos="-0.00750 -.002 0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site27" type="sphere" pos="-0.00750 -.002 0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site28" type="sphere" pos="-0.00750 -.002 0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site29" type="sphere" pos="-0.00750 -.002 0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site30" type="sphere" pos="-0.00750 -.002 0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site31" type="sphere" pos="-0.00450 -.002 -0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site32" type="sphere" pos="-0.00450 -.002 -0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site33" type="sphere" pos="-0.00450 -.002 -0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site34" type="sphere" pos="-0.00450 -.002 -0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site35" type="sphere" pos="-0.00450 -.002 -0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site36" type="sphere" pos="-0.00450 -.002 0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site37" type="sphere" pos="-0.00450 -.002 0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site38" type="sphere" pos="-0.00450 -.002 0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site39" type="sphere" pos="-0.00450 -.002 0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site40" type="sphere" pos="-0.00450 -.002 0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site41" type="sphere" pos="-0.00150 -.002 -0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site42" type="sphere" pos="-0.00150 -.002 -0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site43" type="sphere" pos="-0.00150 -.002 -0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site44" type="sphere" pos="-0.00150 -.002 -0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site45" type="sphere" pos="-0.00150 -.002 -0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site46" type="sphere" pos="-0.00150 -.002 0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site47" type="sphere" pos="-0.00150 -.002 0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site48" type="sphere" pos="-0.00150 -.002 0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site49" type="sphere" pos="-0.00150 -.002 0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site50" type="sphere" pos="-0.00150 -.002 0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site51" type="sphere" pos="0.00150 -.002 -0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site52" type="sphere" pos="0.00150 -.002 -0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site53" type="sphere" pos="0.00150 -.002 -0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site54" type="sphere" pos="0.00150 -.002 -0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site55" type="sphere" pos="0.00150 -.002 -0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site56" type="sphere" pos="0.00150 -.002 0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site57" type="sphere" pos="0.00150 -.002 0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site58" type="sphere" pos="0.00150 -.002 0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site59" type="sphere" pos="0.00150 -.002 0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site60" type="sphere" pos="0.00150 -.002 0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site61" type="sphere" pos="0.00450 -.002 -0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site62" type="sphere" pos="0.00450 -.002 -0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site63" type="sphere" pos="0.00450 -.002 -0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site64" type="sphere" pos="0.00450 -.002 -0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site65" type="sphere" pos="0.00450 -.002 -0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site66" type="sphere" pos="0.00450 -.002 0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site67" type="sphere" pos="0.00450 -.002 0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site68" type="sphere" pos="0.00450 -.002 0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site69" type="sphere" pos="0.00450 -.002 0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site70" type="sphere" pos="0.00450 -.002 0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site71" type="sphere" pos="0.00750 -.002 -0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site72" type="sphere" pos="0.00750 -.002 -0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site73" type="sphere" pos="0.00750 -.002 -0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site74" type="sphere" pos="0.00750 -.002 -0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site75" type="sphere" pos="0.00750 -.002 -0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site76" type="sphere" pos="0.00750 -.002 0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site77" type="sphere" pos="0.00750 -.002 0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site78" type="sphere" pos="0.00750 -.002 0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site79" type="sphere" pos="0.00750 -.002 0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site80" type="sphere" pos="0.00750 -.002 0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site81" type="sphere" pos="0.01050 -.002 -0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site82" type="sphere" pos="0.01050 -.002 -0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site83" type="sphere" pos="0.01050 -.002 -0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site84" type="sphere" pos="0.01050 -.002 -0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site85" type="sphere" pos="0.01050 -.002 -0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site86" type="sphere" pos="0.01050 -.002 0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site87" type="sphere" pos="0.01050 -.002 0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site88" type="sphere" pos="0.01050 -.002 0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site89" type="sphere" pos="0.01050 -.002 0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site90" type="sphere" pos="0.01050 -.002 0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site91" type="sphere" pos="0.01350 -.002 -0.01350" size=".001 .001 .001"/>
-                        <site name="taxel_site92" type="sphere" pos="0.01350 -.002 -0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site93" type="sphere" pos="0.01350 -.002 -0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site94" type="sphere" pos="0.01350 -.002 -0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site95" type="sphere" pos="0.01350 -.002 -0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site96" type="sphere" pos="0.01350 -.002 0.00150" size=".001 .001 .001"/>
-                        <site name="taxel_site97" type="sphere" pos="0.01350 -.002 0.00450" size=".001 .001 .001"/>
-                        <site name="taxel_site98" type="sphere" pos="0.01350 -.002 0.00750" size=".001 .001 .001"/>
-                        <site name="taxel_site99" type="sphere" pos="0.01350 -.002 0.01050" size=".001 .001 .001"/>
-                        <site name="taxel_site100" type="sphere" pos="0.01350 -.002 0.01350" size=".001 .001 .001"/>
+                        <site name="taxel_site1" type="capsule" size=".001 .001" pos="-0.01350 -.002 -0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site2" type="capsule" size=".001 .001" pos="-0.01350 -.002 -0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site3" type="capsule" size=".001 .001" pos="-0.01350 -.002 -0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site4" type="capsule" size=".001 .001" pos="-0.01350 -.002 -0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site5" type="capsule" size=".001 .001" pos="-0.01350 -.002 -0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site6" type="capsule" size=".001 .001" pos="-0.01350 -.002 0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site7" type="capsule" size=".001 .001" pos="-0.01350 -.002 0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site8" type="capsule" size=".001 .001" pos="-0.01350 -.002 0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site9" type="capsule" size=".001 .001" pos="-0.01350 -.002 0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site10" type="capsule" size=".001 .001" pos="-0.01350 -.002 0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site11" type="capsule" size=".001 .001" pos="-0.01050 -.002 -0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site12" type="capsule" size=".001 .001" pos="-0.01050 -.002 -0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site13" type="capsule" size=".001 .001" pos="-0.01050 -.002 -0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site14" type="capsule" size=".001 .001" pos="-0.01050 -.002 -0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site15" type="capsule" size=".001 .001" pos="-0.01050 -.002 -0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site16" type="capsule" size=".001 .001" pos="-0.01050 -.002 0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site17" type="capsule" size=".001 .001" pos="-0.01050 -.002 0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site18" type="capsule" size=".001 .001" pos="-0.01050 -.002 0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site19" type="capsule" size=".001 .001" pos="-0.01050 -.002 0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site20" type="capsule" size=".001 .001" pos="-0.01050 -.002 0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site21" type="capsule" size=".001 .001" pos="-0.00750 -.002 -0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site22" type="capsule" size=".001 .001" pos="-0.00750 -.002 -0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site23" type="capsule" size=".001 .001" pos="-0.00750 -.002 -0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site24" type="capsule" size=".001 .001" pos="-0.00750 -.002 -0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site25" type="capsule" size=".001 .001" pos="-0.00750 -.002 -0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site26" type="capsule" size=".001 .001" pos="-0.00750 -.002 0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site27" type="capsule" size=".001 .001" pos="-0.00750 -.002 0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site28" type="capsule" size=".001 .001" pos="-0.00750 -.002 0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site29" type="capsule" size=".001 .001" pos="-0.00750 -.002 0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site30" type="capsule" size=".001 .001" pos="-0.00750 -.002 0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site31" type="capsule" size=".001 .001" pos="-0.00450 -.002 -0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site32" type="capsule" size=".001 .001" pos="-0.00450 -.002 -0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site33" type="capsule" size=".001 .001" pos="-0.00450 -.002 -0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site34" type="capsule" size=".001 .001" pos="-0.00450 -.002 -0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site35" type="capsule" size=".001 .001" pos="-0.00450 -.002 -0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site36" type="capsule" size=".001 .001" pos="-0.00450 -.002 0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site37" type="capsule" size=".001 .001" pos="-0.00450 -.002 0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site38" type="capsule" size=".001 .001" pos="-0.00450 -.002 0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site39" type="capsule" size=".001 .001" pos="-0.00450 -.002 0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site40" type="capsule" size=".001 .001" pos="-0.00450 -.002 0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site41" type="capsule" size=".001 .001" pos="-0.00150 -.002 -0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site42" type="capsule" size=".001 .001" pos="-0.00150 -.002 -0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site43" type="capsule" size=".001 .001" pos="-0.00150 -.002 -0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site44" type="capsule" size=".001 .001" pos="-0.00150 -.002 -0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site45" type="capsule" size=".001 .001" pos="-0.00150 -.002 -0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site46" type="capsule" size=".001 .001" pos="-0.00150 -.002 0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site47" type="capsule" size=".001 .001" pos="-0.00150 -.002 0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site48" type="capsule" size=".001 .001" pos="-0.00150 -.002 0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site49" type="capsule" size=".001 .001" pos="-0.00150 -.002 0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site50" type="capsule" size=".001 .001" pos="-0.00150 -.002 0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site51" type="capsule" size=".001 .001" pos="0.00150 -.002 -0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site52" type="capsule" size=".001 .001" pos="0.00150 -.002 -0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site53" type="capsule" size=".001 .001" pos="0.00150 -.002 -0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site54" type="capsule" size=".001 .001" pos="0.00150 -.002 -0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site55" type="capsule" size=".001 .001" pos="0.00150 -.002 -0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site56" type="capsule" size=".001 .001" pos="0.00150 -.002 0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site57" type="capsule" size=".001 .001" pos="0.00150 -.002 0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site58" type="capsule" size=".001 .001" pos="0.00150 -.002 0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site59" type="capsule" size=".001 .001" pos="0.00150 -.002 0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site60" type="capsule" size=".001 .001" pos="0.00150 -.002 0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site61" type="capsule" size=".001 .001" pos="0.00450 -.002 -0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site62" type="capsule" size=".001 .001" pos="0.00450 -.002 -0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site63" type="capsule" size=".001 .001" pos="0.00450 -.002 -0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site64" type="capsule" size=".001 .001" pos="0.00450 -.002 -0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site65" type="capsule" size=".001 .001" pos="0.00450 -.002 -0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site66" type="capsule" size=".001 .001" pos="0.00450 -.002 0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site67" type="capsule" size=".001 .001" pos="0.00450 -.002 0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site68" type="capsule" size=".001 .001" pos="0.00450 -.002 0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site69" type="capsule" size=".001 .001" pos="0.00450 -.002 0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site70" type="capsule" size=".001 .001" pos="0.00450 -.002 0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site71" type="capsule" size=".001 .001" pos="0.00750 -.002 -0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site72" type="capsule" size=".001 .001" pos="0.00750 -.002 -0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site73" type="capsule" size=".001 .001" pos="0.00750 -.002 -0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site74" type="capsule" size=".001 .001" pos="0.00750 -.002 -0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site75" type="capsule" size=".001 .001" pos="0.00750 -.002 -0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site76" type="capsule" size=".001 .001" pos="0.00750 -.002 0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site77" type="capsule" size=".001 .001" pos="0.00750 -.002 0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site78" type="capsule" size=".001 .001" pos="0.00750 -.002 0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site79" type="capsule" size=".001 .001" pos="0.00750 -.002 0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site80" type="capsule" size=".001 .001" pos="0.00750 -.002 0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site81" type="capsule" size=".001 .001" pos="0.01050 -.002 -0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site82" type="capsule" size=".001 .001" pos="0.01050 -.002 -0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site83" type="capsule" size=".001 .001" pos="0.01050 -.002 -0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site84" type="capsule" size=".001 .001" pos="0.01050 -.002 -0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site85" type="capsule" size=".001 .001" pos="0.01050 -.002 -0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site86" type="capsule" size=".001 .001" pos="0.01050 -.002 0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site87" type="capsule" size=".001 .001" pos="0.01050 -.002 0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site88" type="capsule" size=".001 .001" pos="0.01050 -.002 0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site89" type="capsule" size=".001 .001" pos="0.01050 -.002 0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site90" type="capsule" size=".001 .001" pos="0.01050 -.002 0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site91" type="capsule" size=".001 .001" pos="0.01350 -.002 -0.01350" euler="1.570796 0 0"/>
+                        <site name="taxel_site92" type="capsule" size=".001 .001" pos="0.01350 -.002 -0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site93" type="capsule" size=".001 .001" pos="0.01350 -.002 -0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site94" type="capsule" size=".001 .001" pos="0.01350 -.002 -0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site95" type="capsule" size=".001 .001" pos="0.01350 -.002 -0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site96" type="capsule" size=".001 .001" pos="0.01350 -.002 0.00150" euler="1.570796 0 0"/>
+                        <site name="taxel_site97" type="capsule" size=".001 .001" pos="0.01350 -.002 0.00450" euler="1.570796 0 0"/>
+                        <site name="taxel_site98" type="capsule" size=".001 .001" pos="0.01350 -.002 0.00750" euler="1.570796 0 0"/>
+                        <site name="taxel_site99" type="capsule" size=".001 .001" pos="0.01350 -.002 0.01050" euler="1.570796 0 0"/>
+                        <site name="taxel_site100" type="capsule" size=".001 .001" pos="0.01350 -.002 0.01350" euler="1.570796 0 0"/>
                         <!-- Definition ends. -->
+                        <body name="sensor_pad" pos="0 -0.0037 0" euler="1.570796 0 0">
+                          <composite type="box" count="11 11 2" spacing="0.003">
+                            <skin texcoord="true" rgba=".9 .6 .3 1"/>
+                            <geom type="capsule" size=".001 .002" rgba=".8 .2 .1 1"/>
+                            <joint kind="main" solreffix="0.03 1" solimpfix="0 .1 .01"/>
+                          </composite>
+                        </body>
                       </body>
-                      <body name="sensor_pad" pos="0 0 -0.0037">
-                        <composite type="box" count="10 10 2" spacing="0.003">
-                          <skin texcoord="true" rgba=".9 .6 .3 1"/>
-                          <geom type="capsule" size=".001 .002" rgba=".8 .2 .1 1"/>
-                          <joint kind="main" solreffix="0.03 1" solimpfix="0 .1 .01"/>
-                        </composite>
-                      </body>
-                      <site name="attachment_site" pos="0 0 -0.006" quat="0 0 0 0"/>
+                      
+                      <site name="attachment_site" type="sphere" pos="0 0 -0.005" quat="0 0 0 0" size=".001 .001 .001"/>
                     </body>  
                   </body>
                 </body>
