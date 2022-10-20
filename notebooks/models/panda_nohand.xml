@@ -183,7 +183,7 @@
                       <body name="sensor_base" pos="0 0 0" euler="1.570796 0 0">
                         <inertial mass="1e-3" pos="0 0 0" />
                         <geom mesh="tactile_sensor_base" material="white" class="visual" />
-                        <geom mesh="tactile_sensor_base" material="white" class="collision" />
+                        <geom mesh="tactile_sensor_base" class="collision" />
                         <body name="sensor_pad" pos="0 -0.0045 0" euler="1.570796 0 0">
                           <composite type="box" count="11 11 2" spacing="0.003">
                             <skin texcoord="true" rgba=".9 .6 .3 1" />
