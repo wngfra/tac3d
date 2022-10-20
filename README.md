@@ -1,13 +1,15 @@
 # Tactile 3D Exploration and Perception Project
 ![Scene](./docs/simulation_scene.gif "Tactile Exploration Scene")
+![Sensor](./docs/sensor_composite.png "Softbody Touch Sensor")
 ## Contents
 1. `arduino_readout` contains the Arduino readout scheme for event-based tactile sensors
 2. `CAD` and `mesh` contain the AutoDesk Inventor design and `stl` mesh files of objects and mechanical components
 3. `explore_control` contains the ROS2 control client for tactile exploration (for both simulation and robot)
-4. `scenes` and `scripts` are the CoppeliaSim scenes and the scripts to run in the docker container
-5. `sensor_interfaces` contains ROS2 interface to fetch the sensory signals (for both simulation and sensors) and signal encoders
-6. [SpikyMotion](https://github.com/wngfra/SpikyMotion) contains the ROS2 server to control the real robot (Franka Emika Panda)
-7. `tactile_sensor` contains the KiCAD project of the sensor design
+4. `notebooks` contains the jupyter notebook of MuJoCo simulations
+5. `scenes` and `scripts` are the CoppeliaSim scenes and the scripts to run in the docker container
+6. `sensor_interfaces` contains ROS2 interface to fetch the sensory signals (for both simulation and sensors) and signal encoders
+7. [SpikyMotion](https://github.com/wngfra/SpikyMotion) contains the ROS2 server to control the real robot (Franka Emika Panda)
+8. `tactile_sensor` contains the KiCAD project of the sensor design
 
 ## Quick Guide
 * Build a specific package (otherwise all packages will be rebuilt, it takes ages) inside the container with
@@ -25,6 +27,7 @@
 * If you need to add custom packages for `sim_ros2_interfaces`, remember to modify [CMakeLists.txt](./scripts/CMakeLists.txt) and [package.xml](./scripts/package.xml) correspondingly, they will be copied to the `sim_ros2_interfaces` root directory for `colcon` compilation.
 * Check [CoppeliaSim Manual](https://www.coppeliarobotics.com/helpFiles/index.html) for details.
 * Default physics engine is set to [MuJoCo](https://mujoco.org/).
+* Full MuJoCo simulation and rendering is provided in the [notebook](./notebooks/panda_exploration.ipynb).
 ### Perception and Learning
 * Cross-container communication without exposing `host` network is enabled by [fastrtps-profile.xml](./scripts/fastrtps-profile.xml) (to avoid security risks).
 * Launch a new terminal in the existing container with
