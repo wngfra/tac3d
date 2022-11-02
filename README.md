@@ -1,6 +1,6 @@
 # Tactile 3D Exploration and Perception Project
-![Scene](./docs/simulation_scene.gif "Tactile Exploration Scene")
-![Sensor](./docs/sensor_composite.png "Softbody Touch Sensor")
+![Scene](./docs/scene.gif "Tactile Exploration Scene")
+![Sensor](./docs/softbody.png "Softbody Touch Sensor")
 ## Contents
 1. `arduino_readout` contains the Arduino readout scheme for event-based tactile sensors
 2. `CAD` and `mesh` contain the AutoDesk Inventor design and `stl` mesh files of objects and mechanical components
