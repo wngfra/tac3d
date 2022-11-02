@@ -14,7 +14,7 @@
     <mesh name="rotational_platform" file="rotational_platform.obj" />
     <mesh name="rotator_wedge" file="rotator_wedge.obj" />
     <mesh name="rotator_round" file="rotator_round.obj" />
-    <mesh name="rotator_sharp" file="rotator_sharp.obj" />
+    <mesh name="rotator_curve" file="rotator_curve.obj" />
   </asset>
 
   <worldbody>
@@ -23,8 +23,8 @@
       <geom mesh="rotational_platform" size=".1 .1 .1" rgba=".5 .5 .5 1" class="visual" />
       <body name="rotator1" pos="0.25 .05 0" euler="0 0 0">
         <joint axis="0 1 0" name="joint8" damping="1e-2" />
-        <geom mesh="rotator_sharp" rgba="0 0 .8 1" class="visual" />
-        <geom name="sharp_rotator" mesh="rotator_sharp" class="collision" />
+        <geom mesh="rotator_curve" rgba="0 0 .8 1" class="visual" />
+        <geom name="curve_rotator" mesh="rotator_curve" class="collision" />
         <site name="reach_site1" pos="0 .12 0" euler="-1.570796 0 -1.570796" class="ik" />
       </body>
       <body name="rotator2" pos="0 .05 0" euler="0 0 0">
