@@ -1,14 +1,10 @@
 <mujoco model="platform">
-  <option solver="CG" tolerance="1e-6" />
-
   <default>
     <default class="platform">
       <material specular="0.5" shininess="0.25" />
     </default>
   </default>
-
-  <size nconmax="500" njmax="5000" nstack="5000000" />
-
+    
   <asset>
     <!-- Collision meshes -->
     <mesh name="rotational_platform" file="rotational_platform.obj" />
