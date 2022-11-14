@@ -1,7 +1,0 @@
-#ifndef _INCLUDED_L3_increase_threshold_resetter_codeobject
-#define _INCLUDED_L3_increase_threshold_resetter_codeobject
-
-void _run_L3_increase_threshold_resetter_codeobject();
-
-
-#endif

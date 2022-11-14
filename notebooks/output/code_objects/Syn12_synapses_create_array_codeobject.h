@@ -1,7 +1,0 @@
-#ifndef _INCLUDED_Syn12_synapses_create_array_codeobject
-#define _INCLUDED_Syn12_synapses_create_array_codeobject
-
-void _run_Syn12_synapses_create_array_codeobject();
-
-
-#endif
