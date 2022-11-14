@@ -1,0 +1,7 @@
+#ifndef _INCLUDED_Syn12_summed_variable_sum_w_post_codeobject
+#define _INCLUDED_Syn12_summed_variable_sum_w_post_codeobject
+
+void _run_Syn12_summed_variable_sum_w_post_codeobject();
+
+
+#endif

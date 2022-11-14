@@ -1,0 +1,7 @@
+#ifndef _INCLUDED_Syn23_synapses_create_generator_codeobject
+#define _INCLUDED_Syn23_synapses_create_generator_codeobject
+
+void _run_Syn23_synapses_create_generator_codeobject();
+
+
+#endif

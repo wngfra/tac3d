@@ -1,0 +1,6 @@
+#ifndef _INCLUDED_L2_spike_thresholder_codeobject_after
+#define _INCLUDED_L2_spike_thresholder_codeobject_afer
+
+void _after_run_L2_spike_thresholder_codeobject();
+
+#endif
