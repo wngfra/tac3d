@@ -1,17 +1,6 @@
-# Copyright (C) 2022 wngfra
-# 
-# tac3d is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-# 
-# tac3d is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-# 
-# You should have received a copy of the GNU Lesser General Public License
-# along with tac3d. If not, see <http://www.gnu.org/licenses/>.
+# Copyright 2022 wngfra.
+# SPDX-License-Identifier: Apache-2.0
+
 from brian2 import *
 
 
@@ -23,30 +12,26 @@ events = {
 params = {
     # Model constants
     'C_mem'           : 200*pF,       # Membrane capacitance
-    'delta_theta'     : 5*mV,         # Adaptive threshold step-size
+    'delta_theta'     : 5*mV,         # Adaptive threshold incremental scale
     'g_l'             : 10*nS,        # Leak conductance
     'J_C'             : 1,            # Scale of the calcium variable
     'tau_c'           : 60*ms,        # Calcium variable time constant
     'tau_e'           : 5*ms,         # Excitatory synaptic time constant
     'tau_i'           : 5*ms,         # Inhibitory synaptic time constant
     'tau_r'           : 5*ms,         # Refractory period
-    'tau_theta'       : 5*ms,         # Adaptive spiking threshold
+    'tau_theta'       : 5*ms,         # Adaptive threshold time constant
     'V_ir'            : -80*mV,       # Inhibitory reverse potential
     'V_res'           : -60*mV,       # Resting potential
     'V_theta'         : -50*mV,       # Spiking threshold
-    'w_e'             : 30*nS,        # Excitatory conductance increment
+    'w_e'             : 15*nS,        # Excitatory conductance increment
     'w_i'             : 30*nS,        # Inhibitory conductance increment
     'X_max'           : 1,            # Synaptic variable maximum
     'X_min'           : 0,            # Synaptic variable minimum
 
-    # Initial values
-    'c_initial'       : 2,
-    'v_initial'       : 'V_res + rand()*(V_theta - V_res)',
-    'X_initial'       : 'rand()*X_max',
-
     # Simulation parameters
     'defaultclock.dt' : 0.1*ms,      # Time step
 }
+
 # Thresholds and plasticity parameters
 params['a']           = 0.1*params['X_max']
 params['b']           = 0.1*params['X_max']
@@ -114,7 +99,7 @@ equations = {
 
 connections = {
     'Syn12': {'mode': 'random'},
-    'Syn23': {},
+    'Syn23': {'mode': 'full'},
     'Syn33': {'condition': 'i != j'}
 }
 
@@ -124,4 +109,19 @@ monitors = {
     'L3': ['v', 'v_th', 'g_e', 'g_i', 'sum_w'],
     'Syn23': ['X', 'w', 'c']
 }
+
+initial_values = [
+    # NeuronGroups
+    {
+        'L1': {'v': 'V_res + rand()*(V_theta - V_res)'},
+        'L2': {'v': 'V_res + rand()*(V_theta - V_res)'},
+        'L3': {'v': 'V_res + rand()*(V_theta - V_res)', 'v_th': 'V_theta', 'g_e': 0*nS, 'g_i': 0*nS, 'is_winner': False}
+    },
+    # Synapses
+    {
+        'Syn12': {'w': 1},
+        'Syn23': {'count': 0, 'c': 2, 'X': 'rand()*X_max', 'delay': 'rand()*tau_r'},
+        'Syn33': {'w': 1}
+    }
+]
 # autopep8: on
