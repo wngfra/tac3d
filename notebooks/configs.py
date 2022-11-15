@@ -11,7 +11,7 @@ events = {
 
 params = {
     # Model constants
-    'C_mem'           : 200*pF,       # Membrane capacitance
+    'C_mem'           : 250*pF,       # Membrane capacitance
     'delta_theta'     : 5*mV,         # Adaptive threshold incremental scale
     'g_l'             : 10*nS,        # Leak conductance
     'J_C'             : 1,            # Scale of the calcium variable
@@ -23,7 +23,7 @@ params = {
     'V_ir'            : -80*mV,       # Inhibitory reverse potential
     'V_res'           : -60*mV,       # Resting potential
     'V_theta'         : -50*mV,       # Spiking threshold
-    'w_e'             : 15*nS,        # Excitatory conductance increment
+    'w_e'             : 8*nS,         # Excitatory conductance increment
     'w_i'             : 30*nS,        # Inhibitory conductance increment
     'X_max'           : 1,            # Synaptic variable maximum
     'X_min'           : 0,            # Synaptic variable minimum
@@ -80,10 +80,10 @@ equations = {
         ''',
     # Synaptic events
     'Pre12': '''
-        g_e_post += int(sum_w_post >= 1)*w_e/(sum_w_post + 1e-6)
+        g_e_post += int(sum_w_post >= 1)*w_e/(sum_w_post + 1e-12)
         ''',
     'Pre23': '''
-        g_e_post += int(sum_w_post >= 1)*w_e/(sum_w_post + 1e-6)*X
+        g_e_post += int(sum_w_post >= 1)*w_e/(sum_w_post + 1e-12)*X
         X += a*int(v_pre > theta_v)*int(theta_lup < c)*int(c < theta_hup) - b*int(v_pre <= theta_v)*int(theta_ldown < c)*int(c < theta_hdown)
         X = clip(X, X_min, X_max)
         X_condition = int(v_pre > theta_v)*int(theta_lup < c)*int(c < theta_hup) + int(v_pre <= theta_v)*int(theta_ldown < c)*int(c < theta_hdown)
@@ -119,7 +119,7 @@ initial_values = [
     },
     # Synapses
     {
-        'Syn12': {'w': 1},
+        'Syn12': {'w': 'rand()'},
         'Syn23': {'count': 0, 'c': 2, 'X': 'rand()*X_max', 'delay': 'rand()*tau_r'},
         'Syn33': {'w': 1}
     }
