@@ -11,20 +11,20 @@ events = {
 
 params = {
     # Model constants
-    'C_mem'           : 250*pF,       # Membrane capacitance
+    'C_mem'           : 180*pF,       # Membrane capacitance
     'delta_theta'     : 5*mV,         # Adaptive threshold incremental scale
     'g_l'             : 10*nS,        # Leak conductance
     'J_C'             : 1,            # Scale of the calcium variable
     'tau_c'           : 60*ms,        # Calcium variable time constant
-    'tau_e'           : 5*ms,         # Excitatory synaptic time constant
+    'tau_e'           : 3*ms,         # Excitatory synaptic time constant
     'tau_i'           : 5*ms,         # Inhibitory synaptic time constant
     'tau_r'           : 5*ms,         # Refractory period
     'tau_theta'       : 5*ms,         # Adaptive threshold time constant
     'V_ir'            : -80*mV,       # Inhibitory reverse potential
     'V_res'           : -60*mV,       # Resting potential
     'V_theta'         : -50*mV,       # Spiking threshold
-    'w_e'             : 8*nS,         # Excitatory conductance increment
-    'w_i'             : 30*nS,        # Inhibitory conductance increment
+    'w_e'             : 30*nS,        # Excitatory conductance increment
+    'w_i'             : 35*nS,        # Inhibitory conductance increment
     'X_max'           : 1,            # Synaptic variable maximum
     'X_min'           : 0,            # Synaptic variable minimum
 
