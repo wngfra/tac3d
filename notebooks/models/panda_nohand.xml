@@ -2,7 +2,7 @@
   <compiler angle="radian" meshdir="assets" autolimits="true" />
   <option solver="CG" tolerance="1e-6" />
   <option integrator="implicit" />
-    
+
   <size nconmax="500" njmax="5000" nstack="5000000" />
 
   <default>
@@ -184,9 +184,10 @@
                     <geom mesh="link7_6" material="black" class="visual" />
                     <geom mesh="link7_7" material="white" class="visual" />
                     <geom mesh="link7_c" class="collision" />
-                    <body name="tactile_sensor" pos="0 0 0.145" euler="3.141593 0 0.785398">
+                    <body name="tactile_sensor" pos="0 0 0.145" euler="3.14159253 0 0.78539816">
+                      <inertial mass="1e-3" pos="0 0 0" />
+                      
                       <body name="sensor_base" pos="0 0 0" euler="1.570796 0 0">
-                        <inertial mass="1e-3" pos="0 0 0" />
                         <geom mesh="tactile_sensor_base" material="white" class="visual" />
                         <geom mesh="tactile_sensor_base" class="collision" />
                         <body name="sensor_pad" pos="0 -4e-3 0" euler="1.570796 0 0">
