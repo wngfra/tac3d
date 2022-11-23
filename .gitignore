@@ -133,3 +133,4 @@ robots/
 
 *.gz
 output/
+tmp/
