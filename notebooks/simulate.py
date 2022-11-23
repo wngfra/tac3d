@@ -1,8 +1,9 @@
 # Copyright 2022 wngfra.
 # SPDX-License-Identifier: Apache-2.0
 
+import os
 import pickle
-from multiprocessing import Pool
+from multiprocessing import Process, Pool
 from xml.etree import ElementTree as et
 
 import matplotlib
@@ -14,8 +15,6 @@ from dm_control import mujoco
 # Access to enums and MuJoCo library functions.
 from dm_control.mujoco.wrapper.mjbindings import mjlib
 from dm_control.utils import inverse_kinematics as ik
-from ipywidgets import IntProgress
-from IPython.display import display, HTML
 from PIL import Image
 from scipy.special import gamma
 from sklearn.decomposition import PCA
@@ -40,7 +39,7 @@ geom_type = "sphere"
 
 # Scene XML
 robot_xml = "models/panda_nohand.xml"
-scene_xml = "models/scene.xml"
+
 
 
 def display_video(frames, framerate=framerate, figsize=None):
@@ -48,13 +47,13 @@ def display_video(frames, framerate=framerate, figsize=None):
         height, width, _ = frames[0].shape
     except ValueError as e:
         height, width = frames[0].shape
-    orig_backend = matplotlib.get_backend()
+    # orig_backend = matplotlib.get_backend()
     # Switch to headless 'Agg' to inhibit figure rendering.
-    matplotlib.use("Agg")
+    # matplotlib.use("Agg")
     if figsize is None:
         figsize = (width / dpi, height / dpi)
     fig, ax = plt.subplots(1, 1, figsize=figsize, dpi=dpi)
-    matplotlib.use(orig_backend)  # Switch back to the original backend.
+    #matplotlib.use(orig_backend)  # Switch back to the original backend.
     ax.set_axis_off()
     ax.set_aspect("equal")
     ax.set_position([0, 0, 1, 1])
@@ -100,7 +99,10 @@ def quatLocal(A, C):
     return B
 
 
-def reach_test(physics, site_name, target_name, joint_names, duration=2.0, rendered=True):
+def reach_test(scene_xml, site_name, target_name, joint_names, duration=2.0, rendered=True):
+    physics = mujoco.Physics.from_xml_path(scene_xml)
+    physics.reset(0)
+    
     w = 2*np.pi/duration  # Rotator angular speed
     omega = w*np.array([1, 1, 1])
     ctrl = np.empty(10)
@@ -111,17 +113,12 @@ def reach_test(physics, site_name, target_name, joint_names, duration=2.0, rende
     target_site = physics.data.site(name=target_name)
     target_quat = mat2quat(control_site.xmat)
     target_xpos = target_site.xpos.copy()
-    target_xpos[2] -= 1e-4
+    target_xpos[2] -= 3e-4
     smooth_factor = 0.5
     
     # Simulate, saving video frames
-    physics.reset(0)
-    physics.step()
-
-    IP = IntProgress(min=0, max=int(duration / _TIME_STEP), description='Simulating {}:'.format(target_name))  # instantiate the progress bar
-    display(IP)  # display the bar
     while physics.data.time < duration:
-        IP.value += 1
+        print("PID {} Progress: {:.1f}%".format(os.getpid(), physics.data.time/duration*100), flush=True)
         move_vec = (target_xpos - control_site.xpos)*min(smooth_factor, physics.data.time)/smooth_factor
 
         # Compute the inverse kinematics
@@ -158,15 +155,18 @@ def reach_test(physics, site_name, target_name, joint_names, duration=2.0, rende
     return video, np.asarray(stream), np.asarray(orientations)
 
 
-# Load scene and define simulation variables
-physics = mujoco.Physics.from_xml_path(scene_xml)
-site_name = "attachment_site"
-reach_sites = ["reach_site" + str(i + 1) for i in range(3)]
-joint_names = ["joint{}".format(i + 1) for i in range(7)]
+if __name__=='__main__':
+    # Load scene and define simulation variables
+    scene_xml = "models/scene.xml"
+    site_name = "attachment_site"
+    reach_sites = ["reach_site" + str(8) for i in range(3)]
+    joint_names = ["joint{}".format(i + 1) for i in range(7)]
+    
+    def sim_process(reach_site):
+        return reach_test(scene_xml, site_name, reach_site, joint_names, 7.0, rendered=False)
+    
+    dataset = {}
+    with Pool(processes=3) as p:
+        results = p.map(sim_process, reach_sites)
 
-def sim_process(target_name):
-    return reach_test(physics, site_name, target_name, joint_names, duration=5.0, rendered=True)
-
-dataset = {}
-with Pool(processes=3) as pool:
-    results = pool.map(sim_process, reach_sites)
+    print(results)
