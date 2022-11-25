@@ -1,0 +1,46 @@
+<mujoco model="platform">
+  <default>
+    <default class="platform">
+      <material specular="0.5" shininess="0.25" />
+    </default>
+  </default>
+    
+  <asset>
+    <!-- Collision meshes -->
+    <mesh name="rotational_platform" file="rotational_platform.obj" />
+    <mesh name="rotator_wedge" file="rotator_wedge.obj" />
+    <mesh name="rotator_round" file="rotator_round.obj" />
+    <mesh name="rotator_curve" file="rotator_curve.obj" />
+  </asset>
+
+  <worldbody>
+    <body name="rotator_platform" pos=".55 0 0" euler="1.570796 1.570796 0" childclass="platform">
+      <inertial mass="4.970684" pos="0 0 0" fullinertia="0.70337 0.70661 0.0091170 -0.00013900 0.0067720 0.019169" />
+      <geom mesh="rotational_platform" size=".1 .1 .1" rgba=".5 .5 .5 1" class="visual" />
+      <body name="rotator1" pos="0.25 .05 0" euler="0 0 0">
+        <joint axis="0 1 0" name="joint8" damping="1e-2" />
+        <geom mesh="rotator_curve" rgba="0 0 .8 1" class="visual" />
+        <geom name="curve_rotator" mesh="rotator_curve" class="collision" />
+        <site name="reach_site8" pos="0 .11 5e-3" euler="-1.570796 0 -1.570796" class="ik" />
+      </body>
+      <body name="rotator2" pos="0 .05 0" euler="0 0 0">
+        <joint axis="0 1 0" name="joint9" damping="1e-2" />
+        <geom mesh="rotator_round" rgba="0 .8 0 1" class="visual" />
+        <geom name="round_rotator" mesh="rotator_round" class="collision" />
+        <site name="reach_site9" pos="0 .11 0" euler="-1.570796 0 -1.570796" class="ik" />
+      </body>
+      <body name="rotator3" pos="-.25 .05 0" euler="0 0 0">
+        <joint axis="0 1 0" name="joint10" damping="1e-2" />
+        <geom mesh="rotator_wedge" rgba=".8 0 0 1" class="visual" />
+        <geom name="wedge_rotator" mesh="rotator_wedge" class="collision" />
+        <site name="reach_site10" pos="0 .11 0" euler="-1.570796 0 -1.570796" class="ik" />
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position class="platform" name="actuator8" joint="joint8" />
+    <position class="platform" name="actuator9" joint="joint9" />
+    <position class="platform" name="actuator10" joint="joint10" />
+  </actuator>
+</mujoco>
