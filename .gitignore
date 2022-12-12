@@ -132,7 +132,5 @@ meshes/
 robots/
 
 *.gz
-*.pkl
 output/
 tmp/
-
