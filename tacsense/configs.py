@@ -23,8 +23,8 @@ params = {
     'V_ir'            : -80*mV,       # Inhibitory reverse potential
     'V_res'           : -60*mV,       # Resting potential
     'V_theta'         : -50*mV,       # Spiking threshold
-    'w_e'             : 30*nS,        # Excitatory conductance increment
-    'w_i'             : 35*nS,        # Inhibitory conductance increment
+    'w_e'             : 20*nS,        # Excitatory conductance increment
+    'w_i'             : 20*nS,        # Inhibitory conductance increment
     'X_max'           : 1,            # Synaptic variable maximum
     'X_min'           : 0,            # Synaptic variable minimum
 
@@ -72,7 +72,7 @@ equations = {
         X_condition : 1
         dc/dt = -c/tau_c + J_C*count*Hz: 1 (clock-driven)
         dX/dt = (alpha*int(X > theta_X)*int(X < X_max) - beta*int(X <= theta_X)*int(X > X_min))*(1 - X_condition) : 1 (clock-driven)
-        w = int(X > 0.5) : 1
+        w = int(X >= 0.5) : 1
         sum_w_post = w : 1 (summed)
         ''',
     'Syn33': '''
@@ -89,7 +89,7 @@ equations = {
         X_condition = int(v_pre > theta_v)*int(theta_lup < c)*int(c < theta_hup) + int(v_pre <= theta_v)*int(theta_ldown < c)*int(c < theta_hdown)
         ''',
     'Pre33': '''
-        g_i_post += w_i*abs(i - j)
+        g_i_post += w_i*(i-j)
         ''',
     'Post23': '''
         count += 1
