@@ -149,7 +149,7 @@ class TacNet(object):
             for k, v in ivs.items():
                 setattr(synapse, k, v)
 
-    def run(self, net_input, duration, save_state=None):
+    def run(self, net_input, duration, clean=False, save_state=None):
         """Run the simulation for a duration and save the state(optional).
 
         Args:
