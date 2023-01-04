@@ -20,6 +20,7 @@ def generate_conns(N, M, mode):
     """
     match mode:
         case 'random':
+            # TODO: add Gaussian random connections
             rng = np.random.default_rng(np.random.PCG64DXSM())
             i = np.arange(N)
             j = np.repeat(np.arange(M), N // M)
@@ -38,7 +39,7 @@ class TacNet(object):
         """
         # autopep8: off
         # Define NeuronGroups (layers)
-        self.layers = {}
+        neuron_groups = {}
         for i, n_neuron in enumerate(num_neurons):
             layer_name = 'L'+str(i+1)
             event_name = 'event'+str(i+1)
@@ -50,7 +51,7 @@ class TacNet(object):
                 event = {event_label: event_trigger}
             else:
                 event = None
-            self.layers[layer_name] = NeuronGroup(n_neuron, model=equations[layer_name],
+            neuron_groups[layer_name] = NeuronGroup(n_neuron, model=equations[layer_name],
                                                   method='euler',
                                                   threshold='v > V_theta',
                                                   reset='v = V_res',
@@ -59,11 +60,11 @@ class TacNet(object):
                                                   namespace=params,
                                                   name=layer_name)
             if event is not None:
-                self.layers[layer_name].run_on_event(
+                neuron_groups[layer_name].run_on_event(
                     event_label, event_operation)
 
         # Define Synapses
-        self.synapses = {}
+        synapses = {}
         for i in range(len(num_neurons)):
             for j in range(len(num_neurons)):
                 syn_name = 'Syn'+str(i+1)+str(j+1)
@@ -78,8 +79,8 @@ class TacNet(object):
                         on_post = equations[post_name]
                     else:
                         on_post = None
-                    self.synapses[syn_name] = Synapses(self.layers['L'+str(i+1)],
-                                                       self.layers['L'+str(j+1)],
+                    synapses[syn_name] = Synapses(neuron_groups['L'+str(i+1)],
+                                                       neuron_groups['L'+str(j+1)],
                                                        model=equations[syn_name],
                                                        on_pre=on_pre,
                                                        on_post=on_post,
@@ -89,7 +90,7 @@ class TacNet(object):
         # autopep8: on
 
         # Connect synapses
-        for synapse in self.synapses.values():
+        for synapse in synapses.values():
             if 'mode' in connections[synapse.name]:
                 mode = connections[synapse.name]['mode']
             else:
@@ -108,26 +109,26 @@ class TacNet(object):
 
         # Define Monitors
         self.mons = dict()
-        for layer in self.layers.values():
+        for layer in neuron_groups.values():
             mon_name = 'SpikeMonitor_'+layer.name
             self.mons[mon_name] = SpikeMonitor(
                 layer, record=True, name=mon_name)
         for k, v in monitors.items():
             mon_name = 'StateMonitor_'+k
-            if k in self.layers:
-                G = self.layers[k]
+            if k in neuron_groups:
+                G = neuron_groups[k]
                 record = True
-            if k in self.synapses:
-                G = self.synapses[k]
+            if k in synapses:
+                G = synapses[k]
                 record = np.arange(G.source.N*G.target.N)
             self.mons[mon_name] = StateMonitor(
                 G, v, record=record, name=mon_name)
 
         # Add all groups to the network
         self.net = Network()
-        for layer in self.layers.values():
+        for layer in neuron_groups.values():
             self.net.add(layer)
-        for synapse in self.synapses.values():
+        for synapse in synapses.values():
             self.net.add(synapse)
         for monitor in self.mons.values():
             self.net.add(monitor)
@@ -140,16 +141,16 @@ class TacNet(object):
         Args:
             initial_values (dict): _description_
         """
-        for layer in self.layers.values():
-            ivs = initial_values[0][layer.name]
-            for k, v in ivs.items():
-                setattr(layer, k, v)
-        for synapse in self.synapses.values():
-            ivs = initial_values[1][synapse.name]
-            for k, v in ivs.items():
-                setattr(synapse, k, v)
+        for k, iv_dict in initial_values.items():
+            for attr, iv in iv_dict.items():
+                setattr(self.net[k], attr, iv)
+                
+        # Assign coordinates to L1 neurons
+        nSqrt = sqrt(len(self.net['L1']))
+        self.net['L1'].x = 'i // nSqrt'
+        self.net['L1'].y = 'i % nSqrt'
 
-    def run(self, net_input, duration, clean=False, save_state=None):
+    def run(self, net_input, duration, save_state=None):
         """Run the simulation for a duration and save the state(optional).
 
         Args:

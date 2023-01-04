@@ -11,7 +11,7 @@ events = {
 
 params = {
     # Model constants
-    'C_mem'           : 180*pF,       # Membrane capacitance
+    'C_mem'           : 200*pF,       # Membrane capacitance
     'delta_theta'     : 5*mV,         # Adaptive threshold incremental scale
     'g_l'             : 10*nS,        # Leak conductance
     'J_C'             : 1,            # Scale of the calcium variable
@@ -23,7 +23,7 @@ params = {
     'V_ir'            : -80*mV,       # Inhibitory reverse potential
     'V_res'           : -60*mV,       # Resting potential
     'V_theta'         : -50*mV,       # Spiking threshold
-    'w_e'             : 20*nS,        # Excitatory conductance increment
+    'w_e'             : 25*nS,        # Excitatory conductance increment
     'w_i'             : 20*nS,        # Inhibitory conductance increment
     'X_max'           : 1,            # Synaptic variable maximum
     'X_min'           : 0,            # Synaptic variable minimum
@@ -48,6 +48,8 @@ equations = {
     # Neuronal models
     'L1': '''
         dv/dt = (g_l*(V_res - v) + I(t,i))/C_mem : volt (unless refractory)
+        x : 1
+        y : 1
         ''',
     'L2': '''
         dv/dt = (g_l*(V_res - v) - g_e*v)/C_mem : volt (unless refractory)
@@ -80,10 +82,10 @@ equations = {
         ''',
     # Synaptic events
     'Pre12': '''
-        g_e_post += int(sum_w_post >= 1)*w_e/(sum_w_post + 1e-12)
+        g_e_post += w_e*int(sum_w_post >= 1)/(sum_w_post + 1e-12)
         ''',
     'Pre23': '''
-        g_e_post += int(sum_w_post >= 1)*w_e/(sum_w_post + 1e-12)*X
+        g_e_post += w_e*int(sum_w_post >= 1)/(sum_w_post + 1e-12)*X
         X += a*int(v_pre > theta_v)*int(theta_lup < c)*int(c < theta_hup) - b*int(v_pre <= theta_v)*int(theta_ldown < c)*int(c < theta_hdown)
         X = clip(X, X_min, X_max)
         X_condition = int(v_pre > theta_v)*int(theta_lup < c)*int(c < theta_hup) + int(v_pre <= theta_v)*int(theta_ldown < c)*int(c < theta_hdown)
@@ -110,18 +112,12 @@ monitors = {
     'Syn23': ['X', 'w', 'c']
 }
 
-initial_values = [
-    # NeuronGroups
-    {
-        'L1': {'v': 'V_res + rand()*(V_theta - V_res)'},
-        'L2': {'v': 'V_res + rand()*(V_theta - V_res)'},
-        'L3': {'v': 'V_res + rand()*(V_theta - V_res)', 'v_th': 'V_theta', 'g_e': 0*nS, 'g_i': 0*nS, 'is_winner': False}
-    },
-    # Synapses
-    {
-        'Syn12': {'w': 'rand()'},
-        'Syn23': {'count': 0, 'c': 2, 'X': 'rand()*X_max', 'delay': 'rand()*tau_r'},
-        'Syn33': {'w': 1}
-    }
-]
+initial_values = {
+    'L1': {'v': 'V_res + rand()*(V_theta - V_res)'},
+    'L2': {'v': 'V_res + rand()*(V_theta - V_res)'},
+    'L3': {'v': 'V_res + rand()*(V_theta - V_res)', 'v_th': 'V_theta', 'g_e': 0*nS, 'g_i': 0*nS, 'is_winner': False},
+    'Syn12': {'w': 'rand()'},
+    'Syn23': {'count': 0, 'c': 2, 'X': 'rand()*X_max', 'delay': 'rand()*tau_r'},
+    'Syn33': {'w': 1}
+}
 # autopep8: on
