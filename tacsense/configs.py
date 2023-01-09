@@ -102,7 +102,7 @@ equations = {
 connections = {
     'Syn12': {'mode': 'random'},
     'Syn23': {'mode': 'full'},
-    'Syn33': {'condition': 'i != j'}
+    'Syn33': {'mode': 'different'}
 }
 
 monitors = {

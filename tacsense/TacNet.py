@@ -7,35 +7,51 @@ from brian2 import *
 from configs import connections, equations, events, initial_values, monitors, params
 
 
-def generate_conns(N, M, mode):
+def generate_conns(N, M, mode='full'):
     """Generate connection patterns for the Synapses.
 
-    Args:
-        N (int): Number of incoming synapses.
-        M (int): Number of outgoing synapses.
-        mode (str): Connection mode.
+    Parameters
+    ----------
+        N : int
+            Number of incoming synapses.
+        M : int
+            Number of outgoing synapses.
+        mode : {'different', 'full', 'random'}, default='full'
+            Connection mode.
 
-    Returns:
-        tuple: The source and target index tuple (i, j). 
+    Returns
+    -------
+        i, j, condition, p: (int, int, str, float)  
+            Synaptic connection configs.
+
+    References
+    ----------
+    [1] A. Handler and D. D. Ginty, “The mechanosensory neurons of touch and their mechanisms of activation,” Nat Rev Neurosci, vol. 22, no. 9, pp. 521–537, Sep. 2021, doi: 10.1038/s41583-021-00489-x.
+
     """
+    i, j = np.arange(N), np.arange(M)
+    condition = None
+    p = 1.0
+
     match mode:
+        case 'different':
+            condition = 'i != j'
+        case 'full':
+            pass
         case 'random':
-            # TODO: add Gaussian random connections
-            rng = np.random.default_rng(np.random.PCG64DXSM())
-            i = np.arange(N)
-            j = np.repeat(np.arange(M), N // M)
-            rng.shuffle(j)
-            return i, j
-        case _:
-            return (None, None)
+            # TODO: add Gaussian probability p
+            pass
+    return i, j, condition, p
 
 
 class TacNet(object):
     def __init__(self, num_neurons: list) -> None:
         """Constructor of the Tactile Encoding Network.
 
-        Args:
-            num_neurons (list): List of numbers of neurons of each layer. 'L1' is the input layer.
+        Parameters
+        ----------
+            num_neurons : list of int
+                List of numbers of neurons of each layer. 'L1' is the input layer.
         """
         # autopep8: off
         # Define NeuronGroups (layers)
@@ -91,20 +107,9 @@ class TacNet(object):
 
         # Connect synapses
         for synapse in synapses.values():
-            if 'mode' in connections[synapse.name]:
-                mode = connections[synapse.name]['mode']
-            else:
-                mode = 'full'
-            if 'p' in connections[synapse.name]:
-                p = connections[synapse.name]['p']
-            else:
-                p = 1
-            if 'condition' in connections[synapse.name]:
-                condition = connections[synapse.name]['condition']
-            else:
-                condition = None
-            i, j = generate_conns(synapse.source.N,
-                                  synapse.target.N, mode=mode)
+            mode = connections[synapse.name]['mode']
+            i, j, condition, p = generate_conns(
+                synapse.source.N, synapse.target.N, mode=mode)
             synapse.connect(i=i, j=j, condition=condition, p=p)
 
         # Define Monitors
@@ -138,13 +143,13 @@ class TacNet(object):
     def initiate(self, initial_values: dict):
         """Set initial values for the simulator.
 
-        Args:
+        Parameters
             initial_values (dict): _description_
         """
         for k, iv_dict in initial_values.items():
             for attr, iv in iv_dict.items():
                 setattr(self.net[k], attr, iv)
-                
+
         # Assign coordinates to L1 neurons
         nSqrt = sqrt(len(self.net['L1']))
         self.net['L1'].x = 'i // nSqrt'
@@ -153,12 +158,12 @@ class TacNet(object):
     def run(self, net_input, duration, save_state=None):
         """Run the simulation for a duration and save the state(optional).
 
-        Args:
+        Parameters
             net_input (TimedArray): Spike inputs.
             duration (Quantity): Time to run the simulation.
             save_state (str): Filepath to save the state. Defaults to None.
 
-        Returns:
+        Returns
             dict: A dictionary of Monitors. 
         """
         params['I'] = net_input
