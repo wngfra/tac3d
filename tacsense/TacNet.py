@@ -29,7 +29,7 @@ def generate_conns(N, M, mode='full'):
     [1] A. Handler and D. D. Ginty, “The mechanosensory neurons of touch and their mechanisms of activation,” Nat Rev Neurosci, vol. 22, no. 9, pp. 521–537, Sep. 2021, doi: 10.1038/s41583-021-00489-x.
 
     """
-    i, j = np.arange(N), np.arange(M)
+    i, j = None, None
     condition = None
     p = 1.0
 
@@ -37,10 +37,11 @@ def generate_conns(N, M, mode='full'):
         case 'different':
             condition = 'i != j'
         case 'full':
-            pass
+            i = np.repeat(np.arange(N), M)
+            j = np.tile(np.arange(M), N)
         case 'random':
-            # TODO: add Gaussian probability p
-            pass
+            p = '0.5 * exp(-((x_pre-x_post)**2 + (y_pre-y_post)**2)/(2*rf_size**2))'
+
     return i, j, condition, p
 
 
@@ -78,6 +79,16 @@ class TacNet(object):
             if event is not None:
                 neuron_groups[layer_name].run_on_event(
                     event_label, event_operation)
+                
+        # Assign coordinates to L1 neurons
+        l1_size = sqrt(len(neuron_groups['L1']))
+        l2_size = sqrt(len(neuron_groups['L2']))
+        rf_size = l1_size / l2_size
+        # TODO: Assign proper (x, y) to L2 neurons
+        neuron_groups['L1'].x = 'i // l1_size'
+        neuron_groups['L1'].y = 'i % l1_size'
+        neuron_groups['L2'].x = 'rf_size // 2 + rf_size * (i // l2_size)'
+        neuron_groups['L2'].y = 'rf_size // 2 + rf_size * (i % l2_size)'
 
         # Define Synapses
         synapses = {}
@@ -149,11 +160,6 @@ class TacNet(object):
         for k, iv_dict in initial_values.items():
             for attr, iv in iv_dict.items():
                 setattr(self.net[k], attr, iv)
-
-        # Assign coordinates to L1 neurons
-        nSqrt = sqrt(len(self.net['L1']))
-        self.net['L1'].x = 'i // nSqrt'
-        self.net['L1'].y = 'i % nSqrt'
 
     def run(self, net_input, duration, save_state=None):
         """Run the simulation for a duration and save the state(optional).

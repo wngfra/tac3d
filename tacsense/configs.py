@@ -23,7 +23,7 @@ params = {
     'V_ir'            : -80*mV,       # Inhibitory reverse potential
     'V_res'           : -60*mV,       # Resting potential
     'V_theta'         : -50*mV,       # Spiking threshold
-    'w_e'             : 25*nS,        # Excitatory conductance increment
+    'w_e'             : 40*nS,        # Excitatory conductance increment
     'w_i'             : 20*nS,        # Inhibitory conductance increment
     'X_max'           : 1,            # Synaptic variable maximum
     'X_min'           : 0,            # Synaptic variable minimum
@@ -55,6 +55,8 @@ equations = {
         dv/dt = (g_l*(V_res - v) - g_e*v)/C_mem : volt (unless refractory)
         dg_e/dt = -g_e/tau_e : siemens
         sum_w : 1
+        x : 1
+        y : 1
         ''',
     'L3': '''
         dv/dt = (g_l*(V_res - v) - g_e*v + g_i*(V_ir - v))/C_mem : volt (unless refractory)
