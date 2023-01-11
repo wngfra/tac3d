@@ -39,8 +39,10 @@ def generate_conns(N, M, mode='full'):
         case 'full':
             i = np.repeat(np.arange(N), M)
             j = np.tile(np.arange(M), N)
+        case 'gaussian':
+            p = '0.3 * exp(-((x_pre-x_post)**2 + (y_pre-y_post)**2)/(2*rf_size**2))'
         case 'random':
-            p = '0.5 * exp(-((x_pre-x_post)**2 + (y_pre-y_post)**2)/(2*rf_size**2))'
+            p = 'rand()'
 
     return i, j, condition, p
 

@@ -13,7 +13,7 @@ params = {
     # Model constants
     'C_mem'           : 200*pF,       # Membrane capacitance
     'delta_theta'     : 5*mV,         # Adaptive threshold incremental scale
-    'g_l'             : 10*nS,        # Leak conductance
+    'g_l'             : 7*nS,         # Leak conductance
     'J_C'             : 1,            # Scale of the calcium variable
     'tau_c'           : 60*ms,        # Calcium variable time constant
     'tau_e'           : 3*ms,         # Excitatory synaptic time constant
@@ -23,8 +23,8 @@ params = {
     'V_ir'            : -80*mV,       # Inhibitory reverse potential
     'V_res'           : -60*mV,       # Resting potential
     'V_theta'         : -50*mV,       # Spiking threshold
-    'w_e'             : 40*nS,        # Excitatory conductance increment
-    'w_i'             : 20*nS,        # Inhibitory conductance increment
+    'w_e'             : 30*nS,        # Excitatory conductance increment
+    'w_i'             : 30*nS,       # Inhibitory conductance increment
     'X_max'           : 1,            # Synaptic variable maximum
     'X_min'           : 0,            # Synaptic variable minimum
 
@@ -102,7 +102,7 @@ equations = {
 }
 
 connections = {
-    'Syn12': {'mode': 'random'},
+    'Syn12': {'mode': 'gaussian'},
     'Syn23': {'mode': 'full'},
     'Syn33': {'mode': 'different'}
 }
