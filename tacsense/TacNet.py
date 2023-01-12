@@ -24,10 +24,6 @@ def generate_conns(N, M, mode='full'):
         i, j, condition, p: (int, int, str, float)  
             Synaptic connection configs.
 
-    References
-    ----------
-    [1] A. Handler and D. D. Ginty, “The mechanosensory neurons of touch and their mechanisms of activation,” Nat Rev Neurosci, vol. 22, no. 9, pp. 521–537, Sep. 2021, doi: 10.1038/s41583-021-00489-x.
-
     """
     i, j = None, None
     condition = None
@@ -40,7 +36,7 @@ def generate_conns(N, M, mode='full'):
             i = np.repeat(np.arange(N), M)
             j = np.tile(np.arange(M), N)
         case 'gaussian':
-            p = '0.3 * exp(-((x_pre-x_post)**2 + (y_pre-y_post)**2)/(2*rf_size**2))'
+            p = '1.0 * exp(-((x_pre-x_post)**2 + (y_pre-y_post)**2)/(2*rf_size**2))'
         case 'random':
             p = 'rand()'
 
@@ -56,13 +52,18 @@ class TacNet(object):
             num_neurons : list of int
                 List of numbers of neurons of each layer. 'L1' is the input layer.
         """
+        try:
+            device.reinit()
+            device.activate()
+        except _:
+            pass
         # autopep8: off
         # Define NeuronGroups (layers)
         neuron_groups = {}
-        for i, n_neuron in enumerate(num_neurons):
-            layer_name = 'L'+str(i+1)
-            event_name = 'event'+str(i+1)
-            # TODO: add support to multiple events
+        for index, n_neuron in enumerate(num_neurons):
+            layer_name = 'L%d' % (index+1)
+            event_name = 'event%d' % (index+1)
+            
             if event_name in events:
                 event_label = events[event_name][0]
                 event_trigger = events[event_name][1]
@@ -86,7 +87,7 @@ class TacNet(object):
         l1_size = sqrt(len(neuron_groups['L1']))
         l2_size = sqrt(len(neuron_groups['L2']))
         rf_size = l1_size / l2_size
-        # TODO: Assign proper (x, y) to L2 neurons
+        
         neuron_groups['L1'].x = 'i // l1_size'
         neuron_groups['L1'].y = 'i % l1_size'
         neuron_groups['L2'].x = 'rf_size // 2 + rf_size * (i // l2_size)'
@@ -94,11 +95,12 @@ class TacNet(object):
 
         # Define Synapses
         synapses = {}
-        for i in range(len(num_neurons)):
-            for j in range(len(num_neurons)):
-                syn_name = 'Syn'+str(i+1)+str(j+1)
-                pre_name = 'Pre'+str(i+1)+str(j+1)
-                post_name = 'Post'+str(i+1)+str(j+1)
+        for source in range(len(num_neurons)):
+            for target in range(len(num_neurons)):
+                link = '%d%d' % (source+1, target+1)
+                syn_name = 'Syn' + link
+                pre_name = 'Pre' + link
+                post_name = 'Post' + link
                 if syn_name in equations:
                     if pre_name in equations:
                         on_pre = equations[pre_name]
@@ -108,8 +110,8 @@ class TacNet(object):
                         on_post = equations[post_name]
                     else:
                         on_post = None
-                    synapses[syn_name] = Synapses(neuron_groups['L'+str(i+1)],
-                                                       neuron_groups['L'+str(j+1)],
+                    synapses[syn_name] = Synapses(neuron_groups['L%d' % (source+1)],
+                                                       neuron_groups['L%d' % (target+1)],
                                                        model=equations[syn_name],
                                                        on_pre=on_pre,
                                                        on_post=on_post,
@@ -121,9 +123,9 @@ class TacNet(object):
         # Connect synapses
         for synapse in synapses.values():
             mode = connections[synapse.name]['mode']
-            i, j, condition, p = generate_conns(
+            source, target, condition, p = generate_conns(
                 synapse.source.N, synapse.target.N, mode=mode)
-            synapse.connect(i=i, j=j, condition=condition, p=p)
+            synapse.connect(i=source, j=target, condition=condition, p=p)
 
         # Define Monitors
         self.mons = dict()
@@ -175,5 +177,5 @@ class TacNet(object):
             dict: A dictionary of Monitors. 
         """
         params['I'] = net_input
-        self.net.run(duration=duration, report='stdout')
+        self.net.run(duration=duration)
         return self.mons

@@ -16,15 +16,16 @@ params = {
     'g_l'             : 7*nS,         # Leak conductance
     'J_C'             : 1,            # Scale of the calcium variable
     'tau_c'           : 60*ms,        # Calcium variable time constant
-    'tau_e'           : 3*ms,         # Excitatory synaptic time constant
+    'tau_e'           : 5*ms,         # Excitatory synaptic time constant
     'tau_i'           : 5*ms,         # Inhibitory synaptic time constant
     'tau_r'           : 5*ms,         # Refractory period
     'tau_theta'       : 5*ms,         # Adaptive threshold time constant
     'V_ir'            : -80*mV,       # Inhibitory reverse potential
     'V_res'           : -60*mV,       # Resting potential
     'V_theta'         : -50*mV,       # Spiking threshold
-    'w_e'             : 30*nS,        # Excitatory conductance increment
-    'w_i'             : 30*nS,       # Inhibitory conductance increment
+    # TODO: w_e should be a proportional threshold for excitation, with post-synaptic normalization
+    'w_e'             : 35*nS,        # Excitatory conductance increment
+    'w_i'             : 30*nS,        # Inhibitory conductance increment
     'X_max'           : 1,            # Synaptic variable maximum
     'X_min'           : 0,            # Synaptic variable minimum
 
@@ -84,7 +85,7 @@ equations = {
         ''',
     # Synaptic events
     'Pre12': '''
-        g_e_post += w_e*int(sum_w_post >= 1)/(sum_w_post + 1e-12)
+        g_e_post += w_e/sum_w_post
         ''',
     'Pre23': '''
         g_e_post += w_e*int(sum_w_post >= 1)/(sum_w_post + 1e-12)*X
@@ -118,7 +119,7 @@ initial_values = {
     'L1': {'v': 'V_res + rand()*(V_theta - V_res)'},
     'L2': {'v': 'V_res + rand()*(V_theta - V_res)'},
     'L3': {'v': 'V_res + rand()*(V_theta - V_res)', 'v_th': 'V_theta', 'g_e': 0*nS, 'g_i': 0*nS, 'is_winner': False},
-    'Syn12': {'w': 'rand()'},
+    'Syn12': {'w': 1},
     'Syn23': {'count': 0, 'c': 2, 'X': 'rand()*X_max', 'delay': 'rand()*tau_r'},
     'Syn33': {'w': 1}
 }
