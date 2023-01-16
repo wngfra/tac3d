@@ -15,3 +15,6 @@
     sudo rmmod ftdi_sio # Remove FTDI interfaces from kernel
     docker-compose up loihi
   ```
+## TODO
+1. Extract shape function with bivariate Generalized-Gaussian Spatial Model (GGSM)
+2. Estimate the parameters of GGSM
