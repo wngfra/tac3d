@@ -16,7 +16,7 @@ params = {
     'g_l'             : 7*nS,         # Leak conductance
     'J_C'             : 1,            # Scale of the calcium variable
     'tau_c'           : 60*ms,        # Calcium variable time constant
-    'tau_e'           : 5*ms,         # Excitatory synaptic time constant
+    'tau_e'           : 10*ms,        # Excitatory synaptic time constant
     'tau_i'           : 5*ms,         # Inhibitory synaptic time constant
     'tau_r'           : 5*ms,         # Refractory period
     'tau_theta'       : 5*ms,         # Adaptive threshold time constant
