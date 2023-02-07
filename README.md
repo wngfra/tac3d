@@ -4,7 +4,7 @@
 ## Contents
 1. `arduino_readout` contains the Arduino readout scheme for event-based tactile sensors
 2. `CAD` and `mesh` contain the AutoDesk Inventor design and `stl` mesh files of objects and mechanical components
-3. `tactile_encoding` contains the notebooks for tactile encoding in MuJoCo
+3. `tacsense` contains the notebooks for tactile encoding in MuJoCo
 4. [SpikyMotion](https://github.com/wngfra/SpikyMotion) contains the ROS2 server to control the real robot (Franka Emika Panda)
 5. `tactile_sensor` contains the KiCAD project of the sensor design
 6. `loihi` contains the demos for Loihi KapohoBay
