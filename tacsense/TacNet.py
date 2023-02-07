@@ -4,7 +4,6 @@
 import numpy as np
 
 from brian2 import *
-from configs import connections, equations, events, initial_values, monitors, params
 
 
 # autopep8: off

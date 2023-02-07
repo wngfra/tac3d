@@ -2,7 +2,7 @@ import numpy as np
 
 
 class TouchDataset:
-    def __init__(self, filepath, noise=True, flatten=False):
+    def __init__(self, filepath, noise=True, flatten=False, normalize=None):
         dataset = np.load(filepath, allow_pickle=True)
         samples = (
             dataset["sharp_site"]["sensordata"]
@@ -20,12 +20,16 @@ class TouchDataset:
                 samples[i] += np.random.normal(
                     np.mean(sample), 0.5 * np.sqrt(np.var(sample)), sample.shape
                 )
-        self.shape = samples[0].shape
+        self._shape = samples[0].shape
         self.samples = np.asarray(samples)
         self.orientations = np.asarray(orientations)
 
         if flatten:
             self.samples = self.samples.reshape(self.samples.shape[0], -1)
+        if normalize is not None:
+            samples = (self.samples - self.samples.min())/(self.samples.max() - self.samples.min())
+            samples = samples*(normalize[1] - normalize[0]) + normalize[0]
+            self.samples = samples
 
     def __getitem__(self, index):
         return self.samples[index], self.orientations[index]
@@ -35,7 +39,7 @@ class TouchDataset:
 
     @property
     def shape(self):
-        return self.shape
+        return self._shape
 
     def split_set(self, ratio=0.5):
         """Split samples to trainset and testset by the ratio=len(trainset)/len(self)"""
