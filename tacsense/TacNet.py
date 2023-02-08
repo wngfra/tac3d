@@ -13,7 +13,7 @@ params = {
     # Model constants
     "C_mem": 200 * pF,  # Membrane capacitance
     "delta_theta": 5 * mV,  # Adaptive threshold incremental scale
-    "g_l": 7 * nS,  # Leak conductance
+    "g_l": 10 * nS,  # Leak conductance
     "J_C": 1,  # Scale of the calcium variable
     "tau_c": 60 * ms,  # Calcium variable time constant
     "tau_e": 10 * ms,  # Excitatory synaptic time constant
@@ -21,9 +21,9 @@ params = {
     "tau_r": 5 * ms,  # Refractory period
     "tau_theta": 5 * ms,  # Adaptive threshold time constant
     "V_ir": -80 * mV,  # Inhibitory reverse potential
-    "V_res": -60 * mV,  # Resting potential
-    "V_theta": -50 * mV,  # Spiking threshold
-    "w_e": 35 * nS,  # Excitatory conductance increment
+    "V_res": -65 * mV,  # Resting potential
+    "V_theta": -55 * mV,  # Spiking threshold
+    "w_e": 8 * nS,  # Excitatory conductance increment
     "w_i": 30 * nS,  # Inhibitory conductance increment
     "X_max": 1,  # Synaptic variable maximum
     "X_min": 0,  # Synaptic variable minimum
@@ -92,7 +92,7 @@ equations = {
         X_condition = int(v_pre > theta_v)*int(theta_lup < c)*int(c < theta_hup) + int(v_pre <= theta_v)*int(theta_ldown < c)*int(c < theta_hdown)
         """,
     "Pre33": """
-        g_i_post += w_i*(i-j)
+        g_i_post += w_i*abs(i-j)
         """,
     "Post23": """
         count += 1
@@ -101,7 +101,7 @@ equations = {
 }
 
 connections = {
-    "Syn12": {"mode": "gaussian"},
+    "Syn12": {"mode": "random"},
     "Syn23": {"mode": "full"},
     "Syn33": {"mode": "different"},
 }
