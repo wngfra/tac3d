@@ -1,6 +1,6 @@
   services:
     loihi:
-      build: ../docker
+      build: docker
       privileged: true
       volumes:
         - ${PWD}:/loihi/notebooks

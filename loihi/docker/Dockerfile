@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with tac3d. If not, see <http://www.gnu.org/licenses/>.
 
-ARG FROM_IMAGE=ubuntu:20.04
+ARG FROM_IMAGE=ubuntu:22.04
 FROM ${FROM_IMAGE}
 
 USER root
@@ -27,9 +27,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     tmux vim && \
     apt-get autoclean && apt-get autoremove && \
     rm -rf /var/lib/apt/lists/*
-
-#RUN wget http://ftp.debian.org/debian/pool/main/p/protobuf/libprotobuf17_3.6.1-4~bpo9+1_amd64.deb && \
-#    dpkg -i libprotobuf17_3.6.1-4~bpo9+1_amd64.deb
 
 RUN python3 -m venv /loihi
 WORKDIR /loihi

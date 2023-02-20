@@ -1,0 +1,21 @@
+  services:
+    jupyterlab:
+      image: wngfra/neuralab:base
+      container_name: neuralab
+      user: root
+      working_dir: /notebooks
+      volumes:
+        - ${PWD}/notebooks:/notebooks
+        - /tmp/.X11-unix:/tmp/.X11-unix
+      environment:
+        - DISPLAY=${DISPLAY}
+      network_mode: host
+      devices:
+        - "/dev/bus/usb:/dev/bus/usb"
+      deploy:
+        resources:
+          reservations:
+            devices:
+              - driver: nvidia
+                count: 1
+                capabilities: [gpu]
