@@ -1,5 +1,5 @@
 # Tactile 3D Exploration and Perception Project
-![Scene](./docs/scene.gif "Tactile Exploration Scene")
+![Cover](./docs/cover.gif "Robot Touch")
 ![Sensor](./docs/softbody.png "Softbody Touch Sensor")
 ## Contents
 1. `arduino_readout` contains the Arduino readout scheme for event-based tactile sensors

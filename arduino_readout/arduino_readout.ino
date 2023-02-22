@@ -1,5 +1,5 @@
-const int M = 5; // For a squared array of 5x5
-int analog_pins[M] = { A0, A1, A2, A3, A4 };
+const int M = 10; // For a squared array of 10x10
+int analog_pins[M] = { A0, A1, A2, A3, A4, A5, A6, A7, A8, A9 };
 
 const int N = M * M; // Number of taxels
 uint16_t values[N];
@@ -9,7 +9,7 @@ float u[N];
 float u_prev[N];
 
 unsigned long t;
-float Fs = 1000; // Hz
+float Fs = 200; // Hz
 float dt = (1 / Fs) * 1E6;  // Sampling period in microseconds
 
 // Izhikevich parameters
@@ -77,7 +77,7 @@ void loop() {
     readout(r);
   }
 
-  asc();
+  // asc();
 
   // Print analogue values
   for (int i = 0; i < N; ++i) {
