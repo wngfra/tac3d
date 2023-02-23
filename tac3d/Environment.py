@@ -8,14 +8,12 @@ import mujoco
 import matplotlib.pyplot as plt
 from mujoco import viewer
 from matplotlib.animation import FuncAnimation
-from IKSolver import IKSolver
 
 
 class Environment:
-    def __init__(self, xml_path, animate_sensor=False):
+    def __init__(self, xml_path: str, animate_sensor=False):
         self._model = mujoco.MjModel.from_xml_path(xml_path)
         self._data = mujoco.MjData(self._model)
-        self._ik = IKSolver(self.m, self.d)
         self.reset(0)
 
         # Launch the GUI thread
@@ -28,10 +26,6 @@ class Environment:
         )
         self._viewer_thread.start()
 
-        # Launch the simulate thread
-        self._simulate_thread = threading.Thread(target=self.simulate, args=(1,))
-        self._simulate_thread.start()
-
         # Start sensordata visualization
         if animate_sensor:
             fig, ax = plt.subplots(1, 1)
@@ -42,7 +36,6 @@ class Environment:
             plt.show()
 
     def __del__(self):
-        self._simulate_thread.join()
         self._viewer_thread.join()
         del self._model
 
@@ -70,22 +63,10 @@ class Environment:
         mujoco.mj_resetDataKeyframe(self._model, self._data, key_id)
         mujoco.mj_forward(self._model, self._data)
 
-    def step(self, controller=None):
-        if controller:
-            mujoco.set_mjcb_control(controller)
-        mujoco.mj_step(self._model, self._data)
+    def control(self, controller_callback):
+        # Install controller callback
+        if controller_callback:
+            mujoco.set_mjcb_control(controller_callback)
 
-    def simulate(self, duration=None):
-        joint_names = ["joint{}".format(i + 1) for i in range(7)]
-        site_name = "attachment_site"
-
-        def controller(m, d):
-            target_pos = self._data.site(site_name).xpos
-            result = self._ik.qpos_from_site_xpos(
-                site_name=site_name,
-                target_pos=target_pos,
-                joint_names=joint_names
-            )
-
-        while self.time <= 5.0:
-            self.step()
+    def finish(self):
+        mujoco.set_mjcb_control(None)

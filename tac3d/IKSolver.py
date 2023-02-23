@@ -87,13 +87,10 @@ class IKSolver:
         elif isinstance(joint_names, (list, np.ndarray, tuple)):
             if isinstance(joint_names, tuple):
                 joint_names = list(joint_names)
-                # Find the indices of the DOFs belonging to each named joint. Note that
-                # these are not necessarily the same as the joint IDs, since a single joint
-                # may have >1 DOF (e.g. ball joints).
-
-                # `dof_jntid` is an `(nv,)` array indexed by joint name. We use its row
-                # indexer to map each joint name to the indices of its corresponding DOFs.
-                dof_indices = None
+            # `dof_jntid` is an `(nv,)` array indexed by joint name. We use its row
+            # indexer to map each joint name to the indices of its corresponding DOFs.
+            indexer = [self.m.joint(jn).jntid for jn in joint_names]
+            dof_indices = np.asarray(indexer).flatten()
         else:
             raise ValueError(_INVALID_JOINT_NAMES_TYPE.format(type(joint_names)))
 
@@ -113,7 +110,7 @@ class IKSolver:
                 mujoco.mju_negQuat(neg_site_xquat, site_xquat)
                 mujoco.mju_mulQuat(err_rot_quat, target_quat, neg_site_xquat)
                 mujoco.mju_quat2Vel(err_rot, err_rot_quat, 1)
-                err_norm += np.linalg.norm(err_rot)
+                err_norm += np.linalg.norm(err_rot) * 0.1
 
             if err_norm < self._tolerance:
                 success = True
@@ -136,13 +133,14 @@ class IKSolver:
 
             if update_norm > self._max_update_norm:
                 update_joints *= self._max_update_norm / update_norm
+            
+            update_nv[dof_indices] = update_joints
 
             # update_nv[dof_indices] = update_joints
             mujoco.mj_integratePos(self.m, data.qpos, update_nv, 1)
             mujoco.mj_fwdPosition(self.m, data)
 
         qpos = data.qpos
-        del data
 
         return IKResult(qpos=qpos, err_norm=err_norm, steps=steps, success=success)
 
