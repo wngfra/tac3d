@@ -11,7 +11,7 @@ from matplotlib.animation import FuncAnimation
 
 
 class Environment:
-    def __init__(self, xml_path: str, animate_sensor=False):
+    def __init__(self, xml_path: str):
         self._model = mujoco.MjModel.from_xml_path(xml_path)
         self._data = mujoco.MjData(self._model)
         self.reset(0)
@@ -25,15 +25,6 @@ class Environment:
             ),
         )
         self._viewer_thread.start()
-
-        # Start sensordata visualization
-        if animate_sensor:
-            fig, ax = plt.subplots(1, 1)
-            self._im = ax.imshow(self.sensordata.reshape((15, 15)))
-            self._animation = FuncAnimation(
-                fig, self._animate, interval=200, repeat=False
-            )
-            plt.show()
 
     def __del__(self):
         self._viewer_thread.join()
@@ -54,10 +45,6 @@ class Environment:
     @property
     def time(self):
         return self._data.time
-
-    def _animate(self, frame):
-        self._im.set_array(self.sensordata.reshape((15, 15)))
-        return [self._im]
 
     def reset(self, key_id: int):
         mujoco.mj_resetDataKeyframe(self._model, self._data, key_id)

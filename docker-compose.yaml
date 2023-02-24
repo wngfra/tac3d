@@ -39,3 +39,26 @@ services:
         "--no-browser",
         "--notebook-dir=/loihi/notebooks"
       ]
+
+  ros2_mujoco:
+    image: wngfra/ros2cuda:base
+    container_name: ros2_mujoco
+    user: root
+    working_dir: /workspace
+    volumes:
+      - ${PWD}/tac3d:/workspace/src/tac3d
+      - ${PWD}/models:/workspace/src/tac3d/models
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    environment:
+      - DISPLAY=${DISPLAY}
+    network_mode: host
+    devices:
+      - "/dev/bus/usb:/dev/bus/usb"
+    command: ["python3", "/workspace/src/tac3d/main.py"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]

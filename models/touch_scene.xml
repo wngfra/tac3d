@@ -1,4 +1,4 @@
-<mujoco model="rotator scene">
+<mujoco model="touch scene">
 
   <include file="panda_nohand.xml" />
   <include file="platform.xml" />

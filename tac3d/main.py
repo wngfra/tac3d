@@ -7,7 +7,7 @@ import mujoco
 import numpy as np
 
 if __name__ == "__main__":
-    env = Environment("models/scene.xml")
+    env = Environment("models/explore_scene.xml")
     ik = IKSolver(env.m, env.d)
 
     site_name = "attachment_site"
@@ -19,14 +19,16 @@ if __name__ == "__main__":
     target_pos = ik.d.site(site_name).xpos
 
     def callback(m, d):
-        target_pos[2] -= 1e-3
-        result = ik.qpos_from_site_xpos(
-            site_name,
-            target_pos=target_pos,
-            target_quat=target_quat,
-            joint_names=joint_names,
-        )
-        if np.mean(d.sensordata) < 1.:
-            d.ctrl = result.qpos[:10]
+        if np.sum(d.sensordata) < 1e-2:
+            target_pos[2] -= 1e-12
+            result = ik.qpos_from_site_xpos(
+                site_name,
+                target_pos=target_pos,
+                target_quat=target_quat,
+                joint_names=joint_names,
+            )
+            d.ctrl = result.qpos[:7]
+        else:
+            d.ctrl = 0
 
     env.control(callback)
