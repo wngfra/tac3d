@@ -19,6 +19,7 @@ if __name__ == "__main__":
     target_pos = ik.d.site(site_name).xpos
 
     def callback(m, d):
+        print(d.sensordata)
         if np.sum(d.sensordata) < 1e-2:
             target_pos[2] -= 1e-12
             result = ik.qpos_from_site_xpos(

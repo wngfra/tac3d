@@ -46,15 +46,17 @@ services:
     user: root
     working_dir: /workspace
     volumes:
-      - ${PWD}/tac3d:/workspace/src/tac3d
-      - ${PWD}/models:/workspace/src/tac3d/models
+      - ${PWD}/tac3d:/workspace/tac3d
+      - ${PWD}/models:/workspace/models
       - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
       - DISPLAY=${DISPLAY}
+      - XAUTHORITY=/root/.Xauthority
     network_mode: host
+    ipc: host
     devices:
       - "/dev/bus/usb:/dev/bus/usb"
-    command: ["python3", "/workspace/src/tac3d/main.py"]
+    command: ["python3", "tac3d/main.py"]
     deploy:
       resources:
         reservations:
