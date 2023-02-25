@@ -30,12 +30,11 @@ class TouchDataset:
 
         if flatten:
             self.samples = self.samples.reshape(self.samples.shape[0], -1)
-        if scope is not None:
-            samples = (self.samples - self.samples.min()) / (
-                self.samples.max() - self.samples.min()
-            )
-            samples = samples * (scope[1] - scope[0]) + scope[0]
-            self.samples = samples
+        if scope and scope[0] < scope[1]:
+            for i, sample in enumerate(self.samples):
+                if sample.max() > sample.min():
+                    sample = (sample - sample.min()) / (sample.max() - sample.min() + 1e-12)
+                    self.samples[i] = sample * (scope[1] - scope[0]) + scope[0]
 
     def subset(self, tags):
         """Create a new instance with only selected tags.
