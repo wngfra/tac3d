@@ -3,11 +3,8 @@
 import weakref
 import threading
 
-import numpy as np
 import mujoco
-import matplotlib.pyplot as plt
 from mujoco import viewer
-from matplotlib.animation import FuncAnimation
 
 
 class Environment:
@@ -27,7 +24,7 @@ class Environment:
         self._viewer_thread.start()
 
     def __del__(self):
-        self._viewer_thread.join()
+        # self._viewer_thread.join()
         del self._model
 
     @property
