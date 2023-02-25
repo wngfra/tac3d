@@ -134,6 +134,3 @@ robots/
 *.gz
 output/
 tmp/
-
-test.ipynb
-test.py
