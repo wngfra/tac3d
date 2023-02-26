@@ -1,5 +1,5 @@
 services:
-  jupyterlab:
+  neuralab:
     image: wngfra/neuralab:base
     container_name: neuralab
     user: root
@@ -12,6 +12,14 @@ services:
     network_mode: host
     devices:
       - "/dev/bus/usb:/dev/bus/usb"
+    command:
+      [
+        "jupyter",
+        "lab",
+        "--allow-root",
+        "--no-browser",
+        "--notebook-dir=/notebooks"
+      ]
     deploy:
       resources:
         reservations:
@@ -20,26 +28,6 @@ services:
               count: 1
               capabilities: [ gpu ]
 
-  loihilab:
-    build: docker
-    privileged: true
-    volumes:
-      - ${PWD}:/loihi/notebooks
-      - /tmp/.X11-unix:/tmp/.X11-unix
-    environment:
-      - DISPLAY=${DISPLAY}
-    network_mode: host
-    devices:
-      - "/dev/bus/usb:/dev/bus/usb"
-    command:
-      [
-        "jupyter",
-        "lab",
-        "--allow-root",
-        "--no-browser",
-        "--notebook-dir=/loihi/notebooks"
-      ]
-
   ros2_mujoco:
     image: wngfra/ros2cuda:base
     container_name: ros2_mujoco
@@ -47,18 +35,14 @@ services:
     volumes:
       - ${PWD}/tac3d:/workspace/tac3d
       - ${PWD}/models:/workspace/models
-      - /dev/shm:/dev/shm
       - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
       - DISPLAY=${DISPLAY}
       - XAUTHORITY=/root/.Xauthority
-      - QT_X11_NO_MITSHM=1
-      - LIBGL_ALWAYS_INDIRECT=1
     network_mode: host
-    shm_size: '4gb'
     devices:
       - "/dev/bus/usb:/dev/bus/usb"
-    command: ["python3", "tac3d/main.py"]
+    command: [ "python3", "tac3d/main.py" ]
     deploy:
       resources:
         reservations:
