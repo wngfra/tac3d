@@ -1,7 +1,8 @@
+name: tac3d
 services:
   neuralab:
     image: wngfra/neuralab:base
-    container_name: neuralab
+    container_name: neural_jupyterlab
     user: root
     working_dir: /notebooks
     volumes:
@@ -30,11 +31,10 @@ services:
 
   ros2_mujoco:
     image: wngfra/ros2cuda:base
-    container_name: ros2_mujoco
+    container_name: mujoco_ros2
     working_dir: /workspace
     volumes:
-      - ${PWD}/tac3d:/workspace/tac3d
-      - ${PWD}/models:/workspace/models
+      - ${PWD}/tac3d:/workspace/src/tac3d
       - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
       - DISPLAY=${DISPLAY}
@@ -42,7 +42,7 @@ services:
     network_mode: host
     devices:
       - "/dev/bus/usb:/dev/bus/usb"
-    command: [ "python3", "tac3d/main.py" ]
+    command: [ "source", "/opt/ros2/humble/setup.bash", "&&", "colcon", "build", "--symlink-install" ]
     deploy:
       resources:
         reservations:

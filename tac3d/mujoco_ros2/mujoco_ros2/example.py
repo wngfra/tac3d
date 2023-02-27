@@ -1,13 +1,12 @@
 # Copyright 2023 wngfra.
 # SPDX-License-Identifier: Apache-2.0
 
-from Environment import Environment
-from IKSolver import IKSolver
+from mujoco_ros2.mujoco_ros2.IKSolver import IKSolver
 import mujoco
 import numpy as np
 
 if __name__ == "__main__":
-    env = Environment("models/explore_scene.xml")
+    # FIXME adapt to ros2
     ik = IKSolver(env.m, env.d)
 
     site_name = "attachment_site"

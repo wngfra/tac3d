@@ -1,0 +1,42 @@
+<mujoco model="explore scene">
+
+  <include file="panda_nohand.xml" />
+
+  <statistic center="0.3 0 0.4" extent="1" />
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0" />
+    <rgba haze="0.15 0.25 0.35 1" />
+    <global azimuth="120" elevation="-30" offheight="2160" offwidth="3840" />
+  </visual>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512"
+      height="3072" />
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4"
+      rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="300" height="300" />
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5"
+      reflectance="0.2" />
+
+    <mesh name="floral_geom" file="floral_geom.stl" />
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 1.5" dir="0 0 -1" directional="true" />
+    <geom name="floor" size="0 0 0.05" type="plane" material="groundplane" />
+    <camera name="closeup" pos="0.5 -0.5 0.2" euler="2.2 0 0" />
+    <camera name="prospective" pos="1 -1.5 1" xyaxes="1 0.5 0 0 1 2" />
+
+    <body name="floral_geom" pos="0.6 0 0" euler="0 0 0">
+      <inertial mass="4.970684" pos="0 0 0" fullinertia="0.70337 0.70661 0.0091170 -0.00013900 0.0067720 0.019169" />
+      <geom mesh="floral_geom" rgba=".8 0 0 1" class="visual" />
+      <geom name="floral_geom" mesh="floral_geom" class="collision" />
+    </body>
+  </worldbody>
+
+  <keyframe>
+    <key name="home"
+      qpos="0 0.1745329 0 -1.5707963 0 1.7453292 0.785398 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
+      ctrl="0 0.1745329 0 -1.5707963 0 1.7453292 0.785398" />
+  </keyframe>
+</mujoco>
