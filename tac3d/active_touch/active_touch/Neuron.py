@@ -24,6 +24,7 @@ class NeuronType:
         
         self._eqs = dict()
         self._sol = dict()
+        self._sol_undefined: Optional[dict] = None
         self._params: Optional[dict[str, dict[str, float]]] = None
 
         # Construct neuron ODEs
@@ -56,7 +57,7 @@ class NeuronType:
         """Get the ODEs representing neural dynamics.
 
         Returns:
-            dict[str, sympy.Eq]: _description_
+            dict[str, sympy.Eq]: Dictionary of ODEs for each state variable.
         """          
         return self._eqs
     
@@ -65,7 +66,7 @@ class NeuronType:
         """Get the analytical solutions of the ODEs.
 
         Returns:
-            dict[str, sympy.Expr]: _description_
+            dict[str, sympy.Expr]: dict of analytical solutions to each ODE.
         """        
         return self._sol
     
@@ -80,17 +81,23 @@ class NeuronType:
     def set_params(self, params: dict[str, dict]):
         if params:
             self._params = dict()
-            for k, v in params.items():
-                for var, value in v.items():
+            for k, param_dict in params.items():
+                for var, value in param_dict.items():
                     self._sol[k] = self._sol[k].subs(var, value)
                     if len(self._params) == 0:
                         self._params[k] = {var: value}
 
-    def __call__(self):
-        func = []
-        for expr in self._sol.values():
+    def __call__(self) -> dict[str, any]:
+        """Generate lambdified functions to evaluate state variables.
+
+        Returns:
+            dict[str, any]: A dict of generated numpy functions.
+        """ 
+        
+        func = dict()
+        for k, expr in self._sol.items():
             args = list(expr.atoms(sympy.Symbol))
-            func.append(lambdify(args, expr, "numpy"))
+            func[k] = (lambdify(args, expr, "numpy"))
         return func
 
 
@@ -100,7 +107,7 @@ if __name__ == "__main__":
     neuron.set_params({'v': {'g_l': 1e-9, 'v_rest': -65e-3}})
     func = neuron()
     print(
-        func[0](
+        func['v'](
             np.arange(100) + 1,
             200e-9,
             np.arange(100) + 1,
