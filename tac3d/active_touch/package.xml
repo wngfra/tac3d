@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>mujoco_ros2</name>
+  <name>active_touch</name>
   <version>0.1.0</version>
-  <description>MuJoCo simulator</description>
+  <description>Tactile inference and active touch exploration</description>
   <maintainer email="wngfra@gmail.com">wngfra</maintainer>
   <license>Apache-2.0</license>
 
   <exec_depend>rclpy</exec_depend>
-  <exec_depend>lifecycle_msgs</exec_depend>
-  <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>mujoco_interfaces</exec_depend>
+  <exec_depend>python-numpy</exec_depend>
+  <exec_depend>python-sympy</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

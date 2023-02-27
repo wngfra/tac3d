@@ -1,26 +1,31 @@
 name: tac3d
+
+x-shared-data:
+  &default-data
+  type: bind
+  source: ${PWD}/tac3d
+  target: /workspace/src/tac3d
+
+volumes:
+  shared-volume:
+
+
 services:
-  neuralab:
-    image: wngfra/neuralab:base
-    container_name: neural_jupyterlab
-    user: root
-    working_dir: /notebooks
+  ros2_rqt:
+    image: wngfra/ros2cuda:base
+    container_name: rqt_ros2
+    working_dir: /workspace
     volumes:
-      - ${PWD}/notebooks:/notebooks
+      - shared-volume:/workspace
+      - ${PWD}/scripts/run_rqt.sh:/workspace/run.sh
       - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
       - DISPLAY=${DISPLAY}
-    network_mode: host
-    devices:
-      - "/dev/bus/usb:/dev/bus/usb"
-    command:
-      [
-        "jupyter",
-        "lab",
-        "--allow-root",
-        "--no-browser",
-        "--notebook-dir=/notebooks"
-      ]
+      - XAUTHORITY=/root/.Xauthority
+    command: [ "bash", "run.sh" ]
+    depends_on:
+      ros2_mujoco:
+        condition: service_healthy
     deploy:
       resources:
         reservations:
@@ -34,15 +39,16 @@ services:
     container_name: mujoco_ros2
     working_dir: /workspace
     volumes:
-      - ${PWD}/tac3d:/workspace/src/tac3d
+      - *default-data
+      - shared-volume:/workspace
+      - ${PWD}/scripts/run_mujoco.sh:/workspace/run.sh
       - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
       - DISPLAY=${DISPLAY}
       - XAUTHORITY=/root/.Xauthority
-    network_mode: host
     devices:
       - "/dev/bus/usb:/dev/bus/usb"
-    command: [ "source", "/opt/ros2/humble/setup.bash", "&&", "colcon", "build", "--symlink-install" ]
+    command: [ "bash", "run.sh" ]
     deploy:
       resources:
         reservations:
@@ -50,3 +56,8 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [ gpu ]
+    healthcheck:
+      test: ls install || exit 1
+      interval: 4s
+      timeout: 3s
+      retries: 1

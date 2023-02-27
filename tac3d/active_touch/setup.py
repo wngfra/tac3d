@@ -1,7 +1,6 @@
-from glob import glob
 from setuptools import setup
 
-package_name = 'mujoco_ros2'
+package_name = 'active_touch'
 
 setup(
     name=package_name,
@@ -11,18 +10,17 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name, glob('launch/*.launch.py'))
     ],
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='wngfra',
     maintainer_email='wngfra@gmail.com',
-    description='MuJoCo simulator',
+    description='Tactile inference and active touch exploration',
     license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'simulator = mujoco_ros2.simulator:main'
+            'nmggp_node = active_touch.nmggp_node:main'
         ],
     },
 )
