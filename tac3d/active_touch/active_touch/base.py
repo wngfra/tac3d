@@ -22,21 +22,15 @@ class NeuronType:
 
         Raises:
             NameError: Raise exception if ODEs are not well defined.
-
-        Example:
-            eqs = ["dv/dt = (g_l * (V_res - v) + I_ext) / C_mem"]
-            neuron = NeuronType(eqs)
         """
         self._initial_states: Optional[dict[str, float]] = None
-        self._A: Optional[np.ndarray] = None
-        self._B: Optional[np.ndarray] = None
+        self._func: Optional[list] = None
 
         if not isinstance(eqs, list):
             eqs = [eqs]
         self._exprs = []
         self._params = dict()
         self._states = dict()
-        self._linearized = False
 
         # Construct neuron ODEs
         t = symbols("t")
@@ -67,8 +61,9 @@ class NeuronType:
             expr = eval(eq.split("=")[1]).expand()
             self._exprs.append(expr)
 
-        # Backup the initial expressions
+        # Backup the initial expressions and symbols
         self._exprs_undefined = self._exprs.copy()
+        self._gen_func()
 
     @property
     def params(self):
@@ -87,30 +82,23 @@ class NeuronType:
                 for k, v in params.items():
                     expr = expr.subs(k, v)
                 self._exprs[index] = expr
-            self._linearize()
         else:
             self.exprs = self._exprs_undefined
             self._params = None
-            self._linearized = False
 
     @property
     def states(self) -> dict[str, float]:
         return self._states
 
-    def _linearize(self):
-        """Organize the ODEs into dX/dt = AX + B for fast evaluation.
-        A : self._A
-        B : self._B
-        """
-        # FIXME not able to linearize the exprs
-        self._linearized = True
-        A = []
-        B = []
-        for var_name, expr in zip(self._states.keys(), self._exprs):
-            coeff = expr.coeff(var)
-            A.append(coeff)
-        self._A = A
-        self._B = B
+    def _gen_func(self):
+        t = symbols("t")
+        vars_list = [t]
+        for var_name in self.states.keys():
+            locals()[var_name] = sympy.Function(var_name)(t)
+            vars_list.append(locals()[var_name])
+        self._func = [
+            lambdify(vars_list, expr, modules="numpy") for expr in self._exprs
+        ]
 
     def step(self, dt: float):
         """Compute the states at the next time step.
@@ -118,8 +106,6 @@ class NeuronType:
         Args:
             dt (float): _description_
         """
-        if not self._linearized:
-            self._linearize()
         for expr in self.exprs:
             args = list(expr.atoms(sympy.Symbol))
             func = lambdify(args, expr, "numpy")

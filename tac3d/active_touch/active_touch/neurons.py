@@ -29,4 +29,4 @@ class Neuron(NeuronType):
 
 if __name__ == "__main__":
     neuron = Neuron()
-    print(neuron._A)
+    print(neuron._func)
