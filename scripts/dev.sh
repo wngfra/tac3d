@@ -4,4 +4,4 @@
 bash -c "echo 'source /workspace/install/setup.bash' > ~/.bashrc"
 source ~/.bashrc
 pip3 install nengo nengo-extras
-bash
+ros2 run active_touch nmggp --ros-args -r __ns:=/tac3d

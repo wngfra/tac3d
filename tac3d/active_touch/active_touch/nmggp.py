@@ -47,7 +47,7 @@ class NMGGP(Node):
 
         self._sub = self.create_subscription(
             Locus,
-            "/tac3d/mujoco_simulator/tactile_sensor",
+            "mujoco_simulator/tactile_sensor",
             self.subscribe,
             qos_profile_sensor_data,
         )
@@ -56,7 +56,6 @@ class NMGGP(Node):
         )
 
         # Start the threaded Nengo simulation
-
         self._simulator_thread = threading.Thread(
             target=self.run_simulation, daemon=True
         )
