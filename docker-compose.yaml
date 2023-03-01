@@ -11,43 +11,18 @@ volumes:
 
 
 services:
-  ros2_rqt:
-    image: wngfra/ros2cuda:base
-    container_name: rqt_ros2
-    working_dir: /workspace
-    volumes:
-      - shared-volume:/workspace
-      - ${PWD}/scripts/run_rqt.sh:/workspace/run.sh
-      - /tmp/.X11-unix:/tmp/.X11-unix
-    environment:
-      - DISPLAY=${DISPLAY}
-      - XAUTHORITY=/root/.Xauthority
-    command: [ "bash", "run.sh" ]
-    depends_on:
-      ros2_mujoco:
-        condition: service_healthy
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [ gpu ]
-
-  ros2_mujoco:
-    image: wngfra/ros2cuda:base
-    container_name: mujoco_ros2
+  sensorimotor_simulation:
+    image: wngfra/ros2:cuda
+    container_name: sensorimotor_simulation_container
     working_dir: /workspace
     volumes:
       - *default-data
       - shared-volume:/workspace
-      - ${PWD}/scripts/run_mujoco.sh:/workspace/run.sh
+      - ${PWD}/scripts/run.sh:/workspace/run.sh
       - /tmp/.X11-unix:/tmp/.X11-unix
     environment:
       - DISPLAY=${DISPLAY}
       - XAUTHORITY=/root/.Xauthority
-    devices:
-      - "/dev/bus/usb:/dev/bus/usb"
     command: [ "bash", "run.sh" ]
     deploy:
       resources:
@@ -58,6 +33,6 @@ services:
               capabilities: [ gpu ]
     healthcheck:
       test: ls install || exit 1
-      interval: 4s
+      interval: 10s
       timeout: 3s
       retries: 1
