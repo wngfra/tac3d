@@ -1,21 +1,15 @@
-import weakref
 import threading
+import weakref
 from typing import Optional
 
-import numpy as np
 import mujoco
-from mujoco import viewer
-
+import numpy as np
 import rclpy
-from rclpy.lifecycle import Node
-from rclpy.lifecycle import Publisher
-from rclpy.lifecycle import State
-from rclpy.lifecycle import TransitionCallbackReturn
-from rclpy.timer import Timer
-
 import sensor_msgs.msg
+from mujoco import viewer
 from mujoco_interfaces.msg import Locus
-
+from rclpy.lifecycle import Node, Publisher, State, TransitionCallbackReturn
+from rclpy.timer import Timer
 
 _DEFAULT_XML_PATH = "/workspace/src/tac3d/models/scene.xml"
 _HEIGHT, _WIDTH = 15, 15
@@ -29,7 +23,7 @@ def normalize(x, dtype=np.uint8):
 
 
 class Simulator(Node):
-    def __init__(self, node_name: str, xml_path: str):
+    def __init__(self, node_name: str, xml_path: str, rate: int=100):
         """Construct the lifecycle simulator node.
 
         Args:
@@ -38,6 +32,7 @@ class Simulator(Node):
         """
         super().__init__(node_name)
         self._xml_path = xml_path
+        self._rate = rate
         self._pub: Optional[Publisher] = None
         self._img_pub: Optional[Publisher] = None
         self._timer: Optional[Timer] = None
@@ -49,12 +44,16 @@ class Simulator(Node):
 
     @property
     def m(self) -> weakref.ref:
-        return weakref.ref(self._model)
+        return weakref.ref(self._m)
 
     @property
     def d(self) -> weakref.ref:
         return weakref.ref(self._d)
 
+    @property
+    def rate(self):
+        return self._rate
+    
     @property
     def sensordata(self):
         return self._d.sensordata.astype(np.float32)
@@ -137,7 +136,7 @@ class Simulator(Node):
         self._img_pub = self.create_lifecycle_publisher(
             sensor_msgs.msg.Image, "mujoco_simulator/tactile_image", 10
         )
-        self._timer_ = self.create_timer(5e-3, self.publish_sensordata)
+        self._timer_ = self.create_timer(1./self.rate, self.publish_sensordata)
         return TransitionCallbackReturn.SUCCESS
 
     def on_activate(self, state: State) -> TransitionCallbackReturn:
@@ -190,7 +189,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     executor = rclpy.executors.MultiThreadedExecutor()
-    node = Simulator("mujoco_simulator_node", _DEFAULT_XML_PATH)
+    node = Simulator("mujoco_simulator_node", _DEFAULT_XML_PATH, 200)
     executor.add_node(node)
     try:
         executor.spin()

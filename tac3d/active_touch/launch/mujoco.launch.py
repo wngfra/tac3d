@@ -51,6 +51,6 @@ def generate_launch_description():
 
     ld.add_action(mj_sim_node)
     ld.add_action(rqt_node)
-    ld.add_action(sm_node)
+    #ld.add_action(sm_node)
 
     return ld
