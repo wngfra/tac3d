@@ -12,9 +12,11 @@ from mujoco_interfaces.msg import Locus, RobotState
 from rclpy.lifecycle import Node, Publisher, State, TransitionCallbackReturn
 from rclpy.timer import Timer
 from rclpy.qos import qos_profile_sensor_data
+from scipy.spatial.transform import Rotation as R
 
 _DEFAULT_XML_PATH = "/workspace/src/tac3d/models/scene.xml"
 _HEIGHT, _WIDTH = 15, 15
+_TIMER_RATE = 500
 
 
 def normalize(x, dtype=np.uint8):
@@ -25,7 +27,7 @@ def normalize(x, dtype=np.uint8):
 
 
 class Simulator(Node):
-    def __init__(self, node_name: str, xml_path: str, rate: int = 200):
+    def __init__(self, node_name: str, xml_path: str, rate: int = _TIMER_RATE):
         """Construct the lifecycle simulator node.
 
         Args:
@@ -37,6 +39,7 @@ class Simulator(Node):
         self._rate = rate
         self._img_pub: Optional[Publisher] = None
         self._locus_pub: Optional[Publisher] = None
+        self._rs_pub: Optional[Publisher] = None
         self._timer: Optional[Timer] = None
         self._m: Optional[mujoco.MjModel] = None
         self._d: Optional[mujoco.MjData] = None
@@ -103,9 +106,26 @@ class Simulator(Node):
         img_msg.step = _WIDTH
         img_msg.data = normalize(self.sensordata).tolist()
         self._img_pub.publish(img_msg)
-        
+
         rs_msg = RobotState()
-        rs.
+        rs_msg.header = header
+        rs_msg.joint_name = [self._m.joint(i).name for i in range(7)]
+        rs_msg.joint_position = self._d.qpos[:7].tolist()
+        rs_msg.joint_velocity = self._d.qvel[:7].tolist()
+        IKSite_ids = [i for i in range(self._m.nsite) if self._m.site(i).type == 2]
+        rs_msg.site_name = [self._m.site(j).name for j in IKSite_ids]
+        rs_msg.site_position = self._d.site_xpos[IKSite_ids].flatten().tolist()
+        rs_msg.site_quaternion = (
+            np.asarray(
+                [
+                    R.from_matrix(self._d.site_xmat[j].reshape((3, 3))).as_quat()
+                    for j in IKSite_ids
+                ]
+            )
+            .flatten()
+            .tolist()
+        )
+        self._rs_pub.publish(rs_msg)
 
     def on_configure(self, state: State) -> TransitionCallbackReturn:
         """Configure the node, after a configuring transition is requested.
@@ -144,6 +164,9 @@ class Simulator(Node):
         )
         self._locus_pub = self.create_lifecycle_publisher(
             Locus, "mujoco_simulator/tactile_sensor", 20
+        )
+        self._rs_pub = self.create_lifecycle_publisher(
+            RobotState, "mujoco_simulator/robot_state", 20
         )
 
         self._timer_ = self.create_timer(1.0 / self.rate, self.publish_sensordata)
@@ -199,7 +222,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     executor = rclpy.executors.MultiThreadedExecutor()
-    node = Simulator("mujoco_simulator_node", _DEFAULT_XML_PATH, 200)
+    node = Simulator("mujoco_simulator_node", _DEFAULT_XML_PATH, _TIMER_RATE)
     executor.add_node(node)
     try:
         executor.spin()
