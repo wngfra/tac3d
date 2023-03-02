@@ -15,8 +15,14 @@ set(msg_files
   "msg/RobotState.msg"
 )
 
+set(srv_files
+  "srv/IKMoveSite.srv"
+  "srv/MoveSite.srv"
+)
+
 rosidl_generate_interfaces(${PROJECT_NAME}
   ${msg_files}
+  ${srv_files}
   DEPENDENCIES std_msgs
 )
 

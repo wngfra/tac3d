@@ -13,7 +13,7 @@ from rclpy.qos import qos_profile_sensor_data
 _HEIGHT, _WIDTH = 15, 15
 _SIZE_IN = _HEIGHT * _WIDTH
 UINT8_MAX, UINT8_MIN = np.iinfo(np.uint8).max, np.iinfo(np.uint8).min
-_RATE = 200
+_RATE = 100
 _THRESHOLD = -0.5
 _ENS_PARAMS = dict(
     neuron_type=nengo.LIFRate(),
@@ -95,7 +95,7 @@ class NMGGP(Node):
             while rclpy.ok():
                 self._sim.run(0.1)
                 output = self._sim.data[self._probe][-1]
-                log(self, output)
+                
                 # Publish the tactile percept
                 data = normalize(output)
                 self.publish(data)

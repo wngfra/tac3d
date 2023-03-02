@@ -9,14 +9,17 @@ import sensor_msgs.msg
 import std_msgs.msg
 from mujoco import viewer
 from mujoco_interfaces.msg import Locus, RobotState
+from mujoco_interfaces.srv import MoveSite
 from rclpy.lifecycle import Node, Publisher, State, TransitionCallbackReturn
+from rclpy.service import Service
 from rclpy.timer import Timer
 from rclpy.qos import qos_profile_sensor_data
 from scipy.spatial.transform import Rotation as R
 
 _DEFAULT_XML_PATH = "/workspace/src/tac3d/models/scene.xml"
 _HEIGHT, _WIDTH = 15, 15
-_TIMER_RATE = 500
+_TIMER_RATE = 100
+_IKSITE_TYPE = 2
 
 
 def normalize(x, dtype=np.uint8):
@@ -24,6 +27,33 @@ def normalize(x, dtype=np.uint8):
     if x.max() > x.min():
         x = (x - x.min()) / (x.max() - x.min()) * (iinfo.max - 1)
     return x.astype(dtype)
+
+
+def nullspace_method(jac_joints, delta, regularization_strength=0.0):
+    """Calculates the joint velocities to achieve a specified end effector delta.
+    Args:
+      jac_joints: The Jacobian of the end effector with respect to the joints. A
+        numpy array of shape `(ndelta, nv)`, where `ndelta` is the size of `delta`
+        and `nv` is the number of degrees of freedom.
+      delta: The desired end-effector delta. A numpy array of shape `(3,)` or
+        `(6,)` containing either position deltas, rotation deltas, or both.
+      regularization_strength: (optional) Coefficient of the quadratic penalty
+        on joint movements. Default is zero, i.e. no regularization.
+    Returns:
+      An `(nv,)` numpy array of joint velocities.
+    Reference:
+      Buss, S. R. S. (2004). Introduction to inverse kinematics with jacobian
+      transpose, pseudoinverse and damped least squares methods.
+      https://www.math.ucsd.edu/~sbuss/ResearchWeb/ikmethods/iksurvey.pdf
+    """
+    hess_approx = jac_joints.T.dot(jac_joints)
+    joint_delta = jac_joints.T.dot(delta)
+    if regularization_strength > 0:
+        # L2 regularization
+        hess_approx += np.eye(hess_approx.shape[0]) * regularization_strength
+        return np.linalg.solve(hess_approx, joint_delta)
+    else:
+        return np.linalg.lstsq(hess_approx, joint_delta, rcond=-1)[0]
 
 
 class Simulator(Node):
@@ -40,6 +70,8 @@ class Simulator(Node):
         self._img_pub: Optional[Publisher] = None
         self._locus_pub: Optional[Publisher] = None
         self._rs_pub: Optional[Publisher] = None
+        self._ikms_srv: Optional[Service] = None
+        self._ms_srv: Optional[Service] = None
         self._timer: Optional[Timer] = None
         self._m: Optional[mujoco.MjModel] = None
         self._d: Optional[mujoco.MjData] = None
@@ -61,7 +93,7 @@ class Simulator(Node):
 
     @property
     def sensordata(self):
-        return self._d.sensordata.astype(np.float32)
+        return self._d.sensordata
 
     @property
     def time(self):
@@ -83,6 +115,31 @@ class Simulator(Node):
         """
         mujoco.mj_resetDataKeyframe(self._m, self._d, key_id)
         mujoco.mj_forward(self._m, self._d)
+
+    def ik_move_site(self, request, response):
+        """Move site in the Cartesian space to the target pose via IK solution.
+
+        Args:
+            request (_type_): _description_
+            response (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """        
+        return response
+        
+
+    def move_site(self, request, response):
+        """Move site in the Cartesian space (incrementally) with spiking signals.
+
+        Args:
+            request (_type_): _description_
+            response (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """        
+        return response
 
     def publish_sensordata(self):
         """Publish a new message when enabled."""
@@ -112,7 +169,9 @@ class Simulator(Node):
         rs_msg.joint_name = [self._m.joint(i).name for i in range(7)]
         rs_msg.joint_position = self._d.qpos[:7].tolist()
         rs_msg.joint_velocity = self._d.qvel[:7].tolist()
-        IKSite_ids = [i for i in range(self._m.nsite) if self._m.site(i).type == 2]
+        IKSite_ids = [
+            i for i in range(self._m.nsite) if self._m.site(i).type == _IKSITE_TYPE
+        ]
         rs_msg.site_name = [self._m.site(j).name for j in IKSite_ids]
         rs_msg.site_position = self._d.site_xpos[IKSite_ids].flatten().tolist()
         rs_msg.site_quaternion = (
@@ -149,7 +208,7 @@ class Simulator(Node):
             self.get_logger().error("Error loading XML from {}".format(self._xml_path))
             return TransitionCallbackReturn.ERROR
 
-        # Launch the GUI thread
+        # Create the GUI thread
         self._viewer_thread = threading.Thread(
             target=viewer.launch,
             args=(
@@ -157,19 +216,33 @@ class Simulator(Node):
                 self._d,
             ),
         )
+        # Create tactile image publisher
         self._img_pub = self.create_lifecycle_publisher(
             sensor_msgs.msg.Image,
             "mujoco_simulator/tactile_image",
-            20,
+            qos_profile_sensor_data,
         )
+        # Create tactile signal (locus) publisher
         self._locus_pub = self.create_lifecycle_publisher(
-            Locus, "mujoco_simulator/tactile_sensor", 20
+            Locus,
+            "mujoco_simulator/tactile_sensor",
+            qos_profile_sensor_data,
         )
+        # Create robot state publisher
         self._rs_pub = self.create_lifecycle_publisher(
-            RobotState, "mujoco_simulator/robot_state", 20
+            RobotState,
+            "mujoco_simulator/robot_state",
+            qos_profile_sensor_data,
         )
-
+        # Create sensor data timer for the above publishers
         self._timer_ = self.create_timer(1.0 / self.rate, self.publish_sensordata)
+
+        # Create the move site (spiky control) service
+        self._ms_srv = self.create_service(
+            MoveSite, "mujoco_simulator/move_site", self.move_site
+        )
+        self.get_logger().warn("type: --------------------------{}".format(type(self._ms_srv)))
+
         return TransitionCallbackReturn.SUCCESS
 
     def on_activate(self, state: State) -> TransitionCallbackReturn:
