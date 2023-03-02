@@ -6,8 +6,9 @@ import mujoco
 import numpy as np
 import rclpy
 import sensor_msgs.msg
+import std_msgs.msg
 from mujoco import viewer
-from mujoco_interfaces.msg import Locus
+from mujoco_interfaces.msg import Locus, RobotState
 from rclpy.lifecycle import Node, Publisher, State, TransitionCallbackReturn
 from rclpy.timer import Timer
 
@@ -98,6 +99,9 @@ class Simulator(Node):
         img_msg.step = _WIDTH
         img_msg.data = normalize(self.sensordata).tolist()
         self._img_pub.publish(img_msg)
+        
+        rs_msg = RobotState()
+        rs.
 
     def on_configure(self, state: State) -> TransitionCallbackReturn:
         """Configure the node, after a configuring transition is requested.
