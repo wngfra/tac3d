@@ -11,6 +11,7 @@ from mujoco import viewer
 from mujoco_interfaces.msg import Locus, RobotState
 from rclpy.lifecycle import Node, Publisher, State, TransitionCallbackReturn
 from rclpy.timer import Timer
+from rclpy.qos import qos_profile_sensor_data
 
 _DEFAULT_XML_PATH = "/workspace/src/tac3d/models/scene.xml"
 _HEIGHT, _WIDTH = 15, 15
@@ -24,7 +25,7 @@ def normalize(x, dtype=np.uint8):
 
 
 class Simulator(Node):
-    def __init__(self, node_name: str, xml_path: str, rate: int=100):
+    def __init__(self, node_name: str, xml_path: str, rate: int = 200):
         """Construct the lifecycle simulator node.
 
         Args:
@@ -34,8 +35,8 @@ class Simulator(Node):
         super().__init__(node_name)
         self._xml_path = xml_path
         self._rate = rate
-        self._pub: Optional[Publisher] = None
         self._img_pub: Optional[Publisher] = None
+        self._locus_pub: Optional[Publisher] = None
         self._timer: Optional[Timer] = None
         self._m: Optional[mujoco.MjModel] = None
         self._d: Optional[mujoco.MjData] = None
@@ -54,7 +55,7 @@ class Simulator(Node):
     @property
     def rate(self):
         return self._rate
-    
+
     @property
     def sensordata(self):
         return self._d.sensordata.astype(np.float32)
@@ -82,16 +83,19 @@ class Simulator(Node):
 
     def publish_sensordata(self):
         """Publish a new message when enabled."""
-        msg = Locus()
-        msg.header.frame_id = "world"
-        msg.header.stamp = self.get_clock().now().to_msg()
-        msg.height = _HEIGHT
-        msg.width = _WIDTH
-        msg.data = self.sensordata.tolist()
-        self._pub.publish(msg)
+        header = std_msgs.msg.Header()
+        header.frame_id = "world"
+        header.stamp = self.get_clock().now().to_msg()
+
+        sensor_msg = Locus()
+        sensor_msg.header = header
+        sensor_msg.height = _HEIGHT
+        sensor_msg.width = _WIDTH
+        sensor_msg.data = self.sensordata.tolist()
+        self._locus_pub.publish(sensor_msg)
 
         img_msg = sensor_msgs.msg.Image()
-        img_msg.header = msg.header
+        img_msg.header = header
         img_msg.height = _HEIGHT
         img_msg.width = _WIDTH
         img_msg.encoding = "mono8"
@@ -133,14 +137,16 @@ class Simulator(Node):
                 self._d,
             ),
         )
-
-        self._pub = self.create_lifecycle_publisher(
-            Locus, "mujoco_simulator/tactile_sensor", 10
-        )
         self._img_pub = self.create_lifecycle_publisher(
-            sensor_msgs.msg.Image, "mujoco_simulator/tactile_image", 10
+            sensor_msgs.msg.Image,
+            "mujoco_simulator/tactile_image",
+            20,
         )
-        self._timer_ = self.create_timer(1./self.rate, self.publish_sensordata)
+        self._locus_pub = self.create_lifecycle_publisher(
+            Locus, "mujoco_simulator/tactile_sensor", 20
+        )
+
+        self._timer_ = self.create_timer(1.0 / self.rate, self.publish_sensordata)
         return TransitionCallbackReturn.SUCCESS
 
     def on_activate(self, state: State) -> TransitionCallbackReturn:
@@ -178,7 +184,7 @@ class Simulator(Node):
             TransitionCallbackReturn: _description_
         """
         self.get_logger().info("Node is shutting down.")
-        self.destroy_publisher(self._pub)
+        self.destroy_publisher(self._locus_pub)
         self.destroy_timer(self._timer)
 
         self._viewer_thread.join()
