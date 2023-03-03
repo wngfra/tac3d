@@ -1,6 +1,0 @@
-string[] site_name
-uint16[] excitatory_spikes
-uint16[] inhibitory_spikes
----
-int32[] position_difference
-int32[] orientation_difference

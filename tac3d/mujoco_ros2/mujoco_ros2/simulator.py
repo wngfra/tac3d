@@ -9,7 +9,7 @@ import sensor_msgs.msg
 import std_msgs.msg
 from mujoco import viewer
 from mujoco_interfaces.msg import Locus, RobotState
-from mujoco_interfaces.srv import MoveSite
+from mujoco_interfaces.srv import IKMoveSite, MoveJoint
 from rclpy.lifecycle import Node, Publisher, State, TransitionCallbackReturn
 from rclpy.service import Service
 from rclpy.timer import Timer
@@ -70,8 +70,8 @@ class Simulator(Node):
         self._img_pub: Optional[Publisher] = None
         self._locus_pub: Optional[Publisher] = None
         self._rs_pub: Optional[Publisher] = None
-        self._ikms_srv: Optional[Service] = None
-        self._ms_srv: Optional[Service] = None
+        self._ikmovesite_srv: Optional[Service] = None
+        self._movejoint_srv: Optional[Service] = None
         self._timer: Optional[Timer] = None
         self._m: Optional[mujoco.MjModel] = None
         self._d: Optional[mujoco.MjData] = None
@@ -117,7 +117,7 @@ class Simulator(Node):
         mujoco.mj_forward(self._m, self._d)
 
     def ik_move_site(self, request, response):
-        """Move site in the Cartesian space to the target pose via IK solution.
+        """Move site in the Cartesian space to the target pose via IK solver.
 
         Args:
             request (_type_): _description_
@@ -125,12 +125,11 @@ class Simulator(Node):
 
         Returns:
             _type_: _description_
-        """        
+        """
         return response
-        
 
-    def move_site(self, request, response):
-        """Move site in the Cartesian space (incrementally) with spiking signals.
+    def move_joint(self, request, response):
+        """Move joint position.
 
         Args:
             request (_type_): _description_
@@ -138,7 +137,7 @@ class Simulator(Node):
 
         Returns:
             _type_: _description_
-        """        
+        """
         return response
 
     def publish_sensordata(self):
@@ -237,11 +236,14 @@ class Simulator(Node):
         # Create sensor data timer for the above publishers
         self._timer_ = self.create_timer(1.0 / self.rate, self.publish_sensordata)
 
-        # Create the move site (spiky control) service
-        self._ms_srv = self.create_service(
-            MoveSite, "mujoco_simulator/move_site", self.move_site
+        # Create the IK move site service
+        self._ikmovesite_srv = self.create_service(
+            IKMoveSite, "mujoco_simulator/ik_move_site", self.ik_move_site
         )
-        self.get_logger().warn("type: --------------------------{}".format(type(self._ms_srv)))
+        # Create the move joint service
+        self._movejoint_srv = self.create_service(
+            MoveJoint, "mujoco_simulator/move_joint", self.move_joint
+        )
 
         return TransitionCallbackReturn.SUCCESS
 

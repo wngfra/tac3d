@@ -17,7 +17,7 @@ set(msg_files
 
 set(srv_files
   "srv/IKMoveSite.srv"
-  "srv/MoveSite.srv"
+  "srv/MoveJoint.srv"
 )
 
 rosidl_generate_interfaces(${PROJECT_NAME}
