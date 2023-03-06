@@ -5,9 +5,9 @@ from operator import add
 
 
 class TouchDataset:
-    def __init__(self, filepath, noise_level=0, flatten=False, scope=None, *, tags=None):
+    def __init__(self, filepath, noise_scale=0, flatten=False, scope=(0, 0), *, tags=None):
         self.filepath = filepath
-        self.noise_level = noise_level
+        self.noise_scale = noise_scale
         self.flatten = flatten
         self.scope = scope
 
@@ -19,22 +19,21 @@ class TouchDataset:
         samples = reduce(add, [dataset[tag]["sensordata"] for tag in self.tags])
         orientations = reduce(add, [dataset[tag]["orientations"] for tag in self.tags])
 
-        if noise_level > 0:
-            for i, sample in enumerate(samples):
-                samples[i] += np.random.normal(
-                    np.mean(sample), noise_level * np.sqrt(np.var(sample)), sample.shape
-                )
-        self._shape = samples[0].shape
-        self.samples = np.asarray(samples)
-        self.orientations = np.asarray(orientations)
+        if noise_scale > 0:
+            noise = [np.random.normal(0, samples[i].max()*noise_scale, samples[i].shape) for i in range(len(samples))]
+            samples += np.array(noise)
 
         if flatten:
-            self.samples = self.samples.reshape(self.samples.shape[0], -1)
-        if scope and scope[0] < scope[1]:
-            for i, sample in enumerate(self.samples):
+            samples = samples.reshape(samples.shape[0], -1)
+        if scope[0] < scope[1]:
+            # Normalize the samples into the scope
+            for i, sample in enumerate(samples):
                 if sample.max() > sample.min():
-                    sample = (sample - sample.min()) / (sample.max() - sample.min() + 1e-12)
-                    self.samples[i] = sample * (scope[1] - scope[0]) + scope[0]
+                    sample = (sample - sample.min()) / (sample.max() - sample.min())
+                    samples[i] = sample * (scope[1] - scope[0]) + scope[0]
+        
+        self.samples = samples
+        self.orientations = np.asarray(orientations)
 
     def subset(self, tags):
         """Create a new instance with only selected tags.
@@ -47,7 +46,7 @@ class TouchDataset:
         """
         if tags in self.tags:
             return self.__class__(
-                self.filepath, self.noise_level, self.flatten, self.scope, tags=tags
+                self.filepath, self.noise_scale, self.flatten, self.scope, tags=tags
             )
         return None
 
@@ -64,7 +63,7 @@ class TouchDataset:
         Returns:
             tuple: Shape of the first sample.
         """
-        return self._shape
+        return self.samples[0].shape
 
     def split_set(self, ratio=0.5, shuffle=True):
         """Split samples to training set and test set by the ratio of len(training set)/len(self).
