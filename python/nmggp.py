@@ -1,10 +1,11 @@
+import os
 import nengo
 import numpy as np
-from matplotlib.animation import FuncAnimation
-from notebooks.TouchDataset import TouchDataset
+from TouchDataset import TouchDataset
 
 # Prepare dataset
-dataset = TouchDataset(filepath="data/touch.pkl", noise_scale=0.2, scope=(-1.0, 1.0))
+datapath = os.path.join(os.path.dirname(__file__), "../data/touch.pkl")
+dataset = TouchDataset(datapath, noise_scale=0.2, scope=(-1.0, 1.0))
 X_train, y_train, X_test, y_test = dataset.split_set(ratio=0.5)
 height, width = X_train[0].shape
 n_dims = height * width
@@ -40,35 +41,29 @@ with nengo.Network(label="MGGD") as model:
         neuron_type=nengo.PoissonSpiking(nengo.LIFRate()),
         **ens_params
     )
-    hidden = nengo.Ensemble(
-        n_neurons=100, dimensions=1, radius=1, intercepts=np.zeros(100)
-    )
+    hidden = nengo.Ensemble(n_neurons=100, dimensions=1, **ens_params)
 
     # Output layer
-    sigma = nengo.Ensemble(n_neurons=9, dimensions=4, **ens_params)
-    tau = nengo.Ensemble(n_neurons=9, dimensions=1, **ens_params)
+    sigma = nengo.Ensemble(n_neurons=16, dimensions=4, **ens_params)
+    tau = nengo.Ensemble(n_neurons=16, dimensions=1, **ens_params)
 
     nengo.Connection(stim, inp.neurons, transform=1, synapse=None)
     conn_inp_hidden = nengo.Connection(
         inp.neurons,
         hidden.neurons,
-        transform=np.random.normal(0, 0.5, size=(hidden.n_neurons, inp.n_neurons)),
+        transform=np.random.normal(0, 0.25, size=(hidden.n_neurons, inp.n_neurons)),
         **conn_config
     )
-            
+
     nengo.Connection(
-            hidden.neurons,
-            sigma,
-            transform=np.random.normal(
-                0, 0.5, size=(sigma.dimensions, hidden.n_neurons)
-            ),
-            **conn_config
-        )
+        hidden.neurons,
+        sigma,
+        transform=np.random.normal(0, 0.25, size=(sigma.dimensions, hidden.n_neurons)),
+        **conn_config
+    )
     nengo.Connection(
-            hidden.neurons,
-            tau,
-            transform=np.random.normal(
-                0, 0.5, size=(tau.dimensions, hidden.n_neurons)
-            ),
-            **conn_config
-        )
+        hidden.neurons,
+        tau,
+        transform=np.random.normal(0, 0.25, size=(tau.dimensions, hidden.n_neurons)),
+        **conn_config
+    )
