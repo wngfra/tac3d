@@ -111,8 +111,7 @@ class NMGGP(Node):
             )
 
     def input_func(self, t, x):
-        stimuli = self._tactile_data.flatten()
-        return stimuli
+        return self._tactile_data.ravel()
 
     def run_simulation(self):
         with nengo.Simulator(self._net, progress_bar=False) as self._sim:
