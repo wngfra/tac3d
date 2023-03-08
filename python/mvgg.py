@@ -32,11 +32,27 @@ conn_config = dict(
 )
 
 
-def gen_multi_gaussian(mean, cov, size):
+def gen_gaussian_weights(mean, cov, size):
     x, y = np.mgrid[0:size:1, 0:size:1]
     pos = np.dstack((x, y))
     rv = multivariate_normal(mean, cov)
     return rv.pdf(pos)
+
+
+def gen_mean_weights(direction: int, size: int) -> np.ndarray:
+    """Return the weights to compute mean for 2D input of size x size.
+
+    Args:
+        direction (int): 0 for y-axis and 1 for x-axis.
+        size (int): Size of the weight matrix.
+
+    Returns:
+        np.ndarray: Weight matrix of dimension size x size.
+    """
+    x = np.linspace(-size / 2, size / 2, size)
+    M = np.repeat(x[:, np.newaxis], size, axis=1)
+    M = np.abs(M)
+    return M if direction == 0 else M.T
 
 
 def input_func(t):
@@ -67,6 +83,18 @@ with nengo.Network(label="mvgg") as model:
     )
     conn_stim2inp = nengo.Connection(stim, inp.neurons, transform=1, synapse=None)
 
+    # Create mean layer
+    mean = nengo.Ensemble(
+        n_neurons=5,
+        dimensions=2,
+    )
+    conn_inp2meany = nengo.Connection(
+        inp, mean[0], transform=gen_mean_weights(0, inp.size_out).ravel()
+    )
+    conn_inp2meanx = nengo.Connection(
+        inp, mean[1], transform=gen_mean_weights(1, inp.size_out).ravel()
+    )
+
     # Create hidden layer
     hidden = nengo.Ensemble(
         n_neurons=n_hidden * n_hidden,
@@ -79,7 +107,7 @@ with nengo.Network(label="mvgg") as model:
     stride = (_IMAGE_DIM - n_hidden) // (n_hidden + 1)
     for i in range(n_hidden):
         for j in range(n_hidden):
-            weight = gen_multi_gaussian(
+            weight = gen_gaussian_weights(
                 [(i + 1) * (stride + 1) - 1, (j + 1) * (stride + 1) - 1],
                 [[sigma * sigma, 0], [0, sigma * sigma]],
                 _IMAGE_DIM,
@@ -110,7 +138,9 @@ with nengo.Network(label="mvgg") as model:
     )
 
     # Create output layer
-    out = nengo.Ensemble(n_neurons=n_output, dimensions=n_output, label="out", **ens_params)
+    out = nengo.Ensemble(
+        n_neurons=n_output, dimensions=n_output, label="out", **ens_params
+    )
     conn_wta2out = nengo.Connection(
         wta,
         out,
@@ -121,7 +151,7 @@ with nengo.Network(label="mvgg") as model:
     inp_p = nengo.Probe(inp, synapse=0.01)
     wta_p = nengo.Probe(wta, synapse=0.01)
     weights_p = nengo.Probe(conn_hidden2wta, "weights", synapse=0.01)
-    
+
 with nengo.Simulator(model) as sim:
     sim.run(2.0)
 
