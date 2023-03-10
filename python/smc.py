@@ -21,7 +21,7 @@ max_rates = 200
 n_mean = 10
 n_encoding = 4
 n_output = 36
-n_steps = 200
+n_steps = 500
 sigma = 10
 
 ens_params = dict(radius=1, intercepts=nengo.dists.Gaussian(0.1, 0.1))
@@ -66,7 +66,7 @@ def output_func(t):
 
 
 # Create the Nengo model
-with nengo.Network(label="mvgg") as model:
+with nengo.Network(label="smc") as model:
     truth = nengo.Node(output_func)
 
     # Create input layer
@@ -105,10 +105,11 @@ with nengo.Network(label="mvgg") as model:
             weights[i * n_encoding + j, :] = weight.ravel()
 
     conn_inp2encoding = nengo.Connection(
-        inp,
-        encoding,
-        transform=weights,
+        inp.neurons,
+        encoding.neurons,
+        transform=np.random.randn(encoding.n_neurons, inp.n_neurons),
         synapse=0.01,
+        learning_rule_type=nengo.PES(1e-5),
         label="inp2encoding",
     )
 
@@ -122,15 +123,16 @@ with nengo.Network(label="mvgg") as model:
         neuron_type=nengo.AdaptiveLIF(),
         label="theta",
     )
+    """
     conn_encoding2theta = nengo.Connection(
         encoding,
         theta.neurons,
         transform=nengo.dists.Gaussian(0.1, 0.5),
         synapse=0.01,
-        learning_rule_type=nengo.BCM(1e-5),
+        #learning_rule_type=nengo.BCM(1e-5),
         label="encoding2theta",
     )
-
+    """
     """ Self Inhibition with circular topology embedded
     fold2pi = theta.n_neurons // 2
     inh_weights = np.zeros((theta.n_neurons, theta.n_neurons))
@@ -156,14 +158,17 @@ with nengo.Network(label="mvgg") as model:
 
     # Create output layer
     out = nengo.Ensemble(
-        n_neurons=inp.n_neurons, dimensions=inp.dimensions, label="out", **ens_params
+        n_neurons=inp.n_neurons,
+        dimensions=inp.dimensions,
+        neuron_type=nengo.SpikingRectifiedLinear(),
+        label="out",
     )
     conn_encoding2out = nengo.Connection(
-        encoding,
-        out,
-        function=lambda x: np.random.random(out.dimensions),
-        learning_rule_type=nengo.PES(1e-3),
-        label="encoding2out",   
+        encoding.neurons,
+        out.neurons,
+        transform=np.random.randn(out.n_neurons, encoding.n_neurons),
+        learning_rule_type=nengo.PES(1e-5),
+        label="encoding2out",
     )
     """
     conn_tn2out = nengo.Connection(
@@ -175,11 +180,12 @@ with nengo.Network(label="mvgg") as model:
     error = nengo.Ensemble(
         n_neurons=inp.n_neurons, dimensions=inp.n_neurons, label="error"
     )
-    conn_inp2error = nengo.Connection(inp, error, transform=-1, label="conn_inp2error")
-    conn_out2error = nengo.Connection(out, error)
+    conn_inp2error = nengo.Connection(inp, error, transform=-1, label="inp2error")
+    conn_out2error = nengo.Connection(out, error, transform=1, label="out2error")
 
     # Connect learning rules
     nengo.Connection(error, conn_encoding2out.learning_rule)
+    nengo.Connection(encoding, conn_inp2encoding.learning_rule)
 
     # Create probes
     inp_p = nengo.Probe(inp, synapse=0.01)
@@ -190,7 +196,7 @@ with nengo.Network(label="mvgg") as model:
 """Run in command line mode
 """
 with nengo.Simulator(model) as sim:
-    sim.run(5.0)
-    
+    sim.run(10.0)
+
 plt.plot(sim.trange(), sim.data[weights_p][..., n_encoding])
 plt.show()
