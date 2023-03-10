@@ -23,7 +23,11 @@ rate_target = max_rate * amp  # must be in amplitude scaled units
 
 n_hidden = 16
 n_output = 36
+<<<<<<< HEAD
 presentation_time = 0.2
+=======
+n_steps = 500
+>>>>>>> fa858d315186496ba21b71d20b35e6a5f38bba54
 sigma = 10
 
 default_neuron = nengo.AdaptiveLIF(amplitude=amp)
@@ -147,6 +151,7 @@ with nengo.Network(label="smc") as net:
         neuron_type=nengo.SpikingRectifiedLinear(),
         label="theta",
     )
+    """
     conn_encoding2theta = nengo.Connection(
         encoding,
         theta.neurons,
@@ -155,7 +160,7 @@ with nengo.Network(label="smc") as net:
         learning_rule_type=MirroredSTDP(),
         label="encoding2theta",
     )
-
+    """
     """ Self Inhibition with circular topology embedded
     fold2pi = theta.n_neurons // 2
     inh_weights = np.zeros((theta.n_neurons, theta.n_neurons))
@@ -181,7 +186,10 @@ with nengo.Network(label="smc") as net:
 
     # Create output layer
     out = nengo.Ensemble(
-        n_neurons=inp.n_neurons, dimensions=inp.dimensions, label="out", **ens_params
+        n_neurons=inp.n_neurons,
+        dimensions=inp.dimensions,
+        neuron_type=nengo.SpikingRectifiedLinear(),
+        label="out",
     )
     conn_encoding2out = nengo.Connection(
         encoding,
@@ -200,11 +208,12 @@ with nengo.Network(label="smc") as net:
     error = nengo.Ensemble(
         n_neurons=inp.n_neurons, dimensions=inp.n_neurons, label="error"
     )
-    conn_inp2error = nengo.Connection(inp, error, transform=-1, label="conn_inp2error")
-    conn_out2error = nengo.Connection(out, error)
+    conn_inp2error = nengo.Connection(inp, error, transform=-1, label="inp2error")
+    conn_out2error = nengo.Connection(out, error, transform=1, label="out2error")
 
     # Connect learning rules
     nengo.Connection(error, conn_encoding2out.learning_rule)
+    nengo.Connection(encoding, conn_inp2encoding.learning_rule)
 
     # Create probes
     inp_p = nengo.Probe(inp, synapse=0.01)
