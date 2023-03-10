@@ -17,12 +17,34 @@ _IMAGE_DIM = X_train[0].shape[0]
 
 # Simulation parameters
 dt = 1e-3
-max_rates = 200
-n_mean = 10
-n_encoding = 4
+max_rate = 150
+amp = 1.0 / max_rate
+rate_target = max_rate * amp  # must be in amplitude scaled units
+
+n_hidden = 16
 n_output = 36
-n_steps = 200
+presentation_time = 0.2
 sigma = 10
+
+default_neuron = nengo.AdaptiveLIF(amplitude=amp)
+default_intercepts = nengo.dists.Gaussian(0, 0.1)
+
+layer_confs = [
+    dict(
+        name="input_layer",
+        n_neurons=_IMAGE_DIM * _IMAGE_DIM,
+        max_rates=nengo.dists.Choice([rate_target]),
+        on_chip=False,
+    ),
+    dict(
+        name="hidden_layer",
+        n_neurons=n_hidden,
+    ),
+    dict(
+        name="output_layer",
+        n_neuron=_IMAGE_DIM * _IMAGE_DIM,
+    ),
+]
 
 ens_params = dict(radius=1, intercepts=nengo.dists.Gaussian(0.1, 0.1))
 conn_config = dict(
@@ -38,17 +60,12 @@ def gen_gaussian_weights(mean, cov, size):
     pdf = rv.pdf(pos)
     pdf /= np.sum(pdf)
     sample = np.random.choice(
-        size * size, p=pdf.ravel(), size=size * size // (n_encoding * n_encoding) + 1
+        size * size, p=pdf.ravel(), size=size * size // (n_hidden * n_hidden) + 1
     )
     M = np.zeros(size * size)
     M[sample] = 1
     norm_coeff = np.sum(M[M > 0])
     return M / norm_coeff
-
-
-def input_func(t):
-    index = int(t / (dt * n_steps))
-    return X_train[index].ravel()
 
 
 def motion_func(t):
@@ -58,59 +75,67 @@ def motion_func(t):
     return M
 
 
-def output_func(t):
-    index = int(t / (dt * n_steps))
-    theta = y_train[index]
-    n = np.floor(theta / np.pi)
-    return (theta - n * np.pi) / np.pi * 180
-
-
 # Create the Nengo model
-with nengo.Network(label="mvgg") as model:
-    truth = nengo.Node(output_func)
+with nengo.Network(label="smc") as net:
+    truth = nengo.Node(
+        lambda t: y_train[int(t / presentation_time)]
+        - np.floor(y_train[int(t / presentation_time)] / np.pi) * np.pi
+    )
+    stim = nengo.Node(lambda t: X_train[int(t / presentation_time)].ravel())
 
-    # Create input layer
-    stim = nengo.Node(input_func)
-    inp = nengo.Ensemble(
-        n_neurons=stim.size_out,
-        dimensions=stim.size_out,
-        max_rates=nengo.dists.Choice([max_rates]),
-        neuron_type=nengo.AdaptiveLIF(),
-        label="inp",
-        **ens_params
-    )
-    conn_stim2inp = nengo.Connection(
-        stim, inp.neurons, transform=1, synapse=None, label="stim2inp"
-    )
+    connections = []
+    transforms = []
+    layer_probes = []
+    shape_in = nengo.transforms.ChannelShape((_IMAGE_DIM * _IMAGE_DIM,))
+    x = stim
 
-    # Create (encoding) layer
-    encoding = nengo.Ensemble(
-        n_neurons=n_encoding * n_encoding,
-        dimensions=n_encoding * n_encoding,
-        radius=1,
-        max_rates=nengo.dists.Choice([max_rates]),
-        intercepts=nengo.dists.Choice([0, 0.1]),
-        neuron_type=nengo.AdaptiveLIF(),
-        label="encoding",
-    )
-    weights = np.empty((encoding.dimensions, inp.dimensions))
-    stride = (_IMAGE_DIM - n_encoding) // (n_encoding + 1)
-    for i in range(n_encoding):
-        for j in range(n_encoding):
-            weight = gen_gaussian_weights(
-                [(i + 1) * (stride + 1) - 1, (j + 1) * (stride + 1) - 1],
-                [[sigma * sigma, 0], [0, sigma * sigma]],
-                _IMAGE_DIM,
+    # Create layers
+    for k, layer_conf in enumerate(layer_confs):
+        layer_conf = dict(layer_conf)  # copy, so we don't modify the original
+        name = layer_conf.pop("name")
+        intercepts = layer_conf.pop("intercepts", default_intercepts)
+        max_rates = layer_conf.pop("max_rates", nengo.dists.Choice([rate_target]))
+        neuron_type = layer_conf.pop("neuron", default_neuron)
+        on_chip = layer_conf.pop("on_chip", True)
+        block = layer_conf.pop("block", None)
+
+        # Create layer transform
+        if "filters" in layer_confs:
+            # Convolutional layer
+            pass
+        else:
+            # Dense layer
+            n_neurons = layer_conf.pop("n_neurons")
+            shape_out = nengo.transforms.ChannelShape((n_neurons,))
+            transform = nengo.Dense(
+                (shape_out.size, shape_in.size),
+                init=nengo.dists.Gaussian(0.5, 0.1),
             )
-            weights[i * n_encoding + j, :] = weight.ravel()
 
-    conn_inp2encoding = nengo.Connection(
-        inp,
-        encoding,
-        transform=weights,
-        synapse=0.01,
-        label="inp2encoding",
-    )
+            loc = "chip" if on_chip else "host"
+            n_weights = np.prod(transform.shape)
+
+        assert len(layer_conf) == 0, "Unused fields in {}: {}".format(
+            [name], list(layer_conf)
+        )
+
+        if neuron_type is None:
+            assert not on_chip, "Nodes can only be run off-chip"
+            y = nengo.Node(size_in=shape_out.size, label=name)
+        else:
+            ens = nengo.Ensemble(shape_out.size, 1, neuron_type=neuron_type, label=name)
+            y = ens.neurons
+
+            # Add a probe so we can measure individual layer rates
+            probe = nengo.Probe(y, synapse=None, label="%s_p" % name)
+            layer_probes.append(probe)
+
+        conn = nengo.Connection(x, y, transform=transform)
+
+        transforms.append(transform)
+        connections.append(conn)
+        x = y
+        shape_in = shape_out
 
     # Create theta layer
     theta = nengo.Ensemble(
@@ -119,7 +144,7 @@ with nengo.Network(label="mvgg") as model:
         radius=10,
         intercepts=nengo.dists.Choice([0.1, 0.1]),
         encoders=nengo.dists.Uniform(-1, 1),
-        neuron_type=nengo.AdaptiveLIF(),
+        neuron_type=nengo.SpikingRectifiedLinear(),
         label="theta",
     )
     conn_encoding2theta = nengo.Connection(
@@ -127,7 +152,7 @@ with nengo.Network(label="mvgg") as model:
         theta.neurons,
         transform=nengo.dists.Gaussian(0.1, 0.5),
         synapse=0.01,
-        learning_rule_type=nengo.BCM(1e-5),
+        learning_rule_type=MirroredSTDP(),
         label="encoding2theta",
     )
 
@@ -163,7 +188,7 @@ with nengo.Network(label="mvgg") as model:
         out,
         function=lambda x: np.random.random(out.dimensions),
         learning_rule_type=nengo.PES(1e-3),
-        label="encoding2out",   
+        label="encoding2out",
     )
     """
     conn_tn2out = nengo.Connection(
@@ -189,8 +214,8 @@ with nengo.Network(label="mvgg") as model:
 
 """Run in command line mode
 """
-with nengo.Simulator(model) as sim:
+with nengo.Simulator(net) as sim:
     sim.run(5.0)
-    
-plt.plot(sim.trange(), sim.data[weights_p][..., n_encoding])
+
+plt.plot(sim.trange(), sim.data[weights_p][..., n_hidden])
 plt.show()
