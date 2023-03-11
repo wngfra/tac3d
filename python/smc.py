@@ -39,12 +39,13 @@ layer_confs = [
     dict(
         name="hidden_layer",
         n_neurons=n_hidden,
-        recurrent=True,
+        recurrent=False,
         learning_rule=SynapticSampling(),
-        recurrent_learning_rule=SynapticSampling()
+        recurrent_learning_rule=SynapticSampling(),
     ),
     dict(
         name="output_layer",
+        wta=True,
         n_neurons=10,
     ),
 ]
@@ -83,6 +84,7 @@ with nengo.Network(label="smc") as model:
         recurrent = layer_conf.pop("recurrent", False)
         learning_rule = layer_conf.pop("learning_rule", None)
         recurrent_learning_rule = layer_conf.pop("recurrent_learning_rule", None)
+        wta = layer_conf.pop("wta", False)
 
         # Create layer transform
         if "filters" in layer_confs:
@@ -104,6 +106,10 @@ with nengo.Network(label="smc") as model:
                     (shape_in.size, shape_out.size),
                     init=nengo.dists.Gaussian(0.5, 0.1),
                 )
+            if wta:
+                transform_wta = -5 * np.ones(
+                    (shape_out.size, shape_out.size)
+                ) + 5 * np.eye(shape_out.size)
 
             loc = "chip" if on_chip else "host"
 
@@ -128,14 +134,25 @@ with nengo.Network(label="smc") as model:
             probe = nengo.Probe(y, synapse=0.01, label="%s_p" % name)
             layer_probes.append(probe)
 
-        conn = nengo.Connection(x, y, transform=transform, learning_rule_type=learning_rule)
+        conn = nengo.Connection(
+            x, y, transform=transform, learning_rule_type=learning_rule
+        )
         transforms.append(transform)
         connections.append(conn)
 
         if recurrent:
-            conn_recurrent = nengo.Connection(y, x, transform=transform_reccurent, learning_rule_type=recurrent_learning_rule)
+            conn_recurrent = nengo.Connection(
+                y,
+                x,
+                transform=transform_reccurent,
+                learning_rule_type=recurrent_learning_rule,
+            )
             transforms.append(transform_reccurent)
             connections.append(conn_recurrent)
+        if wta:
+            conn_wta = nengo.Connection(y, y, transform=transform_wta)
+            transforms.append(transform_wta)
+            connections.append(conn_wta)
         x = y
         shape_in = shape_out
 
