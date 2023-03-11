@@ -9,34 +9,29 @@ import sensor_msgs.msg
 from mujoco_interfaces.msg import Locus
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
-
-_HEIGHT, _WIDTH = 15, 15
-_SIZE_IN = _HEIGHT * _WIDTH
-UINT8_MAX, UINT8_MIN = np.iinfo(np.uint8).max, np.iinfo(np.uint8).min
-_MAX_RATES = 200
-
-
-def normalize(x, dtype=np.uint8):
-    iinfo = np.iinfo(dtype)
-    if x.max() > x.min():
-        x = (x - x.min()) / (x.max() - x.min()) * (iinfo.max - 1)
-    return x.astype(dtype)
-
-
-def log(node: Node, x):
-    node.get_logger().info("data: {}".format(x))
+from active_touch.net_helper import (
+    _HEIGHT,
+    _WIDTH,
+    _SIZE_IN,
+    default_intercepts,
+    default_neuron,
+    default_transform,
+    layer_confs,
+    normalize,
+)
 
 
 class NMGGP(Node):
     def __init__(self, node_name: str):
         super().__init__(node_name)
-        self._conn: Optional[dict[str, nengo.Connection]] = None
+        self._conns: Optional[list[nengo.Connection]] = None
+        self._probes: Optional[list[nengo.Probe]] = None
+        self._transforms: Optional[list[nengo.transforms.Transform]] = None
         self._net: Optional[nengo.Network] = None
-        self._probe: Optional[dict[str, nengo.Probe]] = None
         self._sim: Optional[nengo.Simulator] = None
         self._tactile_data = np.zeros(_SIZE_IN)
 
-        # Create a Nengo network
+        # Create encoder network
         self.create_network()
 
         self._sub = self.create_subscription(
@@ -60,67 +55,105 @@ class NMGGP(Node):
         self.destroy_subscription(self._sub)
         self.destroy_publisher(self._pub)
 
+    def input_func(self, t):
+        return self._tactile_data.ravel()
+
     def create_network(self):
-        self._conn = dict()
-        self._probe = dict()
+        self._conns = []
+        self._probes = []
+        self._transforms = []
 
         with nengo.Network() as self._net:
-            self._stim = nengo.Node(
-                output=self.input_func, size_in=_SIZE_IN, label="Stimulus Node"
-            )
-            inp = nengo.Ensemble(
-                n_neurons=self._stim.size_out,
-                dimensions=1,
-                radius=1.0,
-                intercepts=nengo.dists.Gaussian(0, 0.1),
-                max_rates=_MAX_RATES * np.ones(self._stim.size_out),
-                neuron_type=nengo.PoissonSpiking(nengo.LIFRate()),
-                label="Input Ensemble",
-            )
-            hidden = nengo.Ensemble(n_neurons=120, dimensions=1)
-            out = nengo.Ensemble(n_neurons=16, dimensions=1)
+            stim = nengo.Node(output=self.input_func, label="Stimulus Node")
+            shape_in = nengo.transforms.ChannelShape((_SIZE_IN,))
+            x = stim
 
-            self._conn["stim2inp"] = nengo.Connection(
-                self._stim,
-                inp.neurons,
-                transform=1,
-                synapse=None,
-                label="stim2inp",
-            )
-            self._conn["inp2hidden"] = nengo.Connection(
-                inp,
-                hidden,
-                learning_rule_type=nengo.PES(learning_rate=1e-4),
-                label="inp2hidden",
-            )
-            self._conn["hidden2output"] = nengo.Connection(
-                hidden,
-                out,
-                learning_rule_type=nengo.PES(learning_rate=1e-4),
-                label="hidden2output",
-            )
+            # Create layers
+            for k, layer_conf in enumerate(layer_confs):
+                layer_conf = dict(layer_conf)  # copy, so we don't modify the original
+                name = layer_conf.pop("name")
+                intercepts = layer_conf.pop("intercepts", default_intercepts)
+                max_rates = layer_conf.pop("max_rates", None)
+                neuron_type = layer_conf.pop("neuron", default_neuron)
+                on_chip = layer_conf.pop("on_chip", True)
+                block = layer_conf.pop("block", None)
+                recurrent = layer_conf.pop("recurrent", False)
+                learning_rule = layer_conf.pop("learning_rule", None)
+                recurrent_learning_rule = layer_conf.pop(
+                    "recurrent_learning_rule", None
+                )
 
-            self._probe["Input Spikes"] = nengo.Probe(
-                inp.neurons, label="Input Spikes", synapse=0.01
-            )
-            self._probe["Hidden Spikes"] = nengo.Probe(
-                hidden.neurons, label="Hidden Spikes", synapse=0.01
-            )
-            self._probe["Output Spikes"] = nengo.Probe(
-                out.neurons, label="Output Spikes", synapse=0.01
-            )
+                # Create layer transform
+                if "filters" in layer_confs:
+                    # Convolutional layer
+                    pass
+                else:
+                    # Dense layer
+                    n_neurons = layer_conf.pop("n_neurons")
+                    shape_out = nengo.transforms.ChannelShape((n_neurons,))
+                    if name != "input_layer":
+                        transform = nengo.Dense(
+                            (shape_out.size, shape_in.size),
+                            init=default_transform,
+                        )
+                    else:
+                        transform = 1
+                    if recurrent:
+                        transform_reccurent = nengo.Dense(
+                            (shape_in.size, shape_out.size),
+                            init=default_transform,
+                        )
 
-    def input_func(self, t, x):
-        return self._tactile_data.ravel()
+                    loc = "chip" if on_chip else "host"
+
+                assert len(layer_conf) == 0, "Unused fields in {}: {}".format(
+                    [name], list(layer_conf)
+                )
+
+                if neuron_type is None:
+                    assert not on_chip, "Nodes can only be run off-chip"
+                    y = nengo.Node(size_in=shape_out.size, label=name)
+                else:
+                    ens = nengo.Ensemble(
+                        shape_out.size,
+                        1,
+                        max_rates=max_rates,
+                        intercepts=intercepts,
+                        neuron_type=neuron_type,
+                        label=name,
+                    )
+                    y = ens.neurons
+
+                    # Add a probe so we can measure individual layer rates
+                    probe = nengo.Probe(y, synapse=0.01, label="%s_p" % name)
+                    self._probes.append(probe)
+
+                conn = nengo.Connection(
+                    x, y, transform=transform, learning_rule_type=learning_rule
+                )
+                self._conns.append(conn)
+                self._transforms.append(transform)
+
+                if recurrent:
+                    conn_recurrent = nengo.Connection(
+                        y,
+                        x,
+                        transform=transform_reccurent,
+                        learning_rule_type=recurrent_learning_rule,
+                    )
+                    self._conns.append(conn_recurrent)
+                    self._transforms.append(transform_reccurent)
+
+                x = y
+                shape_in = shape_out
 
     def run_simulation(self):
         with nengo.Simulator(self._net, progress_bar=False) as self._sim:
             while rclpy.ok():
                 self._sim.run(0.1)
-                output = self._sim.data[self._probe["Input Spikes"]][-1]
+                output = self._sim.data[self._probes[0]][-1]
                 # Publish the tactile percept
-                data = normalize(output)
-                self.publish(data)
+                self.publish(normalize(output))
 
     def publish(self, data: np.ndarray or list):
         if isinstance(data, np.ndarray):

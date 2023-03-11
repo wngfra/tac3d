@@ -7,12 +7,11 @@ from SynapticSampling import SynapticSampling
 from TouchDataset import TouchDataset
 
 _DATAPATH = os.path.join(os.path.dirname(__file__), "../data/touch.pkl")
-_IMAGE_SIZE: Optional[int] = None
 
 # Prepare dataset
 dataset = TouchDataset(_DATAPATH, noise_scale=0.1, scope=(-1.0, 1.0))
 X_train, y_train, X_test, y_test = dataset.split_set(ratio=0.5, shuffle=True)
-_IMAGE_SIZE = X_train[0].size
+image_size = X_train[0].size
 
 # Simulation parameters
 # dt = 1e-3
@@ -32,7 +31,7 @@ default_intercepts = nengo.dists.Choice([0, 0.1])
 layer_confs = [
     dict(
         name="input_layer",
-        n_neurons=_IMAGE_SIZE,
+        n_neurons=image_size,
         max_rates=nengo.dists.Choice([rate_target]),
         neuron=nengo.PoissonSpiking(nengo.LIFRate(amplitude=amp)),
         on_chip=False,
@@ -69,7 +68,7 @@ with nengo.Network(label="smc") as model:
     connections = []
     transforms = []
     layer_probes = []
-    shape_in = nengo.transforms.ChannelShape((_IMAGE_SIZE,))
+    shape_in = nengo.transforms.ChannelShape((image_size,))
     x = stim
 
     # Create layers
