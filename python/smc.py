@@ -1,27 +1,26 @@
 import os
 from typing import Optional
+
 import nengo
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy.stats import multivariate_normal
+from SynapticSampling import SynapticSampling
 from TouchDataset import TouchDataset
-from nengo_extras.graphviz import net_diagram
 
 _DATAPATH = os.path.join(os.path.dirname(__file__), "../data/touch.pkl")
-_IMAGE_DIM: Optional[int] = None
+_IMAGE_SIZE: Optional[int] = None
 
 # Prepare dataset
 dataset = TouchDataset(_DATAPATH, noise_scale=0.1, scope=(-1.0, 1.0))
 X_train, y_train, X_test, y_test = dataset.split_set(ratio=0.5, shuffle=True)
-_IMAGE_DIM = X_train[0].shape[0]
+_IMAGE_SIZE = X_train[0].size
 
 # Simulation parameters
-dt = 1e-3
-max_rate = 150
-amp = 1.0 / max_rate
-rate_target = max_rate  # must be in amplitude scaled units
+# dt = 1e-3
+max_rate = 200
+amp = 200.0 / max_rate
+rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden = 16
+n_hidden = 36
 n_output = 36
 presentation_time = 0.2
 sigma = 10
@@ -33,20 +32,22 @@ default_intercepts = nengo.dists.Choice([0, 0.1])
 layer_confs = [
     dict(
         name="input_layer",
-        n_neurons=_IMAGE_DIM * _IMAGE_DIM,
+        n_neurons=_IMAGE_SIZE,
         max_rates=nengo.dists.Choice([rate_target]),
-        neuron=nengo.PoissonSpiking(nengo.LIFRate()),
+        neuron=nengo.PoissonSpiking(nengo.LIFRate(amplitude=amp)),
         on_chip=False,
     ),
     dict(
         name="hidden_layer",
         n_neurons=n_hidden,
+        recurrent=True,
+        learning_rule=SynapticSampling(),
+        recurrent_learning_rule=SynapticSampling()
     ),
     dict(
         name="output_layer",
-        n_neurons=_IMAGE_DIM * _IMAGE_DIM,
+        n_neurons=10,
     ),
-    dict(name="theta", n_neurons=10, neuron=nengo.SpikingRectifiedLinear()),
 ]
 
 
@@ -68,7 +69,7 @@ with nengo.Network(label="smc") as model:
     connections = []
     transforms = []
     layer_probes = []
-    shape_in = nengo.transforms.ChannelShape((_IMAGE_DIM * _IMAGE_DIM,))
+    shape_in = nengo.transforms.ChannelShape((_IMAGE_SIZE,))
     x = stim
 
     # Create layers
@@ -76,10 +77,13 @@ with nengo.Network(label="smc") as model:
         layer_conf = dict(layer_conf)  # copy, so we don't modify the original
         name = layer_conf.pop("name")
         intercepts = layer_conf.pop("intercepts", default_intercepts)
-        max_rates = layer_conf.pop("max_rates", nengo.dists.Choice([rate_target]))
+        max_rates = layer_conf.pop("max_rates", None)
         neuron_type = layer_conf.pop("neuron", default_neuron)
         on_chip = layer_conf.pop("on_chip", True)
         block = layer_conf.pop("block", None)
+        recurrent = layer_conf.pop("recurrent", False)
+        learning_rule = layer_conf.pop("learning_rule", None)
+        recurrent_learning_rule = layer_conf.pop("recurrent_learning_rule", None)
 
         # Create layer transform
         if "filters" in layer_confs:
@@ -89,13 +93,20 @@ with nengo.Network(label="smc") as model:
             # Dense layer
             n_neurons = layer_conf.pop("n_neurons")
             shape_out = nengo.transforms.ChannelShape((n_neurons,))
-            transform = nengo.Dense(
-                (shape_out.size, shape_in.size),
-                init=nengo.dists.Gaussian(0.5, 0.1),
-            )
+            if name != "input_layer":
+                transform = nengo.Dense(
+                    (shape_out.size, shape_in.size),
+                    init=nengo.dists.Gaussian(0.5, 0.1),
+                )
+            else:
+                transform = 1
+            if recurrent:
+                transform_reccurent = nengo.Dense(
+                    (shape_in.size, shape_out.size),
+                    init=nengo.dists.Gaussian(0.5, 0.1),
+                )
 
             loc = "chip" if on_chip else "host"
-            n_weights = np.prod(transform.shape)
 
         assert len(layer_conf) == 0, "Unused fields in {}: {}".format(
             [name], list(layer_conf)
@@ -118,10 +129,14 @@ with nengo.Network(label="smc") as model:
             probe = nengo.Probe(y, synapse=0.01, label="%s_p" % name)
             layer_probes.append(probe)
 
-        conn = nengo.Connection(x, y, transform=transform)
-
+        conn = nengo.Connection(x, y, transform=transform, learning_rule_type=learning_rule)
         transforms.append(transform)
         connections.append(conn)
+
+        if recurrent:
+            conn_recurrent = nengo.Connection(y, x, transform=transform_reccurent, learning_rule_type=recurrent_learning_rule)
+            transforms.append(transform_reccurent)
+            connections.append(conn_recurrent)
         x = y
         shape_in = shape_out
 
