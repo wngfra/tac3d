@@ -8,8 +8,7 @@
 3. [data](data/) contains the generated touch data of edges.
 4. [piezoresistive_sensor](piezoresistive_sensor/) contains the KiCAD project of the sensor design.
 5. [python](python/) contains the python scripts of data generation (MuJoCo) and tactile encoding study.
-6. [SpikyMotion](https://github.com/wngfra/SpikyMotion) contains the ROS2 server for neuromorphic robotic control.
-7. [tac3d](tac3d/) contains the [ROS2](https://docs.ros.org/en/humble/index.html) packages for active tactile exploration simulation.
+6. [tac3d](tac3d/) contains the [ROS2](https://docs.ros.org/en/humble/index.html) packages for active tactile exploration simulation.
 
 ## Features
 - Intel Loihi support(beta)
