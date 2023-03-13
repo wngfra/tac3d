@@ -27,28 +27,67 @@ sigma = 10
 default_neuron = nengo.AdaptiveLIF(amplitude=amp)
 default_intercepts = nengo.dists.Choice([0, 0.1])
 
-
 layer_confs = [
     dict(
         name="input_layer",
         n_neurons=image_size,
         radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
-        neuron=nengo.AdaptiveLIF(amplitude=amp),
+        neuron=nengo.PoissonSpiking(nengo.LIFRate()),
         on_chip=False,
     ),
     dict(
         name="hidden_layer",
         n_neurons=n_hidden,
         radius=2,
-        recurrent=False,
-        learning_rule=nengo.BCM(1e-9),
+    ),
+    dict(
+        name="reconstruction_layer",
+        n_neurons=image_size,
+        radius=1,
     ),
     dict(
         name="output_layer",
         n_neurons=n_output,
         radius=2,
-        wta="self_cyclic",
+        inhibition="self_cyclic",
+    ),
+]
+
+conn_confs = [
+    dict(
+        pre="stimulus_node",
+        post="input_layer",
+        synapse=None,
+        transform=1,
+        learning_rule=None,
+    ),
+    dict(
+        pre="input_layer",
+        post="hidden_layer",
+        synapse=1e-3,
+        transform=0,
+        learning_rule=nengo.BCM(1e-9),
+    ),
+    dict(
+        pre="hidden_layer",
+        post="reconstruction_layer",
+        synapse=1e-3,
+        transform=0,
+        learning_rule=nengo.BCM(1e-9),
+    ),
+    dict(
+        pre="input_layer",
+        post="reconstruction_layer",
+        synapse=None,
+        transform=-1,
+        learning_rule=None,
+    ),
+    dict(
+        pre="hidden_layer",
+        post="output_layer",
+        synapse=1e-3,
+        transform=0,
         learning_rule=nengo.BCM(1e-9),
     ),
 ]
@@ -61,7 +100,7 @@ def motion_func(t):
     return M
 
 
-def gen_wta_weights(shape, pattern):
+def gen_inh_weights(shape, pattern):
     W: Optional[np.ndarray] = None
     match pattern:
         case "self_uniform":
@@ -81,9 +120,12 @@ def gen_wta_weights(shape, pattern):
 with nengo.Network(label="smc") as model:
     truth = nengo.Node(
         lambda t: y_train[int(t / presentation_time)]
-        - np.floor(y_train[int(t / presentation_time)] / np.pi) * np.pi
+        - np.floor(y_train[int(t / presentation_time)] / np.pi) * np.pi,
+        label="ground_truth_node",
     )
-    stim = nengo.Node(lambda t: X_train[int(t / presentation_time)].ravel())
+    stim = nengo.Node(
+        lambda t: X_train[int(t / presentation_time)].ravel(), label="stimuli_node"
+    )
 
     connections = []
     transforms = []
@@ -105,7 +147,7 @@ with nengo.Network(label="smc") as model:
         recurrent = layer_conf.pop("recurrent", False)
         learning_rule = layer_conf.pop("learning_rule", None)
         recurrent_learning_rule = layer_conf.pop("recurrent_learning_rule", None)
-        wta = layer_conf.pop("wta", False)
+        inhibition = layer_conf.pop("inhibition", None)
 
         # Create layer transform
         if "filters" in layer_confs:
@@ -118,17 +160,19 @@ with nengo.Network(label="smc") as model:
             if name != "input_layer":
                 transform = nengo.Dense(
                     (shape_out.size, shape_in.size),
-                    init=nengo.dists.Gaussian(0., 0.3),
+                    init=nengo.dists.Gaussian(0.0, 0.3),
                 )
             else:
                 transform = 1
             if recurrent:
                 transform_reccurent = nengo.Dense(
                     (shape_in.size, shape_out.size),
-                    init=nengo.dists.Gaussian(0., 0.3),
+                    init=nengo.dists.Gaussian(0.0, 0.3),
                 )
-            if wta:
-                transform_wta = gen_wta_weights((shape_in.size, shape_out.size), wta)
+            if inhibition:
+                transform_wta = gen_inh_weights(
+                    (shape_in.size, shape_out.size), inhibition
+                )
 
             loc = "chip" if on_chip else "host"
 
@@ -160,7 +204,9 @@ with nengo.Network(label="smc") as model:
         transforms.append(transform)
         connections.append(conn)
 
-        probe = nengo.Probe(conn, "weights", synapse=0.01, label="weights2{}".format(name))
+        probe = nengo.Probe(
+            conn, "weights", synapse=0.01, label="weights2{}".format(name)
+        )
         conn_probes.append(probe)
 
         if recurrent:
@@ -172,7 +218,7 @@ with nengo.Network(label="smc") as model:
             )
             transforms.append(transform_reccurent)
             connections.append(conn_recurrent)
-        if wta:
+        if inhibition:
             conn_wta = nengo.Connection(y, y, transform=transform_wta)
             transforms.append(transform_wta)
             connections.append(conn_wta)
