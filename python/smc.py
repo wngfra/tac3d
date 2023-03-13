@@ -9,7 +9,7 @@ from TouchDataset import TouchDataset
 _DATAPATH = os.path.join(os.path.dirname(__file__), "../data/touch.pkl")
 
 # Prepare dataset
-dataset = TouchDataset(_DATAPATH, noise_scale=0.1, scope=(-1.0, 1.0))
+dataset = TouchDataset(_DATAPATH, noise_scale=0.1, scope=(-2.0, 2.0))
 X_train, y_train, X_test, y_test = dataset.split_set(ratio=0.5, shuffle=True)
 image_size = X_train[0].size
 
@@ -19,8 +19,8 @@ max_rate = 200
 amp = 200.0 / max_rate
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden = 36
-n_output = 36
+n_hidden = 18
+n_output = 11  # Odd number of neurons for cyclic interpretation
 presentation_time = 0.2
 sigma = 10
 
@@ -32,21 +32,24 @@ layer_confs = [
     dict(
         name="input_layer",
         n_neurons=image_size,
+        radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
-        neuron=nengo.PoissonSpiking(nengo.LIFRate(amplitude=amp)),
+        neuron=nengo.AdaptiveLIF(amplitude=amp),
         on_chip=False,
     ),
     dict(
         name="hidden_layer",
         n_neurons=n_hidden,
+        radius=2,
         recurrent=False,
-        learning_rule=SynapticSampling(),
-        recurrent_learning_rule=SynapticSampling(),
+        learning_rule=nengo.BCM(1e-9),
     ),
     dict(
         name="output_layer",
-        wta=True,
-        n_neurons=10,
+        n_neurons=n_output,
+        radius=2,
+        wta="self_cyclic",
+        learning_rule=nengo.BCM(1e-9),
     ),
 ]
 
@@ -56,6 +59,22 @@ def motion_func(t):
     M = np.zeros(n_output, dtype=int)
     M[index] = 1
     return M
+
+
+def gen_wta_weights(shape, pattern):
+    W: Optional[np.ndarray] = None
+    match pattern:
+        case "self_uniform":
+            W = np.ones((shape[1], shape[1])) - np.eye(shape[1])
+        case "self_cyclic":
+            xmax = shape[1] // 2
+            x = np.abs(np.arange(shape[1]) - xmax)
+            W = np.empty((shape[1], shape[1]))
+            for i in range(shape[1]):
+                W[i, :] = np.roll(x, i)
+    if W is not None:
+        W *= -1
+    return W
 
 
 # Create the Nengo model
@@ -69,6 +88,7 @@ with nengo.Network(label="smc") as model:
     connections = []
     transforms = []
     layer_probes = []
+    conn_probes = []
     shape_in = nengo.transforms.ChannelShape((image_size,))
     x = stim
 
@@ -78,6 +98,7 @@ with nengo.Network(label="smc") as model:
         name = layer_conf.pop("name")
         intercepts = layer_conf.pop("intercepts", default_intercepts)
         max_rates = layer_conf.pop("max_rates", None)
+        radius = layer_conf.pop("radius", 1.0)
         neuron_type = layer_conf.pop("neuron", default_neuron)
         on_chip = layer_conf.pop("on_chip", True)
         block = layer_conf.pop("block", None)
@@ -97,19 +118,17 @@ with nengo.Network(label="smc") as model:
             if name != "input_layer":
                 transform = nengo.Dense(
                     (shape_out.size, shape_in.size),
-                    init=nengo.dists.Gaussian(0.5, 0.1),
+                    init=nengo.dists.Gaussian(0., 0.3),
                 )
             else:
                 transform = 1
             if recurrent:
                 transform_reccurent = nengo.Dense(
                     (shape_in.size, shape_out.size),
-                    init=nengo.dists.Gaussian(0.5, 0.1),
+                    init=nengo.dists.Gaussian(0., 0.3),
                 )
             if wta:
-                transform_wta = -5 * np.ones(
-                    (shape_out.size, shape_out.size)
-                ) + 5 * np.eye(shape_out.size)
+                transform_wta = gen_wta_weights((shape_in.size, shape_out.size), wta)
 
             loc = "chip" if on_chip else "host"
 
@@ -124,6 +143,7 @@ with nengo.Network(label="smc") as model:
             ens = nengo.Ensemble(
                 shape_out.size,
                 1,
+                radius=radius,
                 intercepts=intercepts,
                 neuron_type=neuron_type,
                 label=name,
@@ -135,10 +155,13 @@ with nengo.Network(label="smc") as model:
             layer_probes.append(probe)
 
         conn = nengo.Connection(
-            x, y, transform=transform, learning_rule_type=learning_rule
+            x, y, transform=transform, learning_rule_type=learning_rule, synapse=0.01
         )
         transforms.append(transform)
         connections.append(conn)
+
+        probe = nengo.Probe(conn, "weights", synapse=0.01, label="weights2{}".format(name))
+        conn_probes.append(probe)
 
         if recurrent:
             conn_recurrent = nengo.Connection(
@@ -158,6 +181,17 @@ with nengo.Network(label="smc") as model:
 
 
 """Run in command line mode
-"""
+
 with nengo.Simulator(model) as sim:
-    sim.run(5.0)
+    sim.run(10.0)
+
+
+import matplotlib.pyplot as plt
+plt.figure(figsize=(12, 8))
+plt.subplot(1, 1, 1)
+# Find weight row with max variance
+neuron = np.argmax(np.mean(np.var(sim.data[conn_probes[1]], axis=0), axis=1))
+plt.plot(sim.trange(), sim.data[conn_probes[1]][..., neuron])
+plt.ylabel("Connection weight")
+plt.show()
+"""

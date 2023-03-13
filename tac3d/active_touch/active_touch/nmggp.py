@@ -10,15 +10,16 @@ from mujoco_interfaces.msg import Locus
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
 from active_touch.net_helper import (
-    _HEIGHT,
-    _WIDTH,
-    _SIZE_IN,
+    HEIGHT,
+    WIDTH,
     default_intercepts,
     default_neuron,
     default_transform,
     layer_confs,
     normalize,
 )
+
+_SIZE_IN = HEIGHT*WIDTH
 
 
 class NMGGP(Node):
@@ -161,11 +162,11 @@ class NMGGP(Node):
         msg = sensor_msgs.msg.Image()
         msg.header.frame_id = "world"
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.height = _HEIGHT
-        msg.width = _WIDTH
+        msg.height = HEIGHT
+        msg.width = WIDTH
         msg.encoding = "mono8"
         msg.is_bigendian = True
-        msg.step = _WIDTH
+        msg.step = WIDTH
         msg.data = data
         self._pub.publish(msg)
 
