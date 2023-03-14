@@ -1,7 +1,0 @@
-string[] site_name
-float64[] desired_position
-float64[] desired_quaternion
----
-string ik_result
-float64[] position_error
-float64[] quaternion_error

@@ -1,4 +1,0 @@
-string[] joint_name
-float64[] desired_position
----
-float64[] position_error

@@ -8,12 +8,15 @@ import rclpy
 import sensor_msgs.msg
 import std_msgs.msg
 from mujoco import viewer
-from mujoco_interfaces.msg import Locus, RobotState
-from mujoco_interfaces.srv import IKMoveSite, MoveJoint
-from rclpy.lifecycle import Node, Publisher, State, TransitionCallbackReturn
-from rclpy.service import Service
+from mujoco_interfaces.msg import Locus, MotorSignal, RobotState
+from rclpy.lifecycle import (
+    Node,
+    Publisher,
+    State,
+    TransitionCallbackReturn,
+)
 from rclpy.timer import Timer
-from rclpy.qos import qos_profile_sensor_data
+from rclpy.qos import qos_profile_sensor_data, QoSProfile
 from scipy.spatial.transform import Rotation as R
 
 _DEFAULT_XML_PATH = "/workspace/src/tac3d/models/scene.xml"
@@ -70,8 +73,7 @@ class Simulator(Node):
         self._img_pub: Optional[Publisher] = None
         self._locus_pub: Optional[Publisher] = None
         self._rs_pub: Optional[Publisher] = None
-        self._ikmovesite_srv: Optional[Service] = None
-        self._movejoint_srv: Optional[Service] = None
+        self._ms_sub: Optional[Subscription] = None
         self._timer: Optional[Timer] = None
         self._m: Optional[mujoco.MjModel] = None
         self._d: Optional[mujoco.MjData] = None
@@ -107,6 +109,9 @@ class Simulator(Node):
         """
         mujoco.set_mjcb_control(controller_callback)
 
+    def motor_control(self, msg):
+        pass
+
     def reset_simulator(self, key_id: int):
         """Reset the MjData key frame by id.
 
@@ -115,30 +120,6 @@ class Simulator(Node):
         """
         mujoco.mj_resetDataKeyframe(self._m, self._d, key_id)
         mujoco.mj_forward(self._m, self._d)
-
-    def ik_move_site(self, request, response):
-        """Move site in the Cartesian space to the target pose via IK solver.
-
-        Args:
-            request (_type_): _description_
-            response (_type_): _description_
-
-        Returns:
-            _type_: _description_
-        """
-        return response
-
-    def move_joint(self, request, response):
-        """Move joint position.
-
-        Args:
-            request (_type_): _description_
-            response (_type_): _description_
-
-        Returns:
-            _type_: _description_
-        """
-        return response
 
     def publish_sensordata(self):
         """Publish a new message when enabled."""
@@ -233,17 +214,15 @@ class Simulator(Node):
             "mujoco_simulator/robot_state",
             qos_profile_sensor_data,
         )
+        # Create motor signal subscription
+        self._ms_sub = self.create_subscription(
+            MotorSignal,
+            "mujoco_simulator/motor_signal",
+            self.motor_control,
+            qos_profile_sensor_data,
+        )
         # Create sensor data timer for the above publishers
         self._timer_ = self.create_timer(1.0 / self.rate, self.publish_sensordata)
-
-        # Create the IK move site service
-        self._ikmovesite_srv = self.create_service(
-            IKMoveSite, "mujoco_simulator/ik_move_site", self.ik_move_site
-        )
-        # Create the move joint service
-        self._movejoint_srv = self.create_service(
-            MoveJoint, "mujoco_simulator/move_joint", self.move_joint
-        )
 
         return TransitionCallbackReturn.SUCCESS
 

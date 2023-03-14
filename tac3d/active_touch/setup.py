@@ -22,7 +22,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'nmggp = active_touch.nmggp:main'
+            'tactile_encoding = active_touch.tactile_encoding:main'
         ],
     },
 )

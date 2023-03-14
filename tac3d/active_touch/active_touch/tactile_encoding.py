@@ -1,4 +1,3 @@
-import pdb
 import threading
 from typing import Optional
 
@@ -9,10 +8,11 @@ import sensor_msgs.msg
 from mujoco_interfaces.msg import Locus
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
-from active_touch.net_helper import (
+from active_touch.tacnet_helper import (
     image_height,
     image_width,
     image_size,
+    n_encoding,
     layer_confs,
     conn_confs,
     normalize,
@@ -22,7 +22,7 @@ from active_touch.net_helper import (
 default_intercepts = nengo.dists.Choice([0, 0.1])
 
 
-class NMGGP(Node):
+class TactileEncoding(Node):
     def __init__(self, node_name: str):
         super().__init__(node_name)
         self._layers: Optional[list[nengo.Node | nengo.Ensemble]] = None
@@ -35,14 +35,17 @@ class NMGGP(Node):
         # Create encoder network
         self.create_network()
 
-        self._sub = self.create_subscription(
+        self._sensor_sub = self.create_subscription(
             Locus,
             "mujoco_simulator/tactile_sensor",
             self.subscribe,
             qos_profile_sensor_data,
         )
-        self._pub = self.create_publisher(
-            sensor_msgs.msg.Image, "active_touch/tactile_encoding", 10
+        self._img_pub = self.create_publisher(
+            sensor_msgs.msg.Image, "active_touch/tacnet_output", 10
+        )
+        self._encoding_pub = self.create_publisher(
+            Locus, "active_touch/tacnet_encoding", 10
         )
 
         # Start the threaded Nengo simulation
@@ -53,8 +56,8 @@ class NMGGP(Node):
 
     def __del__(self):
         self._simulator_thread.join()
-        self.destroy_subscription(self._sub)
-        self.destroy_publisher(self._pub)
+        self.destroy_subscription(self._sensor_sub)
+        self.destroy_publisher(self._img_pub)
 
     def input_func(self, t):
         return self._tactile_data.ravel()
@@ -64,7 +67,7 @@ class NMGGP(Node):
         self._conns = dict()
         self._probes = dict()
 
-        with nengo.Network("active touch") as self._net:
+        with nengo.Network("tacnet") as self._net:
             stim = nengo.Node(output=self.input_func, label="stimulus_node")
             self._layers["stimulus_node"] = stim
 
@@ -143,22 +146,33 @@ class NMGGP(Node):
             while rclpy.ok():
                 self._sim.run(0.1)
                 output = self._sim.data[self._probes["output_layer"]][-1]
-                # Publish the tactile percept
-                self.publish(normalize(output))
+                encoding = self._sim.data[self._probes["encoding_layer"]][-1]
+                # Publish the reconstruction
+                self.publish(output, encoding)
 
-    def publish(self, data: np.ndarray or list):
-        if isinstance(data, np.ndarray):
-            data = data.tolist()
-        msg = sensor_msgs.msg.Image()
-        msg.header.frame_id = "world"
-        msg.header.stamp = self.get_clock().now().to_msg()
-        msg.height = image_height
-        msg.width = image_width
-        msg.encoding = "mono8"
-        msg.is_bigendian = True
-        msg.step = image_width
-        msg.data = data
-        self._pub.publish(msg)
+    def publish(self, image: np.ndarray | list, encoding: np.ndarray | list):
+        image = normalize(image)
+        if isinstance(image, np.ndarray):
+            image = image.tolist()
+        img_msg = sensor_msgs.msg.Image()
+        img_msg.header.frame_id = "world"
+        img_msg.header.stamp = self.get_clock().now().to_msg()
+        img_msg.height = image_height
+        img_msg.width = image_width
+        img_msg.encoding = "mono8"
+        img_msg.is_bigendian = True
+        img_msg.step = image_width
+        img_msg.data = image
+        self._img_pub.publish(img_msg)
+
+        if isinstance(encoding, np.ndarray):
+            encoding = encoding.tolist()
+        ec_msg = Locus()
+        ec_msg.header = img_msg.header
+        ec_msg.height = n_encoding
+        ec_msg.width = 1
+        ec_msg.data = encoding
+        self._encoding_pub.publish(ec_msg)
 
     def subscribe(self, msg: Locus):
         # Update the tactile data
@@ -169,7 +183,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     executor = rclpy.executors.MultiThreadedExecutor()
-    node = NMGGP("nmggp_node")
+    node = TactileEncoding("tactile_encoding_node")
     executor.add_node(node)
     try:
         executor.spin()

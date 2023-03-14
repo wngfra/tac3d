@@ -3,4 +3,4 @@
 
 import rclpy
 
-from active_touch.nmggp import NMGGP
+from active_touch.tactile_encoding import TactileEncoding

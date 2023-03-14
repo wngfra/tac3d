@@ -39,11 +39,11 @@ def generate_launch_description():
         on_exit=[wait_for_mj_sim_node_handler],
     )
 
-    # Sensorimotor coupling node
-    sm_node = Node(
+    # Tactile encoding node
+    te_node = Node(
         package="active_touch",
         name="sensorimotor_node",
-        executable="nmggp",
+        executable="tactile_encoding",
         namespace="tac3d",
         output="screen",
         on_exit=[wait_for_mj_sim_node_handler],
@@ -51,6 +51,6 @@ def generate_launch_description():
 
     ld.add_action(mj_sim_node)
     ld.add_action(rqt_node)
-    #ld.add_action(sm_node)
+    ld.add_action(te_node)
 
     return ld

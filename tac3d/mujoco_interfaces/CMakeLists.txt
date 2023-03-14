@@ -12,12 +12,11 @@ find_package(std_msgs REQUIRED)
 
 set(msg_files
   "msg/Locus.msg"
+  "msg/MotorSignal.msg"
   "msg/RobotState.msg"
 )
 
 set(srv_files
-  "srv/IKMoveSite.srv"
-  "srv/MoveJoint.srv"
 )
 
 rosidl_generate_interfaces(${PROJECT_NAME}

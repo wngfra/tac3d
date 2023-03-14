@@ -13,7 +13,7 @@ _RATE_TARGET = _MAX_RATE * _AMP
 
 # Network params
 n_hidden = 32
-n_output = 11  # Odd number of neurons for cyclic interpretation
+n_encoding = 11  # Odd number of neurons for cyclic interpretation
 default_neuron = nengo.AdaptiveLIF(amplitude=_AMP)
 
 
@@ -29,7 +29,6 @@ def log(node, x):
 
 
 def gen_transform(pattern="random"):
-    # TODO fix shape mismatch
     W: Optional[np.ndarray] = None
 
     def inner(shape):
@@ -84,8 +83,8 @@ layer_confs = [
     ),
     dict(name="output_layer", n_neurons=image_size, radius=1, neuron=default_neuron),
     dict(
-        name="coding_layer",
-        n_neurons=n_output,
+        name="encoding_layer",
+        n_neurons=n_encoding,
         radius=2,
         neuron=default_neuron,
     ),
@@ -117,12 +116,12 @@ conn_confs = [
     ),
     dict(
         pre="hidden_layer",
-        post="coding_layer",
+        post="encoding_layer",
         learning_rule=nengo.BCM(1e-9),
     ),
     dict(
-        pre="coding_layer",
-        post="coding_layer",
+        pre="encoding_layer",
+        post="encoding_layer",
         transform=gen_transform("cyclic_inhibition"),
     ),
 ]

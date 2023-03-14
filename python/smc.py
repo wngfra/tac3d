@@ -8,7 +8,6 @@ from TouchDataset import TouchDataset
 
 
 def gen_transform(pattern="random"):
-    # TODO fix shape mismatch
     W: Optional[np.ndarray] = None
 
     def inner(shape):
@@ -22,15 +21,18 @@ def gen_transform(pattern="random"):
         match pattern:
             case "identity_exhibition":
                 W = 1
+            case "identity_inhibition":
+                W = 1
             case "uniform_inhibition":
-                W = np.ones((shape[1], shape[0])) - np.eye(shape[1])
+                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
+                W = np.ones((shape[0], shape[0])) - np.eye(shape[0])
             case "cyclic_inhibition":
+                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
                 xmax = shape[1] // 2
-                x = np.abs(np.arange(shape[1]) - xmax)
-                W = np.empty((shape[0], shape[1]))
-                for i in range(shape[1]):
+                x = np.abs(np.arange(shape[0]) - xmax)
+                W = np.empty((shape[0], shape[0]))
+                for i in range(shape[0]):
                     W[i, :] = np.roll(x, i)
-
             case _:
                 W = nengo.Dense(
                     shape,
@@ -217,17 +219,17 @@ with nengo.Network(label="smc") as model:
 
 
 """Run in command line mode
-
+"""
 with nengo.Simulator(model) as sim:
     sim.run(10.0)
 
-
+conn_name = "conn_{}-{}".format("hidden_layer", "coding_layer")
 import matplotlib.pyplot as plt
 plt.figure(figsize=(12, 8))
 plt.subplot(1, 1, 1)
 # Find weight row with max variance
-neuron = np.argmax(np.mean(np.var(sim.data[conn_probes[1]], axis=0), axis=1))
-plt.plot(sim.trange(), sim.data[conn_probes[1]][..., neuron])
+neuron = np.argmax(np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1))
+plt.plot(sim.trange(), sim.data[probes[conn_name]][..., neuron])
 plt.ylabel("Connection weight")
 plt.show()
-"""
+
