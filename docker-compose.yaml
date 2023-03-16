@@ -11,9 +11,9 @@ volumes:
 
 
 services:
-  sensorimotor_simulation:
+  mujoco_sim:
     image: wngfra/ros2:cuda
-    container_name: sensorimotor_simulation_container
+    container_name: mujoco_sim_container
     working_dir: /workspace
     volumes:
       - *default-data
@@ -36,17 +36,3 @@ services:
       interval: 10s
       timeout: 3s
       retries: 1
-
-  dev:
-    image: wngfra/ros2:cuda
-    container_name: dev_container
-    working_dir: /workspace
-    volumes:
-      - *default-data
-      - shared-volume:/workspace
-      - ${PWD}/scripts/dev.sh:/workspace/dev.sh
-    command: [ "bash", "dev.sh" ]
-    depends_on:
-      - sensorimotor_simulation
-    stdin_open: true
-    tty: true

@@ -27,6 +27,8 @@ _HEIGHT, _WIDTH = 15, 15
 _TIMER_RATE = 200
 _IKSITE_TYPE = 2
 _SITE_NAME = "attachment_site"
+_MS_FIELD = ["x", "y", "z", "roll", "pitch", "yaw"]
+_CONTROL_STEP = [1e-3, 1e-3, 1e-3, 1e-5, 1e-5, 1e-5]
 
 
 class Simulator(Node):
@@ -49,22 +51,20 @@ class Simulator(Node):
         self._ms_sub: Optional[Subscription] = None
         self._timer: Optional[Timer] = None
 
-        # Deques to store motor signals
-        self._msd = dict(
-            exc=deque(maxlen=20),
-            inh=deque(maxlen=20),
-        )
+        # Store motor controls
+        self._ctrls = deque(maxlen=20)
+        self._default_ctrl: Optional[np.ndarray] = None
 
         if self.trigger_configure() == TransitionCallbackReturn.SUCCESS:
             self.trigger_activate()
 
     @property
     def m(self):
-        return weakref.ref(self._m)
+        return weakref.proxy(self._m)
 
     @property
     def d(self):
-        return weakref.ref(self._d)
+        return weakref.proxy(self._d)
 
     @property
     def sensordata(self):
@@ -76,20 +76,15 @@ class Simulator(Node):
 
     def controller_callback(self, m: mujoco.MjModel, d: mujoco.MjData):
         """Controller callback function to set motor signals."""
-        cmd = 0.0
-        if len(self._msd["exc"]) > 0:
-            exc = self._msd["exc"].pop()
-            cmd += exc
-        if len(self._msd["inh"]) > 0:
-            inh = self._msd["inh"].pop()
-            cmd -= inh
-        if cmd != 0:
+        if len(self._ctrls) > 0:
+            cmd = self._ctrls.pop()
             # TODO finish IK call
+            """
             target_xmat = self.d.site(_SITE_NAME).xmat
             target_quat = np.empty(4, dtype=self.d.qpos.dtype)
             mujoco.mju_mat2Quat(target_quat, target_xmat)
             joint_names = ["joint{}".format(i + 1) for i in range(7)]
-            target_pos = self.d.site(_SITE_NAME).xpos
+            target_pos = self.d.site(_SITE_NAME).xpos + _CONTROL_STEP * cmd
             result = qpos_from_site_xpos(
                 self.m,
                 self.d,
@@ -99,8 +94,8 @@ class Simulator(Node):
                 joint_names=joint_names,
             )
             d.ctrl = result.qpos[:7]
-        else:
-            d.ctrl = 0
+            """
+            d.ctrl[:6] += _CONTROL_STEP * cmd
 
     def reset_simulator(self, key_id: int):
         """Reset the MjData key frame by id.
@@ -110,10 +105,19 @@ class Simulator(Node):
         """
         mujoco.mj_resetDataKeyframe(self._m, self._d, key_id)
         mujoco.mj_forward(self._m, self._d)
+        self._default_ctrl = self._d.ctrl
 
     def install_control(self, msg):
-        self._msd["exc"].appendleft(msg.exitatory_signals)
-        self._msd["inh"].appendleft(msg.inhibitory_signals)
+        """Install the control if there is at least one non-zero command.
+
+        Args:
+            msg (mujoco_interfaces.msg.MotorSignal): 6D MotorSignal message
+        """
+        ctrl = np.zeros(6)
+        for i, attr in enumerate(_MS_FIELD):
+            ctrl[i] = getattr(msg, attr)
+        if np.any(ctrl):
+            self._ctrls.appendleft(ctrl)
 
     def publish_sensordata(self):
         """Publish a new message when enabled."""
@@ -146,7 +150,7 @@ class Simulator(Node):
         IKSite_ids = [
             i for i in range(self._m.nsite) if self._m.site(i).type == _IKSITE_TYPE
         ]
-        rs_msg._SITE_NAME = [self._m.site(j).name for j in IKSite_ids]
+        rs_msg.site_name = [self._m.site(j).name for j in IKSite_ids]
         rs_msg.site_position = self._d.site_xpos[IKSite_ids].flatten().tolist()
         rs_msg.site_quaternion = (
             np.asarray(
@@ -169,9 +173,9 @@ class Simulator(Node):
 
         Returns:
             TransitionCallbackReturn: The state machine either invokes a transition to the "inactive" state or stays in "unconfigured" depending on the return value.
-                                      TransitionCallbackReturn.SUCCESS transitions to "inactive".
-                                      TransitionCallbackReturn.FAILURE transitions to "unconfigured".
-                                      TransitionCallbackReturn.ERROR or any uncaught exceptions to "errorprocessing"
+            TransitionCallbackReturn.SUCCESS transitions to "inactive".
+            TransitionCallbackReturn.FAILURE transitions to "unconfigured".
+            TransitionCallbackReturn.ERROR or any uncaught exceptions to "errorprocessing"
         """
         try:
             self._m = mujoco.MjModel.from_xml_path(self._xml_path)
@@ -206,7 +210,7 @@ class Simulator(Node):
         self._rs_pub = self.create_lifecycle_publisher(
             RobotState,
             "mujoco_simulator/robot_state",
-            qos_profile_sensor_data,
+            20,
         )
         # Create motor signal subscription
         self._ms_sub = self.create_subscription(
@@ -224,22 +228,22 @@ class Simulator(Node):
         """Activate the node, after a activating transition is requested.
 
         Args:
-            state (State): _description_
+            state (State): Previous state.
 
         Returns:
             TransitionCallbackReturn: _description_
         """
         self._viewer_thread.start()
         self.get_logger().info("Simulation started successfully.")
-        controller = self.controller_callback(self._m, self._d)
-        mujoco.set_mjcb_control(controller)
+        callback = self.controller_callback
+        mujoco.set_mjcb_control(callback)
         return super().on_activate(state)
 
     def on_error(self, state: State) -> TransitionCallbackReturn:
         """_summary_
 
         Args:
-            state (State): _description_
+            state (State): Previous state.
 
         Returns:
             TransitionCallbackReturn: _description_
@@ -248,24 +252,28 @@ class Simulator(Node):
         return TransitionCallbackReturn.ERROR
 
     def on_shutdown(self, state: State) -> TransitionCallbackReturn:
-        """Shut down the node, after a shuttingdown transition is requested.
+        """Shutdown the node and threads, and remove MuJoCo objects, after a shuttingdown transition is requested.
 
         Args:
-            state (State): _description_
+            state (State): Previous state.
 
         Returns:
-            TransitionCallbackReturn: _description_
+            TransitionCallbackReturn: SUCCESS
         """
-        self.get_logger().info("Node is shutting down.")
-        self.destroy_publisher(self._locus_pub)
-        self.destroy_timer(self._timer)
+        try:
+            self.get_logger().info("Node is shutting down.")
+            self.destroy_publisher(self._locus_pub)
+            self.destroy_timer(self._timer)
 
-        self._viewer_thread.join()
+            self._viewer_thread.join()
 
-        del self._m
-        del self._d
+            del self._m
+            del self._d
 
-        return TransitionCallbackReturn.SUCCESS
+            return TransitionCallbackReturn.SUCCESS
+        except Exception as e:
+            self.get_logger().error("Failed to shutdown the node {}".format(e))
+            return TransitionCallbackReturn.FAILURE
 
 
 def main(args=None):
