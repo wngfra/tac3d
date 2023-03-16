@@ -114,7 +114,7 @@ def qpo_from_site_xpos(
 
 
 def nullspace_method(jac_joints, delta, regularization_strength=0.0):
-    """alculates the joint velocities to achieve a specified end effector delta.
+    """Calculates the joint velocities to achieve a specified end effector delta.
     Args:
       jac_joints: The Jacobian of the end effector with respect to the joints. A
         numpy array of shape `(ndelta, nv)`, where `ndelta` is the size of `delta`

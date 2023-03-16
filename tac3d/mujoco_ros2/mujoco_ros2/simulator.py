@@ -26,9 +26,7 @@ _DEFAULT_XML_PATH = "/workspace/src/tac3d/models/scene.xml"
 _HEIGHT, _WIDTH = 15, 15
 _TIMER_RATE = 200
 _IKSITE_TYPE = 2
-_SITE_NAME = "attachment_site"
-_MS_FIELD = ["x", "y", "z", "roll", "pitch", "yaw"]
-_CONTROL_STEP = [1e-3, 1e-3, 1e-3, 1e-5, 1e-5, 1e-5]
+_CONTROL_STEP = 1e-3
 
 
 class Simulator(Node):
@@ -76,26 +74,10 @@ class Simulator(Node):
 
     def controller_callback(self, m: mujoco.MjModel, d: mujoco.MjData):
         """Controller callback function to set motor signals."""
+        # TODO include IK, numerical IK iteration is too slow for spiking control
         if len(self._ctrls) > 0:
             cmd = self._ctrls.pop()
-            # TODO finish IK call
-            """
-            target_xmat = self.d.site(_SITE_NAME).xmat
-            target_quat = np.empty(4, dtype=self.d.qpos.dtype)
-            mujoco.mju_mat2Quat(target_quat, target_xmat)
-            joint_names = ["joint{}".format(i + 1) for i in range(7)]
-            target_pos = self.d.site(_SITE_NAME).xpos + _CONTROL_STEP * cmd
-            result = qpos_from_site_xpos(
-                self.m,
-                self.d,
-                _SITE_NAME,
-                target_pos=target_pos,
-                target_quat=target_quat,
-                joint_names=joint_names,
-            )
-            d.ctrl = result.qpos[:7]
-            """
-            d.ctrl[:6] += _CONTROL_STEP * cmd
+            d.ctrl[: len(cmd)] += _CONTROL_STEP * cmd
 
     def reset_simulator(self, key_id: int):
         """Reset the MjData key frame by id.
@@ -113,11 +95,9 @@ class Simulator(Node):
         Args:
             msg (mujoco_interfaces.msg.MotorSignal): 6D MotorSignal message
         """
-        ctrl = np.zeros(6)
-        for i, attr in enumerate(_MS_FIELD):
-            ctrl[i] = getattr(msg, attr)
-        if np.any(ctrl):
-            self._ctrls.appendleft(ctrl)
+        signal = msg.spike_signal
+        if np.any(signal):
+            self._ctrls.appendleft(signal)
 
     def publish_sensordata(self):
         """Publish a new message when enabled."""

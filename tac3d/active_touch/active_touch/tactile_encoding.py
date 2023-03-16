@@ -81,9 +81,6 @@ class TactileEncoding(Node):
                 radius = layer_conf.pop("radius", 1.0)
                 neuron_type = layer_conf.pop("neuron")
                 on_chip = layer_conf.pop("on_chip", True)
-                block = layer_conf.pop("block", None)
-                learning_rule = layer_conf.pop("learning_rule", None)
-                loc = "chip" if on_chip else "host"
 
                 assert len(layer_conf) == 0, "Unused fields in {}: {}".format(
                     [name], list(layer_conf)
@@ -99,6 +96,7 @@ class TactileEncoding(Node):
                         1,
                         radius=radius,
                         intercepts=intercepts,
+                        max_rates=max_rates,
                         neuron_type=neuron_type,
                         label=name,
                     )
@@ -120,7 +118,7 @@ class TactileEncoding(Node):
                 name = "conn_{}-{}".format(pre, post)
 
                 assert len(conn_conf) == 0, "Unused fields in {}: {}".format(
-                    [name], list(layer_conf)
+                    [name], list(conn_conf)
                 )
 
                 conn = nengo.Connection(
