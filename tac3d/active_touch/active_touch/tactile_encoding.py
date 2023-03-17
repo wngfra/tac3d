@@ -130,7 +130,6 @@ class TactileEncoding(Node):
                     synapse=synapse,
                     label=name,
                 )
-                # transforms[name] = transform
                 self._conns[name] = name
 
                 probe = nengo.Probe(

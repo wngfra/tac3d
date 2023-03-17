@@ -176,6 +176,7 @@ class Simulator(Node):
             .flatten()
             .tolist()
         )
+        rs_msg.n_contacts = self._d.ncon
         self._rs_pub.publish(rs_msg)
 
     def on_configure(self, state: State) -> TransitionCallbackReturn:

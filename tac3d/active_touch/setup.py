@@ -23,7 +23,7 @@ setup(
     entry_points={
         'console_scripts': [
             'tactile_encoding = active_touch.tactile_encoding:main',
-            'cartesian_motion = active_touch.cartesian_motion:main'
+            'cortex = active_touch.cortex:main'
         ],
     },
 )

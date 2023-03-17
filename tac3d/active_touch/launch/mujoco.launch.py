@@ -1,5 +1,5 @@
 from launch import LaunchDescription
-from launch.actions import RegisterEventHandler, TimerAction
+from launch.actions import RegisterEventHandler
 from launch.event_handlers import OnProcessStart
 from launch_ros.actions import LifecycleNode
 from launch_ros.actions import Node
@@ -31,10 +31,10 @@ def generate_launch_description():
 
     # rqt visualization node
     rqt_node = Node(
-        package="rqt_image_view",
-        name="rqt_visualization_node",
-        executable="rqt_image_view",
-        parameters=[{"topic": "/tact3d/mujoco_simulator/tactile_image"}],
+        package="rviz2",
+        name="rviz2_node",
+        executable="rviz2",
+        # parameters=[{"topic": "/tact3d/mujoco_simulator/tactile_image"}],
         namespace="tac3d",
         on_exit=[wait_for_mj_sim_node_handler],
     )
@@ -42,7 +42,7 @@ def generate_launch_description():
     # Tactile encoding node
     te_node = Node(
         package="active_touch",
-        name="sensorimotor_node",
+        name="tactile_encoding_node",
         executable="tactile_encoding",
         namespace="tac3d",
         output="screen",

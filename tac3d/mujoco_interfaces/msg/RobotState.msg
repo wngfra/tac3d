@@ -6,3 +6,5 @@ float64[] joint_velocity
 string[] site_name
 float64[] site_position
 float64[] site_quaternion
+
+uint32 n_contacts
