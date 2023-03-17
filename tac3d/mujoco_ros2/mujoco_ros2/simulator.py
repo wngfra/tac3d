@@ -1,7 +1,8 @@
 import threading
 import weakref
 from collections import deque
-from typing import Optional
+from dataclasses import dataclass
+from typing import Any, Optional
 
 import mujoco
 import numpy as np
@@ -18,15 +19,28 @@ from rclpy.lifecycle import (
 )
 from rclpy.subscription import Subscription
 from rclpy.timer import Timer
-from rclpy.qos import qos_profile_sensor_data
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy
 from scipy.spatial.transform import Rotation as R
-from mujoco_ros2.sim_helper import normalize, qpo_from_site_xpos
+from mujoco_ros2.sim_helper import normalize, nullspace_method
 
 _DEFAULT_XML_PATH = "/workspace/src/tac3d/models/scene.xml"
 _HEIGHT, _WIDTH = 15, 15
 _TIMER_RATE = 200
 _IKSITE_TYPE = 2
 _CONTROL_STEP = 1e-3
+_QOS_PROFILE = QoSProfile(depth=20, reliability=QoSReliabilityPolicy.RELIABLE)
+
+_SITE_NAME = "attachment_site"
+_JOINTS = ["joint%d" % (i + 1) for i in range(7)]
+
+
+@dataclass
+class IK_Solver:
+    jac: np.ndarray = None
+    jacp: np.ndarray = None
+    jacr: np.ndarray = None
+    site_id: int = None
+    dof_indices: np.ndarray = None
 
 
 class Simulator(Node):
@@ -72,12 +86,32 @@ class Simulator(Node):
     def time(self):
         return self._d.time
 
+    def init_ik(self):
+        self.ik = IK_Solver()
+
+        dtype = self._d.qpos.dtype
+        self.ik.jac = np.empty((6, self._m.nv), dtype=dtype)
+        self.ik.jacp, self.ik.jacr = self.ik.jac[:3], self.ik.jac[3:]
+        self.ik.site_id = mujoco.mj_name2id(
+            self._m, mujoco.mjtObj.mjOBJ_SITE, _SITE_NAME
+        )
+
+        indexer = [self._m.joint(jn).jntid for jn in _JOINTS]
+        self.ik.dof_indices = np.asarray(indexer).flatten()
+
     def controller_callback(self, m: mujoco.MjModel, d: mujoco.MjData):
         """Controller callback function to set motor signals."""
-        # TODO include IK, numerical IK iteration is too slow for spiking control
         if len(self._ctrls) > 0:
             cmd = self._ctrls.pop()
-            d.ctrl[: len(cmd)] += _CONTROL_STEP * cmd
+
+            # Compute IK
+            mujoco.mj_jacSite(m, d, self.ik.jacp, self.ik.jacr, self.ik.site_id)
+            jac_joints = self.ik.jac[:, self.ik.dof_indices]
+            update_joints = nullspace_method(
+                jac_joints, cmd, regularization_strength=1e-2
+            )
+
+            # d.ctrl[: len(cmd)] += _CONTROL_STEP * cmd
 
     def reset_simulator(self, key_id: int):
         """Reset the MjData key frame by id.
@@ -95,7 +129,7 @@ class Simulator(Node):
         Args:
             msg (mujoco_interfaces.msg.MotorSignal): 6D MotorSignal message
         """
-        signal = msg.spike_signal
+        signal = np.asarray(msg.spike_signal)
         if np.any(signal):
             self._ctrls.appendleft(signal)
 
@@ -178,29 +212,31 @@ class Simulator(Node):
         self._img_pub = self.create_lifecycle_publisher(
             sensor_msgs.msg.Image,
             "mujoco_simulator/tactile_image",
-            qos_profile_sensor_data,
+            _QOS_PROFILE,
         )
         # Create tactile signal (locus) publisher
         self._locus_pub = self.create_lifecycle_publisher(
             Locus,
             "mujoco_simulator/tactile_sensor",
-            qos_profile_sensor_data,
+            _QOS_PROFILE,
         )
         # Create robot state publisher
         self._rs_pub = self.create_lifecycle_publisher(
             RobotState,
             "mujoco_simulator/robot_state",
-            20,
+            _QOS_PROFILE,
         )
         # Create motor signal subscription
         self._ms_sub = self.create_subscription(
             MotorSignal,
             "mujoco_simulator/motor_signal",
             self.install_control,
-            qos_profile_sensor_data,
+            _QOS_PROFILE,
         )
         # Create sensor data timer for the above publishers
         self._timer = self.create_timer(1.0 / _TIMER_RATE, self.publish_sensordata)
+
+        self.init_ik()
 
         return TransitionCallbackReturn.SUCCESS
 

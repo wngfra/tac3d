@@ -9,6 +9,8 @@ from mujoco_interfaces.msg import Locus
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
 from active_touch.tacnet_helper import (
+    default_intercepts,
+    default_rates,
     image_height,
     image_width,
     image_size,
@@ -18,9 +20,6 @@ from active_touch.tacnet_helper import (
     normalize,
     gen_transform,
 )
-
-default_intercepts = nengo.dists.Choice([0, 0.1])
-
 
 class TactileEncoding(Node):
     def __init__(self, node_name: str):
@@ -77,7 +76,7 @@ class TactileEncoding(Node):
                 name = layer_conf.pop("name")
                 n_neurons = layer_conf.pop("n_neurons")
                 intercepts = layer_conf.pop("intercepts", default_intercepts)
-                max_rates = layer_conf.pop("max_rates", None)
+                max_rates = layer_conf.pop("max_rates", default_rates)
                 radius = layer_conf.pop("radius", 1.0)
                 neuron_type = layer_conf.pop("neuron")
                 on_chip = layer_conf.pop("on_chip", True)

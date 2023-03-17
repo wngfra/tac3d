@@ -8,13 +8,14 @@ image_size = image_height * image_width
 
 # Constants
 _MAX_RATE = 150
-_AMP = 1.0 / _MAX_RATE
-_RATE_TARGET = _MAX_RATE * _AMP
+_AMP = 1.0
 
 # Network params
 n_hidden = 32
 n_encoding = 11  # Odd number of neurons for cyclic interpretation
-default_neuron = nengo.AdaptiveLIF(amplitude=_AMP)
+default_neuron = nengo.AdaptiveLIF()
+default_rates = nengo.dists.Choice([_MAX_RATE])
+default_intercepts = nengo.dists.Choice([0, 0.1])
 
 
 def normalize(x, dtype=np.uint8):
@@ -71,7 +72,6 @@ layer_confs = [
         name="input_layer",
         n_neurons=image_size,
         radius=1,
-        max_rates=nengo.dists.Choice([_RATE_TARGET]),
         neuron=nengo.PoissonSpiking(nengo.LIFRate()),
         on_chip=False,
     ),
