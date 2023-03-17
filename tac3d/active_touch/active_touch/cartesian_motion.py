@@ -1,4 +1,3 @@
-import sys
 import numpy as np
 import rclpy
 import std_msgs.msg
@@ -7,6 +6,9 @@ from rclpy.qos import QoSProfile
 from rclpy.qos import QoSReliabilityPolicy
 
 from mujoco_interfaces.msg import MotorSignal
+
+_FREQ = 1000
+t = 0
 
 
 class CartesianMotion(Node):
@@ -17,15 +19,29 @@ class CartesianMotion(Node):
             MotorSignal, "/tac3d/mujoco_simulator/motor_signal", qos_profile
         )
 
-        timer_period = 0.1
+        timer_period = 1.0 / _FREQ
         self.tmr = self.create_timer(timer_period, self.timer_callback)
 
     def timer_callback(self):
+        global t
+        t += 0.1
         msg = MotorSignal()
         msg.header = std_msgs.msg.Header()
         msg.header.frame_id = "world"
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.spike_signal = np.ones(6, dtype=np.float64).tolist()
+
+        signal = np.array(
+            [
+                np.random.normal(0, 0.5, size=1),
+                np.random.normal(0, 0.5, size=1),
+                np.random.normal(0, 0.5, size=1),
+                0,
+                0,
+                0,
+            ],
+            dtype=np.float64,
+        )
+        msg.spike_signal = signal.tolist()
         self.pub.publish(msg)
 
 

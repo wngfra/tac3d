@@ -27,7 +27,7 @@ _DEFAULT_XML_PATH = "/workspace/src/tac3d/models/scene.xml"
 _HEIGHT, _WIDTH = 15, 15
 _TIMER_RATE = 200
 _IKSITE_TYPE = 2
-_CONTROL_STEP = 1e-3
+_ERR_SCALE = 1e-3
 _QOS_PROFILE = QoSProfile(depth=20, reliability=QoSReliabilityPolicy.RELIABLE)
 
 _SITE_NAME = "attachment_site"
@@ -102,16 +102,16 @@ class Simulator(Node):
     def controller_callback(self, m: mujoco.MjModel, d: mujoco.MjData):
         """Controller callback function to set motor signals."""
         if len(self._ctrls) > 0:
-            cmd = self._ctrls.pop()
+            err = self._ctrls.pop() * _ERR_SCALE
 
             # Compute IK
             mujoco.mj_jacSite(m, d, self.ik.jacp, self.ik.jacr, self.ik.site_id)
             jac_joints = self.ik.jac[:, self.ik.dof_indices]
             update_joints = nullspace_method(
-                jac_joints, cmd, regularization_strength=1e-2
+                jac_joints, err, regularization_strength=1e-2
             )
 
-            # d.ctrl[: len(cmd)] += _CONTROL_STEP * cmd
+            d.ctrl[: len(update_joints)] += update_joints
 
     def reset_simulator(self, key_id: int):
         """Reset the MjData key frame by id.
