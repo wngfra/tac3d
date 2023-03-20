@@ -54,13 +54,13 @@ image_size = X_train[0].size
 
 # Simulation parameters
 # dt = 1e-3
-max_rate = 200
+max_rate = 100
 amp = 1.0 / max_rate
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
 n_hidden = 32
 n_output = 11  # Odd number of neurons for cyclic interpretation
-presentation_time = 0.5
+presentation_time = 0.2
 
 default_neuron = nengo.AdaptiveLIF(amplitude=amp)
 default_intercepts = nengo.dists.Choice([0, 0.1])
@@ -103,6 +103,7 @@ conn_confs = [
         pre="input_layer",
         post="hidden_layer",
         learning_rule=nengo.BCM(1e-9),
+        synapse=0.1,
     ),
     dict(
         pre="hidden_layer",
@@ -157,7 +158,7 @@ with nengo.Network(label="smc") as model:
         name = layer_conf.pop("name")
         n_neurons = layer_conf.pop("n_neurons")
         intercepts = layer_conf.pop("intercepts", default_intercepts)
-        max_rates = layer_conf.pop("max_rates", None)
+        max_rates = layer_conf.pop("max_rates", nengo.dists.Choice([max_rate]))
         radius = layer_conf.pop("radius", 1.0)
         neuron_type = layer_conf.pop("neuron", default_neuron)
         on_chip = layer_conf.pop("on_chip", True)
