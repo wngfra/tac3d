@@ -3,6 +3,7 @@ from typing import Optional
 
 import nengo
 import numpy as np
+import matplotlib.pyplot as plt
 from SynapticSampling import SynapticSampling
 from TouchDataset import TouchDataset
 
@@ -22,10 +23,10 @@ def gen_transform(pattern="random"):
             case "identity_exhibition":
                 W = 1
             case "identity_inhibition":
-                W = 1
+                W = -1
             case "uniform_inhibition":
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
-                W = np.ones((shape[0], shape[0])) - np.eye(shape[0])
+                W = -np.ones((shape[0], shape[0])) + 2 * np.eye(shape[0])
             case "cyclic_inhibition":
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
                 xmax = shape[1] // 2
@@ -33,13 +34,13 @@ def gen_transform(pattern="random"):
                 W = np.empty((shape[0], shape[0]))
                 for i in range(shape[0]):
                     W[i, :] = np.roll(x, i)
+                W = -W
+                W[W == 0] = 1
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Gaussian(0.1, 0.2),
+                    init=nengo.dists.Gaussian(0, 1),
                 )
-        if "inhibition" in pattern:
-            W *= -1
         return W
 
     return inner
@@ -48,82 +49,96 @@ def gen_transform(pattern="random"):
 _DATAPATH = os.path.join(os.path.dirname(__file__), "../data/touch.pkl")
 
 # Prepare dataset
-dataset = TouchDataset(_DATAPATH, noise_scale=0.1, scope=(-2.0, 2.0))
+dataset = TouchDataset(_DATAPATH, noise_scale=0.1, scope=(-1, 1))
 X_train, y_train, X_test, y_test = dataset.split_set(ratio=0.5, shuffle=True)
+height, width = X_train[0].shape
 image_size = X_train[0].size
 
 # Simulation parameters
-# dt = 1e-3
+dt = 1e-3
 max_rate = 100
 amp = 1.0 / max_rate
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
 n_hidden = 32
-n_output = 11  # Odd number of neurons for cyclic interpretation
-presentation_time = 0.2
+n_output = 35
+presentation_time = 0.5
 
-default_neuron = nengo.AdaptiveLIF(amplitude=amp)
+default_neuron = nengo.AdaptiveLIF()
 default_intercepts = nengo.dists.Choice([0, 0.1])
+alpha = 1e-7
+
 
 layer_confs = [
     dict(
-        name="input_layer",
+        name="angles",
+        neuron=None,
+        output=lambda t: y_train[int(t / presentation_time)]
+        - np.floor(y_train[int(t / presentation_time)] / np.pi) * np.pi,
+    ),
+    dict(
+        name="stimulus",
+        neuron=None,
+        output=lambda t: X_train[int(t / presentation_time)].ravel(),
+    ),
+    dict(
+        name="input",
+        neuron=nengo.PoissonSpiking(nengo.AdaptiveLIFRate()),
         n_neurons=image_size,
         radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
-        neuron=nengo.PoissonSpiking(nengo.LIFRate()),
         on_chip=False,
     ),
     dict(
-        name="hidden_layer",
+        name="hidden",
         n_neurons=n_hidden,
-        radius=2,
+        dimensions=2,
+        radius=2**(height//2)
     ),
     dict(
-        name="output_layer",
+        name="output",
         n_neurons=image_size,
         radius=1,
     ),
     dict(
-        name="coding_layer",
+        name="coding",
         n_neurons=n_output,
-        radius=2,
+        radius=np.pi,
+    ),
+    dict(
+        name="coding_wta",
+        n_neurons=n_output,
+        radius=1,
     ),
 ]
 
 conn_confs = [
     dict(
-        pre="stimulus_node",
-        post="input_layer",
+        pre="stimulus",
+        post="input",
         synapse=None,
         transform=gen_transform("identity_exhibition"),
         learning_rule=None,
     ),
     dict(
-        pre="input_layer",
-        post="hidden_layer",
-        learning_rule=nengo.BCM(1e-9),
+        pre="input",
+        post="hidden",
+        solver=nengo.solvers.LstsqL2nz(weights=True),
+        learning_rule=nengo.BCM(alpha),
         synapse=0.1,
     ),
     dict(
-        pre="hidden_layer",
-        post="output_layer",
-        learning_rule=nengo.BCM(1e-9),
+        pre="hidden",
+        post="output",
     ),
     dict(
-        pre="input_layer",
-        post="output_layer",
-        transform=gen_transform("uniform_inhibition"),
-        learning_rule=None,
+        pre="hidden",
+        post="coding",
+        synapse=0.01,
     ),
     dict(
-        pre="hidden_layer",
-        post="coding_layer",
-        learning_rule=nengo.BCM(1e-9),
-    ),
-    dict(
-        pre="coding_layer",
-        post="coding_layer",
+        pre="coding",
+        post="coding_wta",
         transform=gen_transform("cyclic_inhibition"),
     ),
 ]
@@ -142,29 +157,20 @@ with nengo.Network(label="smc") as model:
     connections = dict()
     probes = dict()
 
-    truth = nengo.Node(
-        lambda t: y_train[int(t / presentation_time)]
-        - np.floor(y_train[int(t / presentation_time)] / np.pi) * np.pi,
-        label="ground_truth_node",
-    )
-    stim = nengo.Node(
-        lambda t: X_train[int(t / presentation_time)].ravel(), label="stimulus_node"
-    )
-    layers["stimulus_node"] = stim
-
     # Create layers
     for k, layer_conf in enumerate(layer_confs):
         layer_conf = dict(layer_conf)  # Copy layer configuration
         name = layer_conf.pop("name")
-        n_neurons = layer_conf.pop("n_neurons")
+        n_neurons = layer_conf.pop("n_neurons", 1)
+        dimensions = layer_conf.pop("dimensions", 1)
         intercepts = layer_conf.pop("intercepts", default_intercepts)
         max_rates = layer_conf.pop("max_rates", nengo.dists.Choice([max_rate]))
         radius = layer_conf.pop("radius", 1.0)
         neuron_type = layer_conf.pop("neuron", default_neuron)
-        on_chip = layer_conf.pop("on_chip", True)
+        on_chip = layer_conf.pop("on_chip", False)
         block = layer_conf.pop("block", None)
-        learning_rule = layer_conf.pop("learning_rule", None)
-        loc = "chip" if on_chip else "host"
+        output = layer_conf.pop("output", None)
+        size_in = layer_conf.pop("size_in", None)
 
         assert len(layer_conf) == 0, "Unused fields in {}: {}".format(
             [name], list(layer_conf)
@@ -172,12 +178,13 @@ with nengo.Network(label="smc") as model:
 
         if neuron_type is None:
             assert not on_chip, "Nodes can only be run off-chip"
-            layer = nengo.Node(size_in=n_neurons, label=name)
+
+            layer = nengo.Node(output=output, size_in=size_in, label=name)
             layers[name] = layer
         else:
             layer = nengo.Ensemble(
                 n_neurons,
-                1,
+                dimensions=dimensions,
                 radius=radius,
                 intercepts=intercepts,
                 neuron_type=neuron_type,
@@ -194,24 +201,28 @@ with nengo.Network(label="smc") as model:
         pre = conn_conf.pop("pre")
         post = conn_conf.pop("post")
         synapse = conn_conf.pop("synapse", 0)
+        solver = conn_conf.pop("solver", None)
         transform = conn_conf.pop("transform", gen_transform())
         learning_rule = conn_conf.pop("learning_rule", None)
         name = "conn_{}-{}".format(pre, post)
+        function = conn_conf.pop("function", None)
 
         assert len(conn_conf) == 0, "Unused fields in {}: {}".format(
             [name], list(layer_conf)
         )
-        
+
         conn = nengo.Connection(
             layers[pre],
             layers[post],
+            function=function,
             transform=transform((layers[post].size_in, layers[pre].size_in)),
-            learning_rule_type=learning_rule,
             synapse=synapse,
             label=name,
         )
-        # transforms[name] = transform
-        connections[name] = name
+        if solver:
+            conn.solver = solver
+            conn.learning_rule_type = learning_rule
+        connections[name] = conn
 
         probe = nengo.Probe(
             conn, "weights", synapse=0.01, label="weights_{}".format(name)
@@ -224,13 +235,13 @@ with nengo.Network(label="smc") as model:
 with nengo.Simulator(model) as sim:
     sim.run(10.0)
 
-conn_name = "conn_{}-{}".format("hidden_layer", "coding_layer")
-import matplotlib.pyplot as plt
+conn_name = "conn_{}-{}".format("hidden", "coding")
+
+
 plt.figure(figsize=(12, 8))
-plt.subplot(1, 1, 1)
+plt.subplot(2, 1, 1)
 # Find weight row with max variance
 neuron = np.argmax(np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1))
 plt.plot(sim.trange(), sim.data[probes[conn_name]][..., neuron])
 plt.ylabel("Connection weight")
 plt.show()
-

@@ -69,21 +69,25 @@ def gen_transform(pattern="random"):
 
 layer_confs = [
     dict(
-        name="input_layer",
+        name="stimulus",
+        neuron=None,
+    ),
+    dict(
+        name="input",
         n_neurons=image_size,
         radius=1,
         neuron=nengo.PoissonSpiking(nengo.LIFRate()),
         on_chip=False,
     ),
     dict(
-        name="hidden_layer",
+        name="hidden",
         n_neurons=n_hidden,
         neuron=default_neuron,
         radius=2,
     ),
-    dict(name="output_layer", n_neurons=image_size, radius=1, neuron=default_neuron),
+    dict(name="output", n_neurons=image_size, radius=1, neuron=default_neuron),
     dict(
-        name="encoding_layer",
+        name="encoding",
         n_neurons=n_encoding,
         radius=2,
         neuron=default_neuron,
@@ -93,35 +97,35 @@ layer_confs = [
 conn_confs = [
     dict(
         pre="stimulus_node",
-        post="input_layer",
+        post="input",
         synapse=None,
         transform=gen_transform("identity_exhibition"),
         learning_rule=None,
     ),
     dict(
-        pre="input_layer",
-        post="hidden_layer",
+        pre="input",
+        post="hidden",
         learning_rule=nengo.BCM(1e-9),
     ),
     dict(
-        pre="hidden_layer",
-        post="output_layer",
+        pre="hidden",
+        post="output",
         learning_rule=nengo.BCM(1e-9),
     ),
     dict(
-        pre="input_layer",
-        post="output_layer",
+        pre="input",
+        post="output",
         transform=gen_transform("identity_inhibition"),
         learning_rule=None,
     ),
     dict(
-        pre="hidden_layer",
-        post="encoding_layer",
+        pre="hidden",
+        post="encoding",
         learning_rule=nengo.BCM(1e-9),
     ),
     dict(
-        pre="encoding_layer",
-        post="encoding_layer",
+        pre="encoding",
+        post="encoding",
         transform=gen_transform("cyclic_inhibition"),
     ),
 ]

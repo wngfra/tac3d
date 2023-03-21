@@ -67,9 +67,6 @@ class TactileEncoding(Node):
         self._probes = dict()
 
         with nengo.Network("tacnet") as self._net:
-            stim = nengo.Node(output=self.input_func, label="stimulus_node")
-            self._layers["stimulus_node"] = stim
-
             # Create layers
             for k, layer_conf in enumerate(layer_confs):
                 layer_conf = dict(layer_conf)  # Copy layer configuration
@@ -79,7 +76,8 @@ class TactileEncoding(Node):
                 max_rates = layer_conf.pop("max_rates", default_rates)
                 radius = layer_conf.pop("radius", 1.0)
                 neuron_type = layer_conf.pop("neuron")
-                on_chip = layer_conf.pop("on_chip", True)
+                on_chip = layer_conf.pop("on_chip", False)
+                output = layer_conf.pop("output", None)
 
                 assert len(layer_conf) == 0, "Unused fields in {}: {}".format(
                     [name], list(layer_conf)
@@ -87,7 +85,9 @@ class TactileEncoding(Node):
 
                 if neuron_type is None:
                     assert not on_chip, "Nodes can only be run off-chip"
-                    layer = nengo.Node(size_in=n_neurons, label=name)
+                    if not output:
+                        output = self.input_func
+                    layer = nengo.Node(output=output, label=name)
                     self._layers[name] = layer
                 else:
                     layer = nengo.Ensemble(
