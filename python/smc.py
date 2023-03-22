@@ -39,7 +39,7 @@ def gen_transform(pattern="random"):
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Gaussian(0, 1),
+                    init=nengo.dists.Gaussian(0, 1e-3),
                 )
         return W
 
@@ -60,13 +60,13 @@ max_rate = 100
 amp = 1.0 / max_rate
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden = 32
+n_hidden = 36
 n_output = 35
-presentation_time = 0.5
+presentation_time = 0.2
 
 default_neuron = nengo.AdaptiveLIF()
 default_intercepts = nengo.dists.Choice([0, 0.1])
-alpha = 1e-7
+alpha = 1e-9
 
 
 layer_confs = [
@@ -83,7 +83,6 @@ layer_confs = [
     ),
     dict(
         name="input",
-        neuron=nengo.PoissonSpiking(nengo.AdaptiveLIFRate()),
         n_neurons=image_size,
         radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
@@ -93,7 +92,8 @@ layer_confs = [
         name="hidden",
         n_neurons=n_hidden,
         dimensions=2,
-        radius=2**(height//2)
+        radius=1,
+        max_rates=nengo.dists.Choice([rate_target]),
     ),
     dict(
         name="output",
@@ -103,7 +103,7 @@ layer_confs = [
     dict(
         name="coding",
         n_neurons=n_output,
-        radius=np.pi,
+        radius=1,
     ),
     dict(
         name="coding_wta",
@@ -123,8 +123,6 @@ conn_confs = [
     dict(
         pre="input",
         post="hidden",
-        solver=nengo.solvers.LstsqL2nz(weights=True),
-        learning_rule=nengo.BCM(alpha),
         synapse=0.1,
     ),
     dict(
@@ -188,6 +186,7 @@ with nengo.Network(label="smc") as model:
                 radius=radius,
                 intercepts=intercepts,
                 neuron_type=neuron_type,
+                normalize_encoders=True,
                 label=name,
             )
             layers[name] = layer.neurons
@@ -235,7 +234,7 @@ with nengo.Network(label="smc") as model:
 with nengo.Simulator(model) as sim:
     sim.run(10.0)
 
-conn_name = "conn_{}-{}".format("hidden", "coding")
+conn_name = "conn_{}-{}".format("input", "hidden")
 
 
 plt.figure(figsize=(12, 8))
