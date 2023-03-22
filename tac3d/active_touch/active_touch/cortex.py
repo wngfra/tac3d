@@ -1,12 +1,15 @@
+from collections import deque
+
 import numpy as np
 import rclpy
 import std_msgs.msg
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
 from rclpy.qos import QoSReliabilityPolicy
-
+from scipy.spatial.transform import Rotation as R
 from mujoco_interfaces.msg import Locus, MotorSignal, RobotState
 
+_SIM_RATE = 200
 _FREQ = 100
 t = 0
 
@@ -15,9 +18,10 @@ class Cortex(Node):
     def __init__(self, qos_profile):
         super().__init__("cortex_node")
         self._is_contacted = False
-        
+        self._ee_pose = deque(maxlen=int(_SIM_RATE * 0.2))
+
         self.i = 0
-        
+
         # Motor signal publisher
         self._ms_pub = self.create_publisher(
             MotorSignal, "mujoco_simulator/motor_signal", qos_profile
@@ -35,6 +39,12 @@ class Cortex(Node):
         self.tmr = self.create_timer(timer_period, self.timer_callback)
 
     def subscribe_rs(self, msg):
+        xpos = msg.site_position
+        xquat = msg.site_quaternion
+        xrpy = R.from_quat(xquat).as_euler("xyz", degrees=True)
+        pose = np.concatenate([xpos, xrpy])
+        self._ee_pose.appendleft(pose)
+
         if msg.n_contacts > 0:
             self._is_contacted = True
         else:
@@ -53,9 +63,9 @@ class Cortex(Node):
 
         signal = np.zeros(6, dtype=np.float64)
         if not self._is_contacted:
-            signal[2] -= 0.1
+            signal[2] -= np.exp(-3e-2 * t)
         else:
-            signal[:2] += np.random.normal(0, 2, 2)
+            signal[-1] += 1
         msg.spike_signal = signal.tolist()
         self._ms_pub.publish(msg)
 

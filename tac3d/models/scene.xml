@@ -30,7 +30,7 @@
     <body name="floral_geom" pos="0.6 0 0" euler="0 0 0">
       <inertial mass="4.970684" pos="0 0 0" fullinertia="0.70337 0.70661 0.0091170 -0.00013900 0.0067720 0.019169" />
       <geom mesh="floral_geom" rgba=".8 0 0 1" class="visual" />
-      <geom name="floral_geom" mesh="floral_geom" class="collision" />
+      <geom name="floral_geom" mesh="floral_geom" condim="4" friction="1e-3 1e-3 1e-4" class="collision" />
     </body>
   </worldbody>
 
