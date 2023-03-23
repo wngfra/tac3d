@@ -13,6 +13,16 @@ font = {"weight": "normal", "size": 30}
 matplotlib.rc("font", **font)
 
 
+class Delay:
+    def __init__(self, dimensions, timesteps=50):
+        self.history = np.zeros((timesteps, dimensions))
+
+    def step(self, t, x):
+        self.history = np.roll(self.history, -1)
+        self.history[-1] = x
+        return self.history[0]
+
+
 def gen_transform(pattern="random"):
     W: Optional[np.ndarray] = None
 
@@ -41,21 +51,15 @@ def gen_transform(pattern="random"):
                     W[i, :] = np.roll(x, i)
                 W = -W
                 W[W == 0] = 1
-                W *= 1
+                W *= 0.2
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Gaussian(0, 1),
+                    init=nengo.dists.Gaussian(0, 0.1),
                 )
         return W
 
     return inner
-
-
-def wta_func(x):
-    y = np.zeros_like(x)
-    y[np.argmax(x)] = 1
-    return y
 
 
 _DATAPATH = os.path.join(os.path.dirname(__file__), "../data/touch.pkl")
@@ -72,21 +76,48 @@ max_rate = 100
 amp = 1.0 / max_rate
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden = 25
-n_output = 35
-presentation_time = 0.2
+n_hidden = 64
+n_coding = 35
+presentation_time = 0.01
 
 default_neuron = nengo.AdaptiveLIF()
 default_intercepts = nengo.dists.Choice([0, 0.1])
 alpha = 1e-9
-
+delay = Delay(1, timesteps=int(0.1 / dt))
 
 layer_confs = [
     dict(
-        name="angles",
+        name="state",
         neuron=None,
         output=lambda t: y_train[int(t / presentation_time)]
         - np.floor(y_train[int(t / presentation_time)] / np.pi) * np.pi,
+    ),
+    dict(
+        name="state_ens",
+        n_neurons=10,
+        neuron=nengo.LIF(),
+        dimensions=1,
+        radius=np.pi,
+    ),
+    dict(
+        name="delayed_state",
+        neuron=None,
+        output=delay.step,
+        size_in=1,
+    ),
+    dict(
+        name="delayed_state_ens",
+        n_neurons=10,
+        neuron=nengo.LIF(),
+        dimensions=1,
+        radius=np.pi,
+    ),
+    dict(
+        name="delta_state_ens",
+        n_neurons=10,
+        dimensions=1,
+        neuron=nengo.LIF(),
+        radius=np.pi,  
     ),
     dict(
         name="stimulus",
@@ -94,61 +125,79 @@ layer_confs = [
         output=lambda t: X_train[int(t / presentation_time)].ravel(),
     ),
     dict(
-        name="input",
+        name="stim_ens",
         n_neurons=image_size,
+        dimensions=1,
         radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
         on_chip=False,
     ),
     dict(
-        name="hidden",
+        name="hidden_ens",
         n_neurons=n_hidden,
         dimensions=1,
         radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
     ),
     dict(
-        name="output",
+        name="output_ens",
         n_neurons=image_size,
         radius=1,
     ),
     dict(
-        name="coding",
-        n_neurons=n_output,
-        dimensions=n_output,
+        name="coding_ens",
+        n_neurons=n_coding,
+        dimensions=2,
         radius=1,
-    )
+    ),
 ]
 
 conn_confs = [
+    # state variable: angle
+    dict(
+        pre="state",
+        post="state_ens",
+        transform=gen_transform("identity_exhibition"),
+    ),
+    dict(
+        pre="state",
+        post="delayed_state",
+        transform=gen_transform("identity_exhibition"),
+    ),
+    dict(
+        pre="delayed_state",
+        post="delayed_state_ens",
+        transform=gen_transform("identity_exhibition"),
+    ),
+    dict(
+        pre="state_ens",
+        post="delta_state_ens",
+        transform=gen_transform("identity_exhibition"),
+    ),
+    dict(
+        pre="delayed_state_ens",
+        post="delta_state_ens",
+        transform=gen_transform("identity_inhibition"),
+    ),
     dict(
         pre="stimulus",
-        post="input",
-        synapse=0,
+        post="stim_ens_neurons",
         transform=gen_transform("identity_exhibition"),
-        learning_rule=None,
     ),
     dict(
-        pre="input",
-        post="hidden",
+        pre="stim_ens_neurons",
+        post="hidden_ens_neurons",
         synapse=0.01,
     ),
     dict(
-        pre="hidden",
-        post="output",
-        synapse=0,
+        pre="hidden_ens_neurons",
+        post="output_ens_neurons",
     ),
     dict(
-        pre="hidden",
-        post="coding",
+        pre="hidden_ens_neurons",
+        post="coding_ens_neurons",
         synapse=0.01,
     ),
-    dict(
-        pre="coding",
-        post="coding",
-        transform=gen_transform("cyclic_inhibition"),
-        synapse=6e-3,
-    )
 ]
 
 
@@ -185,7 +234,7 @@ with nengo.Network(label="smc") as model:
 
             layer = nengo.Node(output=output, size_in=size_in, label=name)
             layers[name] = layer
-            probe = nengo.Probe(layer, synapse=0.01, label="%s_node_probe" % name)
+            probe = nengo.Probe(layer, synapse=0.01, label="%s_probe" % name)
             probes[name] = probe
         else:
             layer = nengo.Ensemble(
@@ -198,13 +247,15 @@ with nengo.Network(label="smc") as model:
                 normalize_encoders=True,
                 label=name,
             )
-            layers[name] = layer.neurons
-            layers[name + "_ens"] = layer
+            layers[name] = layer
+            layers[name + "_neurons"] = layer.neurons
 
             # Add a probe so we can measure individual layer rates
-            probe = nengo.Probe(layer, synapse=0.01, label="%s_spike_probe" % name)
+            probe = nengo.Probe(layer, synapse=0.01, label="%s_probe" % name)
             probes[name] = probe
-            probe = nengo.Probe(layers[name], synapse=0.01, label="%s_probe" % name)
+            probe = nengo.Probe(
+                layer.neurons, synapse=0.01, label="%s_neurons_probe" % name
+            )
             probes[name + "_neurons"] = probe
 
     for k, conn_conf in enumerate(conn_confs):
@@ -215,7 +266,7 @@ with nengo.Network(label="smc") as model:
         solver = conn_conf.pop("solver", None)
         transform = conn_conf.pop("transform", gen_transform())
         learning_rule = conn_conf.pop("learning_rule", None)
-        name = "conn_{}-{}".format(pre, post)
+        name = "{}2{}".format(pre, post)
         function = conn_conf.pop("function", None)
 
         assert len(conn_conf) == 0, "Unused fields in {}: {}".format(
@@ -232,6 +283,7 @@ with nengo.Network(label="smc") as model:
         )
         if solver:
             conn.solver = solver
+        if learning_rule:
             conn.learning_rule_type = learning_rule
         connections[name] = conn
 
@@ -246,8 +298,8 @@ with nengo.Network(label="smc") as model:
 with nengo.Simulator(model) as sim:
     sim.run(10.0)
 
-conn_name = "conn_{}-{}".format("hidden", "coding")
-layer_name = "coding_neurons"
+conn_name = "{}2{}".format("hidden_ens", "coding_ens")
+layer_name = "hidden_ens"
 label_name = "angles"
 
 plt.figure(figsize=(12, 8))

@@ -65,7 +65,8 @@ class Cortex(Node):
         if not self._is_contacted:
             signal[2] -= np.exp(-3e-2 * t)
         else:
-            signal[-1] += 1
+            signal[0] += np.sin(t)*3
+            signal[1] += np.cos(t)*2 
         msg.spike_signal = signal.tolist()
         self._ms_pub.publish(msg)
 
