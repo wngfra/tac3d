@@ -96,7 +96,7 @@ layer_confs = [
 
 conn_confs = [
     dict(
-        pre="stimulus_node",
+        pre="stimulus",
         post="input",
         synapse=None,
         transform=gen_transform("identity_exhibition"),

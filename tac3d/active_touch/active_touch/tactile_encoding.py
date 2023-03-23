@@ -21,6 +21,7 @@ from active_touch.tacnet_helper import (
     gen_transform,
 )
 
+
 class TactileEncoding(Node):
     def __init__(self, node_name: str):
         super().__init__(node_name)
@@ -71,7 +72,7 @@ class TactileEncoding(Node):
             for k, layer_conf in enumerate(layer_confs):
                 layer_conf = dict(layer_conf)  # Copy layer configuration
                 name = layer_conf.pop("name")
-                n_neurons = layer_conf.pop("n_neurons")
+                n_neurons = layer_conf.pop("n_neurons", 0)
                 intercepts = layer_conf.pop("intercepts", default_intercepts)
                 max_rates = layer_conf.pop("max_rates", default_rates)
                 radius = layer_conf.pop("radius", 1.0)
@@ -83,7 +84,7 @@ class TactileEncoding(Node):
                     [name], list(layer_conf)
                 )
 
-                if neuron_type is None:
+                if neuron_type is None or n_neurons == 0:
                     assert not on_chip, "Nodes can only be run off-chip"
                     if not output:
                         output = self.input_func
@@ -141,8 +142,8 @@ class TactileEncoding(Node):
         with nengo.Simulator(self._net, progress_bar=False) as self._sim:
             while rclpy.ok():
                 self._sim.run(0.1)
-                output = self._sim.data[self._probes["output_layer"]][-1]
-                encoding = self._sim.data[self._probes["encoding_layer"]][-1]
+                output = self._sim.data[self._probes["output"]][-1]
+                encoding = self._sim.data[self._probes["encoding"]][-1]
                 # Publish the reconstruction
                 self.publish(output, encoding)
 
