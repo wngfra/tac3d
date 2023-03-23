@@ -41,15 +41,21 @@ def gen_transform(pattern="random"):
                     W[i, :] = np.roll(x, i)
                 W = -W
                 W[W == 0] = 1
-                W *= 0.2
+                W *= 1
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Gaussian(0, 0.1),
+                    init=nengo.dists.Gaussian(0, 1),
                 )
         return W
 
     return inner
+
+
+def wta_func(x):
+    y = np.zeros_like(x)
+    y[np.argmax(x)] = 1
+    return y
 
 
 _DATAPATH = os.path.join(os.path.dirname(__file__), "../data/touch.pkl")
@@ -66,7 +72,7 @@ max_rate = 100
 amp = 1.0 / max_rate
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden = 49
+n_hidden = 25
 n_output = 35
 presentation_time = 0.2
 
@@ -109,15 +115,16 @@ layer_confs = [
     dict(
         name="coding",
         n_neurons=n_output,
+        dimensions=n_output,
         radius=1,
-    ),
+    )
 ]
 
 conn_confs = [
     dict(
         pre="stimulus",
         post="input",
-        synapse=None,
+        synapse=0,
         transform=gen_transform("identity_exhibition"),
         learning_rule=None,
     ),
@@ -129,6 +136,7 @@ conn_confs = [
     dict(
         pre="hidden",
         post="output",
+        synapse=0,
     ),
     dict(
         pre="hidden",
@@ -139,16 +147,9 @@ conn_confs = [
         pre="coding",
         post="coding",
         transform=gen_transform("cyclic_inhibition"),
-        synapse=0,
+        synapse=6e-3,
     )
 ]
-
-
-def motion_func(t):
-    index = np.random.randint(0, n_output, size=1)
-    M = np.zeros(n_output, dtype=int)
-    M[index] = 1
-    return M
 
 
 # Create the Nengo model
@@ -198,6 +199,7 @@ with nengo.Network(label="smc") as model:
                 label=name,
             )
             layers[name] = layer.neurons
+            layers[name + "_ens"] = layer
 
             # Add a probe so we can measure individual layer rates
             probe = nengo.Probe(layer, synapse=0.01, label="%s_spike_probe" % name)
@@ -245,7 +247,7 @@ with nengo.Simulator(model) as sim:
     sim.run(10.0)
 
 conn_name = "conn_{}-{}".format("hidden", "coding")
-layer_name = "hidden"
+layer_name = "coding_neurons"
 label_name = "angles"
 
 plt.figure(figsize=(12, 8))
