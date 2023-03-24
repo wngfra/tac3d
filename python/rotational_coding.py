@@ -78,8 +78,7 @@ max_rate = 100
 amp = 1.0 / max_rate
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden_neurons = 40
-n_features = 10
+n_hidden_neurons = 36
 n_coding_neurons = 36
 n_codes = 6
 presentation_time = 0.2
@@ -139,7 +138,7 @@ layer_confs = [
     dict(
         name="hidden_ens",
         n_neurons=n_hidden_neurons,
-        dimensions=n_features,
+        dimensions=image_size,
         radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
     ),
