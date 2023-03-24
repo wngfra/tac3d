@@ -5,7 +5,7 @@ import nengo
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-from SynapticSampling import SynapticSampling
+from nengo_extras.learning_rules import DeltaRule
 from TouchDataset import TouchDataset
 
 font = {"weight": "normal", "size": 30}
@@ -23,10 +23,10 @@ class Delay:
         return self.history[0]
 
 
-def gen_transform(pattern="random"):
+def gen_transform(pattern="random", weights=None):
     W: Optional[np.ndarray] = None
 
-    def inner(shape):
+    def inner(shape, weights=weights):
         """_summary_
 
         Args:
@@ -52,6 +52,8 @@ def gen_transform(pattern="random"):
                 W = -W
                 W[W == 0] = 1
                 W *= 0.2
+            case "weights":
+                W = weights
             case _:
                 W = nengo.Dense(
                     shape,
@@ -76,13 +78,15 @@ max_rate = 100
 amp = 1.0 / max_rate
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden = 64
-n_coding = 35
-presentation_time = 0.01
+n_hidden_neurons = 40
+n_features = 10
+n_coding_neurons = 36
+n_codes = 6
+presentation_time = 0.2
 
 default_neuron = nengo.AdaptiveLIF()
 default_intercepts = nengo.dists.Choice([0, 0.1])
-alpha = 1e-9
+learning_rate = 1e-7
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 layer_confs = [
@@ -94,7 +98,7 @@ layer_confs = [
     ),
     dict(
         name="state_ens",
-        n_neurons=10,
+        n_neurons=n_coding_neurons,
         neuron=nengo.LIF(),
         dimensions=1,
         radius=np.pi,
@@ -117,7 +121,7 @@ layer_confs = [
         n_neurons=10,
         dimensions=1,
         neuron=nengo.LIF(),
-        radius=np.pi,  
+        radius=np.pi,
     ),
     dict(
         name="stimulus",
@@ -134,8 +138,8 @@ layer_confs = [
     ),
     dict(
         name="hidden_ens",
-        n_neurons=n_hidden,
-        dimensions=1,
+        n_neurons=n_hidden_neurons,
+        dimensions=n_features,
         radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
     ),
@@ -146,9 +150,14 @@ layer_confs = [
     ),
     dict(
         name="coding_ens",
-        n_neurons=n_coding,
-        dimensions=2,
+        n_neurons=n_coding_neurons,
+        dimensions=1,
         radius=1,
+    ),
+    dict(
+        name="error_ens",
+        n_neurons=n_coding_neurons,
+        dimensions=1,
     ),
 ]
 
@@ -186,7 +195,7 @@ conn_confs = [
     ),
     dict(
         pre="stim_ens_neurons",
-        post="hidden_ens_neurons",
+        post="hidden_ens",
         synapse=0.01,
     ),
     dict(
@@ -196,6 +205,18 @@ conn_confs = [
     dict(
         pre="hidden_ens_neurons",
         post="coding_ens_neurons",
+        learning_rule=DeltaRule(learning_rate),
+    ),
+    dict(
+        pre="state_ens_neurons",
+        post="error_ens_neurons",
+        transform=gen_transform("identity_exhibition"),
+        synapse=0.01,
+    ),
+    dict(
+        pre="coding_ens_neurons",
+        post="error_ens_neurons",
+        transform=gen_transform("identity_inhibition"),
         synapse=0.01,
     ),
 ]
@@ -291,27 +312,33 @@ with nengo.Network(label="smc") as model:
             conn, "weights", synapse=0.01, label="weights_{}".format(name)
         )
         probes[name] = probe
+    
+    # Connect learning rule
+    conn = nengo.Connection(
+        layers["error_ens"].neurons,
+        connections["hidden_ens_neurons2coding_ens_neurons"].learning_rule,
+    )
 
 
 """Run in command line mode
 """
 with nengo.Simulator(model) as sim:
-    sim.run(10.0)
+    sim.run(3.0)
 
-conn_name = "{}2{}".format("hidden_ens", "coding_ens")
-layer_name = "hidden_ens"
-label_name = "angles"
+conn_name = "{}2{}".format("hidden_ens_neurons", "coding_ens_neurons")
 
-plt.figure(figsize=(12, 8))
-plt.subplot(2, 1, 1)
+plt.figure(figsize=(15, 8))
+plt.subplot(3, 1, 1)
 # Find weight row with max variance
-# neuron = np.argmax(np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1))
-# plt.plot(sim.trange(), sim.data[probes[conn_name]][..., neuron])
-plt.plot(sim.trange(), sim.data[probes[label_name]])
-plt.ylabel("ground truth (rad)")
-plt.subplot(2, 1, 2)
-plt.plot(sim.trange(), sim.data[probes[layer_name]])
+neuron = np.argmax(np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1))
+plt.plot(sim.trange(), sim.data[probes[conn_name]][..., neuron])
+plt.subplot(3, 1, 2)
+plt.plot(sim.trange(), sim.data[probes["coding_ens"]], label="coding")
+plt.plot(sim.trange(), sim.data[probes["state_ens"]], label="state")
+plt.legend()
+plt.subplot(3, 1, 3)
+plt.plot(sim.trange(), sim.data[probes["error_ens"]], label="state error")
 plt.xlabel("time (s)")
-plt.ylabel("encoded value")
+plt.legend()
 plt.tight_layout()
 plt.show()
