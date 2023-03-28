@@ -34,9 +34,12 @@ class Cortex(Node):
         self._te_sub = self.create_subscription(
             Locus, "active_touch/tacnet_encoding", self.subscribe_te, 10
         )
-
+        # Timer for publishing motor signal
         timer_period = 1.0 / _FREQ
         self.tmr = self.create_timer(timer_period, self.timer_callback)
+
+        # Desired pose
+        self._desired_pose = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
     def subscribe_rs(self, msg):
         xpos = msg.site_position
@@ -65,8 +68,8 @@ class Cortex(Node):
         if not self._is_contacted:
             signal[2] -= np.exp(-3e-2 * t)
         else:
-            signal[0] += np.sin(t)*3
-            signal[1] += np.cos(t)*2 
+            signal[0] += np.sin(t) * 3
+            signal[1] += np.cos(t) * 2
         msg.spike_signal = signal.tolist()
         self._ms_pub.publish(msg)
 
