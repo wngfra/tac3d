@@ -74,7 +74,7 @@ class Delay:
 _DATAPATH = os.path.join(os.path.dirname(__file__), "../data/touch.pkl")
 
 # Prepare dataset
-dataset = TouchDataset(_DATAPATH, noise_scale=0.1, scope=(-1, 1))
+dataset = TouchDataset(_DATAPATH, noise_scale=0.1, scope=(-1, 1), tags="sharp_site")
 X_train, y_train, X_test, y_test = dataset.split_set(ratio=0.5, shuffle=True)
 height, width = X_train[0].shape
 image_size = X_train[0].size
@@ -85,15 +85,25 @@ max_rate = 100
 amp = 1.0 / max_rate
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_features = 10
-n_hidden_neurons = 64
-n_coding_neurons = 16
-presentation_time = 0.2
+n_hidden_neurons = 100
+n_coding_neurons = 36
+presentation_time = 0.5
 
-learning_rate = 1e-3
+learning_rate = 1e-4
 delay = Delay(1, timesteps=int(0.1 / dt))
+duration = 100
+
+# Function to inhibit the error population after 15s
+def inhib(t):
+    return 2 if t > 60.0 else 0.0
+
 
 layer_confs = [
+    dict(
+        name="Inhibit",
+        neuron=None,
+        output=inhib,
+    ),
     dict(
         name="state",
         neuron=None,
@@ -176,7 +186,6 @@ layer_confs = [
 ]
 
 conn_confs = [
-    # state variable: angle
     dict(
         pre="state",
         post="state_ens",
@@ -224,7 +233,6 @@ conn_confs = [
     dict(
         pre="hidden_ens_neurons",
         post="coding_ens_neurons",
-        solver=nengo.solvers.LstsqL2(weights=True),
         learning_rule=nengo.PES(learning_rate=learning_rate),
     ),
     dict(
@@ -247,6 +255,12 @@ conn_confs = [
         post="reconstruction_error_ens_neurons",
         transform=gen_transform("identity_inhibition"),
     ),
+    dict(
+        pre="Inhibit",
+        post="error_ens_neurons",
+        transform=gen_transform("custom", weights=np.ones((n_coding_neurons, 1)) * -3),
+        synapse=0.01,
+    ),
 ]
 
 learning_confs = [
@@ -262,7 +276,7 @@ default_intercepts = nengo.dists.Choice([0, 0.1])
 default_rates = nengo.dists.Choice([200])
 
 # Create the Nengo model
-with nengo.Network(label="smc") as model:
+with nengo.Network(label="tactile_encoding_net") as model:
     layers = dict()
     connections = dict()
     probes = dict()
@@ -362,13 +376,13 @@ with nengo.Network(label="smc") as model:
             connections[post].learning_rule,
             transform=transform,
         )
-        
+
     layers["error_ens"].encoders = layers["state_ens"].encoders
 
 """Run in command line mode
 """
 with nengo.Simulator(model) as sim:
-    sim.run(10.0)
+    sim.run(duration)
 
 conn_name = "{}2{}".format("hidden_ens_neurons", "coding_ens_neurons")
 ens1 = "state_ens"
