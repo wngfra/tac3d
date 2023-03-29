@@ -1,3 +1,6 @@
+# Copyright 2023 wngfra.
+# SPDX-License-Identifier: Apache-2.0
+
 import os
 from typing import Optional
 
@@ -5,22 +8,12 @@ import nengo
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-from nengo_extras.learning_rules import DeltaRule
+from custom_learning_rules import MirroredSTDP
 from TouchDataset import TouchDataset
 
 font = {"weight": "normal", "size": 30}
 
 matplotlib.rc("font", **font)
-
-
-class Delay:
-    def __init__(self, dimensions, timesteps=50):
-        self.history = np.zeros((timesteps, dimensions))
-
-    def step(self, t, x):
-        self.history = np.roll(self.history, -1)
-        self.history[-1] = x
-        return self.history[0]
 
 
 def gen_transform(pattern="random", weights=None):
@@ -35,16 +28,10 @@ def gen_transform(pattern="random", weights=None):
             _type_: _description_
         """
         match pattern:
-            case "full_exhibition":
+            case "identity_excitation":
                 W = 1
-            case "full_inhibition":
-                W = -1
-            case "identity_exhibition":
-                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
-                W = np.eye(shape[0])
             case "identity_inhibition":
-                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
-                W = -np.eye(shape[0])
+                W = -1
             case "exclusive_inhibition":
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
                 W = -np.ones((shape[0], shape[0])) + 2 * np.eye(shape[0])
@@ -62,14 +49,26 @@ def gen_transform(pattern="random", weights=None):
                 if weights is None:
                     raise ValueError("No weights provided!")
                 W = weights
+            case "zero":
+                W = 0
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Gaussian(0, 0.1),
+                    init=nengo.dists.Gaussian(0, 1e-3),
                 )
         return W
 
     return inner
+
+
+class Delay:
+    def __init__(self, dimensions, timesteps=50):
+        self.history = np.zeros((timesteps, dimensions))
+
+    def step(self, t, x):
+        self.history = np.roll(self.history, -1)
+        self.history[-1] = x
+        return self.history[0]
 
 
 _DATAPATH = os.path.join(os.path.dirname(__file__), "../data/touch.pkl")
@@ -81,19 +80,17 @@ height, width = X_train[0].shape
 image_size = X_train[0].size
 
 # Simulation parameters
-dt = 1e-3
+dt = 1e-5
 max_rate = 100
 amp = 1.0 / max_rate
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
 n_features = 10
-n_hidden_neurons = 36
-n_coding_neurons = 10
-presentation_time = 0.5
+n_hidden_neurons = 64
+n_coding_neurons = 16
+presentation_time = 0.2
 
-default_neuron = nengo.AdaptiveLIF()
-default_intercepts = nengo.dists.Choice([0, 0.1])
-learning_rate = 1e-5
+learning_rate = 1e-3
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 layer_confs = [
@@ -113,6 +110,7 @@ layer_confs = [
         neuron=None,
         output=delay.step,
         size_in=1,
+        radius=np.pi,
     ),
     dict(
         name="delayed_state_ens",
@@ -136,8 +134,7 @@ layer_confs = [
     dict(
         name="stim_ens",
         n_neurons=image_size,
-        dimensions=15,
-        encoders=nengo.dists.Choice([[1] * 15]),
+        dimensions=1,
         radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
         on_chip=False,
@@ -167,11 +164,14 @@ layer_confs = [
         name="error_ens",
         n_neurons=n_coding_neurons,
         dimensions=1,
+        radius=np.pi,
     ),
     dict(
         name="reconstruction_error_ens",
         n_neurons=image_size,
         dimensions=1,
+        max_rates=nengo.dists.Choice([rate_target]),
+        radius=1,
     ),
 ]
 
@@ -180,32 +180,32 @@ conn_confs = [
     dict(
         pre="state",
         post="state_ens",
-        transform=gen_transform("full_exhibition"),
+        transform=gen_transform("identity_excitation"),
     ),
     dict(
         pre="state",
         post="delayed_state",
-        transform=gen_transform("full_exhibition"),
+        transform=gen_transform("identity_excitation"),
     ),
     dict(
         pre="delayed_state",
         post="delayed_state_ens",
-        transform=gen_transform("full_exhibition"),
+        transform=gen_transform("identity_excitation"),
     ),
     dict(
         pre="state_ens",
         post="delta_state_ens",
-        transform=gen_transform("full_exhibition"),
+        transform=gen_transform("identity_excitation"),
     ),
     dict(
         pre="delayed_state_ens",
         post="delta_state_ens",
-        transform=gen_transform("full_inhibition"),
+        transform=gen_transform("identity_inhibition"),
     ),
     dict(
         pre="stimulus",
         post="stim_ens_neurons",
-        transform=gen_transform("full_exhibition"),
+        transform=gen_transform("identity_excitation"),
     ),
     dict(
         pre="stim_ens_neurons",
@@ -217,35 +217,49 @@ conn_confs = [
         post="output_ens_neurons",
         transform=gen_transform(
             "custom",
-            weights=np.random.normal(0, 0.1, size=(image_size, n_hidden_neurons)),
+            weights=np.random.normal(0, 1e-3, size=(image_size, n_hidden_neurons)),
         ),
-        learning_rule=DeltaRule(1e-4),
+        synapse=0.01,
     ),
     dict(
         pre="hidden_ens_neurons",
         post="coding_ens_neurons",
-        learning_rule=nengo.PES(1e-7),
-    ),
-    dict(
-        pre="state_ens",
-        post="error_ens",
-        transform=gen_transform("identity_exhibition"),
-        synapse=0.01,
+        solver=nengo.solvers.LstsqL2(weights=True),
+        learning_rule=nengo.PES(learning_rate=learning_rate),
     ),
     dict(
         pre="coding_ens",
         post="error_ens",
+        transform=gen_transform("identity_excitation"),
+    ),
+    dict(
+        pre="state_ens",
+        post="error_ens",
         transform=gen_transform("identity_inhibition"),
-        synapse=0.01,
     ),
     dict(
         pre="stim_ens_neurons",
         post="reconstruction_error_ens_neurons",
+        transform=gen_transform("identity_excitation"),
+    ),
+    dict(
+        pre="output_ens_neurons",
+        post="reconstruction_error_ens_neurons",
         transform=gen_transform("identity_inhibition"),
-        synapse=0,
     ),
 ]
 
+learning_confs = [
+    dict(
+        pre="error_ens",
+        post="hidden_ens_neurons2coding_ens_neurons",
+    ),
+]
+
+
+default_neuron = nengo.AdaptiveLIF()
+default_intercepts = nengo.dists.Choice([0, 0.1])
+default_rates = nengo.dists.Choice([200])
 
 # Create the Nengo model
 with nengo.Network(label="smc") as model:
@@ -263,7 +277,7 @@ with nengo.Network(label="smc") as model:
             "encoders", nengo.dists.ScatteredHypersphere(surface=True)
         )
         intercepts = layer_conf.pop("intercepts", default_intercepts)
-        max_rates = layer_conf.pop("max_rates", nengo.dists.Choice([max_rate]))
+        max_rates = layer_conf.pop("max_rates", default_rates)
         radius = layer_conf.pop("radius", 1.0)
         neuron_type = layer_conf.pop("neuron", default_neuron)
         on_chip = layer_conf.pop("on_chip", False)
@@ -338,36 +352,40 @@ with nengo.Network(label="smc") as model:
         probes[name] = probe
 
     # Connect learning rule
-    conn_l1 = nengo.Connection(
-        layers["error_ens"],
-        connections["hidden_ens_neurons2coding_ens_neurons"].learning_rule,
-    )
-    conn_l2 = nengo.Connection(
-        layers["reconstruction_error_ens"],
-        connections["hidden_ens_neurons2output_ens_neurons"].learning_rule,
-        transform=np.random.rand(225, 1),
-    )
-
+    for k, learning_conf in enumerate(learning_confs):
+        learning_conf = dict(learning_conf)
+        pre = learning_conf.pop("pre")
+        post = learning_conf.pop("post")
+        transform = learning_conf.pop("transform", 1)
+        nengo.Connection(
+            layers[pre],
+            connections[post].learning_rule,
+            transform=transform,
+        )
+        
+    layers["error_ens"].encoders = layers["state_ens"].encoders
 
 """Run in command line mode
 """
 with nengo.Simulator(model) as sim:
-    sim.run(5.0)
+    sim.run(10.0)
 
-conn_name = "{}2{}".format("hidden_ens_neurons", "output_ens_neurons")
+conn_name = "{}2{}".format("hidden_ens_neurons", "coding_ens_neurons")
+ens1 = "state_ens"
+ens2 = "coding_ens"
+ens3 = "error_ens"
 
-plt.figure(figsize=(15, 8))
+plt.figure(figsize=(15, 10))
 plt.subplot(3, 1, 1)
 # Find weight row with max variance
 neuron = np.argmax(np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1))
 plt.plot(sim.trange(), sim.data[probes[conn_name]][:, neuron, :])
 plt.subplot(3, 1, 2)
-plt.plot(sim.trange(), sim.data[probes["coding_ens"]], label="coding")
-plt.plot(sim.trange(), sim.data[probes["state_ens"]], label="state")
+plt.plot(sim.trange(), sim.data[probes[ens1]], label=ens1[:-4])
+plt.plot(sim.trange(), sim.data[probes[ens2]], label=ens2[:-4])
 plt.legend()
 plt.subplot(3, 1, 3)
-plt.plot(sim.trange(), sim.data[probes["error_ens"]], label="state error")
+plt.plot(sim.trange(), sim.data[probes[ens3]], label=ens3[:-4])
 plt.xlabel("time (s)")
 plt.legend()
-plt.tight_layout()
 plt.show()

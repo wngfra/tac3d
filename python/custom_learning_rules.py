@@ -10,21 +10,23 @@ from nengo.params import Default, NumberParam
 from nengo.synapses import Lowpass, SynapseParam
 
 
-class SynapticSampling(nengo.learning_rules.LearningRuleType):
+class MirroredSTDP(nengo.learning_rules.LearningRuleType):
     """
-    Synaptic Sampling learning rule.
+    Mirrored STDP learning rule.
     """
 
     modifies = "weights"
     probeable = ("pre_filtered", "post_filtered", "delta")
 
     learning_rate = NumberParam("learning_rate", low=0, readonly=True, default=1e-6)
-    pre_synapse = SynapseParam("pre_synapse", default=Lowpass(tau=0.005), readonly=True)
+    time_constant = NumberParam("time_constant", low=0, readonly=True, default=0.005)
+    pre_synapse = SynapseParam("pre_synapse", default=None, readonly=True)
     post_synapse = SynapseParam("post_synapse", default=None, readonly=True)
 
     def __init__(
         self,
         learning_rate=Default,
+        time_constant=Default,
         pre_synapse=Default,
         post_synapse=Default,
     ):
@@ -33,15 +35,15 @@ class SynapticSampling(nengo.learning_rules.LearningRuleType):
         self.post_synapse = (
             self.pre_synapse if post_synapse is Default else post_synapse
         )
+        self.time_constant = time_constant
 
 
-class SimSS(Operator):
-    def __init__(
-        self, pre_filtered, post_filtered, delta, learning_rate, tag=None
-    ):
+class SimMSTDP(Operator):
+    def __init__(self, pre_filtered, post_filtered, delta, learning_rate, time_constant, tag=None):
         super().__init__(tag=tag)
         self.learning_rate = learning_rate
-
+        self.time_constant = time_constant
+        
         self.sets = []
         self.incs = []
         self.reads = [pre_filtered, post_filtered]
@@ -73,47 +75,44 @@ class SimSS(Operator):
             delta[...] = np.outer(
                 alpha * post_filtered * (post_filtered - 0.1), pre_filtered
             )
+            """
+            delta_t = data[0] - data[1]
+            stdp_update = np.where(delta_t > 0, np.exp(-delta_t / self.time_constant), -np.exp(delta_t / self.time_constant))
+            data[2] += self.learning_rate * stdp_update
+            """
 
         return step_simmstdp
 
 
-@Builder.register(SynapticSampling)
-def build_ss(model, ss, rule):
-    """
-    Builds a `.SS` object into a model.
-
-    Calls synapse build functions to filter the pre and post activities,
-    and adds a `.SimSS` operator to the model to calculate the delta.
-
-    Parameters
-    ----------
-    model : Model
-        The model to build into.
-    ss : SS
-        Learning rule type to build.
-    rule : LearningRule
-        The learning rule object corresponding to the neuron type.
-
-    Notes
-    -----
-    Does not modify ``model.params[]`` and can therefore be called
-    more than once with the same `.BCM` instance.
-    """
+@Builder.register(MirroredSTDP)
+def build_mstdp(model, mstdp, rule):
     conn = rule.connection
     pre_activities = model.sig[get_pre_ens(conn).neurons]["out"]
     post_activities = model.sig[get_post_ens(conn).neurons]["out"]
-    pre_filtered = build_or_passthrough(model, ss.pre_synapse, pre_activities)
-    post_filtered = build_or_passthrough(model, ss.post_synapse, post_activities)
+    pre_filtered = build_or_passthrough(model, mstdp.pre_synapse, pre_activities)
+    post_filtered = build_or_passthrough(model, mstdp.post_synapse, post_activities)
 
     model.add_op(
-        SimSS(
+        SimMSTDP(
             pre_filtered,
             post_filtered,
             model.sig[rule]["delta"],
-            learning_rate=ss.learning_rate,
+            learning_rate=mstdp.learning_rate,
+            time_constant=mstdp.time_constant,
         )
     )
 
     # expose these for probes
     model.sig[rule]["pre_filtered"] = pre_filtered
     model.sig[rule]["post_filtered"] = post_filtered
+    
+    """
+    pre = model.sig[rule.pre_obj]['out']
+    post = model.sig[rule.post_obj]['out']
+    weights = model.sig[rule]['weights']
+
+    # Create the operator
+    op = Operator.Set([pre, post, weights], None, mirrored_stdp.make_step, tag=f"MirroredSTDP {rule}")
+    model.add_op(op)
+    
+    """
