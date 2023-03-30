@@ -7,15 +7,19 @@ image_height, image_width = 15, 15
 image_size = image_height * image_width
 
 # Constants
-_MAX_RATE = 150
-_AMP = 1.0
+_MAX_RATE = 200
+_AMP = 1.0 / _MAX_RATE
+_RATE_TARGET = _MAX_RATE * _AMP
 
 # Network params
-n_hidden = 32
-n_encoding = 11  # Odd number of neurons for cyclic interpretation
+dt = 1e-3
+dim_states = 7
+n_hidden_neurons = 100
+n_coding_neurons = 36
 default_neuron = nengo.AdaptiveLIF()
 default_rates = nengo.dists.Choice([_MAX_RATE])
 default_intercepts = nengo.dists.Choice([0, 0.1])
+learning_rate = 1e-3
 
 
 def normalize(x, dtype=np.uint8):
@@ -29,10 +33,10 @@ def log(node, x):
     node.get_logger().info("data: {}".format(x))
 
 
-def gen_transform(pattern="random"):
+def gen_transform(pattern="random", weights=None):
     W: Optional[np.ndarray] = None
 
-    def inner(shape):
+    def inner(shape, weights=weights):
         """_summary_
 
         Args:
@@ -41,13 +45,13 @@ def gen_transform(pattern="random"):
             _type_: _description_
         """
         match pattern:
-            case "identity_exhibition":
+            case "identity_excitation":
                 W = 1
             case "identity_inhibition":
-                W = 1
-            case "uniform_inhibition":
+                W = -1
+            case "exclusive_inhibition":
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
-                W = np.ones((shape[0], shape[0])) - np.eye(shape[0])
+                W = -np.ones((shape[0], shape[0])) + 2 * np.eye(shape[0])
             case "cyclic_inhibition":
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
                 xmax = shape[1] // 2
@@ -55,77 +59,208 @@ def gen_transform(pattern="random"):
                 W = np.empty((shape[0], shape[0]))
                 for i in range(shape[0]):
                     W[i, :] = np.roll(x, i)
+                W = -W
+                W[W == 0] = 1
+                W *= 0.2
+            case "custom":
+                if weights is None:
+                    raise ValueError("No weights provided!")
+                W = weights
+            case "zero":
+                W = 0
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Gaussian(0.1, 0.2),
+                    init=nengo.dists.Gaussian(0, 0.1),
                 )
-        if "inhibition" in pattern:
-            W *= -1
         return W
 
     return inner
 
 
+class Delay:
+    def __init__(self, dimensions, timesteps=50):
+        self.history = np.zeros((timesteps, dimensions))
+
+    def step(self, t, x):
+        self.history = np.roll(self.history, -1)
+        self.history[-1] = x
+        return self.history[0]
+
+
+# Function to inhibit the error population after 15s
+def inhib(t):
+    return 2 if t > 20.0 else 0.0
+
+
+delay = Delay(1, timesteps=int(0.1 / dt))
+
 layer_confs = [
     dict(
-        name="stimulus",
+        name="Inhibit",
+        neuron=None,
+        output=inhib,
+    ),
+    dict(
+        name="state",
         neuron=None,
     ),
     dict(
+        name="state_ens",
+        n_neurons=n_coding_neurons,
+        dimensions=dim_states,
+        radius=np.pi,
+        max_rates=nengo.dists.Choice([_RATE_TARGET]),
+    ),
+    dict(
+        name="delayed_state",
+        neuron=None,
+        output=delay.step,
+        radius=np.pi,
+    ),
+    dict(
+        name="delayed_state_ens",
+        n_neurons=n_coding_neurons,
+        dimensions=dim_states,
+        neuron=nengo.LIF(),
+        radius=np.pi,
+    ),
+    dict(
+        name="delta_state_ens",
+        n_neurons=n_coding_neurons,
+        dimensions=1,
+        neuron=nengo.LIF(),
+        radius=np.pi,
+    ),
+    dict(
         name="input",
+        neuron=None,
+    ),
+    dict(
+        name="stim_ens",
         n_neurons=image_size,
+        dimensions=15,
         radius=1,
-        neuron=nengo.PoissonSpiking(nengo.LIFRate()),
+        max_rates=nengo.dists.Choice([_RATE_TARGET]),
+        encoders=nengo.dists.Gaussian(0, 0.5),
         on_chip=False,
     ),
     dict(
-        name="hidden",
-        n_neurons=n_hidden,
-        neuron=default_neuron,
-        radius=2,
+        name="hidden_ens",
+        n_neurons=n_hidden_neurons,
+        dimensions=15,
+        radius=1,
+        max_rates=nengo.dists.Choice([_RATE_TARGET]),
     ),
-    dict(name="output", n_neurons=image_size, radius=1, neuron=default_neuron),
     dict(
-        name="encoding",
-        n_neurons=n_encoding,
-        radius=2,
-        neuron=default_neuron,
+        name="output_ens",
+        n_neurons=image_size,
+        dimensions=2,
+        radius=1,
+        max_rates=nengo.dists.Choice([_RATE_TARGET]),
+    ),
+    dict(
+        name="coding_ens",
+        n_neurons=n_coding_neurons,
+        dimensions=1,
+        radius=np.pi,
+        max_rates=nengo.dists.Choice([_RATE_TARGET]),
+    ),
+    dict(
+        name="error_ens",
+        n_neurons=n_coding_neurons,
+        dimensions=1,
+        radius=np.pi,
+        max_rates=nengo.dists.Choice([_RATE_TARGET]),
+    ),
+    dict(
+        name="reconstruction_error_ens",
+        n_neurons=image_size,
+        dimensions=2,
+        radius=1,
+        max_rates=nengo.dists.Choice([_RATE_TARGET]),
     ),
 ]
 
 conn_confs = [
     dict(
-        pre="stimulus",
-        post="input",
-        synapse=None,
-        transform=gen_transform("identity_exhibition"),
-        learning_rule=None,
+        pre="state",
+        post="state_ens",
+        transform=gen_transform("identity_excitation"),
     ),
     dict(
-        pre="input",
-        post="hidden",
-        learning_rule=nengo.BCM(1e-9),
+        pre="state",
+        post="delayed_state",
+        transform=gen_transform("identity_excitation"),
     ),
     dict(
-        pre="hidden",
-        post="output",
-        learning_rule=nengo.BCM(1e-9),
+        pre="delayed_state",
+        post="delayed_state_ens",
+        transform=gen_transform("identity_excitation"),
     ),
     dict(
-        pre="input",
-        post="output",
+        pre="state_ens",
+        post="delta_state_ens",
+        transform=gen_transform("identity_excitation"),
+    ),
+    dict(
+        pre="delayed_state_ens",
+        post="delta_state_ens",
         transform=gen_transform("identity_inhibition"),
-        learning_rule=None,
     ),
     dict(
-        pre="hidden",
-        post="encoding",
-        learning_rule=nengo.BCM(1e-9),
+        pre="input",
+        post="stim_ens_neurons",
+        transform=gen_transform("identity_excitation"),
     ),
     dict(
-        pre="encoding",
-        post="encoding",
-        transform=gen_transform("cyclic_inhibition"),
+        pre="stim_ens",
+        post="hidden_ens",
+        synapse=0.01,
+        solver=nengo.solvers.LstsqL2(weights=True),
+    ),
+    dict(
+        pre="hidden_ens_neurons",
+        post="output_ens_neurons",
+        synapse=0.01,
+        learning_rule=nengo.PES(learning_rate=learning_rate),
+    ),
+    dict(
+        pre="hidden_ens_neurons",
+        post="coding_ens_neurons",
+        learning_rule=nengo.PES(learning_rate=learning_rate),
+    ),
+    dict(
+        pre="coding_ens",
+        post="error_ens",
+        transform=gen_transform("identity_excitation"),
+    ),
+    dict(
+        pre="state_ens",
+        post="error_ens",
+        transform=gen_transform("identity_inhibition"),
+    ),
+    dict(
+        pre="stim_ens_neurons",
+        post="reconstruction_error_ens_neurons",
+        transform=gen_transform("identity_excitation"),
+    ),
+    dict(
+        pre="output_ens_neurons",
+        post="reconstruction_error_ens_neurons",
+        transform=gen_transform("identity_inhibition"),
+    ),
+    dict(
+        pre="Inhibit",
+        post="error_ens_neurons",
+        transform=gen_transform("custom", weights=np.ones((n_coding_neurons, 1)) * -3),
+        synapse=0.01,
+    ),
+]
+
+learning_confs = [
+    dict(
+        pre="error_ens",
+        post="hidden_ens_neurons2coding_ens_neurons",
     ),
 ]
