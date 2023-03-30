@@ -54,7 +54,7 @@ def gen_transform(pattern="random", weights=None):
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Gaussian(0, 1e-3),
+                    init=nengo.dists.Gaussian(0, 0.1),
                 )
         return W
 
@@ -74,28 +74,29 @@ class Delay:
 _DATAPATH = os.path.join(os.path.dirname(__file__), "../data/touch.pkl")
 
 # Prepare dataset
-dataset = TouchDataset(_DATAPATH, noise_scale=0.1, scope=(-1, 1), tags="sharp_site")
+dataset = TouchDataset(_DATAPATH, noise_scale=0.1, scope=(-1, 1), tags="wedge_site")
 X_train, y_train, X_test, y_test = dataset.split_set(ratio=0.5, shuffle=True)
 height, width = X_train[0].shape
 image_size = X_train[0].size
 
 # Simulation parameters
-dt = 1e-5
+dt = 1e-3
 max_rate = 100
 amp = 1.0 / max_rate
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
 n_hidden_neurons = 100
 n_coding_neurons = 36
-presentation_time = 0.5
+presentation_time = 0.2
 
-learning_rate = 1e-4
+learning_rate = 1e-3
 delay = Delay(1, timesteps=int(0.1 / dt))
-duration = 100
+duration = 30
+
 
 # Function to inhibit the error population after 15s
 def inhib(t):
-    return 2 if t > 60.0 else 0.0
+    return 2 if t > 20.0 else 0.0
 
 
 layer_confs = [
@@ -144,22 +145,23 @@ layer_confs = [
     dict(
         name="stim_ens",
         n_neurons=image_size,
-        dimensions=1,
+        dimensions=15,
         radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
+        encoders=nengo.dists.Gaussian(0, 0.5),
         on_chip=False,
     ),
     dict(
         name="hidden_ens",
         n_neurons=n_hidden_neurons,
-        dimensions=1,
+        dimensions=15,
         radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
     ),
     dict(
         name="output_ens",
         n_neurons=image_size,
-        dimensions=1,
+        dimensions=2,
         radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
     ),
@@ -179,7 +181,7 @@ layer_confs = [
     dict(
         name="reconstruction_error_ens",
         n_neurons=image_size,
-        dimensions=1,
+        dimensions=2,
         max_rates=nengo.dists.Choice([rate_target]),
         radius=1,
     ),
@@ -217,18 +219,16 @@ conn_confs = [
         transform=gen_transform("identity_excitation"),
     ),
     dict(
-        pre="stim_ens_neurons",
-        post="hidden_ens_neurons",
+        pre="stim_ens",
+        post="hidden_ens",
         synapse=0.01,
+        solver=nengo.solvers.LstsqL2(weights=True),
     ),
     dict(
         pre="hidden_ens_neurons",
         post="output_ens_neurons",
-        transform=gen_transform(
-            "custom",
-            weights=np.random.normal(0, 1e-3, size=(image_size, n_hidden_neurons)),
-        ),
         synapse=0.01,
+        learning_rule=nengo.PES(learning_rate=learning_rate),
     ),
     dict(
         pre="hidden_ens_neurons",
@@ -381,7 +381,7 @@ with nengo.Network(label="tactile_encoding_net") as model:
 
 """Run in command line mode
 """
-with nengo.Simulator(model) as sim:
+with nengo.Simulator(model, dt=dt) as sim:
     sim.run(duration)
 
 conn_name = "{}2{}".format("hidden_ens_neurons", "coding_ens_neurons")
