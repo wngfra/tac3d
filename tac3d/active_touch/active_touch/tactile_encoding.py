@@ -17,24 +17,27 @@ from active_touch.tacnet_helper import (
     image_height,
     image_width,
     image_size,
+    dim_states,
     layer_confs,
     conn_confs,
     learning_confs,
     normalize,
     gen_transform,
+    log,
 )
 
 
 class TactileEncoding(Node):
     def __init__(self, node_name: str):
         super().__init__(node_name)
-        self._layers: Optional[list[nengo.Node | nengo.Ensemble]] = None
-        self._conns: Optional[list[nengo.Connection]] = None
-        self._probes: Optional[list[nengo.Probe]] = None
+        self._layers: Optional[dict[str, nengo.Node | nengo.Ensemble]] = None
+        self._conns: Optional[dict[str, nengo.Connection]] = None
+        self._probes: Optional[dict[str, nengo.Probe]] = None
         self._net: Optional[nengo.Network] = None
         self._sim: Optional[nengo.Simulator] = None
         self._tactile_data = np.zeros(image_size)
-        self._robot_state = deque(maxlen=40)
+        self._touch_sites = deque(maxlen=40)
+        self._last_touch: Optional[np.ndarray] = None
 
         # Create encoder network
         self.create_network()
@@ -69,9 +72,11 @@ class TactileEncoding(Node):
 
     def __del__(self):
         self._simulator_thread.join()
+        self.destroy_subscription(self._rs_sub)
         self.destroy_subscription(self._sensor_sub)
         self.destroy_publisher(self._img_pub)
         self.destroy_publisher(self._encoding_pub)
+        self.destroy_publisher(self._pc2_pub)
 
     def input_func(self, t):
         if len(self._tactile_data) == 0:
@@ -79,9 +84,10 @@ class TactileEncoding(Node):
         return self._tactile_data.ravel()
 
     def state_func(self, t):
-        if len(self._robot_state) == 0:
-            return np.zeros(7)
-        return self._robot_state.pop().ravel()
+        if len(self._touch_sites) == 0:
+            return np.zeros(dim_states)
+        self._last_touch = self._touch_sites.pop().ravel()
+        return self._last_touch
 
     def create_network(self):
         self._layers = dict()
@@ -103,9 +109,9 @@ class TactileEncoding(Node):
                 radius = layer_conf.pop("radius", 1.0)
                 neuron_type = layer_conf.pop("neuron", default_neuron)
                 on_chip = layer_conf.pop("on_chip", False)
-                block = layer_conf.pop("block", None)
                 output = layer_conf.pop("output", None)
                 size_in = layer_conf.pop("size_in", None)
+                size_out = layer_conf.pop("size_out", None)
 
                 assert len(layer_conf) == 0, "Unused fields in {}: {}".format(
                     [name], list(layer_conf)
@@ -118,7 +124,10 @@ class TactileEncoding(Node):
                             output = self.input_func
                         case "state":
                             output = self.state_func
-                    layer = nengo.Node(output=output, label=name)
+
+                    layer = nengo.Node(
+                        output=output, size_in=size_in, size_out=size_out, label=name
+                    )
                     self._layers[name] = layer
                     self._probes[name] = nengo.Probe(
                         layer, synapse=0.01, label="%s_probe" % name
@@ -159,7 +168,7 @@ class TactileEncoding(Node):
                 assert len(conn_conf) == 0, "Unused fields in {}: {}".format(
                     [name], list(conn_conf)
                 )
-
+                log(self, name)
                 conn = nengo.Connection(
                     self._layers[pre],
                     self._layers[post],
@@ -182,12 +191,14 @@ class TactileEncoding(Node):
             # Connect learning rule
             for k, learning_conf in enumerate(learning_confs):
                 learning_conf = dict(learning_conf)
+                name = learning_conf.pop("name")
                 pre = learning_conf.pop("pre")
                 post = learning_conf.pop("post")
                 transform = learning_conf.pop(
                     "transform", gen_transform("identity_excitation")
                 )
-                nengo.Connection(
+                log(self, name)
+                self._conns[name] = nengo.Connection(
                     self._layers[pre],
                     self._conns[post].learning_rule,
                     transform=transform,
@@ -197,12 +208,13 @@ class TactileEncoding(Node):
         with nengo.Simulator(self._net, progress_bar=False) as self._sim:
             while rclpy.ok():
                 self._sim.run(0.1)
-                output = self._sim.data[self._probes["output"]][-1]
-                coding = self._sim.data[self._probes["coding"]][-1]
+                output = self._sim.data[self._probes["output_ens"]][-1]
+                coding = self._sim.data[self._probes["coding_ens"]][-1]
                 # Publish the reconstruction
-                self.publish_touch(output, coding)
+                self.publish(output, coding, self._last_touch)
 
-    def publish_touch(self, image: np.ndarray, encoding: np.ndarray):
+    def publish(self, image: np.ndarray, encoding: np.ndarray, points: np.ndarray):
+        # Prepare reconstruction tactile image
         image = normalize(image).tolist()
         img_msg = sensor_msgs.msg.Image()
         img_msg.header = std_msgs.msg.Header(frame_id="world")
@@ -214,21 +226,21 @@ class TactileEncoding(Node):
         img_msg.data = image
         self._img_pub.publish(img_msg)
 
-        height, width = encoding.shape
+        # Prepare tactile percept as Locus
+        dim = int(np.sqrt(encoding.size))
         encoding = encoding.tolist()
         ec_msg = Locus()
         ec_msg.header = std_msgs.msg.Header(frame_id="world")
-        ec_msg.height = height
-        ec_msg.width = width
+        ec_msg.height = dim
+        ec_msg.width = dim
         ec_msg.data = encoding
         self._encoding_pub.publish(ec_msg)
 
-    def publish_pc2(self, points: np.ndarray):
+        # Prepare tactile spatial memory as point cloud
         ros_dtype = sensor_msgs.msg.PointField.FLOAT32
         dtype = np.float32
         data = points.astype(dtype).tobytes()
         itemsize = np.dtype(dtype).itemsize  # A 32-bit float takes 4 bytes.
-
         data = points.astype(dtype).tobytes()
         fields = [
             sensor_msgs.PointField(
@@ -236,8 +248,7 @@ class TactileEncoding(Node):
             )
             for i, n in enumerate("xyz")
         ]
-
-        msg = sensor_msgs.msg.PointCloud2(
+        pc2_msg = sensor_msgs.msg.PointCloud2(
             header=std_msgs.msg.Header(frame_id="world"),
             height=1,
             width=points.shape[0],
@@ -248,14 +259,16 @@ class TactileEncoding(Node):
             row_step=itemsize * points.shape[0] * points.shape[1],
             data=data,
         )
-        self._pc2_pub.publish(msg)
+        self._pc2_pub.publish(pc2_msg)
 
     def subscribe_rs(self, msg: RobotState):
         # Update the robot state
         xpos = msg.site_position
         xquat = msg.site_quaternion
         pose = np.concatenate([xpos, xquat])
-        self._robot_state.appendleft(pose)
+        theta_2 = np.arccos(xquat[0])
+        gamma = 2 * np.arccos(xquat[3] / np.sin(theta_2))
+        self._touch_sites.appendleft(pose)
 
     def subscribe_sensor(self, msg: Locus):
         # Update the tactile data

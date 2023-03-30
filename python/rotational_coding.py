@@ -93,7 +93,7 @@ rate_target = max_rate * amp  # must be in amplitude scaled units
 n_features = 10
 n_hidden_neurons = 100
 n_coding_neurons = 64
-presentation_time = 1
+presentation_time = 0.5
 duration = 30
 
 learning_rate = 1e-3
@@ -104,6 +104,7 @@ layer_confs = [
         name="inhibition",
         neuron=None,
         output=inhib,
+        size_in=0,
     ),
     dict(
         name="state",

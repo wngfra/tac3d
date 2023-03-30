@@ -7,7 +7,7 @@ image_height, image_width = 15, 15
 image_size = image_height * image_width
 
 # Constants
-_MAX_RATE = 200
+_MAX_RATE = 100
 _AMP = 1.0 / _MAX_RATE
 _RATE_TARGET = _MAX_RATE * _AMP
 
@@ -30,7 +30,7 @@ def normalize(x, dtype=np.uint8):
 
 
 def log(node, x):
-    node.get_logger().info("data: {}".format(x))
+    node.get_logger().warn("DEBUG LOG: {}".format(x))
 
 
 def gen_transform(pattern="random", weights=None):
@@ -93,30 +93,30 @@ def inhib(t):
     return 2 if t > 20.0 else 0.0
 
 
-delay = Delay(1, timesteps=int(0.1 / dt))
+delay = Delay(dim_states, timesteps=int(0.1 / dt))
 
 layer_confs = [
     dict(
-        name="Inhibit",
+        name="inhibit",
         neuron=None,
         output=inhib,
     ),
     dict(
         name="state",
         neuron=None,
+        size_out=dim_states,
     ),
     dict(
         name="state_ens",
         n_neurons=n_coding_neurons,
         dimensions=dim_states,
-        radius=np.pi,
-        max_rates=nengo.dists.Choice([_RATE_TARGET]),
     ),
     dict(
         name="delayed_state",
         neuron=None,
         output=delay.step,
-        radius=np.pi,
+        size_in=dim_states,
+        size_out=dim_states,
     ),
     dict(
         name="delayed_state_ens",
@@ -128,7 +128,7 @@ layer_confs = [
     dict(
         name="delta_state_ens",
         n_neurons=n_coding_neurons,
-        dimensions=1,
+        dimensions=dim_states,
         neuron=nengo.LIF(),
         radius=np.pi,
     ),
@@ -141,7 +141,6 @@ layer_confs = [
         n_neurons=image_size,
         dimensions=15,
         radius=1,
-        max_rates=nengo.dists.Choice([_RATE_TARGET]),
         encoders=nengo.dists.Gaussian(0, 0.5),
         on_chip=False,
     ),
@@ -150,35 +149,30 @@ layer_confs = [
         n_neurons=n_hidden_neurons,
         dimensions=15,
         radius=1,
-        max_rates=nengo.dists.Choice([_RATE_TARGET]),
     ),
     dict(
         name="output_ens",
         n_neurons=image_size,
         dimensions=2,
         radius=1,
-        max_rates=nengo.dists.Choice([_RATE_TARGET]),
     ),
     dict(
         name="coding_ens",
         n_neurons=n_coding_neurons,
-        dimensions=1,
+        dimensions=dim_states,
         radius=np.pi,
-        max_rates=nengo.dists.Choice([_RATE_TARGET]),
     ),
     dict(
         name="error_ens",
         n_neurons=n_coding_neurons,
-        dimensions=1,
+        dimensions=dim_states,
         radius=np.pi,
-        max_rates=nengo.dists.Choice([_RATE_TARGET]),
     ),
     dict(
         name="reconstruction_error_ens",
         n_neurons=image_size,
         dimensions=2,
         radius=1,
-        max_rates=nengo.dists.Choice([_RATE_TARGET]),
     ),
 ]
 
@@ -251,7 +245,7 @@ conn_confs = [
         transform=gen_transform("identity_inhibition"),
     ),
     dict(
-        pre="Inhibit",
+        pre="inhibit",
         post="error_ens_neurons",
         transform=gen_transform("custom", weights=np.ones((n_coding_neurons, 1)) * -3),
         synapse=0.01,
@@ -259,8 +253,5 @@ conn_confs = [
 ]
 
 learning_confs = [
-    dict(
-        pre="error_ens",
-        post="hidden_ens_neurons2coding_ens_neurons",
-    ),
+    # dict(name="learning_coding",pre="error_ens",post="hidden_ens_neurons2coding_ens_neurons",),
 ]
