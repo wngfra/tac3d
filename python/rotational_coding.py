@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 from custom_learning_rules import MirroredSTDP
 from TouchDataset import TouchDataset
 
+import nengo_dl
+
 font = {"weight": "normal", "size": 30}
 
 matplotlib.rc("font", **font)
@@ -94,7 +96,7 @@ n_features = 10
 n_hidden_neurons = 100
 n_coding_neurons = 64
 presentation_time = 0.5
-duration = 30
+duration = 10
 
 learning_rate = 1e-3
 delay = Delay(1, timesteps=int(0.1 / dt))
@@ -220,16 +222,10 @@ conn_confs = [
         transform=gen_transform("identity_excitation"),
     ),
     dict(
-        pre="stim_ens",
-        post="hidden_ens",
-        synapse=0.01,
-        solver=nengo.solvers.LstsqL2(weights=True),
-        learning_rule=nengo.PES(learning_rate=learning_rate),
-    ),
-    dict(
         pre="stim_ens_neurons",
         post="hidden_ens_neurons",
         synapse=0.01,
+        learning_rule=nengo.PES(learning_rate=learning_rate),
     ),
     dict(
         pre="hidden_ens_neurons",
@@ -280,7 +276,7 @@ learning_confs = [
     ),
     dict(
         pre="error_ens",
-        post="stim_ens2hidden_ens",
+        post="stim_ens_neurons2hidden_ens_neurons",
     ),
 ]
 
