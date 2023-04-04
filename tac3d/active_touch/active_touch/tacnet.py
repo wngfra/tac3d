@@ -26,8 +26,10 @@ from active_touch.tacnet_helper import (
     log,
 )
 
+_DURATION = 0.5
 
-class TactileEncoding(Node):
+
+class Tacnet(Node):
     def __init__(self, node_name: str):
         super().__init__(node_name)
         self._layers: Optional[dict[str, nengo.Node | nengo.Ensemble]] = None
@@ -84,6 +86,7 @@ class TactileEncoding(Node):
         return self._tactile_data.ravel()
 
     def state_func(self, t):
+        # TODO consider the working memory decay
         if len(self._touch_sites) == 0:
             return np.zeros(dim_states)
         self._last_touch = self._touch_sites.pop().ravel()
@@ -168,7 +171,6 @@ class TactileEncoding(Node):
                 assert len(conn_conf) == 0, "Unused fields in {}: {}".format(
                     [name], list(conn_conf)
                 )
-                log(self, name)
                 conn = nengo.Connection(
                     self._layers[pre],
                     self._layers[post],
@@ -197,7 +199,6 @@ class TactileEncoding(Node):
                 transform = learning_conf.pop(
                     "transform", gen_transform("identity_excitation")
                 )
-                log(self, name)
                 self._conns[name] = nengo.Connection(
                     self._layers[pre],
                     self._conns[post].learning_rule,
@@ -207,17 +208,23 @@ class TactileEncoding(Node):
     def run_simulation(self):
         with nengo.Simulator(self._net, progress_bar=False) as self._sim:
             while rclpy.ok():
-                self._sim.run(0.1)
+                self._sim.run(_DURATION)
                 output = self._sim.data[self._probes["output_ens"]][-1]
                 coding = self._sim.data[self._probes["coding_ens"]][-1]
                 # Publish the reconstruction
                 self.publish(output, coding, self._last_touch)
 
-    def publish(self, image: np.ndarray, encoding: np.ndarray, points: np.ndarray):
+    def publish(
+        self, image: np.ndarray, encoding: np.ndarray, points: np.ndarray = None
+    ):
+        header = std_msgs.msg.Header()
+        header.frame_id = "world"
+        header.stamp = self.get_clock().now().to_msg()
+
         # Prepare reconstruction tactile image
         image = normalize(image).tolist()
         img_msg = sensor_msgs.msg.Image()
-        img_msg.header = std_msgs.msg.Header(frame_id="world")
+        img_msg.header = header
         img_msg.height = image_height
         img_msg.width = image_width
         img_msg.encoding = "mono8"
@@ -230,36 +237,36 @@ class TactileEncoding(Node):
         dim = int(np.sqrt(encoding.size))
         encoding = encoding.tolist()
         ec_msg = Locus()
-        ec_msg.header = std_msgs.msg.Header(frame_id="world")
+        ec_msg.header = header
         ec_msg.height = dim
         ec_msg.width = dim
         ec_msg.data = encoding
         self._encoding_pub.publish(ec_msg)
 
         # Prepare tactile spatial memory as point cloud
-        ros_dtype = sensor_msgs.msg.PointField.FLOAT32
-        dtype = np.float32
-        data = points.astype(dtype).tobytes()
-        itemsize = np.dtype(dtype).itemsize  # A 32-bit float takes 4 bytes.
-        data = points.astype(dtype).tobytes()
-        fields = [
-            sensor_msgs.PointField(
-                name=n, offset=i * itemsize, datatype=ros_dtype, count=1
+        if points is not None:
+            points = points[:3]
+            ros_dtype = sensor_msgs.msg.PointField.FLOAT32
+            dtype = np.float32
+            itemsize = np.dtype(dtype).itemsize  # A 32-bit float takes 4 bytes.
+            pc2_msg = sensor_msgs.msg.PointCloud2(
+                header=header,
+                height=1,
+                width=1,
+                is_dense=True,
+                is_bigendian=False,
+                fields=[
+                    sensor_msgs.msg.PointField(
+                        name=n, offset=i * itemsize, datatype=ros_dtype, count=1
+                    )
+                    for i, n in enumerate("xyz")
+                ],
+                point_step=itemsize * 1,
+                row_step=itemsize * points.shape[0] * 1,
+                data=points.astype(dtype).tobytes(),
             )
-            for i, n in enumerate("xyz")
-        ]
-        pc2_msg = sensor_msgs.msg.PointCloud2(
-            header=std_msgs.msg.Header(frame_id="world"),
-            height=1,
-            width=points.shape[0],
-            is_dense=False,
-            is_bigendian=False,
-            fields=fields,
-            point_step=itemsize * points.shape[1],
-            row_step=itemsize * points.shape[0] * points.shape[1],
-            data=data,
-        )
-        self._pc2_pub.publish(pc2_msg)
+            # FIXME cannot be visualized by rviz2
+            # self._pc2_pub.publish(pc2_msg)
 
     def subscribe_rs(self, msg: RobotState):
         # Update the robot state
@@ -279,7 +286,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     executor = rclpy.executors.MultiThreadedExecutor()
-    node = TactileEncoding("tactile_encoding_node")
+    node = Tacnet("tacnet_node")
     executor.add_node(node)
     try:
         executor.spin()

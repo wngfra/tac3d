@@ -27,7 +27,7 @@ _DEFAULT_XML_PATH = "/workspace/src/tac3d/models/scene.xml"
 _HEIGHT, _WIDTH = 15, 15
 _TIMER_RATE = 200
 _IKSITE_TYPE = 2
-_ERR_SCALE = 1e-3
+_CTRL_SCALE = 1e-3
 _QOS_PROFILE = QoSProfile(depth=20, reliability=QoSReliabilityPolicy.RELIABLE)
 
 _SITE_NAME = "attachment_site"
@@ -41,6 +41,7 @@ class IK_Solver:
     jacr: np.ndarray = None
     site_id: int = None
     dof_indices: np.ndarray = None
+    ref_pose: np.ndarray = None
 
 
 class Simulator(Node):
@@ -98,19 +99,47 @@ class Simulator(Node):
 
         indexer = [self._m.joint(jn).jntid for jn in _JOINTS]
         self.ik.dof_indices = np.asarray(indexer).flatten()
+        self.ik.ref_xpos = self._d.site_xpos[self.ik.site_id]
+        self.ik.ref_xmat = self._d.site_xmat[self.ik.site_id]
 
     def controller_callback(self, m: mujoco.MjModel, d: mujoco.MjData):
-        """Controller callback function to set motor signals."""
-        if len(self._ctrls) > 0:
-            err = self._ctrls.pop() * _ERR_SCALE
+        """Controller callback function to set motor signals.
 
-            # Compute IK
+        Args:
+            m (mujoco.MjModel): Robot model.
+            d (mujoco.MjData): Binded data.
+        """
+
+        # Compute translational error
+        dtype = d.qpos.dtype
+        err = np.zeros(6, dtype=dtype)
+        err_pos, err_rot = err[:3], err[3:]
+        err_pos[:] = self.ik.ref_xpos - d.site_xpos[self.ik.site_id]
+
+        # Compute rotation error
+        site_xmat = d.site_xmat[self.ik.site_id]
+        site_xquat = np.empty(4, dtype=dtype)
+        target_quat = np.empty(4, dtype=dtype)
+        neg_site_xquat = np.empty(4, dtype=dtype)
+        err_rot_quat = np.empty(4, dtype=dtype)
+        mujoco.mju_mat2Quat(site_xquat, site_xmat)
+        mujoco.mju_mat2Quat(target_quat, self.ik.ref_xmat)
+        mujoco.mju_negQuat(neg_site_xquat, site_xquat)
+        mujoco.mju_mulQuat(err_rot_quat, target_quat, neg_site_xquat)
+        mujoco.mju_quat2Vel(err_rot, err_rot_quat, 1)
+        
+        # Add control to error vector.
+        if len(self._ctrls) > 0:
+            ctrl = self._ctrls.pop() * _CTRL_SCALE
+            err_pos += ctrl[:3]
+            err_rot += ctrl[3:]
+        if np.linalg.norm(err_pos) > 1e-6:
+            # Compute IK and set control
             mujoco.mj_jacSite(m, d, self.ik.jacp, self.ik.jacr, self.ik.site_id)
             jac_joints = self.ik.jac[:, self.ik.dof_indices]
             update_joints = nullspace_method(
                 jac_joints, err, regularization_strength=1e-2
             )
-
             d.ctrl[: len(update_joints)] += update_joints
 
     def reset_simulator(self, key_id: int):
@@ -176,6 +205,7 @@ class Simulator(Node):
             .flatten()
             .tolist()
         )
+        rs_msg.contact_force = np.mean(self.sensordata)
         rs_msg.n_contacts = self._d.ncon
         self._rs_pub.publish(rs_msg)
 

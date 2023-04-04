@@ -22,7 +22,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'tactile_encoding = active_touch.tactile_encoding:main',
+            'tacnet = active_touch.tacnet:main',
             'cortex = active_touch.cortex:main'
         ],
     },

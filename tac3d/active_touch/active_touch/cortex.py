@@ -17,7 +17,7 @@ t = 0
 class Cortex(Node):
     def __init__(self, qos_profile):
         super().__init__("cortex_node")
-        self._is_contacted = False
+        self._contact_force = 0.0
         self._ee_pose = deque(maxlen=int(_SIM_RATE * 0.2))
 
         self.i = 0
@@ -48,10 +48,7 @@ class Cortex(Node):
         pose = np.concatenate([xpos, xrpy])
         self._ee_pose.appendleft(pose)
 
-        if msg.n_contacts > 0:
-            self._is_contacted = True
-        else:
-            self._is_contacted = False
+        self._contact_force = msg.contact_force
 
     def subscribe_te(self, msg):
         pass
@@ -65,10 +62,9 @@ class Cortex(Node):
         msg.header.stamp = self.get_clock().now().to_msg()
 
         signal = np.zeros(6, dtype=np.float64)
-        if not self._is_contacted:
-            signal[2] -= np.exp(-3e-2 * t)
-        else:
-            signal[:2] = np.random.randint(0, 2, 2)
+        # FIXME PID control for constant contact force
+        signal[2] -= np.exp(-2e-3 * t)
+        signal[1] = np.sin(0.5 * t)
         msg.spike_signal = signal.tolist()
         self._ms_pub.publish(msg)
 

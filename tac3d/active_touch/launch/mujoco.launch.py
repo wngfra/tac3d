@@ -40,10 +40,10 @@ def generate_launch_description():
     )
 
     # Tactile encoding node
-    te_node = Node(
+    tacnet_node = Node(
         package="active_touch",
-        name="tactile_encoding_node",
-        executable="tactile_encoding",
+        name="tacnet_node",
+        executable="tacnet",
         namespace="tac3d",
         output="screen",
         on_exit=[wait_for_mj_sim_node_handler],
@@ -51,6 +51,6 @@ def generate_launch_description():
 
     ld.add_action(mj_sim_node)
     ld.add_action(rqt_node)
-    ld.add_action(te_node)
+    ld.add_action(tacnet_node)
 
     return ld

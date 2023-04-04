@@ -7,4 +7,5 @@ string[] site_name
 float64[] site_position
 float64[] site_quaternion
 
+float64 contact_force
 uint32 n_contacts

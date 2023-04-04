@@ -286,7 +286,7 @@ default_intercepts = nengo.dists.Choice([0, 0.1])
 default_rates = nengo.dists.Choice([200])
 
 # Create the Nengo model
-with nengo.Network(label="tactile_encoding_net") as model:
+with nengo.Network(label="tacnet") as model:
     layers = dict()
     connections = dict()
     probes = dict()
@@ -412,4 +412,5 @@ plt.subplot(3, 1, 3)
 plt.plot(sim.trange(), sim.data[probes[ens3]], label=ens3[:-4])
 plt.xlabel("time (s)")
 plt.legend()
+plt.grid()
 plt.show()

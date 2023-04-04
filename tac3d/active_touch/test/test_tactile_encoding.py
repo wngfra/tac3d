@@ -3,4 +3,4 @@
 
 import rclpy
 
-from active_touch.tactile_encoding import TactileEncoding
+from tac3d.active_touch.active_touch.tacnet import Tacnet
