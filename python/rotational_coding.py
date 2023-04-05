@@ -8,10 +8,9 @@ import nengo
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-from custom_learning_rules import MirroredSTDP
 from TouchDataset import TouchDataset
-
-import nengo_dl
+from custom_learning_rules import SynapticSampling
+from nengo_extras.learning_rules import DeltaRule
 
 font = {"weight": "normal", "size": 30}
 
@@ -75,27 +74,27 @@ class Delay:
 
 # Function to inhibit the error population after 15s
 def inhib(t):
-    return 2 if t > 20.0 else 0.0
+    return 2 if t > 15.0 else 0.0
 
 
 _DATAPATH = os.path.join(os.path.dirname(__file__), "../data/touch.pkl")
 
 # Prepare dataset
-dataset = TouchDataset(_DATAPATH, noise_scale=0.1, scope=(-1, 1))
+dataset = TouchDataset(_DATAPATH, noise_scale=0.05, scope=(-1, 1), tags=["round_site"])
 X_train, y_train, X_test, y_test = dataset.split_set(ratio=0.5, shuffle=True)
 height, width = X_train[0].shape
 image_size = X_train[0].size
 
 # Simulation parameters
-dt = 1e-4
+dt = 1e-3
 max_rate = 100
 amp = 1.0 / max_rate
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
 n_features = 10
-n_hidden_neurons = 100
-n_coding_neurons = 64
-presentation_time = 0.5
+n_hidden_neurons = 64
+n_coding_neurons = 36
+presentation_time = 3
 duration = 10
 
 learning_rate = 1e-3
@@ -148,7 +147,7 @@ layer_confs = [
     dict(
         name="stim_ens",
         n_neurons=image_size,
-        dimensions=1,
+        dimensions=2,
         radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
         on_chip=False,
@@ -156,7 +155,7 @@ layer_confs = [
     dict(
         name="hidden_ens",
         n_neurons=n_hidden_neurons,
-        dimensions=1,
+        dimensions=2,
         radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
     ),
@@ -164,7 +163,7 @@ layer_confs = [
         name="output_ens",
         n_neurons=image_size,
         dimensions=1,
-        radius=1,
+        radius=np.pi,
         max_rates=nengo.dists.Choice([rate_target]),
     ),
     dict(
@@ -185,7 +184,8 @@ layer_confs = [
         n_neurons=image_size,
         dimensions=1,
         max_rates=nengo.dists.Choice([rate_target]),
-        radius=1,
+        intercepts=nengo.dists.Choice([0, 0.1]),
+        radius=10,
     ),
 ]
 
@@ -225,7 +225,6 @@ conn_confs = [
         pre="stim_ens_neurons",
         post="hidden_ens_neurons",
         synapse=0.01,
-        learning_rule=nengo.PES(learning_rate=learning_rate),
     ),
     dict(
         pre="hidden_ens_neurons",
@@ -239,7 +238,7 @@ conn_confs = [
     dict(
         pre="hidden_ens_neurons",
         post="coding_ens_neurons",
-        learning_rule=nengo.PES(learning_rate=learning_rate),
+        learning_rule=SynapticSampling(learning_rate=learning_rate),
     ),
     dict(
         pre="coding_ens",
@@ -254,12 +253,12 @@ conn_confs = [
     dict(
         pre="stim_ens_neurons",
         post="reconstruction_error_ens_neurons",
-        transform=gen_transform("identity_excitation"),
+        transform=gen_transform("identity_inhibition"),
     ),
     dict(
         pre="output_ens_neurons",
         post="reconstruction_error_ens_neurons",
-        transform=gen_transform("identity_inhibition"),
+        transform=gen_transform("identity_excitation"),
     ),
     dict(
         pre="inhibition",
@@ -269,20 +268,11 @@ conn_confs = [
     ),
 ]
 
-learning_confs = [
-    dict(
-        pre="error_ens",
-        post="hidden_ens_neurons2coding_ens_neurons",
-    ),
-    dict(
-        pre="error_ens",
-        post="stim_ens_neurons2hidden_ens_neurons",
-    ),
-]
+learning_confs = []
 
 
 default_neuron = nengo.AdaptiveLIF()
-default_intercepts = nengo.dists.Choice([0, 0.1])
+default_intercepts = nengo.dists.Choice([0, -0.1])
 default_rates = nengo.dists.Choice([200])
 
 # Create the Nengo model
@@ -395,9 +385,9 @@ with nengo.Simulator(model) as sim:
     sim.run(duration)
 
 conn_name = "{}2{}".format("hidden_ens_neurons", "coding_ens_neurons")
-ens1 = "state_ens"
-ens2 = "coding_ens"
-ens3 = "error_ens"
+ens1 = "stim_ens"
+ens2 = "output_ens"
+ens3 = "reconstruction_error_ens"
 
 plt.figure(figsize=(15, 10))
 plt.subplot(3, 1, 1)

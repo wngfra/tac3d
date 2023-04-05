@@ -10,16 +10,16 @@ from nengo.params import Default, NumberParam
 from nengo.synapses import Lowpass, SynapseParam
 
 
-class MirroredSTDP(nengo.learning_rules.LearningRuleType):
+class SynapticSampling(nengo.learning_rules.LearningRuleType):
     """
-    Mirrored STDP learning rule.
+    Synaptic Sampling learning rule.
     """
 
     modifies = "weights"
     probeable = ("pre_filtered", "post_filtered", "delta")
 
     learning_rate = NumberParam("learning_rate", low=0, readonly=True, default=1e-6)
-    time_constant = NumberParam("time_constant", low=0, readonly=True, default=0.005)
+    time_constant = NumberParam("time_constant", low=0, readonly=True, default=0.1)
     pre_synapse = SynapseParam("pre_synapse", default=None, readonly=True)
     post_synapse = SynapseParam("post_synapse", default=None, readonly=True)
 
@@ -38,7 +38,7 @@ class MirroredSTDP(nengo.learning_rules.LearningRuleType):
         self.time_constant = time_constant
 
 
-class SimMSTDP(Operator):
+class SimSS(Operator):
     def __init__(self, pre_filtered, post_filtered, delta, learning_rate, time_constant, tag=None):
         super().__init__(tag=tag)
         self.learning_rate = learning_rate
@@ -71,7 +71,7 @@ class SimMSTDP(Operator):
         delta = signals[self.delta]
         alpha = self.learning_rate * dt
 
-        def step_simmstdp():
+        def step_simss():
             delta[...] = np.outer(
                 alpha * post_filtered * (post_filtered - 0.1), pre_filtered
             )
@@ -81,24 +81,24 @@ class SimMSTDP(Operator):
             data[2] += self.learning_rate * stdp_update
             """
 
-        return step_simmstdp
+        return step_simss
 
 
-@Builder.register(MirroredSTDP)
-def build_mstdp(model, mstdp, rule):
+@Builder.register(SynapticSampling)
+def build_ss(model, ss, rule):
     conn = rule.connection
     pre_activities = model.sig[get_pre_ens(conn).neurons]["out"]
     post_activities = model.sig[get_post_ens(conn).neurons]["out"]
-    pre_filtered = build_or_passthrough(model, mstdp.pre_synapse, pre_activities)
-    post_filtered = build_or_passthrough(model, mstdp.post_synapse, post_activities)
+    pre_filtered = build_or_passthrough(model, ss.pre_synapse, pre_activities)
+    post_filtered = build_or_passthrough(model, ss.post_synapse, post_activities)
 
     model.add_op(
-        SimMSTDP(
+        SimSS(
             pre_filtered,
             post_filtered,
             model.sig[rule]["delta"],
-            learning_rate=mstdp.learning_rate,
-            time_constant=mstdp.time_constant,
+            learning_rate=ss.learning_rate,
+            time_constant=ss.time_constant,
         )
     )
 
