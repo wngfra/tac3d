@@ -36,3 +36,18 @@ services:
       interval: 10s
       timeout: 3s
       retries: 1
+
+  notebook:
+    image: wngfra/neuralab:base
+    container_name: notebook_container
+    working_dir: /workspace
+    volumes:
+      - ${PWD}/python:/workspace/python
+    networks: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
