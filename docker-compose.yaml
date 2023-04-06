@@ -38,6 +38,7 @@ services:
       retries: 1
 
   notebook:
+    image: tac3d-notebook
     build: 
       context: ./docker/notebook
       dockerfile: Dockerfile
