@@ -94,10 +94,10 @@ rate_target = max_rate * amp  # must be in amplitude scaled units
 n_features = 10
 n_hidden_neurons = 64
 n_coding_neurons = 36
-presentation_time = 3
+presentation_time = 0.2
 duration = 10
 
-learning_rate = 1e-3
+learning_rate = 2e-4
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 layer_confs = [
@@ -156,7 +156,7 @@ layer_confs = [
         name="hidden_ens",
         n_neurons=n_hidden_neurons,
         dimensions=2,
-        radius=1,
+        radius=np.pi,
         max_rates=nengo.dists.Choice([rate_target]),
     ),
     dict(
@@ -177,7 +177,7 @@ layer_confs = [
         name="error_ens",
         n_neurons=n_coding_neurons,
         dimensions=1,
-        radius=np.pi,
+        radius=1,
     ),
     dict(
         name="reconstruction_error_ens",
@@ -225,6 +225,8 @@ conn_confs = [
         pre="stim_ens_neurons",
         post="hidden_ens_neurons",
         synapse=0.01,
+        learning_rule=nengo.PES(learning_rate=learning_rate),
+        solver=nengo.solvers.LstsqL2(weights=True, reg=1e-3),
     ),
     dict(
         pre="hidden_ens_neurons",
@@ -238,7 +240,8 @@ conn_confs = [
     dict(
         pre="hidden_ens_neurons",
         post="coding_ens_neurons",
-        learning_rule=SynapticSampling(learning_rate=learning_rate),
+        learning_rule=nengo.PES(learning_rate=learning_rate),
+        solver=nengo.solvers.LstsqL2(weights=True, reg=1e-3),
     ),
     dict(
         pre="coding_ens",
@@ -268,7 +271,13 @@ conn_confs = [
     ),
 ]
 
-learning_confs = []
+learning_confs = [
+    dict(
+        pre="error_ens_neurons",
+        post="hidden_ens_neurons2coding_ens_neurons",
+        transform=np.zeros((1, 36)),
+    ),
+]
 
 
 default_neuron = nengo.AdaptiveLIF()
@@ -385,9 +394,9 @@ with nengo.Simulator(model) as sim:
     sim.run(duration)
 
 conn_name = "{}2{}".format("hidden_ens_neurons", "coding_ens_neurons")
-ens1 = "stim_ens"
-ens2 = "output_ens"
-ens3 = "reconstruction_error_ens"
+ens1 = "state_ens"
+ens2 = "coding_ens"
+ens3 = "error_ens"
 
 plt.figure(figsize=(15, 10))
 plt.subplot(3, 1, 1)
