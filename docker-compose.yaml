@@ -46,6 +46,7 @@ services:
     working_dir: /workspace
     volumes:
       - ${PWD}/python:/workspace/python
+      - ${PWD}/data:/workspace/data
     network_mode: host
     deploy:
       resources:

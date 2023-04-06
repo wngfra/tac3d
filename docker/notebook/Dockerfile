@@ -43,6 +43,8 @@ SHELL ["/bin/bash", "-c", "source ~/.bashrc"]
 RUN conda init bash && \
     conda activate base && \
     pip3 install -q -U \
+    numpy \
+    sympy \
     brian2 \
     mujoco \
     dm_control \
