@@ -9,7 +9,6 @@ x-shared-data:
 volumes:
   shared-volume:
 
-
 services:
   mujoco_sim:
     image: wngfra/ros2:cuda
@@ -38,10 +37,9 @@ services:
       retries: 1
 
   notebook:
-    image: tac3d-notebook
-    build: 
-      context: ./docker/notebook
-      dockerfile: Dockerfile
+    build:
+      context: docker
+      dockerfile: Dockerfile-notebook
     container_name: notebook_container
     working_dir: /workspace
     volumes:
