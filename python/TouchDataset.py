@@ -4,8 +4,22 @@ from functools import reduce
 from operator import add
 
 
+def wrap2pi(x):
+    """Wrap the angle to [-pi, pi].
+
+    Args:
+        x (float): Angle in radian.
+
+    Returns:
+        float: Wrapped angle.
+    """
+    return (x + np.pi) % (2 * np.pi) - np.pi
+
+
 class TouchDataset:
-    def __init__(self, filepath, noise_scale=0, flatten=False, scope=(0, 0), *, tags=None):
+    def __init__(
+        self, filepath, noise_scale=0, flatten=False, scope=(0, 0), *, tags=None
+    ):
         self.filepath = filepath
         self.noise_scale = noise_scale
         self.flatten = flatten
@@ -20,7 +34,10 @@ class TouchDataset:
         orientations = reduce(add, [dataset[tag]["orientations"] for tag in self.tags])
 
         if noise_scale > 0:
-            noise = [np.random.normal(0, samples[i].max()*noise_scale, samples[i].shape) for i in range(len(samples))]
+            noise = [
+                np.random.normal(0, samples[i].max() * noise_scale, samples[i].shape)
+                for i in range(len(samples))
+            ]
             samples += np.array(noise)
 
         if flatten:
@@ -31,9 +48,9 @@ class TouchDataset:
                 if sample.max() > sample.min():
                     sample = (sample - sample.min()) / (sample.max() - sample.min())
                     samples[i] = sample * (scope[1] - scope[0]) + scope[0]
-        
+
         self.samples = samples
-        self.orientations = np.asarray(orientations)
+        self.orientations = wrap2pi(np.asarray(orientations))
 
     def subset(self, tags):
         """Create a new instance with only selected tags.

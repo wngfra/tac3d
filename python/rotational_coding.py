@@ -55,7 +55,7 @@ def gen_transform(pattern="random", weights=None):
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Gaussian(0, 1e-3),
+                    init=nengo.dists.Gaussian(0, 1e-2),
                 )
         return W
 
@@ -92,10 +92,10 @@ amp = 1.0 / max_rate
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
 n_features = 10
-n_hidden_neurons = 64
-n_coding_neurons = 36
-presentation_time = 0.2
-duration = 10
+n_hidden_neurons = 100
+n_coding_neurons = 64
+presentation_time = 1
+duration = 20
 
 learning_rate = 2e-4
 delay = Delay(1, timesteps=int(0.1 / dt))
@@ -147,7 +147,7 @@ layer_confs = [
     dict(
         name="stim_ens",
         n_neurons=image_size,
-        dimensions=2,
+        dimensions=1,
         radius=1,
         max_rates=nengo.dists.Choice([rate_target]),
         on_chip=False,
@@ -155,7 +155,7 @@ layer_confs = [
     dict(
         name="hidden_ens",
         n_neurons=n_hidden_neurons,
-        dimensions=2,
+        dimensions=1,
         radius=np.pi,
         max_rates=nengo.dists.Choice([rate_target]),
     ),
@@ -171,13 +171,14 @@ layer_confs = [
         n_neurons=n_coding_neurons,
         dimensions=1,
         radius=np.pi,
+        encoders=nengo.dists.Uniform(-np.pi, np.pi),
         max_rates=nengo.dists.Choice([rate_target]),
     ),
     dict(
         name="error_ens",
         n_neurons=n_coding_neurons,
         dimensions=1,
-        radius=1,
+        radius=2*np.pi,
     ),
     dict(
         name="reconstruction_error_ens",
@@ -185,7 +186,7 @@ layer_confs = [
         dimensions=1,
         max_rates=nengo.dists.Choice([rate_target]),
         intercepts=nengo.dists.Choice([0, 0.1]),
-        radius=10,
+        radius=np.pi,
     ),
 ]
 
@@ -225,23 +226,17 @@ conn_confs = [
         pre="stim_ens_neurons",
         post="hidden_ens_neurons",
         synapse=0.01,
-        learning_rule=nengo.PES(learning_rate=learning_rate),
-        solver=nengo.solvers.LstsqL2(weights=True, reg=1e-3),
     ),
     dict(
         pre="hidden_ens_neurons",
-        post="output_ens_neurons",
-        transform=gen_transform(
-            "custom",
-            weights=np.random.normal(0, 1e-3, size=(image_size, n_hidden_neurons)),
-        ),
+        post="output_ens",
+        transform=gen_transform(),
         synapse=0.01,
     ),
     dict(
         pre="hidden_ens_neurons",
-        post="coding_ens_neurons",
+        post="coding_ens",
         learning_rule=nengo.PES(learning_rate=learning_rate),
-        solver=nengo.solvers.LstsqL2(weights=True, reg=1e-3),
     ),
     dict(
         pre="coding_ens",
@@ -274,8 +269,8 @@ conn_confs = [
 learning_confs = [
     dict(
         pre="error_ens_neurons",
-        post="hidden_ens_neurons2coding_ens_neurons",
-        transform=np.zeros((1, 36)),
+        post="hidden_ens_neurons2coding_ens",
+        transform=np.zeros((1, n_coding_neurons)),
     ),
 ]
 
@@ -393,7 +388,7 @@ with nengo.Network(label="tacnet") as model:
 with nengo.Simulator(model) as sim:
     sim.run(duration)
 
-conn_name = "{}2{}".format("hidden_ens_neurons", "coding_ens_neurons")
+conn_name = "{}2{}".format("hidden_ens_neurons", "coding_ens")
 ens1 = "state_ens"
 ens2 = "coding_ens"
 ens3 = "error_ens"
