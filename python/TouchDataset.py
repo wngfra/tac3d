@@ -13,6 +13,7 @@ def wrap2pi(x):
     Returns:
         float: Wrapped angle.
     """
+    x = np.asarray(x)
     return (x + np.pi) % (2 * np.pi) - np.pi
 
 
@@ -50,7 +51,7 @@ class TouchDataset:
                     samples[i] = sample * (scope[1] - scope[0]) + scope[0]
 
         self.samples = samples
-        self.orientations = wrap2pi(np.asarray(orientations))
+        self.orientations = wrap2pi(orientations)/np.pi
 
     def subset(self, tags):
         """Create a new instance with only selected tags.
