@@ -35,7 +35,7 @@ def gen_transform(pattern="random", weights=None):
             case "exclusive_inhibition":
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
                 W = -np.ones((shape[0], shape[0])) + 2 * np.eye(shape[0])
-                W[W < 0] *= 3
+                W[W < 0] *= 2
             case "custom":
                 if weights is None:
                     raise ValueError("No weights provided!")
@@ -45,7 +45,7 @@ def gen_transform(pattern="random", weights=None):
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Uniform(-1, 1),
+                    init=nengo.dists.Gaussian(0, 0.5),
                 )
         return W
 
@@ -77,19 +77,25 @@ image_size = X_train[0].size
 
 # Simulation parameters
 dt = 1e-3
-max_rate = 150 # Hz
+max_rate = 150  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
 n_features = 10
-n_hidden_neurons = 100
-wta_neurons = 64
-n_latent_variables = 16
-presentation_time = 0.1
-duration = 10
+n_hidden_neurons = 36
+wta_neurons = 36
+n_latent_variables = 3
+presentation_time = 0.2
+duration = 60
+sample_every = 10 * dt
 
-learning_rate = 2e-8
+learning_rate = 6e-8
 delay = Delay(1, timesteps=int(0.1 / dt))
+
+
+default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.01)
+default_rates = nengo.dists.Choice([max_rate])
+default_intercepts = nengo.dists.Choice([0])
 
 layer_confs = [
     dict(
@@ -127,13 +133,13 @@ layer_confs = [
         name="stim",
         neuron=nengo.PoissonSpiking(nengo.LIFRate(amplitude=amp)),
         n_neurons=image_size,
-        dimensions=1,
+        dimensions=3,
         on_chip=False,
     ),
     dict(
         name="hidden",
         n_neurons=n_hidden_neurons,
-        dimensions=1,
+        dimensions=3,
     ),
     dict(
         name="output",
@@ -143,7 +149,7 @@ layer_confs = [
     dict(
         name="WTA",
         n_neurons=wta_neurons,
-        dimensions=n_latent_variables,
+        dimensions=1,
     ),
     dict(
         name="reconstruction_error",
@@ -191,14 +197,15 @@ conn_confs = [
     ),
     dict(
         pre="hidden_neurons",
-        post="output",
+        post="output_neurons",
         transform=gen_transform(),
         synapse=0.01,
     ),
     dict(
         pre="hidden_neurons",
         post="WTA_neurons",
-        learning_rule=nengo.BCM(learning_rate=learning_rate),
+        learning_rule=nengo.Oja(learning_rate=learning_rate, post_synapse=0.03),
+        synapse=0.02,
     ),
     dict(
         pre="WTA_neurons",
@@ -220,12 +227,8 @@ conn_confs = [
 learning_confs = []
 
 
-default_neuron = nengo.AdaptiveLIF(amplitude=amp)
-default_rates = nengo.dists.Choice([max_rate])
-default_intercepts = nengo.dists.Choice([0])
-
 # Create the Nengo model
-with nengo.Network(label="tacnet") as model:
+with nengo.Network(label="tacnet", seed=1) as model:
     layers = dict()
     connections = dict()
     probes = dict()
@@ -256,7 +259,9 @@ with nengo.Network(label="tacnet") as model:
 
             layer = nengo.Node(output=output, size_in=size_in, label=name)
             layers[name] = layer
-            probe = nengo.Probe(layer, synapse=0.01, label="%s_probe" % name)
+            probe = nengo.Probe(
+                layer, synapse=0.01, sample_every=sample_every, label="%s_probe" % name
+            )
             probes[name] = probe
         else:
             layer = nengo.Ensemble(
@@ -274,10 +279,15 @@ with nengo.Network(label="tacnet") as model:
             layers[name + "_neurons"] = layer.neurons
 
             # Add a probe so we can measure individual layer rates
-            probe = nengo.Probe(layer, synapse=0.01, label="%s_probe" % name)
+            probe = nengo.Probe(
+                layer, synapse=0.01, sample_every=sample_every, label="%s_probe" % name
+            )
             probes[name] = probe
             probe = nengo.Probe(
-                layer.neurons, synapse=0.01, label="%s_neurons_probe" % name
+                layer.neurons,
+                synapse=0.01,
+                sample_every=sample_every,
+                label="%s_neurons_probe" % name,
             )
             probes[name + "_neurons"] = probe
 
@@ -310,7 +320,11 @@ with nengo.Network(label="tacnet") as model:
         connections[name] = conn
 
         probe = nengo.Probe(
-            conn, "weights", synapse=0.01, label="weights_{}".format(name)
+            conn,
+            "weights",
+            synapse=0.01,
+            sample_every=sample_every,
+            label="weights_{}".format(name),
         )
         probes[name] = probe
 
@@ -328,22 +342,22 @@ with nengo.Network(label="tacnet") as model:
 
 """Run in non-GUI mode
 """
-with nengo.Simulator(model, dt=dt) as sim:
+with nengo.Simulator(model, dt=dt, optimize=True) as sim:
     sim.run(duration)
 
 conn_name = "{}2{}".format("hidden_neurons", "WTA_neurons")
-ens_names = ["state", "WTA", "hidden"]
+ens_names = ["state", "WTA_neurons", "hidden"]
 
 plt.figure(figsize=(5, 10))
 # Find weight row with max variance
 neuron = np.argmax(np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1))
-plt.plot(sim.trange(), sim.data[probes[conn_name]][:, neuron, :])
+plt.plot(sim.trange(sample_every), sim.data[probes[conn_name]][:, neuron, :])
 plt.xlabel("time (s)")
 plt.ylabel("weights")
 
-fig, axs = plt.subplots(len(ens_names), 1, figsize=(5*len(ens_names), 10))
+fig, axs = plt.subplots(len(ens_names), 1, figsize=(5 * len(ens_names), 10))
 for i, ens_name in enumerate(ens_names):
-    axs[i].plot(sim.trange(), sim.data[probes[ens_name]])
+    axs[i].plot(sim.trange(sample_every=sample_every), sim.data[probes[ens_name]])
     axs[i].set_ylabel(ens_name)
     axs[i].set_xlabel("time (s)")
     axs[i].grid()
