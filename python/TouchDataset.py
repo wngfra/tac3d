@@ -51,7 +51,7 @@ class TouchDataset:
                     samples[i] = sample * (scope[1] - scope[0]) + scope[0]
 
         self.samples = samples
-        self.orientations = wrap2pi(orientations)/np.pi
+        self.orientations = wrap2pi(orientations) / np.pi
 
     def subset(self, tags):
         """Create a new instance with only selected tags.

@@ -85,7 +85,7 @@ n_features = 10
 n_hidden_neurons = 36
 wta_neurons = 36
 n_latent_variables = 3
-presentation_time = 0.2
+presentation_time = 0.1
 duration = 60
 sample_every = 10 * dt
 
