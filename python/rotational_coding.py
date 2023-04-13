@@ -8,8 +8,9 @@ import nengo
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-from TouchDataset import TouchDataset
+from BarGenerator import BarGenerator
 from custom_learning_rules import SynapticSampling
+from nengo_extras.plot_spikes import plot_spikes
 
 font = {"weight": "normal", "size": 30}
 
@@ -32,9 +33,12 @@ def gen_transform(pattern="random", weights=None):
                 W = 1
             case "identity_inhibition":
                 W = -1
+            case "exclusive_excitation":
+                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
+                W = np.ones(shape) - np.eye(shape[0])
             case "exclusive_inhibition":
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
-                W = -np.ones((shape[0], shape[0])) + 2 * np.eye(shape[0])
+                W = -np.ones(shape) + 2 * np.eye(shape[0])
                 W[W < 0] *= 2
             case "custom":
                 if weights is None:
@@ -67,13 +71,22 @@ def inhib(t):
     return 2 if t > duration * 0.6 else 0.0
 
 
-_DATAPATH = os.path.join(os.path.dirname(__file__), "../data/touch.pkl")
+stim_shape = (15, 15)
+stim_size = np.prod(stim_shape)
+bar_generator = BarGenerator(stim_shape)
 
 # Prepare dataset
-dataset = TouchDataset(_DATAPATH, noise_scale=0.1, scope=(-1, 1))
-X_train, y_train, X_test, y_test = dataset.split_set(ratio=0.5, shuffle=True)
-height, width = X_train[0].shape
-image_size = X_train[0].size
+X_train, y_train = bar_generator.generate_bars(
+    2000,
+    min_offset=(5, 5),
+    max_offset=(11, 11),
+    min_angle=0,
+    max_angle=180,
+    min_dim=(2, 10),
+    max_dim=(3, 20),
+)
+y_train = (y_train - 90) / 180
+
 
 # Simulation parameters
 dt = 1e-3
@@ -81,12 +94,11 @@ max_rate = 150  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_features = 10
-n_hidden_neurons = 36
-wta_neurons = 36
+n_hidden_neurons = 64
 n_latent_variables = 3
-presentation_time = 0.1
-duration = 60
+n_state_neurons = 10
+presentation_time = 0.2
+duration = 10
 sample_every = 10 * dt
 
 learning_rate = 6e-8
@@ -105,7 +117,7 @@ layer_confs = [
     ),
     dict(
         name="state",
-        n_neurons=wta_neurons,
+        n_neurons=n_state_neurons,
         dimensions=1,
     ),
     dict(
@@ -132,7 +144,7 @@ layer_confs = [
     dict(
         name="stim",
         neuron=nengo.PoissonSpiking(nengo.LIFRate(amplitude=amp)),
-        n_neurons=image_size,
+        n_neurons=stim_size,
         dimensions=3,
         on_chip=False,
     ),
@@ -143,17 +155,17 @@ layer_confs = [
     ),
     dict(
         name="output",
-        n_neurons=image_size,
+        n_neurons=stim_size,
         dimensions=1,
     ),
     dict(
-        name="WTA",
-        n_neurons=wta_neurons,
+        name="inhibitor",
+        n_neurons=1,
         dimensions=1,
     ),
     dict(
         name="reconstruction_error",
-        n_neurons=image_size,
+        n_neurons=stim_size,
         dimensions=1,
     ),
 ]
@@ -193,6 +205,18 @@ conn_confs = [
     dict(
         pre="stim_neurons",
         post="hidden_neurons",
+        learning_rule=nengo.Oja(learning_rate=learning_rate),
+        synapse=0.01,
+    ),
+    dict(
+        pre="hidden_neurons",
+        post="inhibitor_neurons",
+        synapse=0.01,
+    ),
+    dict(
+        pre="inhibitor_neurons",
+        post="hidden_neurons",
+        transform=gen_transform("custom", weights=-4 * np.ones((n_hidden_neurons, 1))),
         synapse=0.01,
     ),
     dict(
@@ -200,18 +224,7 @@ conn_confs = [
         post="output_neurons",
         transform=gen_transform(),
         synapse=0.01,
-    ),
-    dict(
-        pre="hidden_neurons",
-        post="WTA_neurons",
-        learning_rule=nengo.Oja(learning_rate=learning_rate, post_synapse=0.03),
-        synapse=0.02,
-    ),
-    dict(
-        pre="WTA_neurons",
-        post="WTA_neurons",
-        transform=gen_transform("exclusive_inhibition"),
-        synapse=0.01,
+        learning_rule=nengo.PES(learning_rate=1e-7),
     ),
     dict(
         pre="stim_neurons",
@@ -345,8 +358,8 @@ with nengo.Network(label="tacnet", seed=1) as model:
 with nengo.Simulator(model, dt=dt, optimize=True) as sim:
     sim.run(duration)
 
-conn_name = "{}2{}".format("hidden_neurons", "WTA_neurons")
-ens_names = ["state", "WTA_neurons", "hidden"]
+conn_name = "{}2{}".format("stim_neurons", "hidden_neurons")
+ens_names = ["state", "stim_neurons", "hidden_neurons", "hidden"]
 
 plt.figure(figsize=(5, 10))
 # Find weight row with max variance
@@ -357,8 +370,15 @@ plt.ylabel("weights")
 
 fig, axs = plt.subplots(len(ens_names), 1, figsize=(5 * len(ens_names), 10))
 for i, ens_name in enumerate(ens_names):
-    axs[i].plot(sim.trange(sample_every=sample_every), sim.data[probes[ens_name]])
-    axs[i].set_ylabel(ens_name)
+    if "neurons" in ens_name:
+        plot_spikes(
+            sim.trange(sample_every=sample_every), sim.data[probes[ens_name]], ax=axs[i]
+        )
+        axs[i].set_ylabel("neuron")
+    else:
+        axs[i].plot(sim.trange(sample_every=sample_every), sim.data[probes[ens_name]])
+        axs[i].set_ylabel("encoder")
+    axs[i].set_title(ens_name)
     axs[i].set_xlabel("time (s)")
     axs[i].grid()
 plt.tight_layout()

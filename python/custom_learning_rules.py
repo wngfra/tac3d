@@ -75,11 +75,6 @@ class SimSS(Operator):
             delta[...] = np.outer(
                 alpha * post_filtered * (post_filtered - 0.1), pre_filtered
             )
-            """
-            delta_t = data[0] - data[1]
-            stdp_update = np.where(delta_t > 0, np.exp(-delta_t / self.time_constant), -np.exp(delta_t / self.time_constant))
-            data[2] += self.learning_rate * stdp_update
-            """
 
         return step_simss
 

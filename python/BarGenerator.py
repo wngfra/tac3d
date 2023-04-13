@@ -3,36 +3,49 @@
 
 import numpy as np
 
+from numpy import linalg
 from scipy import ndimage
 
 
 class BarGenerator:
     def __init__(self, shape):
-        self._shape = shape
+        self._shape = np.asarray(shape)
 
-    def __call__(self, offset=(0, 0), angle=0, dim=(1, 1)):
+    def __call__(self, centre=None, angle=0, dim=(1, 1)):
         """Generate a bar with given shape.
 
         Args:
-            offset (tuple, optional): Offset of the bar. Defaults to (0, 0).
+            centre (tuple, optional): Centre of the bar. Defaults to image centre.
             angle (float, optional): Angle of the bar. Defaults to 0.
             dim (tuple, optional): Dimension of the bar. Defaults to (1, 1).
 
         Returns:
             np.ndarray: Bar with shape (width, shape[1]).
         """
-        bar = np.zeros(self._shape)
-        x, y = int(offset[0]), int(offset[1])
-        dx, dy = int(dim[0]), int(dim[1])
-        if x + dx > self._shape[0]:
-            dx = self._shape[0] - x
-        if y + dy > self._shape[1]:
-            dy = self._shape[1] - y
-        bar[x : x + dx, y : y + dy] = 1
-
-        rotated_bar = ndimage.rotate(bar, angle, reshape=False)
-
-        return rotated_bar
+        
+        # Compute the new side length for the padded image
+        L = linalg.norm(self.shape).astype(int)
+        if L % 2 == 0:
+            L += 1
+        padded = np.zeros((L, L))
+        
+        # Compute left and bottom pads
+        padleft, padbottom = (L - self.shape[0]) // 2, (L - self.shape[1]) // 2
+        if centre is None:
+            x, y = L // 2, L // 2
+        else:
+            x, y = int(centre[0] + padleft), int(centre[1] + padbottom)
+        
+        # Compute the start position for the bar, from left and bottom
+        # FIXME: This is not correct, should be from centre, problems with odd dimensions
+        startx = x - dim[0] // 2
+        starty = y - dim[1] // 2
+        padded[startx : startx + dim[0], starty : starty + dim[1]] = 1
+        
+        padded = ndimage.rotate(padded, angle)
+        return padded[
+            padleft : padleft + self.shape[0], padbottom : padbottom + self.shape[1]
+        ]
 
     def generate_bars(
         self,
@@ -57,17 +70,17 @@ class BarGenerator:
 
         Returns:
             np.ndarray: Bars with shape (num_samples, width, shape[1]).
-            np.ndarray: Info with shape (num_samples, 1).
+            np.ndarray: Info with shape (num_samples, 1). Defaults to degrees in [0, 180].
         """
         bars = np.empty((num_samples, *self._shape))
         info = np.empty((num_samples, 1))
         for i in range(num_samples):
-            dx = np.random.randint(min_offset[0], max_offset[0])
-            dy = np.random.randint(min_offset[1], max_offset[1])
+            x = np.random.randint(min_offset[0], max_offset[0])
+            y = np.random.randint(min_offset[1], max_offset[1])
             angle = np.random.randint(min_angle, max_angle)
             dimx = np.random.randint(min_dim[0], max_dim[0])
             dimy = np.random.randint(min_dim[1], max_dim[1])
-            bars[i] = self((dx, dy), angle, (dimx, dimy))
+            bars[i] = self((x, y), angle, (dimx, dimy))
             info[i] = angle
         return bars, info
 
@@ -82,15 +95,9 @@ class BarGenerator:
 
 if __name__ == "__main__":
     bg = BarGenerator((15, 15))
-    bars, info = bg.generate_bars(
-        100,
-        max_offset=(7, 7),
-        min_angle=0,
-        max_angle=180,
-        min_dim=(2, 10),
-        max_dim=(5, 15),
-    )
+    bar = bg((7, 5), 40, (2, 15))
     import matplotlib.pyplot as plt
 
-    plt.imshow(bars[50])
+    plt.imshow(bar)
+    plt.grid()
     plt.show()
