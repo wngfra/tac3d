@@ -97,7 +97,7 @@ rate_target = max_rate * amp  # must be in amplitude scaled units
 n_hidden_neurons = 64
 n_latent_variables = 3
 n_state_neurons = 10
-presentation_time = 0.2
+presentation_time = 1
 duration = 10
 sample_every = 10 * dt
 
@@ -151,7 +151,7 @@ layer_confs = [
     dict(
         name="hidden",
         n_neurons=n_hidden_neurons,
-        dimensions=3,
+        dimensions=2,
     ),
     dict(
         name="output",
@@ -224,7 +224,7 @@ conn_confs = [
         post="output_neurons",
         transform=gen_transform(),
         synapse=0.01,
-        learning_rule=nengo.PES(learning_rate=1e-7),
+        #learning_rule=nengo.PES(learning_rate=1e-7),
     ),
     dict(
         pre="stim_neurons",

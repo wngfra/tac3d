@@ -43,9 +43,13 @@ class BarGenerator:
         padded[startx : startx + dim[0], starty : starty + dim[1]] = 1
         
         padded = ndimage.rotate(padded, angle)
-        return padded[
+        bar = padded[
             padleft : padleft + self.shape[0], padbottom : padbottom + self.shape[1]
         ]
+        bar[bar < 0] = 0
+        bar /= bar.max() if bar.max() > 0 else 1
+        
+        return bar
 
     def generate_bars(
         self,
