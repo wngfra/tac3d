@@ -73,17 +73,15 @@ def inhib(t):
 
 stim_shape = (15, 15)
 stim_size = np.prod(stim_shape)
-bar_generator = BarGenerator(stim_shape)
+bg = BarGenerator(stim_shape)
 
 # Prepare dataset
-X_train, y_train = bar_generator.generate_bars(
+X_train, y_train = bg.gen_sequential_bars(
     2000,
-    min_offset=(5, 5),
-    max_offset=(11, 11),
-    min_angle=0,
-    max_angle=180,
-    min_dim=(2, 10),
-    max_dim=(3, 20),
+    dim=(3, 20),
+    center=(7, 7),
+    start_angle=0,
+    step=5,
 )
 y_train = (y_train - 90) / 180
 
@@ -96,8 +94,8 @@ rate_target = max_rate * amp  # must be in amplitude scaled units
 
 n_hidden_neurons = 64
 n_latent_variables = 3
-n_state_neurons = 10
-presentation_time = 1
+n_state_neurons = 16
+presentation_time = 0.2
 duration = 10
 sample_every = 10 * dt
 
@@ -171,7 +169,6 @@ layer_confs = [
 ]
 
 conn_confs = [
-    # state variable: angle
     dict(
         pre="state_node",
         post="state",
@@ -224,7 +221,7 @@ conn_confs = [
         post="output_neurons",
         transform=gen_transform(),
         synapse=0.01,
-        #learning_rule=nengo.PES(learning_rate=1e-7),
+        learning_rule=nengo.PES(learning_rate=1e-7),
     ),
     dict(
         pre="stim_neurons",
@@ -237,7 +234,8 @@ conn_confs = [
     ),
 ]
 
-learning_confs = []
+learning_confs = [
+]
 
 
 # Create the Nengo model

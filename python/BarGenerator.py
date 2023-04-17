@@ -22,36 +22,34 @@ class BarGenerator:
         Returns:
             np.ndarray: Bar with shape (width, shape[1]).
         """
-        
+
         # Compute the new side length for the padded image
         L = linalg.norm(self.shape).astype(int)
         if L % 2 == 0:
             L += 1
         padded = np.zeros((L, L))
-        
-        # Compute left and bottom pads
-        padleft, padbottom = (L - self.shape[0]) // 2, (L - self.shape[1]) // 2
-        if centre is None:
-            x, y = L // 2, L // 2
-        else:
-            x, y = int(centre[0] + padleft), int(centre[1] + padbottom)
-        
-        # Compute the start position for the bar, from left and bottom
-        # FIXME: This is not correct, should be from centre, problems with odd dimensions
-        startx = x - dim[0] // 2
-        starty = y - dim[1] // 2
-        padded[startx : startx + dim[0], starty : starty + dim[1]] = 1
-        
+        if dim[0] > L or dim[1] > L:
+            raise ValueError("Bar dimension is larger than image size.")
+        padded[
+            L // 2 - dim[0] // 2 : L // 2 - dim[0] // 2 + dim[0],
+            L // 2 - dim[1] // 2 : L // 2 - dim[1] // 2 + dim[1],
+        ] = 1
         padded = ndimage.rotate(padded, angle)
-        bar = padded[
-            padleft : padleft + self.shape[0], padbottom : padbottom + self.shape[1]
-        ]
+        padleft, padbottom = (L - self.shape[0]) // 2, (L - self.shape[1]) // 2
+
+        bar = padded[padbottom:padbottom + self.shape[0], :]
+
         bar[bar < 0] = 0
         bar /= bar.max() if bar.max() > 0 else 1
-        
+
         return bar
 
-    def generate_bars(
+    def gen_sequential_bars(self, num_samples, dim, center=None, start_angle=0, step=1):
+        bars = [self(center, start_angle + i * step, dim) for i in range(num_samples)]
+        info = np.arange(start_angle, start_angle + num_samples * step, step)
+        return bars, info
+
+    def gen_random_bars(
         self,
         num_samples,
         min_offset=(0, 0),
@@ -99,7 +97,7 @@ class BarGenerator:
 
 if __name__ == "__main__":
     bg = BarGenerator((15, 15))
-    bar = bg((7, 5), 40, (2, 15))
+    bar = bg((7, 7), 45, (2, 21))
     import matplotlib.pyplot as plt
 
     plt.imshow(bar)
