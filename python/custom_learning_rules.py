@@ -7,7 +7,7 @@ from nengo.builder.builder import Builder
 from nengo.builder.learning_rules import get_pre_ens, get_post_ens, build_or_passthrough
 from nengo.builder.operator import Operator
 from nengo.params import Default, NumberParam
-from nengo.synapses import Lowpass, SynapseParam
+from nengo.synapses import SynapseParam
 
 
 class SynapticSampling(nengo.learning_rules.LearningRuleType):
@@ -101,13 +101,10 @@ def build_ss(model, ss, rule):
     model.sig[rule]["pre_filtered"] = pre_filtered
     model.sig[rule]["post_filtered"] = post_filtered
     
-    """
     pre = model.sig[rule.pre_obj]['out']
     post = model.sig[rule.post_obj]['out']
     weights = model.sig[rule]['weights']
 
     # Create the operator
-    op = Operator.Set([pre, post, weights], None, mirrored_stdp.make_step, tag=f"MirroredSTDP {rule}")
+    op = Operator.Set([pre, post, weights], None, ss.make_step, tag=f"MirroredSTDP {rule}")
     model.add_op(op)
-    
-    """
