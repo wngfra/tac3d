@@ -35,9 +35,11 @@ class BarGenerator:
             L // 2 - dim[1] // 2 : L // 2 - dim[1] // 2 + dim[1],
         ] = 1
         padded = ndimage.rotate(padded, angle)
-        padleft, padbottom = (L - self.shape[0]) // 2, (L - self.shape[1]) // 2
+        padbottom, padleft = (padded.shape - self.shape) // 2
 
-        bar = padded[padbottom:padbottom + self.shape[0], :]
+        bar = padded[
+            padbottom : padbottom + self.shape[0], padleft : padleft + self.shape[1]
+        ]
 
         bar[bar < 0] = 0
         bar /= bar.max() if bar.max() > 0 else 1
