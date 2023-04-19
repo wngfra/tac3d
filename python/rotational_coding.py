@@ -49,7 +49,7 @@ def gen_transform(pattern="random", weights=None):
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Gaussian(0, 0.5),
+                    init=nengo.dists.Uniform(0, 0.5),
                 )
         return W
 
@@ -92,9 +92,9 @@ max_rate = 150  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden_neurons = 64
+n_hidden_neurons = 100
 n_latent_variables = 3
-n_state_neurons = 16
+n_state_neurons = 32
 presentation_time = 0.5
 duration = 16
 sample_every = 10 * dt
@@ -221,7 +221,7 @@ conn_confs = [
         post="output_neurons",
         transform=gen_transform(),
         synapse=0.01,
-        learning_rule=SynapticSampling(),
+        #learning_rule=SynapticSampling(),
     ),
     dict(
         pre="stim_neurons",

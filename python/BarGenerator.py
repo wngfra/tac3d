@@ -41,7 +41,7 @@ class BarGenerator:
             padbottom : padbottom + self.shape[0], padleft : padleft + self.shape[1]
         ]
 
-        bar[bar < 0] = 0
+        bar[bar < 0.5] = 0
         bar /= bar.max() if bar.max() > 0 else 1
 
         return bar
@@ -99,7 +99,7 @@ class BarGenerator:
 
 if __name__ == "__main__":
     bg = BarGenerator((15, 15))
-    bar = bg((7, 7), 45, (2, 21))
+    bar = bg((7, 7), 60, (2, 21))
     import matplotlib.pyplot as plt
 
     plt.imshow(bar)
