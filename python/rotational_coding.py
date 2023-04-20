@@ -49,7 +49,7 @@ def gen_transform(pattern="random", weights=None):
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Uniform(0, 0.5),
+                    init=nengo.dists.Uniform(-0.5, 0.5),
                 )
         return W
 
@@ -57,8 +57,8 @@ def gen_transform(pattern="random", weights=None):
 
 
 class Delay:
-    def __init__(self, dimensions, timesteps=50):
-        self.history = np.zeros((timesteps, dimensions))
+    def __init__(self, dims, timesteps=50):
+        self.history = np.zeros((timesteps, dims))
 
     def step(self, t, x):
         self.history = np.roll(self.history, -1)
@@ -202,7 +202,7 @@ conn_confs = [
     dict(
         pre="stim_neurons",
         post="hidden_neurons",
-        learning_rule=nengo.Oja(learning_rate=learning_rate),
+        learning_rule=SynapticSampling(learning_rate=learning_rate),
         synapse=0.01,
     ),
     dict(
@@ -221,7 +221,7 @@ conn_confs = [
         post="output_neurons",
         transform=gen_transform(),
         synapse=0.01,
-        #learning_rule=SynapticSampling(),
+        # learning_rule=SynapticSampling(),
     ),
     dict(
         pre="stim_neurons",
@@ -234,8 +234,7 @@ conn_confs = [
     ),
 ]
 
-learning_confs = [
-]
+learning_confs = []
 
 
 # Create the Nengo model
