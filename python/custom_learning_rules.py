@@ -42,10 +42,11 @@ class SynapticSampling(nengo.learning_rules.LearningRuleType):
 class SimSS(Operator):
     def __init__(
         self,
-        count,
+        timer,
         pre_filtered,
         post_filtered,
         delta,
+        likelihood,
         learning_rate,
         time_constant,
         tag=None,
@@ -55,17 +56,13 @@ class SimSS(Operator):
         self.time_constant = time_constant
 
         self.sets = []
-        self.incs = [count]
+        self.incs = [timer]
         self.reads = [pre_filtered, post_filtered]
-        self.updates = [delta]
+        self.updates = [delta, likelihood]
 
     @property
-    def count(self):
+    def timer(self):
         return self.incs[0]
-
-    @property
-    def delta(self):
-        return self.updates[0]
 
     @property
     def pre_filtered(self):
@@ -76,22 +73,36 @@ class SimSS(Operator):
         return self.reads[1]
 
     @property
+    def delta(self):
+        return self.updates[0]
+
+    @property
+    def likelihood(self):
+        return self.updates[1]
+
+    @property
     def _descstr(self):
         return f"pre={self.pre_filtered}, post={self.post_filtered} -> {self.delta}"
 
     def make_step(self, signals, dt, rng):
-        count = signals[self.count]
+        timer = signals[self.timer]
         pre_filtered = signals[self.pre_filtered]
         post_filtered = signals[self.post_filtered]
         delta = signals[self.delta]
+        likelihood = signals[self.likelihood]
 
         def step_simss():
             # TODO: implement synaptic sampling
+            timer[...] += dt
             a_i = pre_filtered * dt
             a_j = post_filtered * dt
-            count[...] += np.outer(a_i, a_j)
-            print("count", count.max())
-            print("")
+            likelihood[...] += np.outer(a_j, a_i)
+            dW = np.random.normal(0, dt, size=delta.shape)
+            delta[...] = np.random.normal(0, 1e-3, size=delta.shape) * likelihood + dW
+
+            if timer > self.time_constant:
+                timer[...] = 0
+                # likelihood[...] = np.zeros(likelihood.shape)
 
         return step_simss
 
@@ -99,23 +110,23 @@ class SimSS(Operator):
 @Builder.register(SynapticSampling)
 def build_ss(model, ss, rule):
     conn = rule.connection
-    count = Signal(
-        shape=(pre_activities.shape[0], post_activities.shape[0]), name=f"{rule}.count"
-    )
+    timer = Signal(initial_value=0.0, name="{rule}.timer")
     pre_activities = model.sig[get_pre_ens(conn).neurons]["out"]
     post_activities = model.sig[get_post_ens(conn).neurons]["out"]
     pre_filtered = build_or_passthrough(model, ss.pre_synapse, pre_activities)
     post_filtered = build_or_passthrough(model, ss.post_synapse, post_activities)
-    
-    # TODO: add firerate for computing probability
-    # pre_firerate = model.sig[get_post_ens(conn).neurons]["firerate"]
+    likelihood = Signal(
+        initial_value=np.zeros(model.sig[rule]["delta"].shape),
+        name="{rule}.likelihood",
+    )
 
     model.add_op(
         SimSS(
-            count,
+            timer,
             pre_filtered,
             post_filtered,
             model.sig[rule]["delta"],
+            likelihood,
             learning_rate=ss.learning_rate,
             time_constant=ss.time_constant,
         )

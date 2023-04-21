@@ -95,16 +95,16 @@ rate_target = max_rate * amp  # must be in amplitude scaled units
 n_hidden_neurons = 100
 n_latent_variables = 3
 n_state_neurons = 32
-presentation_time = 0.5
-duration = 16
+presentation_time = 0.2
+duration = 3
 sample_every = 10 * dt
 
-learning_rate = 6e-8
+learning_rate = 1e-3
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 
 default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.01)
-default_rates = nengo.dists.Choice([max_rate])
+default_rates = nengo.dists.Choice([rate_target])
 default_intercepts = nengo.dists.Choice([0])
 
 layer_confs = [
@@ -141,7 +141,7 @@ layer_confs = [
     ),
     dict(
         name="stim",
-        neuron=nengo.PoissonSpiking(nengo.LIFRate(amplitude=amp)),
+        neuron=nengo.PoissonSpiking(nengo.LIFRate(), amplitude=amp),
         n_neurons=stim_size,
         dimensions=3,
         on_chip=False,
