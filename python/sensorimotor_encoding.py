@@ -96,10 +96,10 @@ n_hidden_neurons = 100
 n_latent_variables = 3
 n_state_neurons = 32
 presentation_time = 0.2
-duration = 3
+duration = 1
 sample_every = 10 * dt
 
-learning_rate = 1e-3
+learning_rate = 1e-5
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 
