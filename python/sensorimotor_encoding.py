@@ -1,7 +1,6 @@
 # Copyright 2023 wngfra.
 # SPDX-License-Identifier: Apache-2.0
 
-import os
 from typing import Optional
 
 import nengo
@@ -10,6 +9,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from BarGenerator import BarGenerator
 from custom_learning_rules import SynapticSampling
+from custom_neurons import AdaptiveExpLIF
 from nengo_extras.plot_spikes import plot_spikes
 
 font = {"weight": "normal", "size": 30}
@@ -45,11 +45,11 @@ def gen_transform(pattern="random", weights=None):
                     raise ValueError("No weights provided!")
                 W = weights
             case "zero":
-                W = 0
+                W = np.zeros(shape)
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Uniform(-0.5, 0.5),
+                    init=nengo.dists.Uniform(0, 1e-3),
                 )
         return W
 
@@ -88,22 +88,22 @@ y_train = (y_train - 90) / 180
 
 # Simulation parameters
 dt = 1e-3
-max_rate = 150  # Hz
+max_rate = 60  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden_neurons = 100
-n_latent_variables = 3
-n_state_neurons = 32
-presentation_time = 0.2
-duration = 1
+n_hidden_neurons = 64
+n_output_neurons = 36
+n_state_neurons = 16
+presentation_time = 0.5
+duration = 5
 sample_every = 10 * dt
 
-learning_rate = 1e-5
+learning_rate = 5e-9
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 
-default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.01)
+default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.02)
 default_rates = nengo.dists.Choice([rate_target])
 default_intercepts = nengo.dists.Choice([0])
 
@@ -141,7 +141,7 @@ layer_confs = [
     ),
     dict(
         name="stim",
-        neuron=nengo.PoissonSpiking(nengo.LIFRate(), amplitude=amp),
+        # neuron=nengo.PoissonSpiking(nengo.LIFRate(), amplitude=amp),
         n_neurons=stim_size,
         dimensions=3,
         on_chip=False,
@@ -153,7 +153,8 @@ layer_confs = [
     ),
     dict(
         name="output",
-        n_neurons=stim_size,
+        neuron=AdaptiveExpLIF(amplitude=amp),
+        n_neurons=n_output_neurons,
         dimensions=1,
     ),
     dict(
@@ -202,31 +203,28 @@ conn_confs = [
     dict(
         pre="stim_neurons",
         post="hidden_neurons",
-        learning_rule=SynapticSampling(learning_rate=learning_rate),
-        synapse=0.01,
+        transform=gen_transform(),
     ),
     dict(
-        pre="hidden_neurons",
+        pre="output_neurons",
         post="inhibitor_neurons",
+        transform=gen_transform("custom", weights=np.ones((1, n_output_neurons))),
         synapse=0.01,
     ),
     dict(
         pre="inhibitor_neurons",
-        post="hidden_neurons",
-        transform=gen_transform("custom", weights=-4 * np.ones((n_hidden_neurons, 1))),
+        post="output_neurons",
+        transform=gen_transform(
+            "custom", weights=-1e-2 * np.ones((n_output_neurons, 1))
+        ),
         synapse=0.01,
     ),
     dict(
         pre="hidden_neurons",
         post="output_neurons",
         transform=gen_transform(),
+        learning_rule=nengo.BCM(learning_rate=learning_rate),
         synapse=0.01,
-        # learning_rule=SynapticSampling(),
-    ),
-    dict(
-        pre="stim_neurons",
-        post="reconstruction_error_neurons",
-        transform=gen_transform("identity_inhibition"),
     ),
     dict(
         pre="output_neurons",
@@ -355,8 +353,8 @@ with nengo.Network(label="tacnet", seed=1) as model:
 with nengo.Simulator(model, dt=dt, optimize=True) as sim:
     sim.run(duration)
 
-conn_name = "{}2{}".format("stim_neurons", "hidden_neurons")
-ens_names = ["state", "stim_neurons", "hidden_neurons", "hidden"]
+conn_name = "{}2{}".format("hidden_neurons", "output_neurons")
+ens_names = ["stim_neurons", "hidden_neurons", "output_neurons"]
 
 plt.figure(figsize=(5, 10))
 # Find weight row with max variance
