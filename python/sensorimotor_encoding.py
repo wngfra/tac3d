@@ -83,7 +83,7 @@ X_train, y_train = bg.gen_sequential_bars(
     start_angle=0,
     step=5,
 )
-y_train = (y_train - 90) / 180
+y_train = y_train / 90 - 1
 
 
 # Simulation parameters
@@ -94,7 +94,7 @@ rate_target = max_rate * amp  # must be in amplitude scaled units
 
 n_hidden_neurons = 64
 n_output_neurons = 36
-n_state_neurons = 16
+n_state_neurons = 36
 presentation_time = 0.5
 duration = 5
 sample_every = 10 * dt
@@ -115,6 +115,7 @@ layer_confs = [
     ),
     dict(
         name="state",
+        neuron=nengo.LIF(amplitude=amp),
         n_neurons=n_state_neurons,
         dimensions=1,
     ),
@@ -126,12 +127,12 @@ layer_confs = [
     ),
     dict(
         name="delayed_state",
-        n_neurons=10,
+        n_neurons=n_state_neurons,
         dimensions=1,
     ),
     dict(
         name="delta_state",
-        n_neurons=10,
+        n_neurons=n_state_neurons,
         dimensions=1,
     ),
     dict(
@@ -223,7 +224,7 @@ conn_confs = [
         pre="hidden_neurons",
         post="output_neurons",
         transform=gen_transform(),
-        learning_rule=nengo.BCM(learning_rate=learning_rate),
+        learning_rule=nengo.Oja(learning_rate=learning_rate),
         synapse=0.01,
     ),
     dict(
