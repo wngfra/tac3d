@@ -9,7 +9,7 @@ from nengo.neurons import AdaptiveLIF
 from nengo.params import NumberParam
 
 
-class AdaptiveExpLIF(AdaptiveLIF):
+class AdaptiveLIF(AdaptiveLIF):
     def __init__(
         self,
         tau_n=1,

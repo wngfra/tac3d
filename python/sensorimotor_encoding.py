@@ -9,7 +9,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 from BarGenerator import BarGenerator
 from custom_learning_rules import SynapticSampling
-from custom_neurons import AdaptiveExpLIF
 from nengo_extras.plot_spikes import plot_spikes
 
 font = {"weight": "normal", "size": 30}
@@ -17,7 +16,7 @@ font = {"weight": "normal", "size": 30}
 matplotlib.rc("font", **font)
 
 
-def gen_transform(pattern="random", weights=None):
+def gen_transform(pattern=None, weights=None):
     W: Optional[np.ndarray] = None
 
     def inner(shape, weights=weights):
@@ -39,13 +38,15 @@ def gen_transform(pattern="random", weights=None):
             case "exclusive_inhibition":
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
                 W = -np.ones(shape) + 2 * np.eye(shape[0])
-                W[W < 0] *= 2
+                # W[W < 0] *= 1
             case "custom":
                 if weights is None:
                     raise ValueError("No weights provided!")
                 W = weights
             case "zero":
                 W = np.zeros(shape)
+            case "random":
+                W = 2e-4*np.random.randint(0, 2, shape)
             case _:
                 W = nengo.Dense(
                     shape,
@@ -93,13 +94,13 @@ amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
 n_hidden_neurons = 64
-n_output_neurons = 36
-n_state_neurons = 36
-presentation_time = 0.5
+n_output_neurons = 100
+n_state_neurons = 100
+presentation_time = 0.3
 duration = 5
 sample_every = 10 * dt
 
-learning_rate = 5e-9
+learning_rate = 2e-4
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 
@@ -114,21 +115,15 @@ layer_confs = [
         output=lambda t: y_train[int(t / presentation_time)],
     ),
     dict(
-        name="state",
-        neuron=nengo.LIF(amplitude=amp),
-        n_neurons=n_state_neurons,
-        dimensions=1,
-    ),
-    dict(
         name="delay_node",
         neuron=None,
         output=delay.step,
         size_in=1,
     ),
     dict(
-        name="delayed_state",
-        n_neurons=n_state_neurons,
-        dimensions=1,
+        name="state",
+        n_neurons=2*n_state_neurons,
+        dimensions=2
     ),
     dict(
         name="delta_state",
@@ -150,90 +145,71 @@ layer_confs = [
     dict(
         name="hidden",
         n_neurons=n_hidden_neurons,
-        dimensions=2,
+        dimensions=1,
     ),
     dict(
         name="output",
-        neuron=AdaptiveExpLIF(amplitude=amp),
         n_neurons=n_output_neurons,
-        dimensions=1,
-    ),
-    dict(
-        name="inhibitor",
-        n_neurons=1,
-        dimensions=1,
-    ),
-    dict(
-        name="reconstruction_error",
-        n_neurons=stim_size,
         dimensions=1,
     ),
 ]
 
 conn_confs = [
-    dict(
-        pre="state_node",
-        post="state",
-        transform=gen_transform("identity_excitation"),
-    ),
+    # State connections
     dict(
         pre="state_node",
         post="delay_node",
         transform=gen_transform("identity_excitation"),
     ),
     dict(
+        pre="state_node",
+        post="state",
+        dim_out=0,
+        transform=gen_transform("identity_excitation"),
+    ),
+    dict(
         pre="delay_node",
-        post="delayed_state",
+        post="state",
+        dim_out=1,
         transform=gen_transform("identity_excitation"),
     ),
     dict(
         pre="state",
         post="delta_state",
-        transform=gen_transform("identity_excitation"),
-    ),
-    dict(
-        pre="delayed_state",
-        post="delta_state",
-        transform=gen_transform("identity_inhibition"),
+        solver=nengo.solvers.LstsqL2(weights=True),
+        # learning_rule=nengo.BCM(5e-10),
+        function=lambda x: x[0] - x[1],
+        synapse=1e-3,
     ),
     dict(
         pre="stimulus",
         post="stim_neurons",
         transform=gen_transform("identity_excitation"),
+        synapse=0,
     ),
     dict(
         pre="stim_neurons",
         post="hidden_neurons",
-        transform=gen_transform(),
-    ),
-    dict(
-        pre="output_neurons",
-        post="inhibitor_neurons",
-        transform=gen_transform("custom", weights=np.ones((1, n_output_neurons))),
-        synapse=0.01,
-    ),
-    dict(
-        pre="inhibitor_neurons",
-        post="output_neurons",
-        transform=gen_transform(
-            "custom", weights=-1e-2 * np.ones((n_output_neurons, 1))
-        ),
-        synapse=0.01,
+        transform=gen_transform("random"),
+        synapse=1e-3,
     ),
     dict(
         pre="hidden_neurons",
         post="output_neurons",
         transform=gen_transform(),
-        learning_rule=nengo.Oja(learning_rate=learning_rate),
+        learning_rule=SynapticSampling(),
         synapse=0.01,
     ),
     dict(
         pre="output_neurons",
-        post="reconstruction_error_neurons",
+        post="output_neurons",
+        transform=gen_transform("exclusive_inhibition"),
+        synapse=0.01,
     ),
 ]
 
-learning_confs = []
+learning_confs = [
+]
 
 
 # Create the Nengo model
@@ -304,9 +280,11 @@ with nengo.Network(label="tacnet", seed=1) as model:
         conn_conf = dict(conn_conf)  # Copy connection configuration
         pre = conn_conf.pop("pre")
         post = conn_conf.pop("post")
+        dim_in = conn_conf.pop("dim_in", None)
+        dim_out = conn_conf.pop("dim_out", None)
         synapse = conn_conf.pop("synapse", None)
         solver = conn_conf.pop("solver", None)
-        transform = conn_conf.pop("transform", gen_transform())
+        transform = conn_conf.pop("transform", None)
         learning_rule = conn_conf.pop("learning_rule", None)
         name = "{}2{}".format(pre, post)
         function = conn_conf.pop("function", None)
@@ -314,11 +292,21 @@ with nengo.Network(label="tacnet", seed=1) as model:
         assert len(conn_conf) == 0, "Unused fields in {}: {}".format(
             [name], list(layer_conf)
         )
+        if dim_in is None:
+            pre_conn = layers[pre]
+        else:
+            pre_conn = layers[pre][dim_in]
+        if dim_out is None:
+            post_conn = layers[post]
+        else:
+            post_conn = layers[post][dim_out]
+        if transform is not None:    
+            transform = transform((post_conn.size_in, pre_conn.size_in))
         conn = nengo.Connection(
-            layers[pre],
-            layers[post],
+            pre_conn,
+            post_conn,
             function=function,
-            transform=transform((layers[post].size_in, layers[pre].size_in)),
+            transform=transform,
             synapse=synapse,
             label=name,
         )
@@ -354,7 +342,7 @@ with nengo.Network(label="tacnet", seed=1) as model:
 with nengo.Simulator(model, dt=dt, optimize=True) as sim:
     sim.run(duration)
 
-conn_name = "{}2{}".format("hidden_neurons", "output_neurons")
+conn_name = "{}2{}".format("stim_neurons", "hidden_neurons")
 ens_names = ["stim_neurons", "hidden_neurons", "output_neurons"]
 
 plt.figure(figsize=(5, 10))
