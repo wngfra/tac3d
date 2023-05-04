@@ -33,13 +33,6 @@ def gen_transform(pattern=None, weights=None):
                 W = 1
             case "identity_inhibition":
                 W = -1
-            case "exclusive_excitation":
-                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
-                W = np.ones(shape) - np.eye(shape[0])
-            case "exclusive_inhibition":
-                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
-                W = -np.ones(shape) + 2 * np.eye(shape[0])
-                # W[W < 0] *= 1
             case "gaussian":
                 M = np.sqrt(shape[1])
                 N = np.sqrt(shape[0])
@@ -47,7 +40,7 @@ def gen_transform(pattern=None, weights=None):
                 for i in range(shape[0]):
                     col, row = i // N, i % N
                     mean = np.array([col * M // N, row * M // N])
-                    rv = multivariate_normal(mean, cov=[[M // N, 0], [0, M // N]])
+                    rv = multivariate_normal(mean, cov=[[0.5, 0], [0, 0.5]])
                     pos = np.dstack((np.mgrid[0:M:1, 0:M:1]))
                     W[i, :] = rv.pdf(pos).ravel()
             case "custom":
@@ -58,6 +51,25 @@ def gen_transform(pattern=None, weights=None):
                 W = np.zeros(shape)
             case "random":
                 W = 2e-4 * np.random.randint(0, 2, shape)
+            case "exclusive_excitation":
+                # For self-connections
+                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
+                W = np.ones(shape) - np.eye(shape[0])
+            case "exclusive_inhibition":
+                # For self-connections
+                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
+                W = -np.ones(shape) + 2 * np.eye(shape[0])
+                # W[W < 0] *= 1
+            case "circular_inhibition":
+                # For self-connections
+                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
+                W = np.empty(shape)
+                rv = multivariate_normal(7, cov=shape[0] // 2)
+                w = rv.pdf(np.arange(shape[0]))
+                for i in range(shape[0]):
+                    W[i, :] = np.roll(w, i)
+                    W[i, :] -= W[i, :].max()
+                W *= 20
             case _:
                 W = nengo.Dense(
                     shape,
@@ -93,7 +105,7 @@ X_train, y_train = bg.gen_sequential_bars(
     dim=(2, 20),
     center=(7, 7),
     start_angle=0,
-    step=5,
+    step=10,
 )
 y_train = y_train / 90 - 1
 
@@ -104,14 +116,14 @@ max_rate = 60  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden_neurons = 16
-n_output_neurons = 100
-n_state_neurons = 100
-presentation_time = 0.3
+n_hidden_neurons = 25
+n_output_neurons = 36
+n_state_neurons = 36
+presentation_time = 0.5
 duration = 5
 sample_every = 10 * dt
 
-learning_rate = 2e-4
+learning_rate = 5e-9
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 
@@ -203,14 +215,15 @@ conn_confs = [
     dict(
         pre="hidden_neurons",
         post="output_neurons",
-        transform=gen_transform(),
-        learning_rule=SynapticSampling(),
+        transform=gen_transform("random"),
+        # learning_rule=SynapticSampling(),
+        learning_rule=nengo.BCM(learning_rate=learning_rate),
         synapse=0.01,
     ),
     dict(
         pre="output_neurons",
         post="output_neurons",
-        transform=gen_transform("exclusive_inhibition"),
+        transform=gen_transform("circular_inhibition"),
         synapse=0.01,
     ),
 ]
