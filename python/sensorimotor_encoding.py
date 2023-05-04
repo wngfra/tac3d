@@ -40,7 +40,7 @@ def gen_transform(pattern=None, weights=None):
                 for i in range(shape[0]):
                     col, row = i // N, i % N
                     mean = np.array([col * M // N, row * M // N])
-                    rv = multivariate_normal(mean, cov=[[0.5, 0], [0, 0.5]])
+                    rv = multivariate_normal(mean, cov=[[1, 0], [0, 1]])
                     pos = np.dstack((np.mgrid[0:M:1, 0:M:1]))
                     W[i, :] = rv.pdf(pos).ravel()
             case "custom":
@@ -49,8 +49,6 @@ def gen_transform(pattern=None, weights=None):
                 W = weights
             case "zero":
                 W = np.zeros(shape)
-            case "random":
-                W = 2e-4 * np.random.randint(0, 2, shape)
             case "exclusive_excitation":
                 # For self-connections
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
@@ -64,12 +62,9 @@ def gen_transform(pattern=None, weights=None):
                 # For self-connections
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
                 W = np.empty(shape)
-                rv = multivariate_normal(7, cov=shape[0] // 2)
-                w = rv.pdf(np.arange(shape[0]))
+                w = np.abs(np.arange(shape[0]) - shape[0] // 2)
                 for i in range(shape[0]):
-                    W[i, :] = np.roll(w, i)
-                    W[i, :] -= W[i, :].max()
-                W *= 20
+                    W[i, :] = -np.roll(w, i)
             case _:
                 W = nengo.Dense(
                     shape,
@@ -100,9 +95,10 @@ stim_size = np.prod(stim_shape)
 bg = BarGenerator(stim_shape)
 
 # Prepare dataset
+num_samples = 36
 X_train, y_train = bg.gen_sequential_bars(
-    num_samples=36,
-    dim=(2, 20),
+    num_samples=num_samples,
+    dim=(2, 10),
     center=(7, 7),
     start_angle=0,
     step=10,
@@ -112,18 +108,18 @@ y_train = y_train / 90 - 1
 
 # Simulation parameters
 dt = 1e-3
-max_rate = 60  # Hz
+max_rate = 100  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden_neurons = 25
-n_output_neurons = 36
-n_state_neurons = 36
-presentation_time = 0.5
-duration = 5
+n_hidden_neurons = 36
+n_wta_neurons = 16
+n_state_neurons = 16
+presentation_time = 0.1
+duration = (num_samples - 1) * presentation_time
 sample_every = 10 * dt
 
-learning_rate = 5e-9
+learning_rate = 4e-9
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 
@@ -156,7 +152,6 @@ layer_confs = [
     ),
     dict(
         name="stim",
-        # neuron=nengo.PoissonSpiking(nengo.LIFRate(), amplitude=amp),
         n_neurons=stim_size,
         dimensions=2,
         on_chip=False,
@@ -167,8 +162,8 @@ layer_confs = [
         dimensions=1,
     ),
     dict(
-        name="output",
-        n_neurons=n_output_neurons,
+        name="wta",
+        n_neurons=n_wta_neurons,
         dimensions=1,
     ),
 ]
@@ -196,7 +191,6 @@ conn_confs = [
         pre="state",
         post="delta_state",
         solver=nengo.solvers.LstsqL2(weights=True),
-        # learning_rule=nengo.BCM(5e-10),
         function=lambda x: x[0] - x[1],
         synapse=1e-3,
     ),
@@ -214,15 +208,14 @@ conn_confs = [
     ),
     dict(
         pre="hidden_neurons",
-        post="output_neurons",
-        transform=gen_transform("random"),
-        # learning_rule=SynapticSampling(),
-        learning_rule=nengo.BCM(learning_rate=learning_rate),
+        post="wta_neurons",
+        transform=gen_transform(),
+        learning_rule=SynapticSampling(),
         synapse=0.01,
     ),
     dict(
-        pre="output_neurons",
-        post="output_neurons",
+        pre="wta_neurons",
+        post="wta_neurons",
         transform=gen_transform("circular_inhibition"),
         synapse=0.01,
     ),
@@ -356,13 +349,15 @@ with nengo.Network(label="tacnet", seed=1) as model:
             transform=transform,
         )
 
+
 """Run in non-GUI mode
 """
+
 with nengo.Simulator(model, dt=dt, optimize=True) as sim:
     sim.run(duration)
 
-conn_name = "{}2{}".format("stim_neurons", "hidden_neurons")
-ens_names = ["stim_neurons", "hidden_neurons", "output_neurons"]
+conn_name = "{}2{}".format("hidden_neurons", "wta_neurons")
+ens_names = ["stim_neurons", "hidden_neurons", "wta_neurons"]
 
 plt.figure(figsize=(5, 10))
 # Find weight row with max variance
