@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from BarGenerator import BarGenerator
 from custom_learning_rules import SynapticSampling
 from nengo_extras.plot_spikes import plot_spikes
+from scipy.stats import multivariate_normal
 
 font = {"weight": "normal", "size": 30}
 
@@ -25,7 +26,7 @@ def gen_transform(pattern=None, weights=None):
         Args:
             shape (array_like): Linear transform mapping of shape (size_out, size_mid).
         Returns:
-            _type_: _description_
+            inner: Function that returns the transform matrix.
         """
         match pattern:
             case "identity_excitation":
@@ -39,6 +40,16 @@ def gen_transform(pattern=None, weights=None):
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
                 W = -np.ones(shape) + 2 * np.eye(shape[0])
                 # W[W < 0] *= 1
+            case "gaussian":
+                M = np.sqrt(shape[1])
+                N = np.sqrt(shape[0])
+                W = np.empty(shape)
+                for i in range(shape[0]):
+                    col, row = i // N, i % N
+                    mean = np.array([col * M // N, row * M // N])
+                    rv = multivariate_normal(mean, cov=[[M // N, 0], [0, M // N]])
+                    pos = np.dstack((np.mgrid[0:M:1, 0:M:1]))
+                    W[i, :] = rv.pdf(pos).ravel()
             case "custom":
                 if weights is None:
                     raise ValueError("No weights provided!")
@@ -46,7 +57,7 @@ def gen_transform(pattern=None, weights=None):
             case "zero":
                 W = np.zeros(shape)
             case "random":
-                W = 2e-4*np.random.randint(0, 2, shape)
+                W = 2e-4 * np.random.randint(0, 2, shape)
             case _:
                 W = nengo.Dense(
                     shape,
@@ -93,7 +104,7 @@ max_rate = 60  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden_neurons = 64
+n_hidden_neurons = 16
 n_output_neurons = 100
 n_state_neurons = 100
 presentation_time = 0.3
@@ -120,11 +131,7 @@ layer_confs = [
         output=delay.step,
         size_in=1,
     ),
-    dict(
-        name="state",
-        n_neurons=2*n_state_neurons,
-        dimensions=2
-    ),
+    dict(name="state", n_neurons=2 * n_state_neurons, dimensions=2),
     dict(
         name="delta_state",
         n_neurons=n_state_neurons,
@@ -139,7 +146,7 @@ layer_confs = [
         name="stim",
         # neuron=nengo.PoissonSpiking(nengo.LIFRate(), amplitude=amp),
         n_neurons=stim_size,
-        dimensions=3,
+        dimensions=2,
         on_chip=False,
     ),
     dict(
@@ -190,7 +197,7 @@ conn_confs = [
     dict(
         pre="stim_neurons",
         post="hidden_neurons",
-        transform=gen_transform("random"),
+        transform=gen_transform("gaussian"),
         synapse=1e-3,
     ),
     dict(
@@ -208,8 +215,7 @@ conn_confs = [
     ),
 ]
 
-learning_confs = [
-]
+learning_confs = []
 
 
 # Create the Nengo model
@@ -300,7 +306,7 @@ with nengo.Network(label="tacnet", seed=1) as model:
             post_conn = layers[post]
         else:
             post_conn = layers[post][dim_out]
-        if transform is not None:    
+        if transform is not None:
             transform = transform((post_conn.size_in, pre_conn.size_in))
         conn = nengo.Connection(
             pre_conn,
