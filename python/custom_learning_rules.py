@@ -17,9 +17,16 @@ class SynapticSampling(nengo.learning_rules.LearningRuleType):
     """
 
     modifies = "weights"
-    probeable = ("pre_filtered", "post_filtered")
+    probeable = (
+        "pre_filtered",
+        "post_filtered",
+        "mu",
+        "cov",
+        "pre_memory",
+        "post_memory",
+    )
 
-    time_constant = NumberParam("time_constant", default=0.01, low=0, readonly=True)
+    time_constant = NumberParam("time_constant", default=0.005, low=0, readonly=True)
     pre_synapse = SynapseParam("pre_synapse", default=Lowpass(tau=0.005), readonly=True)
     post_synapse = SynapseParam("post_synapse", default=None, readonly=True)
 
@@ -39,7 +46,16 @@ class SynapticSampling(nengo.learning_rules.LearningRuleType):
 
 class SimSS(Operator):
     def __init__(
-        self, pre_filtered, post_filtered, weights, post_memory, time_constant, tag=None
+        self,
+        pre_filtered,
+        post_filtered,
+        weights,
+        pre_memory,
+        post_memory,
+        mu,
+        cov,
+        time_constant,
+        tag=None,
     ):
         super().__init__(tag=tag)
         self.time_constant = time_constant
@@ -47,7 +63,7 @@ class SimSS(Operator):
         self.sets = []
         self.incs = []
         self.reads = [pre_filtered, post_filtered]
-        self.updates = [weights, post_memory]
+        self.updates = [weights, pre_memory, post_memory, mu, cov]
 
     @property
     def pre_filtered(self):
@@ -62,8 +78,20 @@ class SimSS(Operator):
         return self.updates[0]
 
     @property
-    def post_memory(self):
+    def pre_memory(self):
         return self.updates[1]
+
+    @property
+    def post_memory(self):
+        return self.updates[2]
+
+    @property
+    def mu(self):
+        return self.updates[3]
+
+    @property
+    def cov(self):
+        return self.updates[4]
 
     @property
     def _descstr(self):
@@ -73,18 +101,24 @@ class SimSS(Operator):
         pre_filtered = signals[self.pre_filtered]
         post_filtered = signals[self.post_filtered]
         weights = signals[self.weights]
+        pre_memory = signals[self.pre_memory]
         post_memory = signals[self.post_memory]
+        mu = signals[self.mu]
+        cov = signals[self.cov]
 
         def step_simss():
-            delta = (
-                post_filtered[...]*dt - post_memory[...] / self.time_constant * dt
+            delta_pre = (
+                (pre_filtered[...] * dt - pre_memory[...]) / self.time_constant * dt
             )
-            post_memory[...] += delta
-            mu = weights[...] + np.outer(post_filtered[...]*dt, pre_filtered[...]*dt)*1e-6
-            cov = np.outer(np.exp(-delta), pre_filtered[...]*dt)*1e-2
-            weights[...] = np.random.normal(mu, cov, size=mu.shape)
-            weights[...] = np.clip(weights[...], 0, 1)
-            
+            pre_memory[...] += delta_pre
+            delta_post = (
+                (post_filtered[...] * dt - post_memory[...]) / self.time_constant * dt
+            )
+            post_memory[...] += delta_post
+            delta = np.outer(delta_post, delta_pre)
+            delta[delta <= 1e-6] += np.random.normal(0, 1e-4, delta[delta <= 1e-6].shape)
+            weights[...] += delta * 5e-2
+
         return step_simss
 
 
@@ -95,18 +129,28 @@ def build_ss(model, ss, rule):
     post_activities = model.sig[get_post_ens(conn).neurons]["out"]
     pre_filtered = build_or_passthrough(model, ss.pre_synapse, pre_activities)
     post_filtered = build_or_passthrough(model, ss.post_synapse, post_activities)
+    pre_memory = Signal(
+        initial_value=np.zeros(pre_filtered.shape),
+        shape=pre_filtered.shape,
+        name="pre_memory",
+    )
     post_memory = Signal(
         initial_value=np.zeros(post_filtered.shape),
         shape=post_filtered.shape,
         name="post_memory",
     )
+    mu = Signal(shape=model.sig[conn]["weights"].shape, name="mu")
+    cov = Signal(shape=model.sig[conn]["weights"].shape, name="cov")
 
     model.add_op(
         SimSS(
             pre_filtered,
             post_filtered,
             model.sig[conn]["weights"],
+            pre_memory,
             post_memory,
+            mu,
+            cov,
             ss.time_constant,
         )
     )
@@ -114,3 +158,7 @@ def build_ss(model, ss, rule):
     # expose these for probes
     model.sig[rule]["pre_filtered"] = pre_filtered
     model.sig[rule]["post_filtered"] = post_filtered
+    model.sig[rule]["pre_memory"] = pre_memory
+    model.sig[rule]["post_memory"] = post_memory
+    model.sig[rule]["mu"] = mu
+    model.sig[rule]["cov"] = cov

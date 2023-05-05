@@ -18,21 +18,27 @@ matplotlib.rc("font", **font)
 
 
 def gen_transform(pattern=None, weights=None):
-    W: Optional[np.ndarray] = None
-
     def inner(shape, weights=weights):
-        """_summary_
+        """Closure of the transform matrix generator.
 
         Args:
             shape (array_like): Linear transform mapping of shape (size_out, size_mid).
         Returns:
             inner: Function that returns the transform matrix.
         """
+        W: Optional[np.ndarray] = None
+
         match pattern:
             case "identity_excitation":
-                W = 1
+                if 0 in shape:
+                    W = 1
+                else:
+                    W = np.ones(shape)
             case "identity_inhibition":
-                W = -1
+                if 0 in shape:
+                    W = -1
+                else:
+                    W = -np.ones(shape)
             case "gaussian":
                 M = np.sqrt(shape[1])
                 N = np.sqrt(shape[0])
@@ -40,7 +46,7 @@ def gen_transform(pattern=None, weights=None):
                 for i in range(shape[0]):
                     col, row = i // N, i % N
                     mean = np.array([col * M // N, row * M // N])
-                    rv = multivariate_normal(mean, cov=[[1, 0], [0, 1]])
+                    rv = multivariate_normal(mean, cov=[[0.1, 0], [0, 0.1]])
                     pos = np.dstack((np.mgrid[0:M:1, 0:M:1]))
                     W[i, :] = rv.pdf(pos).ravel()
             case "custom":
@@ -48,7 +54,10 @@ def gen_transform(pattern=None, weights=None):
                     raise ValueError("No weights provided!")
                 W = weights
             case "zero":
-                W = np.zeros(shape)
+                if 0 in shape:
+                    W = 0
+                else:
+                    W = np.zeros(shape)
             case "exclusive_excitation":
                 # For self-connections
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
@@ -57,14 +66,13 @@ def gen_transform(pattern=None, weights=None):
                 # For self-connections
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
                 W = -np.ones(shape) + 2 * np.eye(shape[0])
-                # W[W < 0] *= 1
             case "circular_inhibition":
                 # For self-connections
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
                 W = np.empty(shape)
-                w = np.abs(np.arange(shape[0]) - shape[0] // 2)
+                weight = np.abs(np.arange(shape[0]) - shape[0] // 2)
                 for i in range(shape[0]):
-                    W[i, :] = -np.roll(w, i)
+                    W[i, :] = -np.roll(weight, i + shape[0] // 2)
             case _:
                 W = nengo.Dense(
                     shape,
@@ -75,6 +83,7 @@ def gen_transform(pattern=None, weights=None):
     return inner
 
 
+# Delay node
 class Delay:
     def __init__(self, dims, timesteps=50):
         self.history = np.zeros((timesteps, dims))
@@ -85,9 +94,9 @@ class Delay:
         return self.history[0]
 
 
-# Function to inhibit the error population after 15s
+# Function to inhibit the error population after half of the duration
 def inhib(t):
-    return 2 if t > duration * 0.6 else 0.0
+    return 2 if t > duration * 0.5 else 0.0
 
 
 stim_shape = (15, 15)
@@ -95,13 +104,13 @@ stim_size = np.prod(stim_shape)
 bg = BarGenerator(stim_shape)
 
 # Prepare dataset
-num_samples = 36
+num_samples = 18
 X_train, y_train = bg.gen_sequential_bars(
     num_samples=num_samples,
-    dim=(2, 10),
+    dim=(2, 15),
     center=(7, 7),
     start_angle=0,
-    step=10,
+    step=360/num_samples,
 )
 y_train = y_train / 90 - 1
 
@@ -112,26 +121,27 @@ max_rate = 100  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden_neurons = 36
-n_wta_neurons = 16
-n_state_neurons = 16
-presentation_time = 0.1
+n_hidden_neurons = 25
+n_wta_neurons = 18
+n_state_neurons = 18
+presentation_time = 1
 duration = (num_samples - 1) * presentation_time
 sample_every = 10 * dt
 
 learning_rate = 4e-9
 delay = Delay(1, timesteps=int(0.1 / dt))
 
-
+# Default neuron parameters
 default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.02)
 default_rates = nengo.dists.Choice([rate_target])
 default_intercepts = nengo.dists.Choice([0])
 
+# Define layers
 layer_confs = [
     dict(
         name="state_node",
         neuron=None,
-        output=lambda t: y_train[int(t / presentation_time)],
+        output=lambda t: y_train[int(t / presentation_time) % len(y_train)],
     ),
     dict(
         name="delay_node",
@@ -148,7 +158,7 @@ layer_confs = [
     dict(
         name="stimulus",
         neuron=None,
-        output=lambda t: X_train[int(t / presentation_time)].ravel(),
+        output=lambda t: X_train[int(t / presentation_time) % len(X_train)].ravel(),
     ),
     dict(
         name="stim",
@@ -168,8 +178,8 @@ layer_confs = [
     ),
 ]
 
+# Define connections
 conn_confs = [
-    # State connections
     dict(
         pre="state_node",
         post="delay_node",
@@ -192,13 +202,12 @@ conn_confs = [
         post="delta_state",
         solver=nengo.solvers.LstsqL2(weights=True),
         function=lambda x: x[0] - x[1],
-        synapse=1e-3,
     ),
     dict(
         pre="stimulus",
         post="stim_neurons",
         transform=gen_transform("identity_excitation"),
-        synapse=0,
+        synapse=0.001,
     ),
     dict(
         pre="stim_neurons",
@@ -210,14 +219,14 @@ conn_confs = [
         pre="hidden_neurons",
         post="wta_neurons",
         transform=gen_transform(),
-        learning_rule=SynapticSampling(),
+        # learning_rule=SynapticSampling(),
         synapse=0.01,
     ),
     dict(
         pre="wta_neurons",
         post="wta_neurons",
         transform=gen_transform("circular_inhibition"),
-        synapse=0.01,
+        synapse=0.001,
     ),
 ]
 
@@ -337,6 +346,16 @@ with nengo.Network(label="tacnet", seed=1) as model:
         )
         probes[name] = probe
 
+        # Debug
+        try:
+            probes["SS"] = nengo.Probe(
+                conn.learning_rule,
+                "cov",
+                synapse=0.01,
+            )
+        except Exception:
+            pass
+
     # Connect learning rule
     for k, learning_conf in enumerate(learning_confs):
         learning_conf = dict(learning_conf)
@@ -350,34 +369,40 @@ with nengo.Network(label="tacnet", seed=1) as model:
         )
 
 
-"""Run in non-GUI mode
-"""
+def main():
+    with nengo.Simulator(model, dt=dt, optimize=True) as sim:
+        sim.run(duration)
 
-with nengo.Simulator(model, dt=dt, optimize=True) as sim:
-    sim.run(duration)
+    conn_name = "{}2{}".format("hidden_neurons", "wta_neurons")
+    ens_names = ["stim_neurons", "hidden_neurons", "wta_neurons"]
 
-conn_name = "{}2{}".format("hidden_neurons", "wta_neurons")
-ens_names = ["stim_neurons", "hidden_neurons", "wta_neurons"]
+    plt.figure(figsize=(5, 10))
+    # Find weight row with max variance
+    neuron = np.argmax(np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1))
+    plt.plot(sim.trange(sample_every), sim.data[probes[conn_name]][:, neuron, :])
+    plt.xlabel("time (s)")
+    plt.ylabel("weights")
 
-plt.figure(figsize=(5, 10))
-# Find weight row with max variance
-neuron = np.argmax(np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1))
-plt.plot(sim.trange(sample_every), sim.data[probes[conn_name]][:, neuron, :])
-plt.xlabel("time (s)")
-plt.ylabel("weights")
+    _, axs = plt.subplots(len(ens_names), 1, figsize=(5 * len(ens_names), 10))
+    for i, ens_name in enumerate(ens_names):
+        if "neurons" in ens_name:
+            plot_spikes(
+                sim.trange(sample_every=sample_every),
+                sim.data[probes[ens_name]],
+                ax=axs[i],
+            )
+            axs[i].set_ylabel("neuron")
+        else:
+            axs[i].plot(
+                sim.trange(sample_every=sample_every), sim.data[probes[ens_name]]
+            )
+            axs[i].set_ylabel("encoder")
+        axs[i].set_title(ens_name)
+        axs[i].set_xlabel("time (s)")
+        axs[i].grid()
+    plt.tight_layout()
+    plt.show()
 
-fig, axs = plt.subplots(len(ens_names), 1, figsize=(5 * len(ens_names), 10))
-for i, ens_name in enumerate(ens_names):
-    if "neurons" in ens_name:
-        plot_spikes(
-            sim.trange(sample_every=sample_every), sim.data[probes[ens_name]], ax=axs[i]
-        )
-        axs[i].set_ylabel("neuron")
-    else:
-        axs[i].plot(sim.trange(sample_every=sample_every), sim.data[probes[ens_name]])
-        axs[i].set_ylabel("encoder")
-    axs[i].set_title(ens_name)
-    axs[i].set_xlabel("time (s)")
-    axs[i].grid()
-plt.tight_layout()
-plt.show()
+
+if __name__ == "__main__":
+    main()
