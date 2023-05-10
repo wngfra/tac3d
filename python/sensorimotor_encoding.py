@@ -46,7 +46,7 @@ def gen_transform(pattern=None, weights=None):
                 for i in range(shape[0]):
                     col, row = i // N, i % N
                     mean = np.array([col * M // N, row * M // N])
-                    rv = multivariate_normal(mean, cov=[[0.1, 0], [0, 0.1]])
+                    rv = multivariate_normal(mean, cov=[[1, 0], [0, 1]])
                     pos = np.dstack((np.mgrid[0:M:1, 0:M:1]))
                     W[i, :] = rv.pdf(pos).ravel()
             case "custom":
@@ -124,7 +124,7 @@ rate_target = max_rate * amp  # must be in amplitude scaled units
 n_hidden_neurons = 25
 n_wta_neurons = 18
 n_state_neurons = 18
-presentation_time = 1
+presentation_time = 0.5
 duration = (num_samples - 1) * presentation_time
 sample_every = 10 * dt
 
@@ -219,7 +219,7 @@ conn_confs = [
         pre="hidden_neurons",
         post="wta_neurons",
         transform=gen_transform(),
-        # learning_rule=SynapticSampling(),
+        learning_rule=SynapticSampling(),
         synapse=0.01,
     ),
     dict(
