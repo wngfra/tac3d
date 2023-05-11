@@ -12,6 +12,8 @@ from custom_learning_rules import SynapticSampling
 from nengo_extras.plot_spikes import plot_spikes
 from scipy.stats import multivariate_normal
 
+from OrientationMap import OrientationMap
+
 font = {"weight": "normal", "size": 30}
 
 matplotlib.rc("font", **font)
@@ -39,6 +41,11 @@ def gen_transform(pattern=None, weights=None):
                     W = -1
                 else:
                     W = -np.ones(shape)
+            case "orientation_map":
+                m = np.sqrt(shape[1]).astype(int)
+                n = np.sqrt(shape[0]).astype(int)
+                orimap = OrientationMap((n, n), d=2, alpha=2, theta=22.5)
+                return orimap.gen_transform((m, m))
             case "gaussian":
                 M = np.sqrt(shape[1])
                 N = np.sqrt(shape[0])
@@ -107,10 +114,10 @@ bg = BarGenerator(stim_shape)
 num_samples = 18
 X_train, y_train = bg.gen_sequential_bars(
     num_samples=num_samples,
-    dim=(2, 15),
+    dim=(5, 20),
     center=(7, 7),
     start_angle=0,
-    step=360/num_samples,
+    step=360 / num_samples,
 )
 y_train = y_train / 90 - 1
 
@@ -121,14 +128,14 @@ max_rate = 100  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden_neurons = 25
+n_hidden_neurons = 225
 n_wta_neurons = 18
 n_state_neurons = 18
 presentation_time = 0.5
 duration = (num_samples - 1) * presentation_time
 sample_every = 10 * dt
 
-learning_rate = 4e-9
+learning_rate = 5e-8
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 # Default neuron parameters
@@ -212,14 +219,15 @@ conn_confs = [
     dict(
         pre="stim_neurons",
         post="hidden_neurons",
-        transform=gen_transform("gaussian"),
+        transform=gen_transform("orientation_map"),
         synapse=1e-3,
     ),
     dict(
         pre="hidden_neurons",
         post="wta_neurons",
         transform=gen_transform(),
-        learning_rule=SynapticSampling(),
+        #learning_rule=SynapticSampling(),
+        learning_rule=nengo.BCM(learning_rate=learning_rate),
         synapse=0.01,
     ),
     dict(
