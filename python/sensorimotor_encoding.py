@@ -42,10 +42,11 @@ def gen_transform(pattern=None, weights=None):
                 else:
                     W = -np.ones(shape)
             case "orientation_map":
-                m = np.sqrt(shape[1]).astype(int)
-                n = np.sqrt(shape[0]).astype(int)
-                orimap = OrientationMap((n, n), d=2, alpha=2, theta=22.5)
-                return orimap.gen_transform((m, m))
+                orimap = OrientationMap(
+                    np.sqrt(shape[0]).astype(int), d=2, alpha=2, theta=22.5
+                )
+                W = orimap.gen_transform(np.sqrt(shape[1]).astype(int))
+                return W
             case "gaussian":
                 M = np.sqrt(shape[1])
                 N = np.sqrt(shape[0])
@@ -114,8 +115,8 @@ bg = BarGenerator(stim_shape)
 num_samples = 18
 X_train, y_train = bg.gen_sequential_bars(
     num_samples=num_samples,
-    dim=(5, 20),
-    center=(7, 7),
+    dim=(2, 10),
+    shift=(2, 3),
     start_angle=0,
     step=360 / num_samples,
 )
@@ -128,14 +129,14 @@ max_rate = 100  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden_neurons = 225
+n_hidden_neurons = 169
 n_wta_neurons = 18
 n_state_neurons = 18
-presentation_time = 0.5
+presentation_time = 0.2
 duration = (num_samples - 1) * presentation_time
 sample_every = 10 * dt
 
-learning_rate = 5e-8
+learning_rate = 5e-9
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 # Default neuron parameters
@@ -226,7 +227,7 @@ conn_confs = [
         pre="hidden_neurons",
         post="wta_neurons",
         transform=gen_transform(),
-        #learning_rule=SynapticSampling(),
+        # learning_rule=SynapticSampling(),
         learning_rule=nengo.BCM(learning_rate=learning_rate),
         synapse=0.01,
     ),
@@ -353,16 +354,6 @@ with nengo.Network(label="tacnet", seed=1) as model:
             label="weights_{}".format(name),
         )
         probes[name] = probe
-
-        # Debug
-        try:
-            probes["SS"] = nengo.Probe(
-                conn.learning_rule,
-                "cov",
-                synapse=0.01,
-            )
-        except Exception:
-            pass
 
     # Connect learning rule
     for k, learning_conf in enumerate(learning_confs):
