@@ -18,6 +18,8 @@ font = {"weight": "normal", "size": 30}
 
 matplotlib.rc("font", **font)
 
+orimap = OrientationMap(100, d=2, alpha=1, theta=22.5)
+
 
 def gen_transform(pattern=None, weights=None):
     def inner(shape, weights=weights):
@@ -42,9 +44,7 @@ def gen_transform(pattern=None, weights=None):
                 else:
                     W = -np.ones(shape)
             case "orientation_map":
-                orimap = OrientationMap(
-                    np.sqrt(shape[0]).astype(int), d=2, alpha=2, theta=22.5
-                )
+                orimap.zoom(zoom=np.sqrt(shape[0]) / 100)
                 W = orimap.gen_transform(np.sqrt(shape[1]).astype(int))
                 return W
             case "gaussian":
@@ -115,8 +115,8 @@ bg = BarGenerator(stim_shape)
 num_samples = 18
 X_train, y_train = bg.gen_sequential_bars(
     num_samples=num_samples,
-    dim=(2, 10),
-    shift=(2, 3),
+    dim=(3, 15),
+    shift=(0, 1),
     start_angle=0,
     step=360 / num_samples,
 )

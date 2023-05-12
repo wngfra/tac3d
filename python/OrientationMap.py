@@ -8,43 +8,38 @@ from scipy.stats import multivariate_normal
 
 
 def check_shape(shape):
+    """Check the shape of the input array. If the shape is not a 2D array, convert it to a 2D array.
+
+    Args:
+        shape (Any): A scalar or a 1D array.
+
+    Returns:
+        np.ndarray: Shape as a 2D array.
+    """
     shape = np.asarray(shape)
     if shape.size != 2:
         match shape.size:
             case 1:
                 shape = np.asarray([shape, shape])
             case _:
-                shape = np.asarray([shape[0], shape[0]])
+                shape = np.asarray([shape[0], shape[1]])
     return shape
 
 
 def generate_hexlattice(shape, d, theta: float, lattice_type="on"):
-    """_summary_
+    """Generate a hexagonal lattice with a given shape and lattice constant.
 
     Args:
         shape (tuple or int): _description_
-        d (_type_): _description_
+        d (_type_): The lattice constant (spacing).
         theta (float): Rotation angle in degrees.
-        lattice_type (str, optional): _description_. Defaults to "on".
+        lattice_type (str, optional): Type parameter that decides the fillin. Defaults to "on".
 
     Raises:
-        ValueError: _description_
+        ValueError: lattice_type must be either 'on' or 'off'
 
     Returns:
-        _type_: _description_
-    """ """_summary_
-
-    Args:
-        shape (_type_): _description_
-        d (_type_): _description_
-        theta (_type_): Rotation angle in degrees.
-        lattice_type (str, optional): _description_. Defaults to "on".
-
-    Raises:
-        ValueError: _description_
-
-    Returns:
-        _type_: _description_
+        np.ndarray: Generated hexagonal lattice as a 2D array.
     """
     match lattice_type:
         case "on":
@@ -56,7 +51,7 @@ def generate_hexlattice(shape, d, theta: float, lattice_type="on"):
     shape = check_shape(shape)
     v = int(0.5 * np.sqrt(3) * d)  # y-axis distance between two adjacent hexagons
     d = int(d)
-    phi = theta * np.pi / 180
+    phi = np.deg2rad(theta)
     height_offset = np.ceil(np.abs(shape[0] * np.sin(phi) * np.cos(phi))).astype(int)
     width_offset = np.ceil(np.abs(shape[1] * np.sin(phi) * np.cos(phi))).astype(int)
     height = np.ceil(shape[0]).astype(int) + height_offset * 2
@@ -75,19 +70,24 @@ def generate_hexlattice(shape, d, theta: float, lattice_type="on"):
     ]
 
 
-def sample_bipole_gaussian(shape, center, scale, phi):
+def sample_bipole_gaussian(shape, center, eigenvalues, phi):
     """Sample a 2D Gaussian with two peaks at center + scale * [sin(phi), cos(phi)] and center - scale * [sin(phi), cos(phi)].
     Args:
         shape (tuple): Shape of the output array.
-        center (tuple): Center of the Gaussian.
-        scale (tuple): Scale of the eigenvalues of the covariance matrix.
+        center (tuple): Center of the Gaussian without shift.
+        eigenvalues (list like): Eigenvalues of the covariance matrix.
         phi (float): Rotation angle in radians.
     Returns:
         np.ndarray: 2D Gaussian array.
     """
-    mu_on = np.asarray(center) + scale[1] * np.asarray([np.sin(phi), np.cos(phi)])
-    mu_off = np.asarray(center) - scale[1] * np.asarray([np.sin(phi), np.cos(phi)])
-    # Data
+    # FIXME: The receptive field is not symmetric in the input space. Deal with the boundary issues.
+    eigenvalues = np.asarray(eigenvalues)
+    w0, w1 = eigenvalues.max(), eigenvalues.min()
+    center += np.array([w0 // 2 * np.sin(phi), w0 // 2 * np.cos(phi)]).astype(int)
+    # Mean of the Gaussian for ON and OFF subfields
+    mu_on = np.asarray(center) + w1 * np.asarray([-np.cos(phi), np.sin(phi)])
+    mu_off = np.asarray(center) + w1 * np.asarray([np.cos(phi), -np.sin(phi)])
+    # Generate the meshgrid
     x = np.arange(shape[0])
     y = np.arange(shape[1])
     X, Y = np.meshgrid(x, y)
@@ -96,7 +96,7 @@ def sample_bipole_gaussian(shape, center, scale, phi):
     pos[:, :, 1] = Y
     # Multivariate Gaussian ON
     V = [[np.cos(phi), -np.sin(phi)], [np.sin(phi), np.cos(phi)]]
-    D = [[scale[1], 0], [0, scale[0]]]
+    D = [[w0, 0], [0, w1]]
     sigma = np.matmul(np.matmul(V, D), np.linalg.inv(V))
     rv = multivariate_normal(mu_on, sigma)
     pd_on = rv.pdf(pos)
@@ -107,7 +107,7 @@ def sample_bipole_gaussian(shape, center, scale, phi):
 
 
 class OrientationMap:
-    def __init__(self, shape=120, d=4, alpha=0.5, theta=5) -> None:
+    def __init__(self, shape=120, d=2, alpha=0.5, theta=5, zoom=1) -> None:
         shape = check_shape(shape)
         self._shape = shape
         self._params = {"d": d, "alpha": alpha, "phi": theta / 180 * np.pi}
@@ -117,6 +117,7 @@ class OrientationMap:
             "off": generate_hexlattice(shape, (1 + alpha) * d, theta, "off"),
         }
         self.construct_map()
+        self.zoom(zoom)
 
     @property
     def shape(self):
@@ -157,13 +158,12 @@ class OrientationMap:
             neartest_index = query_indices[np.argmin(distances)]
             self.map[x, y] = self.map[neartest_index[0], neartest_index[1]]
 
-    def gen_transform(self, shape_in):
+    def gen_transform(self, shape_in, eigenvalues=(4, 2)):
         shape_in = check_shape(shape_in)
         nrows, ncols = shape_in
         assert (
             len(shape_in) == 2 and nrows > self.shape[0] and ncols > self.shape[1]
         ), "Expect larger input field than the oritentation map."
-        eigenvalues = (4, 2)
         stride_x = ncols // self.shape[1]
         stride_y = nrows // self.shape[0]
         transform = np.empty((self.size, nrows * ncols))
@@ -174,24 +174,34 @@ class OrientationMap:
                 bipole_rf = sample_bipole_gaussian(
                     (nrows, ncols),
                     (
-                        i * stride_y + eigenvalues[0] // 2,
-                        j * stride_x + eigenvalues[1] // 2,
+                        i * stride_y,
+                        j * stride_x,
                     ),
                     eigenvalues,
                     phi,
                 )
+                plt.imshow(bipole_rf)
+                plt.show()
                 transform[i * self.shape[1] + j] = bipole_rf.ravel()
 
         return transform
 
+    def zoom(self, zoom):
+        assert zoom > 0, "Zoom factor must be positive."
+        if zoom != 1:
+            self.map = ndimage.zoom(self.map, zoom=zoom)
+            self._shape = self.map.shape
+
 
 def main():
-    orimap = OrientationMap(14, 4, 1, 22.5)
+    orimap = OrientationMap(50, 4, 0.5, 12.5)
     OM = orimap()
-    T = orimap.gen_transform(15)
-    _, axs = plt.subplots(1, 2)
+    T = orimap.gen_transform(60, (6, 3))
+    _, axs = plt.subplots(1, 3)
     axs[0].imshow(OM)
     axs[1].imshow(T)
+    axs[2].imshow(ndimage.zoom(OM, 15.0 / 100))
+    plt.suptitle("Scale: {:.1f}".format(orimap.scaling_factor))
     plt.show()
 
 
