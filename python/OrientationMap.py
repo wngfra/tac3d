@@ -58,8 +58,8 @@ def generate_hexlattice(shape, d, theta: float, lattice_type="on"):
     width = np.ceil(shape[1]).astype(int) + width_offset * 2
     lattice = np.zeros((height, width))
 
-    lattice[0:height:2*v, 0:width:d] = fillin
-    lattice[v:height:2*v, d//2:width:d] = fillin
+    lattice[0 : height : 2 * v, 0:width:d] = fillin
+    lattice[v : height : 2 * v, d // 2 : width : d] = fillin
 
     if theta != 0:
         lattice = ndimage.rotate(
@@ -136,6 +136,10 @@ class OrientationMap:
             alpha * alpha + 2 * (1 - np.cos(phi)) * (1 + alpha)
         )
 
+    @property
+    def unique(self):
+        return np.unique(self.map)
+
     def __call__(self):
         return self.map
 
@@ -146,7 +150,14 @@ class OrientationMap:
             query_indices = np.argwhere(self.lattice["off"] != 0)
             distances = np.linalg.norm(query_indices - np.array([y, x]), axis=1)
             nearest_index = query_indices[np.argmin(distances)]
-            self.map[y, x] = np.arctan2(nearest_index[0] - y, nearest_index[1] - x) + np.pi/2
+            orientation = (
+                np.arctan2(nearest_index[0] - y, nearest_index[1] - x) + np.pi / 2
+            )
+            if orientation < 0:
+                orientation += np.pi
+            if orientation > np.pi:
+                orientation -= np.pi
+            self.map[y, x] = orientation
 
         zero_indices = np.argwhere(self.map == 0)
         for y, x in zero_indices:
@@ -184,14 +195,15 @@ class OrientationMap:
     def zoom(self, zoom):
         assert zoom > 0, "Zoom factor must be positive."
         if zoom != 1:
-            self.map = ndimage.zoom(self.map, zoom=zoom)
+            self.map = ndimage.zoom(self.map, zoom=zoom, order=0)
             self._shape = self.map.shape
 
 
 def main():
-    orimap = OrientationMap(36, 4, 0.5, 10)
+    orimap = OrientationMap(100, 4, 1, 10)
+    orimap.zoom(0.5)
     OM = orimap()
-    T = orimap.gen_transform(49, (6, 3))
+    T = orimap.gen_transform(121, (6, 3))
     _, axs = plt.subplots(1, 2)
     axs[0].imshow(OM)
     axs[1].imshow(T)

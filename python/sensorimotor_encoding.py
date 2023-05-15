@@ -18,11 +18,11 @@ font = {"weight": "normal", "size": 30}
 
 matplotlib.rc("font", **font)
 
-orimap = OrientationMap(100, d=2, alpha=1, theta=22.5)
 
+orimap = OrientationMap(100, d=2, alpha=1, theta=10)
 
-def gen_transform(pattern=None, weights=None):
-    def inner(shape, weights=weights):
+def gen_transform(pattern=None):
+    def inner(shape):
         """Closure of the transform matrix generator.
 
         Args:
@@ -39,19 +39,15 @@ def gen_transform(pattern=None, weights=None):
                 else:
                     W = np.ones(shape)
             case "orientation_map":
-                orimap.zoom(zoom=np.sqrt(shape[0]) / 100)
-                W = orimap.gen_transform(np.sqrt(shape[1]).astype(int))
+                W = orimap.gen_transform(np.sqrt(shape[1]).astype(int), eigenvalues=(6, 2))
                 return W
-            case "gaussian":
-                M = np.sqrt(shape[1])
-                N = np.sqrt(shape[0])
-                W = np.empty(shape)
-                for i in range(shape[0]):
-                    col, row = i // N, i % N
-                    mean = np.array([col * M // N, row * M // N])
-                    rv = multivariate_normal(mean, cov=[[1, 0], [0, 1]])
-                    pos = np.dstack((np.mgrid[0:M:1, 0:M:1]))
-                    W[i, :] = rv.pdf(pos).ravel()
+            case "orientation_one2one":
+                assert shape[0] == orimap.unique.size and shape[1] == orimap.size, "Output size does not match the number of orientations!"
+                W = np.zeros(shape)
+                OM = orimap()
+                for i, ori in enumerate(orimap.unique):
+                    indices = np.where(OM == ori)[0]
+                    W[i, indices] = 1
             case "circular_inhibition":
                 # For self-connections
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
@@ -107,12 +103,14 @@ max_rate = 100  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden_neurons = 169
-n_wta_neurons = 18
-n_state_neurons = 18
-presentation_time = 0.2
+n_hidden_neurons = 36
+n_wta_neurons = orimap.unique.size
+n_state_neurons = orimap.unique.size
+presentation_time = 1.0
 duration = (num_samples - 1) * presentation_time
 sample_every = 10 * dt
+# FIXME: zoom is not correct
+orimap.zoom(zoom=np.sqrt(n_hidden_neurons) / orimap.size)
 
 learning_rate = 5e-9
 delay = Delay(1, timesteps=int(0.1 / dt))
@@ -204,7 +202,7 @@ conn_confs = [
     dict(
         pre="hidden_neurons",
         post="wta_neurons",
-        transform=gen_transform(),
+        transform=gen_transform("orientation_one2one"),
         # learning_rule=SynapticSampling(),
         learning_rule=nengo.BCM(learning_rate=learning_rate),
         synapse=0.01,
