@@ -38,11 +38,6 @@ def gen_transform(pattern=None, weights=None):
                     W = 1
                 else:
                     W = np.ones(shape)
-            case "identity_inhibition":
-                if 0 in shape:
-                    W = -1
-                else:
-                    W = -np.ones(shape)
             case "orientation_map":
                 orimap.zoom(zoom=np.sqrt(shape[0]) / 100)
                 W = orimap.gen_transform(np.sqrt(shape[1]).astype(int))
@@ -57,23 +52,6 @@ def gen_transform(pattern=None, weights=None):
                     rv = multivariate_normal(mean, cov=[[1, 0], [0, 1]])
                     pos = np.dstack((np.mgrid[0:M:1, 0:M:1]))
                     W[i, :] = rv.pdf(pos).ravel()
-            case "custom":
-                if weights is None:
-                    raise ValueError("No weights provided!")
-                W = weights
-            case "zero":
-                if 0 in shape:
-                    W = 0
-                else:
-                    W = np.zeros(shape)
-            case "exclusive_excitation":
-                # For self-connections
-                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
-                W = np.ones(shape) - np.eye(shape[0])
-            case "exclusive_inhibition":
-                # For self-connections
-                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
-                W = -np.ones(shape) + 2 * np.eye(shape[0])
             case "circular_inhibition":
                 # For self-connections
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"

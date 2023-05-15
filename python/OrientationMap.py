@@ -30,8 +30,8 @@ def generate_hexlattice(shape, d, theta: float, lattice_type="on"):
     """Generate a hexagonal lattice with a given shape and lattice constant.
 
     Args:
-        shape (tuple or int): _description_
-        d (_type_): The lattice constant (spacing).
+        shape (tuple or int): Shape of the lattice.
+        d (float or int): The lattice constant (spacing).
         theta (float): Rotation angle in degrees.
         lattice_type (str, optional): Type parameter that decides the fillin. Defaults to "on".
 
@@ -58,7 +58,8 @@ def generate_hexlattice(shape, d, theta: float, lattice_type="on"):
     width = np.ceil(shape[1]).astype(int) + width_offset * 2
     lattice = np.zeros((height, width))
 
-    lattice[0:height:v, d:width:d] = fillin
+    lattice[0:height:2*v, 0:width:d] = fillin
+    lattice[v:height:2*v, d//2:width:d] = fillin
 
     if theta != 0:
         lattice = ndimage.rotate(
@@ -139,24 +140,20 @@ class OrientationMap:
         return self.map
 
     def construct_map(self):
-        superposition = self.lattice["on"] + self.lattice["off"]
         self.map = np.zeros(self.shape)
-        nonzero_indices = np.transpose(np.nonzero(superposition))
-        for x, y in nonzero_indices:
-            if superposition[x, y] == 1:
-                query_indices = np.argwhere(superposition == -1)
-            elif superposition[x, y] == -1:
-                query_indices = np.argwhere(superposition == 1)
-            distances = np.linalg.norm(query_indices - np.array([x, y]), axis=1)
-            neartest_index = query_indices[np.argmin(distances)]
-            self.map[x, y] = np.arctan2(neartest_index[0] - x, neartest_index[1] - y)
+        nonzero_indices = np.argwhere(self.lattice["on"] != 0)
+        for y, x in nonzero_indices:
+            query_indices = np.argwhere(self.lattice["off"] != 0)
+            distances = np.linalg.norm(query_indices - np.array([y, x]), axis=1)
+            nearest_index = query_indices[np.argmin(distances)]
+            self.map[y, x] = np.arctan2(nearest_index[0] - y, nearest_index[1] - x) + np.pi/2
 
-        zero_indices = np.argwhere(superposition == 0)
-        for x, y in zero_indices:
+        zero_indices = np.argwhere(self.map == 0)
+        for y, x in zero_indices:
             query_indices = nonzero_indices
-            distances = np.linalg.norm(query_indices - np.array([x, y]), axis=1)
-            neartest_index = query_indices[np.argmin(distances)]
-            self.map[x, y] = self.map[neartest_index[0], neartest_index[1]]
+            distances = np.linalg.norm(query_indices - np.array([y, x]), axis=1)
+            nearest_index = query_indices[np.argmin(distances)]
+            self.map[y, x] = self.map[nearest_index[0], nearest_index[1]]
 
     def gen_transform(self, shape_in, eigenvalues=(4, 2)):
         shape_in = check_shape(shape_in)
@@ -180,8 +177,6 @@ class OrientationMap:
                     eigenvalues,
                     phi,
                 )
-                plt.imshow(bipole_rf)
-                plt.show()
                 transform[i * self.shape[1] + j] = bipole_rf.ravel()
 
         return transform
@@ -194,13 +189,12 @@ class OrientationMap:
 
 
 def main():
-    orimap = OrientationMap(50, 4, 0.5, 12.5)
+    orimap = OrientationMap(36, 4, 0.5, 10)
     OM = orimap()
-    T = orimap.gen_transform(60, (6, 3))
-    _, axs = plt.subplots(1, 3)
+    T = orimap.gen_transform(49, (6, 3))
+    _, axs = plt.subplots(1, 2)
     axs[0].imshow(OM)
     axs[1].imshow(T)
-    axs[2].imshow(ndimage.zoom(OM, 15.0 / 100))
     plt.suptitle("Scale: {:.1f}".format(orimap.scaling_factor))
     plt.show()
 
