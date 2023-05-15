@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 from BarGenerator import BarGenerator
 from custom_learning_rules import SynapticSampling
 from nengo_extras.plot_spikes import plot_spikes
-from scipy.stats import multivariate_normal
 
 from OrientationMap import OrientationMap
 
@@ -18,8 +17,10 @@ font = {"weight": "normal", "size": 30}
 
 matplotlib.rc("font", **font)
 
-
+N_ORIMAP = 36
 orimap = OrientationMap(100, d=2, alpha=1, theta=10)
+orimap.zoom(np.sqrt(N_ORIMAP / orimap.size))
+
 
 def gen_transform(pattern=None):
     def inner(shape):
@@ -39,10 +40,14 @@ def gen_transform(pattern=None):
                 else:
                     W = np.ones(shape)
             case "orientation_map":
-                W = orimap.gen_transform(np.sqrt(shape[1]).astype(int), eigenvalues=(6, 2))
+                W = orimap.gen_transform(
+                    np.sqrt(shape[1]).astype(int), eigenvalues=(6, 2)
+                )
                 return W
             case "orientation_one2one":
-                assert shape[0] == orimap.unique.size and shape[1] == orimap.size, "Output size does not match the number of orientations!"
+                assert (
+                    shape[0] == orimap.unique.size and shape[1] == orimap.size
+                ), "Output size does not match the number of orientations!"
                 W = np.zeros(shape)
                 OM = orimap()
                 for i, ori in enumerate(orimap.unique):
@@ -103,14 +108,12 @@ max_rate = 100  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden_neurons = 36
+n_hidden_neurons = N_ORIMAP
 n_wta_neurons = orimap.unique.size
 n_state_neurons = orimap.unique.size
 presentation_time = 1.0
 duration = (num_samples - 1) * presentation_time
 sample_every = 10 * dt
-# FIXME: zoom is not correct
-orimap.zoom(zoom=np.sqrt(n_hidden_neurons) / orimap.size)
 
 learning_rate = 5e-9
 delay = Delay(1, timesteps=int(0.1 / dt))
