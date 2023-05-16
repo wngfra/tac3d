@@ -58,8 +58,17 @@ def generate_hexlattice(shape, d, theta: float, lattice_type="on"):
     width = np.ceil(shape[1]).astype(int) + width_offset * 2
     lattice = np.zeros((height, width))
 
-    lattice[0 : height : 2 * v, 0:width:d] = fillin
-    lattice[v : height : 2 * v, d // 2 : width : d] = fillin
+    # Fill odd rows
+    ys, xs = np.arange(0, height, 2 * v), np.arange(0, width, d)
+    ys += np.random.normal(0, 1, ys.size).astype(int)
+    xs += np.random.normal(0, 1, xs.size).astype(int)
+    lattice[np.ix_(ys, xs)] = fillin
+
+    # Fill even rows
+    ys, xs = np.arange(v, height, 2 * v), np.arange(d // 2, width, d)
+    ys += np.random.normal(0, 1, ys.size).astype(int)
+    xs += np.random.normal(0, 1, xs.size).astype(int)
+    lattice[np.ix_(ys, xs)] = fillin
 
     if theta != 0:
         lattice = ndimage.rotate(

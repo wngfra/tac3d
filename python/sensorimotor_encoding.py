@@ -17,7 +17,7 @@ font = {"weight": "normal", "size": 30}
 
 matplotlib.rc("font", **font)
 
-N_ORIMAP = 36
+N_ORIMAP = 64
 orimap = OrientationMap(100, d=2, alpha=1, theta=10)
 orimap.zoom(np.sqrt(N_ORIMAP / orimap.size))
 
@@ -53,6 +53,7 @@ def gen_transform(pattern=None):
                 for i, ori in enumerate(orimap.unique):
                     indices = np.where(OM == ori)[0]
                     W[i, indices] = 1
+                W *= 1
             case "circular_inhibition":
                 # For self-connections
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
