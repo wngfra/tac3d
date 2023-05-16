@@ -26,7 +26,7 @@ def check_shape(shape):
     return shape
 
 
-def generate_hexlattice(shape, d, theta: float, lattice_type="on"):
+def generate_hexlattice(shape, d, theta: float, lattice_type="on", noise=True):
     """Generate a hexagonal lattice with a given shape and lattice constant.
 
     Args:
@@ -50,7 +50,7 @@ def generate_hexlattice(shape, d, theta: float, lattice_type="on"):
             raise ValueError("lattice_type must be either 'on' or 'off'")
     shape = check_shape(shape)
     v = int(0.5 * np.sqrt(3) * d)  # y-axis distance between two adjacent hexagons
-    d = int(d)
+    d = int(d)  # x-axis distance between two adjacent hexagons
     phi = np.deg2rad(theta)
     height_offset = np.ceil(np.abs(shape[0] * np.sin(phi) * np.cos(phi))).astype(int)
     width_offset = np.ceil(np.abs(shape[1] * np.sin(phi) * np.cos(phi))).astype(int)
@@ -60,31 +60,37 @@ def generate_hexlattice(shape, d, theta: float, lattice_type="on"):
 
     # Fill odd rows
     ys, xs = np.arange(0, height, 2 * v), np.arange(0, width, d)
-    ys += np.random.normal(0, 1, ys.size).astype(int)
-    xs += np.random.normal(0, 1, xs.size).astype(int)
+    if noise:
+        ys += np.random.normal(0, 2, ys.size).astype(int)
+        xs += np.random.normal(0, 2, xs.size).astype(int)
+    ys, xs = np.clip(ys, 0, height - 1), np.clip(xs, 0, width - 1)
     lattice[np.ix_(ys, xs)] = fillin
 
     # Fill even rows
     ys, xs = np.arange(v, height, 2 * v), np.arange(d // 2, width, d)
-    ys += np.random.normal(0, 1, ys.size).astype(int)
-    xs += np.random.normal(0, 1, xs.size).astype(int)
+    if noise:
+        ys += np.random.normal(0, 2, ys.size).astype(int)
+        xs += np.random.normal(0, 2, xs.size).astype(int)
+    ys, xs = np.clip(ys, 0, height - 1), np.clip(xs, 0, width - 1)
     lattice[np.ix_(ys, xs)] = fillin
 
+    # Rotate the lattice
     if theta != 0:
         lattice = ndimage.rotate(
             lattice, theta, reshape=False, order=0, mode="constant", cval=0
         )
 
+    # Crop the lattice to shape
     return lattice[
         height_offset : height_offset + shape[0], width_offset : width_offset + shape[1]
     ]
 
 
 def sample_bipole_gaussian(shape, center, eigenvalues, phi):
-    """Sample a 2D Gaussian with two peaks at center + scale * [sin(phi), cos(phi)] and center - scale * [sin(phi), cos(phi)].
+    """Sample from two 2D Gaussian with two peaks at the center of the bipole.
     Args:
         shape (tuple): Shape of the output array.
-        center (tuple): Center of the Gaussian without shift.
+        center (tuple): Center of the bipole without shift.
         eigenvalues (list like): Eigenvalues of the covariance matrix.
         phi (float): Rotation angle in radians.
     Returns:
@@ -94,9 +100,11 @@ def sample_bipole_gaussian(shape, center, eigenvalues, phi):
     eigenvalues = np.asarray(eigenvalues)
     w0, w1 = eigenvalues.max(), eigenvalues.min()
     center += np.array([w0 // 2 * np.sin(phi), w0 // 2 * np.cos(phi)]).astype(int)
-    # Mean of the Gaussian for ON and OFF subfields
+
+    # Compute mean of the Gaussian for ON and OFF subfields
     mu_on = np.asarray(center) + w1 * np.asarray([-np.cos(phi), np.sin(phi)])
     mu_off = np.asarray(center) + w1 * np.asarray([np.cos(phi), -np.sin(phi)])
+
     # Generate the meshgrid
     x = np.arange(shape[0])
     y = np.arange(shape[1])
@@ -104,19 +112,24 @@ def sample_bipole_gaussian(shape, center, eigenvalues, phi):
     pos = np.empty(X.shape + (2,))
     pos[:, :, 0] = X
     pos[:, :, 1] = Y
-    # Multivariate Gaussian ON
+
+    # Multivariate Gaussian ON cell
     V = [[np.cos(phi), -np.sin(phi)], [np.sin(phi), np.cos(phi)]]
     D = [[w0, 0], [0, w1]]
     sigma = np.matmul(np.matmul(V, D), np.linalg.inv(V))
     rv = multivariate_normal(mu_on, sigma)
     pd_on = rv.pdf(pos)
-    # Multivariate Gaussian OFF
+    # Multivariate Gaussian OFF cell
     rv = multivariate_normal(mu_off, sigma)
     pd_off = -rv.pdf(pos)
     return pd_on + pd_off
 
 
 class OrientationMap:
+    """Orientation map generator. The orientation map is the superposition of two hexagonal lattices with different spacing and orientation. One lattice represents the subfield of ON cell and the other represents the subfield of OFF cell. 
+    The orientation selectivity is computed as the perpendicular direction to the ON-OFF dipoles.
+    """
+
     def __init__(self, shape=120, d=2, alpha=0.5, theta=5, zoom=1) -> None:
         shape = check_shape(shape)
         self._shape = shape
@@ -175,7 +188,7 @@ class OrientationMap:
             nearest_index = query_indices[np.argmin(distances)]
             self.map[y, x] = self.map[nearest_index[0], nearest_index[1]]
 
-    def gen_transform(self, shape_in, eigenvalues=(4, 2)):
+    def gen_transform(self, shape_in, eigenvalues=(6, 3)):
         shape_in = check_shape(shape_in)
         nrows, ncols = shape_in
         assert (
@@ -186,7 +199,8 @@ class OrientationMap:
         transform = np.empty((self.size, nrows * ncols))
         for i in range(self.shape[0]):
             for j in range(self.shape[1]):
-                phi = self.map[i, j]  # Obtain angle selectivity
+                # Obtain angle selectivity
+                phi = self.map[i, j]
                 # Obtain bipole receptive field
                 bipole_rf = sample_bipole_gaussian(
                     (nrows, ncols),
@@ -198,7 +212,9 @@ class OrientationMap:
                     phi,
                 )
                 transform[i * self.shape[1] + j] = bipole_rf.ravel()
-
+        plt.imshow(transform)
+        plt.tight_layout()
+        plt.show()
         return transform
 
     def zoom(self, zoom):
@@ -209,10 +225,10 @@ class OrientationMap:
 
 
 def main():
-    orimap = OrientationMap(100, 4, 1, 10)
+    orimap = OrientationMap(30, 4, 1, 10)
     orimap.zoom(0.5)
     OM = orimap()
-    T = orimap.gen_transform(121, (6, 3))
+    T = orimap.gen_transform(36, (10, 3))
     _, axs = plt.subplots(1, 2)
     axs[0].imshow(OM)
     axs[1].imshow(T)

@@ -17,8 +17,8 @@ font = {"weight": "normal", "size": 30}
 
 matplotlib.rc("font", **font)
 
-N_ORIMAP = 64
-orimap = OrientationMap(100, d=2, alpha=1, theta=10)
+N_ORIMAP = 36
+orimap = OrientationMap(100, d=4, alpha=0.5, theta=10)
 orimap.zoom(np.sqrt(N_ORIMAP / orimap.size))
 
 
@@ -49,9 +49,10 @@ def gen_transform(pattern=None):
                     shape[0] == orimap.unique.size and shape[1] == orimap.size
                 ), "Output size does not match the number of orientations!"
                 W = np.zeros(shape)
-                OM = orimap()
                 for i, ori in enumerate(orimap.unique):
-                    indices = np.where(OM == ori)[0]
+                    indices = np.ravel_multi_index(
+                        np.where(orimap() == ori), orimap.shape
+                    )
                     W[i, indices] = 1
                 W *= 1
             case "circular_inhibition":
@@ -64,7 +65,7 @@ def gen_transform(pattern=None):
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Uniform(0, 1e-3),
+                    init=nengo.dists.Uniform(0, 1e-2),
                 )
         return W
 
@@ -95,8 +96,8 @@ bg = BarGenerator(stim_shape)
 num_samples = 18
 X_train, y_train = bg.gen_sequential_bars(
     num_samples=num_samples,
-    dim=(3, 15),
-    shift=(0, 1),
+    dim=(3, 20),
+    shift=(0, 0),
     start_angle=0,
     step=360 / num_samples,
 )
@@ -112,7 +113,7 @@ rate_target = max_rate * amp  # must be in amplitude scaled units
 n_hidden_neurons = N_ORIMAP
 n_wta_neurons = orimap.unique.size
 n_state_neurons = orimap.unique.size
-presentation_time = 1.0
+presentation_time = 0.3
 duration = (num_samples - 1) * presentation_time
 sample_every = 10 * dt
 
@@ -208,7 +209,7 @@ conn_confs = [
         post="wta_neurons",
         transform=gen_transform("orientation_one2one"),
         # learning_rule=SynapticSampling(),
-        learning_rule=nengo.BCM(learning_rate=learning_rate),
+        # learning_rule=nengo.BCM(learning_rate=learning_rate),
         synapse=0.01,
     ),
     dict(
