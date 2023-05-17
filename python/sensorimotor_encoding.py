@@ -11,15 +11,16 @@ from BarGenerator import BarGenerator
 from custom_learning_rules import SynapticSampling
 from nengo_extras.plot_spikes import plot_spikes
 
-from OrientationMap import OrientationMap
+from OrientationMap import sample_bipole_gaussian
 
 font = {"weight": "normal", "size": 30}
 
 matplotlib.rc("font", **font)
 
-N_ORIMAP = 36
-orimap = OrientationMap(100, d=4, alpha=0.5, theta=10)
-orimap.zoom(np.sqrt(N_ORIMAP / orimap.size))
+N_FILTERS = 16
+KERN_SIZE = 11
+STRIDES = (KERN_SIZE - 1, KERN_SIZE - 1)
+STIM_SHAPE = (15, 15)
 
 
 def gen_transform(pattern=None):
@@ -39,22 +40,24 @@ def gen_transform(pattern=None):
                     W = 1
                 else:
                     W = np.ones(shape)
-            case "orientation_map":
-                W = orimap.gen_transform(
-                    np.sqrt(shape[1]).astype(int), eigenvalues=(6, 2)
-                )
-                return W
-            case "orientation_one2one":
-                assert (
-                    shape[0] == orimap.unique.size and shape[1] == orimap.size
-                ), "Output size does not match the number of orientations!"
-                W = np.zeros(shape)
-                for i, ori in enumerate(orimap.unique):
-                    indices = np.ravel_multi_index(
-                        np.where(orimap() == ori), orimap.shape
+            case "bipolar_gaussian_conv":
+                kernel = np.empty((KERN_SIZE, KERN_SIZE, 1, N_FILTERS))
+                delta_phi = np.pi / (N_FILTERS + 1)
+                for i in range(N_FILTERS):
+                    kernel[:, :, 0, i] = sample_bipole_gaussian(
+                        (KERN_SIZE, KERN_SIZE),
+                        (KERN_SIZE // 2, KERN_SIZE // 2),
+                        (2.0, 1.0),
+                        i * delta_phi,
                     )
-                    W[i, indices] = 1
-                W *= 1
+                conv = nengo.Convolution(
+                    n_filters=N_FILTERS,
+                    input_shape=STIM_SHAPE + (1,),
+                    kernel_size=(KERN_SIZE, KERN_SIZE),
+                    strides=STRIDES,
+                    init=kernel,
+                )
+                return conv
             case "circular_inhibition":
                 # For self-connections
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
@@ -83,14 +86,8 @@ class Delay:
         return self.history[0]
 
 
-# Function to inhibit the error population after half of the duration
-def inhib(t):
-    return 2 if t > duration * 0.5 else 0.0
-
-
-stim_shape = (15, 15)
-stim_size = np.prod(stim_shape)
-bg = BarGenerator(stim_shape)
+stim_size = np.prod(STIM_SHAPE)
+bg = BarGenerator(STIM_SHAPE)
 
 # Prepare dataset
 num_samples = 18
@@ -110,9 +107,10 @@ max_rate = 100  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
-n_hidden_neurons = N_ORIMAP
-n_wta_neurons = orimap.unique.size
-n_state_neurons = orimap.unique.size
+K = (STIM_SHAPE[0] - KERN_SIZE) // STRIDES[0] + 1
+n_hidden_neurons = K * K * N_FILTERS
+n_wta_neurons = N_FILTERS
+n_state_neurons = N_FILTERS
 presentation_time = 0.3
 duration = (num_samples - 1) * presentation_time
 sample_every = 10 * dt
@@ -201,22 +199,22 @@ conn_confs = [
     dict(
         pre="stim_neurons",
         post="hidden_neurons",
-        transform=gen_transform("orientation_map"),
+        transform=gen_transform("bipolar_gaussian_conv"),
         synapse=1e-3,
     ),
     dict(
         pre="hidden_neurons",
         post="wta_neurons",
-        transform=gen_transform("orientation_one2one"),
+        transform=gen_transform(),
         # learning_rule=SynapticSampling(),
-        # learning_rule=nengo.BCM(learning_rate=learning_rate),
+        learning_rule=nengo.BCM(learning_rate=learning_rate),
         synapse=0.01,
     ),
     dict(
         pre="wta_neurons",
         post="wta_neurons",
         transform=gen_transform("circular_inhibition"),
-        synapse=0.001,
+        synapse=0.01,
     ),
 ]
 
@@ -311,7 +309,7 @@ with nengo.Network(label="tacnet", seed=1) as model:
             post_conn = layers[post]
         else:
             post_conn = layers[post][dim_out]
-        if transform is not None:
+        if callable(transform):
             transform = transform((post_conn.size_in, pre_conn.size_in))
         conn = nengo.Connection(
             pre_conn,
