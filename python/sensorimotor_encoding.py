@@ -17,8 +17,8 @@ font = {"weight": "normal", "size": 30}
 
 matplotlib.rc("font", **font)
 
-N_FILTERS = 16
-KERN_SIZE = 11
+N_FILTERS = 36
+KERN_SIZE = 7
 STRIDES = (KERN_SIZE - 1, KERN_SIZE - 1)
 STIM_SHAPE = (15, 15)
 
@@ -47,8 +47,9 @@ def gen_transform(pattern=None):
                     kernel[:, :, 0, i] = sample_bipole_gaussian(
                         (KERN_SIZE, KERN_SIZE),
                         (KERN_SIZE // 2, KERN_SIZE // 2),
-                        (2.0, 1.0),
+                        (2.0, 0.5),
                         i * delta_phi,
+                        binary=False,
                     )
                 conv = nengo.Convolution(
                     n_filters=N_FILTERS,
@@ -93,8 +94,8 @@ bg = BarGenerator(STIM_SHAPE)
 num_samples = 18
 X_train, y_train = bg.gen_sequential_bars(
     num_samples=num_samples,
-    dim=(3, 20),
-    shift=(0, 0),
+    dim=(2, 15),
+    shift=(1, 1),
     start_angle=0,
     step=360 / num_samples,
 )
@@ -111,8 +112,8 @@ K = (STIM_SHAPE[0] - KERN_SIZE) // STRIDES[0] + 1
 n_hidden_neurons = K * K * N_FILTERS
 n_wta_neurons = N_FILTERS
 n_state_neurons = N_FILTERS
-presentation_time = 0.3
-duration = (num_samples - 1) * presentation_time
+presentation_time = 1.0
+duration = num_samples * presentation_time
 sample_every = 10 * dt
 
 learning_rate = 5e-9
@@ -207,7 +208,7 @@ conn_confs = [
         post="wta_neurons",
         transform=gen_transform(),
         # learning_rule=SynapticSampling(),
-        learning_rule=nengo.BCM(learning_rate=learning_rate),
+        # learning_rule=nengo.BCM(learning_rate=learning_rate),
         synapse=0.01,
     ),
     dict(
