@@ -9,7 +9,7 @@ from nengo.builder.operator import Operator
 from nengo.builder.signal import Signal
 from nengo.params import Default, NumberParam
 from nengo.synapses import Lowpass, SynapseParam
-
+import matplotlib.pyplot as plt
 
 class SynapticSampling(nengo.learning_rules.LearningRuleType):
     """
@@ -107,17 +107,9 @@ class SimSS(Operator):
         cov = signals[self.cov]
 
         def step_simss():
-            delta_pre = (
-                (pre_filtered[...] * dt - pre_memory[...]) / self.time_constant * dt
-            )
-            pre_memory[...] += delta_pre
-            delta_post = (
-                (post_filtered[...] * dt - post_memory[...]) / self.time_constant * dt
-            )
-            post_memory[...] += delta_post
-            delta = np.outer(delta_post, delta_pre)
-            delta[delta <= 1e-6] += np.random.normal(0, 1e-4, delta[delta <= 1e-6].shape)
-            weights[...] += delta * 5e-2
+            delta_weights = np.random.normal(mu, cov, weights.shape)
+            apre = np.matmul(delta_weights, pre_filtered * dt)
+            apost = post_filtered*dt
 
         return step_simss
 

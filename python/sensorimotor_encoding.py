@@ -17,7 +17,7 @@ font = {"weight": "normal", "size": 30}
 
 matplotlib.rc("font", **font)
 
-N_FILTERS = 36
+N_FILTERS = 18
 KERN_SIZE = 7
 STRIDES = (KERN_SIZE - 1, KERN_SIZE - 1)
 STIM_SHAPE = (15, 15)
@@ -66,10 +66,11 @@ def gen_transform(pattern=None):
                 weight = np.abs(np.arange(shape[0]) - shape[0] // 2)
                 for i in range(shape[0]):
                     W[i, :] = -np.roll(weight, i + shape[0] // 2)
+                W /= np.max(np.abs(W))
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Uniform(0, 1e-2),
+                    init=nengo.dists.Gaussian(0.0, 0.2),
                 )
         return W
 
@@ -104,7 +105,7 @@ y_train = y_train / 90 - 1
 
 # Simulation parameters
 dt = 1e-3
-max_rate = 100  # Hz
+max_rate = 60  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 
@@ -112,15 +113,15 @@ K = (STIM_SHAPE[0] - KERN_SIZE) // STRIDES[0] + 1
 n_hidden_neurons = K * K * N_FILTERS
 n_wta_neurons = N_FILTERS
 n_state_neurons = N_FILTERS
-presentation_time = 1.0
+presentation_time = 0.5
 duration = num_samples * presentation_time
-sample_every = 10 * dt
+sample_every = 1 * dt
 
 learning_rate = 5e-9
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 # Default neuron parameters
-default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.02)
+default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.05)
 default_rates = nengo.dists.Choice([rate_target])
 default_intercepts = nengo.dists.Choice([0])
 
@@ -137,7 +138,10 @@ layer_confs = [
         output=delay.step,
         size_in=1,
     ),
-    dict(name="state", n_neurons=2 * n_state_neurons, dimensions=2),
+    dict(name="state",
+         n_neurons=2 * n_state_neurons, 
+         dimensions=2
+    ),
     dict(
         name="delta_state",
         n_neurons=n_state_neurons,
@@ -151,7 +155,7 @@ layer_confs = [
     dict(
         name="stim",
         n_neurons=stim_size,
-        dimensions=2,
+        dimensions=1,
         on_chip=False,
     ),
     dict(
@@ -207,9 +211,8 @@ conn_confs = [
         pre="hidden_neurons",
         post="wta_neurons",
         transform=gen_transform(),
-        # learning_rule=SynapticSampling(),
-        # learning_rule=nengo.BCM(learning_rate=learning_rate),
-        synapse=0.01,
+        learning_rule=SynapticSampling(),
+        synapse=0,
     ),
     dict(
         pre="wta_neurons",
@@ -217,6 +220,7 @@ conn_confs = [
         transform=gen_transform("circular_inhibition"),
         synapse=0.01,
     ),
+    
 ]
 
 learning_confs = []
