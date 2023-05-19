@@ -2,6 +2,7 @@ from typing import Optional
 
 import nengo
 import numpy as np
+from scipy.stats import multivariate_normal
 
 image_height, image_width = 15, 15
 image_size = image_height * image_width
@@ -11,15 +12,23 @@ _MAX_RATE = 100
 _AMP = 1.0 / _MAX_RATE
 _RATE_TARGET = _MAX_RATE * _AMP
 
+# Constatns for the convolutional layer
+N_FILTERS = 18
+KERN_SIZE = 7
+STRIDES = (KERN_SIZE - 1, KERN_SIZE - 1)
+STIM_SHAPE = (15, 15)
+
 # Network params
 dt = 1e-3
 dim_states = 7
 n_hidden_neurons = 100
 n_coding_neurons = 36
-default_neuron = nengo.AdaptiveLIF()
-default_rates = nengo.dists.Choice([_MAX_RATE])
-default_intercepts = nengo.dists.Choice([0, 0.1])
-learning_rate = 1e-3
+learning_rate = 5e-9
+
+# Default neuron parameters
+default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.05)
+default_rates = nengo.dists.Choice([rate_target])
+default_intercepts = nengo.dists.Choice([0])
 
 
 def normalize(x, dtype=np.uint8):
@@ -33,45 +42,93 @@ def log(node, x):
     node.get_logger().warn("DEBUG LOG: {}".format(x))
 
 
-def gen_transform(pattern="random", weights=None):
-    W: Optional[np.ndarray] = None
+def sample_bipole_gaussian(shape, center, eigenvalues, phi, binary=False):
+    """Sample from two 2D Gaussian with two peaks at the center of the bipole.
+    Args:
+        shape (tuple): Shape of the output array.
+        center (tuple): Center of the bipole.
+        eigenvalues (list like): Eigenvalues of the covariance matrix.
+        phi (float): Rotation angle in radians.
+    Returns:
+        np.ndarray: 2D Gaussian array.
+    """
+    eigenvalues = np.asarray(eigenvalues)
+    w0, w1 = eigenvalues.max(), eigenvalues.min()
+    # Compute the mean (centre) of the two Gaussians
+    mu = (
+        np.tile(center, [2, 1])
+        + np.asarray([[np.sin(phi), -np.cos(phi)], [-np.sin(phi), np.cos(phi)]]) * w1
+    )
+    # TODO: Check if two distributions are outside the shape.
 
-    def inner(shape, weights=weights):
-        """_summary_
+    # Generate the meshgrid
+    assert shape[0] == shape[1], "shape must be square"
+    X, Y = np.meshgrid(np.arange(shape[1]), np.arange(shape[0]))
+    pos = np.zeros(X.shape + (2,))
+    pos[:, :, 0] = X
+    pos[:, :, 1] = Y
+
+    # Multivariate Gaussian ON cell
+    V = np.array([[np.cos(phi), np.sin(phi)], [-np.sin(phi), np.cos(phi)]]).T
+    D = [[w0, 0], [0, w1]]
+    sigma = np.matmul(np.matmul(V, D), np.linalg.inv(V))
+    rv_on = multivariate_normal(mu[0], sigma)
+    rv_off = multivariate_normal(mu[1], sigma)
+    pdf = rv_on.pdf(pos) - rv_off.pdf(pos)
+    if binary:
+        pdf[pdf < 0] = -1
+        pdf[pdf > 0] = 1
+    return pdf
+
+
+def gen_transform(pattern=None):
+    def inner(shape):
+        """Closure of the transform matrix generator.
 
         Args:
             shape (array_like): Linear transform mapping of shape (size_out, size_mid).
         Returns:
-            _type_: _description_
+            inner: Function that returns the transform matrix.
         """
+        W: Optional[np.ndarray] = None
+
         match pattern:
             case "identity_excitation":
-                W = 1
-            case "identity_inhibition":
-                W = -1
-            case "exclusive_inhibition":
+                if 0 in shape:
+                    W = 1
+                else:
+                    W = np.ones(shape)
+            case "bipolar_gaussian_conv":
+                kernel = np.empty((KERN_SIZE, KERN_SIZE, 1, N_FILTERS))
+                delta_phi = np.pi / (N_FILTERS + 1)
+                for i in range(N_FILTERS):
+                    kernel[:, :, 0, i] = sample_bipole_gaussian(
+                        (KERN_SIZE, KERN_SIZE),
+                        (KERN_SIZE // 2, KERN_SIZE // 2),
+                        (2.0, 0.5),
+                        i * delta_phi,
+                        binary=False,
+                    )
+                conv = nengo.Convolution(
+                    n_filters=N_FILTERS,
+                    input_shape=STIM_SHAPE + (1,),
+                    kernel_size=(KERN_SIZE, KERN_SIZE),
+                    strides=STRIDES,
+                    init=kernel,
+                )
+                return conv
+            case "circular_inhibition":
+                # For self-connections
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
-                W = -np.ones((shape[0], shape[0])) + 2 * np.eye(shape[0])
-            case "cyclic_inhibition":
-                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
-                xmax = shape[1] // 2
-                x = np.abs(np.arange(shape[0]) - xmax)
-                W = np.empty((shape[0], shape[0]))
+                W = np.empty(shape)
+                weight = np.abs(np.arange(shape[0]) - shape[0] // 2)
                 for i in range(shape[0]):
-                    W[i, :] = np.roll(x, i)
-                W = -W
-                W[W == 0] = 1
-                W *= 0.2
-            case "custom":
-                if weights is None:
-                    raise ValueError("No weights provided!")
-                W = weights
-            case "zero":
-                W = 0
+                    W[i, :] = -np.roll(weight, i + shape[0] // 2)
+                W /= np.max(np.abs(W))
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Gaussian(0, 0.1),
+                    init=nengo.dists.Gaussian(0.0, 0.2),
                 )
         return W
 
@@ -95,163 +152,103 @@ def inhib(t):
 
 delay = Delay(dim_states, timesteps=int(0.1 / dt))
 
+# Define layers
 layer_confs = [
     dict(
-        name="inhibit",
+        name="state_node",
         neuron=None,
-        output=inhib,
+        output=lambda t: y_train[int(t / presentation_time) % len(y_train)],
     ),
     dict(
-        name="state",
-        neuron=None,
-        size_out=dim_states,
-    ),
-    dict(
-        name="state_ens",
-        n_neurons=n_coding_neurons,
-        dimensions=dim_states,
-    ),
-    dict(
-        name="delayed_state",
+        name="delay_node",
         neuron=None,
         output=delay.step,
-        size_in=dim_states,
-        size_out=dim_states,
+        size_in=1,
+    ),
+    dict(name="state",
+         n_neurons=2 * n_state_neurons, 
+         dimensions=2
     ),
     dict(
-        name="delayed_state_ens",
-        n_neurons=n_coding_neurons,
-        dimensions=dim_states,
-        neuron=nengo.LIF(),
-        radius=np.pi,
+        name="delta_state",
+        n_neurons=n_state_neurons,
+        dimensions=1,
     ),
     dict(
-        name="delta_state_ens",
-        n_neurons=n_coding_neurons,
-        dimensions=dim_states,
-        neuron=nengo.LIF(),
-        radius=np.pi,
-    ),
-    dict(
-        name="input",
+        name="stimulus",
         neuron=None,
+        output=lambda t: X_train[int(t / presentation_time) % len(X_train)].ravel(),
     ),
     dict(
-        name="stim_ens",
-        n_neurons=image_size,
-        dimensions=15,
-        radius=1,
-        encoders=nengo.dists.Gaussian(0, 0.5),
+        name="stim",
+        n_neurons=stim_size,
+        dimensions=1,
         on_chip=False,
     ),
     dict(
-        name="hidden_ens",
+        name="hidden",
         n_neurons=n_hidden_neurons,
-        dimensions=15,
-        radius=1,
+        dimensions=1,
     ),
     dict(
-        name="output_ens",
-        n_neurons=image_size,
-        dimensions=2,
-        radius=1,
-    ),
-    dict(
-        name="coding_ens",
-        n_neurons=n_coding_neurons,
-        dimensions=dim_states,
-        radius=np.pi,
-    ),
-    dict(
-        name="error_ens",
-        n_neurons=n_coding_neurons,
-        dimensions=dim_states,
-        radius=np.pi,
-    ),
-    dict(
-        name="reconstruction_error_ens",
-        n_neurons=image_size,
-        dimensions=2,
-        radius=1,
+        name="wta",
+        n_neurons=n_wta_neurons,
+        dimensions=1,
     ),
 ]
 
+# Define connections
 conn_confs = [
     dict(
-        pre="state",
-        post="state_ens",
+        pre="state_node",
+        post="delay_node",
+        transform=gen_transform("identity_excitation"),
+    ),
+    dict(
+        pre="state_node",
+        post="state",
+        dim_out=0,
+        transform=gen_transform("identity_excitation"),
+    ),
+    dict(
+        pre="delay_node",
+        post="state",
+        dim_out=1,
         transform=gen_transform("identity_excitation"),
     ),
     dict(
         pre="state",
-        post="delayed_state",
-        transform=gen_transform("identity_excitation"),
-    ),
-    dict(
-        pre="delayed_state",
-        post="delayed_state_ens",
-        transform=gen_transform("identity_excitation"),
-    ),
-    dict(
-        pre="state_ens",
-        post="delta_state_ens",
-        transform=gen_transform("identity_excitation"),
-    ),
-    dict(
-        pre="delayed_state_ens",
-        post="delta_state_ens",
-        transform=gen_transform("identity_inhibition"),
-    ),
-    dict(
-        pre="input",
-        post="stim_ens_neurons",
-        transform=gen_transform("identity_excitation"),
-    ),
-    dict(
-        pre="stim_ens",
-        post="hidden_ens",
-        synapse=0.01,
+        post="delta_state",
         solver=nengo.solvers.LstsqL2(weights=True),
+        function=lambda x: x[0] - x[1],
     ),
     dict(
-        pre="hidden_ens_neurons",
-        post="output_ens_neurons",
-        synapse=0.01,
-        learning_rule=nengo.PES(learning_rate=learning_rate),
-    ),
-    dict(
-        pre="hidden_ens_neurons",
-        post="coding_ens_neurons",
-        learning_rule=nengo.PES(learning_rate=learning_rate),
-    ),
-    dict(
-        pre="coding_ens",
-        post="error_ens",
+        pre="stimulus",
+        post="stim_neurons",
         transform=gen_transform("identity_excitation"),
+        synapse=0.001,
     ),
     dict(
-        pre="state_ens",
-        post="error_ens",
-        transform=gen_transform("identity_inhibition"),
+        pre="stim_neurons",
+        post="hidden_neurons",
+        transform=gen_transform("bipolar_gaussian_conv"),
+        synapse=1e-3,
     ),
     dict(
-        pre="stim_ens_neurons",
-        post="reconstruction_error_ens_neurons",
-        transform=gen_transform("identity_excitation"),
+        pre="hidden_neurons",
+        post="wta_neurons",
+        transform=gen_transform(),
+        learning_rule=SynapticSampling(),
+        synapse=0,
     ),
     dict(
-        pre="output_ens_neurons",
-        post="reconstruction_error_ens_neurons",
-        transform=gen_transform("identity_inhibition"),
-    ),
-    dict(
-        pre="inhibit",
-        post="error_ens_neurons",
-        transform=gen_transform("custom", weights=np.ones((n_coding_neurons, 1)) * -3),
+        pre="wta_neurons",
+        post="wta_neurons",
+        transform=gen_transform("circular_inhibition"),
         synapse=0.01,
     ),
+    
 ]
 
-learning_confs = [
-    # dict(name="learning_coding",pre="error_ens",post="hidden_ens_neurons2coding_ens_neurons",),
-]
+# Define learning rules
+learning_confs = []

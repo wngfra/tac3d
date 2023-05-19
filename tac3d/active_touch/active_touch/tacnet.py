@@ -162,15 +162,29 @@ class Tacnet(Node):
                 conn_conf = dict(conn_conf)  # Copy connection configuration
                 pre = conn_conf.pop("pre")
                 post = conn_conf.pop("post")
+                dim_in = conn_conf.pop("dim_in", None)
+                dim_out = conn_conf.pop("dim_out", None)
                 synapse = conn_conf.pop("synapse", None)
                 solver = conn_conf.pop("solver", None)
-                transform = conn_conf.pop("transform", gen_transform())
+                transform = conn_conf.pop("transform", None)
                 learning_rule = conn_conf.pop("learning_rule", None)
                 name = "{}2{}".format(pre, post)
 
                 assert len(conn_conf) == 0, "Unused fields in {}: {}".format(
                     [name], list(conn_conf)
                 )
+
+                if dim_in is None:
+                    pre_conn = self._layers[pre]
+                else:
+                    pre_conn = self._layers[pre][dim_in]
+                if dim_out is None:
+                    post_conn = self._layers[post]
+                else:
+                    post_conn = self._layers[post][dim_out]
+                if callable(transform):
+                    transform = transform((post_conn.size_in, pre_conn.size_in))
+
                 conn = nengo.Connection(
                     self._layers[pre],
                     self._layers[post],
