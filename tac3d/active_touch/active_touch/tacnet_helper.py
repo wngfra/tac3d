@@ -4,30 +4,29 @@ import nengo
 import numpy as np
 from scipy.stats import multivariate_normal
 
-image_height, image_width = 15, 15
-image_size = image_height * image_width
+stim_shape = (15, 15)
+stim_size = np.prod(stim_shape)
 
 # Constants
 _MAX_RATE = 100
-_AMP = 1.0 / _MAX_RATE
+_AMP = 1.0
 _RATE_TARGET = _MAX_RATE * _AMP
 
 # Constatns for the convolutional layer
-N_FILTERS = 18
-KERN_SIZE = 7
-STRIDES = (KERN_SIZE - 1, KERN_SIZE - 1)
-STIM_SHAPE = (15, 15)
+_N_FILTERS = 18
+_KERN_SIZE = 7
+_STRIDES = (_KERN_SIZE - 1, _KERN_SIZE - 1)
 
 # Network params
 dt = 1e-3
-dim_states = 7
-n_hidden_neurons = 100
+k = (stim_shape[0] - _KERN_SIZE) // _STRIDES[0] + 1
+n_hidden_neurons = k * k * _N_FILTERS
 n_coding_neurons = 36
 learning_rate = 5e-9
 
 # Default neuron parameters
-default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.05)
-default_rates = nengo.dists.Choice([rate_target])
+default_neuron = nengo.AdaptiveLIF(amplitude=_AMP, tau_rc=0.05)
+default_rates = nengo.dists.Choice([_RATE_TARGET])
 default_intercepts = nengo.dists.Choice([0])
 
 
@@ -99,21 +98,21 @@ def gen_transform(pattern=None):
                 else:
                     W = np.ones(shape)
             case "bipolar_gaussian_conv":
-                kernel = np.empty((KERN_SIZE, KERN_SIZE, 1, N_FILTERS))
-                delta_phi = np.pi / (N_FILTERS + 1)
-                for i in range(N_FILTERS):
+                kernel = np.empty((_KERN_SIZE, _KERN_SIZE, 1, _N_FILTERS))
+                delta_phi = np.pi / (_N_FILTERS + 1)
+                for i in range(_N_FILTERS):
                     kernel[:, :, 0, i] = sample_bipole_gaussian(
-                        (KERN_SIZE, KERN_SIZE),
-                        (KERN_SIZE // 2, KERN_SIZE // 2),
+                        (_KERN_SIZE, _KERN_SIZE),
+                        (_KERN_SIZE // 2, _KERN_SIZE // 2),
                         (2.0, 0.5),
                         i * delta_phi,
                         binary=False,
                     )
                 conv = nengo.Convolution(
-                    n_filters=N_FILTERS,
-                    input_shape=STIM_SHAPE + (1,),
-                    kernel_size=(KERN_SIZE, KERN_SIZE),
-                    strides=STRIDES,
+                    n_filters=_N_FILTERS,
+                    input_shape=stim_shape + (1,),
+                    kernel_size=(_KERN_SIZE, _KERN_SIZE),
+                    strides=_STRIDES,
                     init=kernel,
                 )
                 return conv
@@ -150,34 +149,14 @@ def inhib(t):
     return 2 if t > 20.0 else 0.0
 
 
-delay = Delay(dim_states, timesteps=int(0.1 / dt))
+delay = Delay(n_coding_neurons, timesteps=int(0.1 / dt))
 
 # Define layers
 layer_confs = [
     dict(
-        name="state_node",
+        name="stim_node",
         neuron=None,
-        output=lambda t: y_train[int(t / presentation_time) % len(y_train)],
-    ),
-    dict(
-        name="delay_node",
-        neuron=None,
-        output=delay.step,
-        size_in=1,
-    ),
-    dict(name="state",
-         n_neurons=2 * n_state_neurons, 
-         dimensions=2
-    ),
-    dict(
-        name="delta_state",
-        n_neurons=n_state_neurons,
-        dimensions=1,
-    ),
-    dict(
-        name="stimulus",
-        neuron=None,
-        output=lambda t: X_train[int(t / presentation_time) % len(X_train)].ravel(),
+        output="input_func",
     ),
     dict(
         name="stim",
@@ -192,7 +171,7 @@ layer_confs = [
     ),
     dict(
         name="wta",
-        n_neurons=n_wta_neurons,
+        n_neurons=n_coding_neurons,
         dimensions=1,
     ),
 ]
@@ -200,30 +179,7 @@ layer_confs = [
 # Define connections
 conn_confs = [
     dict(
-        pre="state_node",
-        post="delay_node",
-        transform=gen_transform("identity_excitation"),
-    ),
-    dict(
-        pre="state_node",
-        post="state",
-        dim_out=0,
-        transform=gen_transform("identity_excitation"),
-    ),
-    dict(
-        pre="delay_node",
-        post="state",
-        dim_out=1,
-        transform=gen_transform("identity_excitation"),
-    ),
-    dict(
-        pre="state",
-        post="delta_state",
-        solver=nengo.solvers.LstsqL2(weights=True),
-        function=lambda x: x[0] - x[1],
-    ),
-    dict(
-        pre="stimulus",
+        pre="stim_node",
         post="stim_neurons",
         transform=gen_transform("identity_excitation"),
         synapse=0.001,
@@ -238,7 +194,7 @@ conn_confs = [
         pre="hidden_neurons",
         post="wta_neurons",
         transform=gen_transform(),
-        learning_rule=SynapticSampling(),
+        # learning_rule=SynapticSampling(),
         synapse=0,
     ),
     dict(

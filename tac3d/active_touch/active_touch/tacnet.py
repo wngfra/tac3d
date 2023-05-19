@@ -14,10 +14,9 @@ from active_touch.tacnet_helper import (
     default_intercepts,
     default_neuron,
     default_rates,
-    image_height,
-    image_width,
-    image_size,
-    dim_states,
+    stim_shape,
+    stim_size,
+    n_coding_neurons,
     layer_confs,
     conn_confs,
     learning_confs,
@@ -26,7 +25,38 @@ from active_touch.tacnet_helper import (
     log,
 )
 
-_DURATION = 0.5
+_DURATION = 0.2
+NODE_CONFS = [
+    dict(
+        name="rs_sub",
+        msg_type=RobotState,
+        topic="mujoco_simulator/robot_state",
+        qos_profile=qos_profile_sensor_data,
+        callback="subscribe_rs",
+    ),
+    dict(
+        name="ts_sub",
+        msg_type=Locus,
+        topic="mujoco_simulator/tactile_sensor",
+        qos_profile=qos_profile_sensor_data,
+        callback="subscribe_sensor",
+    ),
+    dict(
+        name="to_pub",
+        msg_type=sensor_msgs.msg.Image,
+        topic="active_touch/tacnet_output",
+    ),
+    dict(
+        name="te_pub",
+        msg_type=Locus,
+        topic="active_touch/tacnet_encoding",
+    ),
+    dict(
+        name="tp_pub",
+        msg_type=sensor_msgs.msg.PointCloud2,
+        topic="active_touch/tacnet_pointcloud2",
+    ),
+]
 
 
 class Tacnet(Node):
@@ -37,34 +67,28 @@ class Tacnet(Node):
         self._probes: Optional[dict[str, nengo.Probe]] = None
         self._net: Optional[nengo.Network] = None
         self._sim: Optional[nengo.Simulator] = None
-        self._tactile_data = np.zeros(image_size)
-        self._touch_sites = deque(maxlen=40)
-        self._last_touch: Optional[np.ndarray] = None
+        self._mem = deque(maxlen=50)
+        self._confs = dict()
 
         # Create encoder network
         self.create_network()
 
-        self._rs_sub = self.create_subscription(
-            RobotState,
-            "mujoco_simulator/robot_state",
-            self.subscribe_rs,
-            qos_profile_sensor_data,
-        )
-        self._sensor_sub = self.create_subscription(
-            Locus,
-            "mujoco_simulator/tactile_sensor",
-            self.subscribe_sensor,
-            qos_profile_sensor_data,
-        )
-        self._img_pub = self.create_publisher(
-            sensor_msgs.msg.Image, "active_touch/tacnet_output", 20
-        )
-        self._encoding_pub = self.create_publisher(
-            Locus, "active_touch/tacnet_encoding", 20
-        )
-        self._pc2_pub = self.create_publisher(
-            sensor_msgs.msg.PointCloud2, "active_touch/tacnet_pointcloud2", 20
-        )
+        # Create subscriber and publisher
+        for conf in NODE_CONFS:
+            conf = conf.copy()
+            name = conf.pop("name")
+            msg_type = conf.pop("msg_type")
+            topic = conf.pop("topic")
+            qos_profile = conf.pop("qos_profile", 20)
+            callback = conf.pop("callback", None)
+            if callback:
+                sub = self.create_subscription(
+                    msg_type, topic, getattr(self, callback), qos_profile
+                )
+                self._confs[name] = sub
+            else:
+                pub = self.create_publisher(msg_type, topic, qos_profile)
+                self._confs[name] = pub
 
         # Start the threaded Nengo simulation
         self._simulator_thread = threading.Thread(
@@ -74,23 +98,20 @@ class Tacnet(Node):
 
     def __del__(self):
         self._simulator_thread.join()
-        self.destroy_subscription(self._rs_sub)
-        self.destroy_subscription(self._sensor_sub)
-        self.destroy_publisher(self._img_pub)
-        self.destroy_publisher(self._encoding_pub)
-        self.destroy_publisher(self._pc2_pub)
+        for name, item in self._confs.items():
+            if name.endswith("sub"):
+                self.destroy_subscription(item)
+            else:
+                self.destroy_publisher(item)
 
     def input_func(self, t):
-        if len(self._tactile_data) == 0:
-            return np.zeros(image_size)
-        return self._tactile_data.ravel()
-
-    def state_func(self, t):
-        # TODO consider the working memory decay
-        if len(self._touch_sites) == 0:
-            return np.zeros(dim_states)
-        self._last_touch = self._touch_sites.pop().ravel()
-        return self._last_touch
+        # FIXME the poses are not yet memorized
+        data = np.zeros(stim_shape)
+        if len(self._mem) > 0:
+            d = self._mem.pop()
+            if "data" in d:
+                data = d["data"]
+        return data.ravel()
 
     def create_network(self):
         self._layers = dict()
@@ -122,11 +143,8 @@ class Tacnet(Node):
 
                 if neuron_type is None or n_neurons == 0:
                     assert not on_chip, "Nodes can only be run off-chip"
-                    match name:
-                        case "input":
-                            output = self.input_func
-                        case "state":
-                            output = self.state_func
+                    if isinstance(output, str):
+                        output = getattr(self, output)
 
                     layer = nengo.Node(
                         output=output, size_in=size_in, size_out=size_out, label=name
@@ -188,9 +206,7 @@ class Tacnet(Node):
                 conn = nengo.Connection(
                     self._layers[pre],
                     self._layers[post],
-                    transform=transform(
-                        (self._layers[post].size_in, self._layers[pre].size_in)
-                    ),
+                    transform=transform,
                     synapse=synapse,
                     label=name,
                 )
@@ -223,10 +239,11 @@ class Tacnet(Node):
         with nengo.Simulator(self._net, progress_bar=False) as self._sim:
             while rclpy.ok():
                 self._sim.run(_DURATION)
-                output = self._sim.data[self._probes["output_ens"]][-1]
-                coding = self._sim.data[self._probes["coding_ens"]][-1]
-                # Publish the reconstruction
-                self.publish(output, coding, self._last_touch)
+                output = self._sim.data[self._probes["wta_neurons"]][-1]
+                coding = self._sim.data[self._probes["hidden_neurons"]][-1]
+                # FIXME: Publish the reconstruction, points are not correct
+                self.publish(output, coding, np.random.normal(size=(3, 3)))
+                self._sim.clear_probes()
 
     def publish(
         self, image: np.ndarray, encoding: np.ndarray, points: np.ndarray = None
@@ -239,13 +256,13 @@ class Tacnet(Node):
         image = normalize(image).tolist()
         img_msg = sensor_msgs.msg.Image()
         img_msg.header = header
-        img_msg.height = image_height
-        img_msg.width = image_width
+        img_msg.height = stim_shape[0]
+        img_msg.width = stim_shape[1]
         img_msg.encoding = "mono8"
         img_msg.is_bigendian = True
-        img_msg.step = image_width
+        img_msg.step = stim_shape[1]
         img_msg.data = image
-        self._img_pub.publish(img_msg)
+        self._confs["to_pub"].publish(img_msg)
 
         # Prepare tactile percept as Locus
         dim = int(np.sqrt(encoding.size))
@@ -255,7 +272,7 @@ class Tacnet(Node):
         ec_msg.height = dim
         ec_msg.width = dim
         ec_msg.data = encoding
-        self._encoding_pub.publish(ec_msg)
+        self._confs["te_pub"].publish(ec_msg)
 
         # Prepare tactile spatial memory as point cloud
         if points is not None:
@@ -266,8 +283,8 @@ class Tacnet(Node):
             pc2_msg = sensor_msgs.msg.PointCloud2(
                 header=header,
                 height=1,
-                width=1,
-                is_dense=True,
+                width=points.shape[0],
+                is_dense=False,
                 is_bigendian=False,
                 fields=[
                     sensor_msgs.msg.PointField(
@@ -279,8 +296,7 @@ class Tacnet(Node):
                 row_step=itemsize * points.shape[0] * 1,
                 data=points.astype(dtype).tobytes(),
             )
-            # FIXME cannot be visualized by rviz2
-            # self._pc2_pub.publish(pc2_msg)
+            self._confs["tp_pub"].publish(pc2_msg)
 
     def subscribe_rs(self, msg: RobotState):
         # Update the robot state
@@ -289,11 +305,18 @@ class Tacnet(Node):
         pose = np.concatenate([xpos, xquat])
         theta_2 = np.arccos(xquat[0])
         gamma = 2 * np.arccos(xquat[3] / np.sin(theta_2))
-        self._touch_sites.appendleft(pose)
+        if len(self._mem) == 0 or "pose" not in self._mem[-1]:
+            self._mem[-1]["pose"] = pose
+        else:
+            self._mem.appendleft({"pose": pose})
 
     def subscribe_sensor(self, msg: Locus):
         # Update the tactile data
-        self._tactile_data = np.asarray(msg.data)
+        data = np.asarray(msg.data)
+        if len(self._mem) == 0 or "data" not in self._mem[-1]:
+            self._mem[-1]["data"] = data
+        else:
+            self._mem.appendleft({"data": data})
 
 
 def main(args=None):

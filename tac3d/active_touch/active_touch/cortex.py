@@ -62,8 +62,7 @@ class Cortex(Node):
         msg.header.stamp = self.get_clock().now().to_msg()
 
         signal = np.zeros(6, dtype=np.float64)
-        # FIXME PID control for constant contact force
-        signal[2] -= np.exp(-2e-3 * t)
+        signal[2] -= np.exp(-2e-3 * t) if self._contact_force <= 0.1 else 0.0
         signal[1] = np.sin(0.5 * t)
         msg.spike_signal = signal.tolist()
         self._ms_pub.publish(msg)
