@@ -35,6 +35,9 @@ def gen_transform(pattern=None):
         W: Optional[np.ndarray] = None
 
         match pattern:
+            case "one2one":
+                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
+                W = np.eye(shape[0])
             case "orthogonal_excitation":
                 W = np.zeros(shape)
                 target = np.arange(shape[1])
@@ -72,7 +75,7 @@ def gen_transform(pattern=None):
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Gaussian(0, 1e-2),
+                    init=nengo.dists.Gaussian(0.05, 1e-2),
                 )
         return W
 
@@ -113,14 +116,13 @@ rate_target = max_rate * amp  # must be in amplitude scaled units
 
 K = (STIM_SHAPE[0] - KERN_SIZE) // STRIDES[0] + 1
 n_hidden_neurons = K * K * N_FILTERS
-n_coding_neurons = 2 * N_FILTERS
-n_wta_neurons = N_FILTERS
+n_coding_neurons = N_FILTERS
 n_state_neurons = N_FILTERS
 presentation_time = 0.3
 duration = num_samples * presentation_time
 sample_every = 1 * dt
 
-learning_rate = 2e-9
+learning_rate = 4e-9
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 # Default neuron parameters
@@ -170,7 +172,7 @@ layer_confs = [
     ),
     dict(
         name="wta",
-        n_neurons=n_wta_neurons,
+        n_neurons=n_coding_neurons,
         dimensions=1,
     ),
 ]
@@ -215,19 +217,19 @@ conn_confs = [
     dict(
         pre="hidden_neurons",
         post="coding_neurons",
-        transform=gen_transform("orthogonal_excitation"),
+        transform=gen_transform(),
+        learning_rule=nengo.BCM(learning_rate=learning_rate),
         synapse=1e-3,
     ),
     dict(
         pre="coding_neurons",
         post="wta_neurons",
-        transform=gen_transform(),
-        learning_rule=nengo.BCM(learning_rate=learning_rate),
+        transform=gen_transform("one2one"),
         synapse=0,
     ),
     dict(
         pre="wta_neurons",
-        post="wta_neurons",
+        post="coding_neurons",
         transform=gen_transform("circular_inhibition"),
         synapse=0,
     ),
@@ -366,8 +368,8 @@ def main(plot=False):
     with nengo.Simulator(model, dt=dt, optimize=True) as sim:
         sim.run(duration)
 
-    conn_name = "{}2{}".format("coding_neurons", "wta_neurons")
-    ens_names = ["stim_neurons", "hidden_neurons", "wta_neurons"]
+    conn_name = "{}2{}".format("hidden_neurons", "coding_neurons")
+    ens_names = ["stim_neurons", "hidden_neurons", "coding_neurons"]
 
     save_data(sim, ["hidden_neurons", "state"], "data/sim_data.csv")
 
