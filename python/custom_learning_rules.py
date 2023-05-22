@@ -11,6 +11,7 @@ from nengo.params import Default, NumberParam
 from nengo.synapses import Lowpass, SynapseParam
 import matplotlib.pyplot as plt
 
+
 class SynapticSampling(nengo.learning_rules.LearningRuleType):
     """
     Synaptic Sampling learning rule.
@@ -20,6 +21,7 @@ class SynapticSampling(nengo.learning_rules.LearningRuleType):
     probeable = (
         "pre_filtered",
         "post_filtered",
+        "delta",
         "mu",
         "cov",
         "pre_memory",
@@ -50,6 +52,7 @@ class SimSS(Operator):
         pre_filtered,
         post_filtered,
         weights,
+        delta,
         pre_memory,
         post_memory,
         mu,
@@ -62,19 +65,23 @@ class SimSS(Operator):
 
         self.sets = []
         self.incs = []
-        self.reads = [pre_filtered, post_filtered]
-        self.updates = [weights, pre_memory, post_memory, mu, cov]
+        self.reads = [weights, pre_filtered, post_filtered]
+        self.updates = [delta, pre_memory, post_memory, mu, cov]
 
     @property
     def pre_filtered(self):
-        return self.reads[0]
-
-    @property
-    def post_filtered(self):
         return self.reads[1]
 
     @property
+    def post_filtered(self):
+        return self.reads[2]
+
+    @property
     def weights(self):
+        return self.reads[0]
+
+    @property
+    def delta(self):
         return self.updates[0]
 
     @property
@@ -101,15 +108,22 @@ class SimSS(Operator):
         pre_filtered = signals[self.pre_filtered]
         post_filtered = signals[self.post_filtered]
         weights = signals[self.weights]
+        delta = signals[self.delta]
         pre_memory = signals[self.pre_memory]
         post_memory = signals[self.post_memory]
         mu = signals[self.mu]
         cov = signals[self.cov]
 
         def step_simss():
-            delta_weights = np.random.normal(mu, cov, weights.shape)
-            apre = np.matmul(delta_weights, pre_filtered * dt)
-            apost = post_filtered*dt
+            pre = pre_filtered * dt - pre_memory
+            post = post_filtered * dt - post_memory
+            pre_memory[...] = pre_filtered * dt
+            post_memory[...] = post_filtered * dt
+            drift = np.outer(post, pre)
+            diffusion = (
+                2e-2 * np.random.normal(0, np.sqrt(dt), drift.shape) * np.exp(-drift)
+            )
+            delta[...] = drift + diffusion
 
         return step_simss
 
@@ -139,6 +153,7 @@ def build_ss(model, ss, rule):
             pre_filtered,
             post_filtered,
             model.sig[conn]["weights"],
+            model.sig[rule]["delta"],
             pre_memory,
             post_memory,
             mu,

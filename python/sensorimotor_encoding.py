@@ -71,11 +71,14 @@ def gen_transform(pattern=None):
                 weight = np.abs(np.arange(shape[0]) - shape[0] // 2)
                 for i in range(shape[0]):
                     W[i, :] = -np.roll(weight, i + shape[0] // 2)
-                W /= np.max(np.abs(W))
+                W *= 2
+                # W /= np.max(np.abs(W))
+            case 0:
+                W = np.zeros(shape)
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Gaussian(0.05, 1e-2),
+                    init=nengo.dists.Uniform(-1e-2, 1e-2),
                 )
         return W
 
@@ -118,11 +121,11 @@ K = (STIM_SHAPE[0] - KERN_SIZE) // STRIDES[0] + 1
 n_hidden_neurons = K * K * N_FILTERS
 n_coding_neurons = N_FILTERS
 n_state_neurons = N_FILTERS
-presentation_time = 0.3
+presentation_time = 0.5
 duration = num_samples * presentation_time
 sample_every = 1 * dt
+learning_rule = SynapticSampling()
 
-learning_rate = 4e-9
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 # Default neuron parameters
@@ -170,11 +173,6 @@ layer_confs = [
         n_neurons=n_coding_neurons,
         dimensions=1,
     ),
-    dict(
-        name="wta",
-        n_neurons=n_coding_neurons,
-        dimensions=1,
-    ),
 ]
 
 # Define connections
@@ -206,32 +204,26 @@ conn_confs = [
         pre="stimulus",
         post="stim_neurons",
         transform=1,
-        synapse=0.001,
+        synapse=0,
     ),
     dict(
         pre="stim_neurons",
         post="hidden_neurons",
         transform=gen_transform("bipolar_gaussian_conv"),
-        synapse=1e-3,
+        synapse=5e-3,
     ),
     dict(
         pre="hidden_neurons",
         post="coding_neurons",
-        transform=gen_transform(),
-        learning_rule=nengo.BCM(learning_rate=learning_rate),
-        synapse=1e-3,
+        transform=gen_transform(0),
+        learning_rule=learning_rule,
+        synapse=5e-3,
     ),
     dict(
         pre="coding_neurons",
-        post="wta_neurons",
-        transform=gen_transform("one2one"),
-        synapse=0,
-    ),
-    dict(
-        pre="wta_neurons",
         post="coding_neurons",
         transform=gen_transform("circular_inhibition"),
-        synapse=0,
+        synapse=2e-3,
     ),
 ]
 
@@ -371,7 +363,7 @@ def main(plot=False):
     conn_name = "{}2{}".format("hidden_neurons", "coding_neurons")
     ens_names = ["stim_neurons", "hidden_neurons", "coding_neurons"]
 
-    save_data(sim, ["hidden_neurons", "state"], "data/sim_data.csv")
+    # save_data(sim, ["hidden_neurons", "state"], "data/test_data.csv")
 
     if plot:
         plt.figure(figsize=(5, 10))
