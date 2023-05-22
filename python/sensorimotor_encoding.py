@@ -35,11 +35,13 @@ def gen_transform(pattern=None):
         W: Optional[np.ndarray] = None
 
         match pattern:
-            case "identity_excitation":
-                if 0 in shape:
-                    W = 1
-                else:
-                    W = np.ones(shape)
+            case "orthogonal_excitation":
+                W = np.zeros(shape)
+                target = np.arange(shape[1])
+                n = shape[1] // shape[0]
+                np.random.shuffle(target)
+                for i in range(shape[0]):
+                    W[i, target[i * n : (i + 1) * n]] = 1
             case "bipolar_gaussian_conv":
                 kernel = np.empty((KERN_SIZE, KERN_SIZE, 1, N_FILTERS))
                 delta_phi = np.pi / (N_FILTERS + 1)
@@ -70,7 +72,7 @@ def gen_transform(pattern=None):
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Gaussian(0.0, 0.2),
+                    init=nengo.dists.Gaussian(0, 1e-2),
                 )
         return W
 
@@ -111,13 +113,14 @@ rate_target = max_rate * amp  # must be in amplitude scaled units
 
 K = (STIM_SHAPE[0] - KERN_SIZE) // STRIDES[0] + 1
 n_hidden_neurons = K * K * N_FILTERS
+n_coding_neurons = 2 * N_FILTERS
 n_wta_neurons = N_FILTERS
 n_state_neurons = N_FILTERS
-presentation_time = 0.5
+presentation_time = 0.3
 duration = num_samples * presentation_time
 sample_every = 1 * dt
 
-learning_rate = 5e-9
+learning_rate = 2e-9
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 # Default neuron parameters
@@ -138,10 +141,7 @@ layer_confs = [
         output=delay.step,
         size_in=1,
     ),
-    dict(name="state",
-         n_neurons=2 * n_state_neurons, 
-         dimensions=2
-    ),
+    dict(name="state", n_neurons=2 * n_state_neurons, dimensions=2),
     dict(
         name="delta_state",
         n_neurons=n_state_neurons,
@@ -164,6 +164,11 @@ layer_confs = [
         dimensions=1,
     ),
     dict(
+        name="coding",
+        n_neurons=n_coding_neurons,
+        dimensions=1,
+    ),
+    dict(
         name="wta",
         n_neurons=n_wta_neurons,
         dimensions=1,
@@ -175,19 +180,19 @@ conn_confs = [
     dict(
         pre="state_node",
         post="delay_node",
-        transform=gen_transform("identity_excitation"),
+        transform=1,
     ),
     dict(
         pre="state_node",
         post="state",
         dim_out=0,
-        transform=gen_transform("identity_excitation"),
+        transform=1,
     ),
     dict(
         pre="delay_node",
         post="state",
         dim_out=1,
-        transform=gen_transform("identity_excitation"),
+        transform=1,
     ),
     dict(
         pre="state",
@@ -198,7 +203,7 @@ conn_confs = [
     dict(
         pre="stimulus",
         post="stim_neurons",
-        transform=gen_transform("identity_excitation"),
+        transform=1,
         synapse=0.001,
     ),
     dict(
@@ -209,18 +214,23 @@ conn_confs = [
     ),
     dict(
         pre="hidden_neurons",
+        post="coding_neurons",
+        transform=gen_transform("orthogonal_excitation"),
+        synapse=1e-3,
+    ),
+    dict(
+        pre="coding_neurons",
         post="wta_neurons",
         transform=gen_transform(),
-        learning_rule=SynapticSampling(),
+        learning_rule=nengo.BCM(learning_rate=learning_rate),
         synapse=0,
     ),
     dict(
         pre="wta_neurons",
         post="wta_neurons",
         transform=gen_transform("circular_inhibition"),
-        synapse=0.01,
+        synapse=0,
     ),
-    
 ]
 
 learning_confs = []
@@ -352,40 +362,57 @@ with nengo.Network(label="tacnet", seed=1) as model:
         )
 
 
-def main():
+def main(plot=False):
     with nengo.Simulator(model, dt=dt, optimize=True) as sim:
         sim.run(duration)
 
-    conn_name = "{}2{}".format("hidden_neurons", "wta_neurons")
+    conn_name = "{}2{}".format("coding_neurons", "wta_neurons")
     ens_names = ["stim_neurons", "hidden_neurons", "wta_neurons"]
 
-    plt.figure(figsize=(5, 10))
-    # Find weight row with max variance
-    neuron = np.argmax(np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1))
-    plt.plot(sim.trange(sample_every), sim.data[probes[conn_name]][:, neuron, :])
-    plt.xlabel("time (s)")
-    plt.ylabel("weights")
+    save_data(sim, ["hidden_neurons", "state"], "data/sim_data.csv")
 
-    _, axs = plt.subplots(len(ens_names), 1, figsize=(5 * len(ens_names), 10))
-    for i, ens_name in enumerate(ens_names):
-        if "neurons" in ens_name:
-            plot_spikes(
-                sim.trange(sample_every=sample_every),
-                sim.data[probes[ens_name]],
-                ax=axs[i],
-            )
-            axs[i].set_ylabel("neuron")
-        else:
-            axs[i].plot(
-                sim.trange(sample_every=sample_every), sim.data[probes[ens_name]]
-            )
-            axs[i].set_ylabel("encoder")
-        axs[i].set_title(ens_name)
-        axs[i].set_xlabel("time (s)")
-        axs[i].grid()
-    plt.tight_layout()
-    plt.show()
+    if plot:
+        plt.figure(figsize=(5, 10))
+        # Find weight row with max variance
+        neuron = np.argmax(np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1))
+        plt.plot(sim.trange(sample_every), sim.data[probes[conn_name]][:, neuron, :])
+        plt.xlabel("time (s)")
+        plt.ylabel("weights")
+
+        _, axs = plt.subplots(len(ens_names), 1, figsize=(5 * len(ens_names), 10))
+        for i, ens_name in enumerate(ens_names):
+            if "neurons" in ens_name:
+                plot_spikes(
+                    sim.trange(sample_every=sample_every),
+                    sim.data[probes[ens_name]],
+                    ax=axs[i],
+                )
+                axs[i].set_ylabel("neuron")
+            else:
+                axs[i].plot(
+                    sim.trange(sample_every=sample_every), sim.data[probes[ens_name]]
+                )
+                axs[i].set_ylabel("encoder")
+            axs[i].set_title(ens_name)
+            axs[i].set_xlabel("time (s)")
+            axs[i].grid()
+        plt.tight_layout()
+        plt.show()
+
+
+def save_data(sim, save_list, filename):
+    import pandas as pd
+
+    data = []
+    labels = []
+    for name in save_list:
+        data.append(sim.data[probes[name]])
+        labels += [name + "_{}".format(i) for i in range(data[-1].shape[1])]
+    df = pd.DataFrame(
+        np.hstack(data), index=sim.trange(sample_every=sample_every), columns=labels
+    )
+    df.to_csv(filename, index=False)
 
 
 if __name__ == "__main__":
-    main()
+    main(True)
