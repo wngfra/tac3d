@@ -121,7 +121,7 @@ n_state_neurons = N_FILTERS
 presentation_time = 0.5  # Leave 0.15s for decay
 duration = num_samples * presentation_time
 sample_every = 1 * dt
-learning_rule = None #nengo.BCM(3e-9)  # SynapticSampling()
+learning_rule = SynapticSampling()
 
 delay = Delay(1, timesteps=int(0.1 / dt))
 

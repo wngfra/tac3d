@@ -120,8 +120,10 @@ class SimSS(Operator):
             pre_memory[...] = pre_filtered * dt
             post_memory[...] = post_filtered * dt
             drift = np.outer(post, pre)
+            # mu[...] = weights + drift
+            
             diffusion = (
-                2e-2 * np.random.normal(0, np.sqrt(dt), drift.shape) * np.exp(-drift)
+                1e-3 * np.random.normal(0, 1/np.sqrt(1+np.square(drift)), drift.shape) * np.exp(-drift)
             )
             delta[...] = drift + diffusion
 
