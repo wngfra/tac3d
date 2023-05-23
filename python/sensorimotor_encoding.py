@@ -20,7 +20,7 @@ matplotlib.rc("font", **font)
 N_FILTERS = 18
 KERN_SIZE = 7
 STRIDES = (KERN_SIZE - 1, KERN_SIZE - 1)
-STIM_SHAPE = (15, 15)
+STIM_SHAPE = (25, 25)
 
 
 def gen_transform(pattern=None):
@@ -35,16 +35,14 @@ def gen_transform(pattern=None):
         W: Optional[np.ndarray] = None
 
         match pattern:
-            case "one2one":
-                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
-                W = np.eye(shape[0])
             case "orthogonal_excitation":
                 W = np.zeros(shape)
                 target = np.arange(shape[1])
                 n = shape[1] // shape[0]
                 np.random.shuffle(target)
                 for i in range(shape[0]):
-                    W[i, target[i * n : (i + 1) * n]] = 1
+                    W[i, target[i * n : (i + 1) * n]] = np.random.uniform(0.5, 0.1)
+                W[W < 0.1] = 1e-2
             case "bipolar_gaussian_conv":
                 kernel = np.empty((KERN_SIZE, KERN_SIZE, 1, N_FILTERS))
                 delta_phi = np.pi / (N_FILTERS + 1)
@@ -52,7 +50,7 @@ def gen_transform(pattern=None):
                     kernel[:, :, 0, i] = sample_bipole_gaussian(
                         (KERN_SIZE, KERN_SIZE),
                         (KERN_SIZE // 2, KERN_SIZE // 2),
-                        (2.0, 0.5),
+                        (2, 0.1),
                         i * delta_phi,
                         binary=False,
                     )
@@ -71,14 +69,13 @@ def gen_transform(pattern=None):
                 weight = np.abs(np.arange(shape[0]) - shape[0] // 2)
                 for i in range(shape[0]):
                     W[i, :] = -np.roll(weight, i + shape[0] // 2)
-                W *= 2
-                # W /= np.max(np.abs(W))
+                W *= 5 / np.max(np.abs(W))
             case 0:
                 W = np.zeros(shape)
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Uniform(-1e-2, 1e-2),
+                    init=nengo.dists.Uniform(0, 1e-2),
                 )
         return W
 
@@ -103,7 +100,7 @@ bg = BarGenerator(STIM_SHAPE)
 num_samples = 18
 X_train, y_train = bg.gen_sequential_bars(
     num_samples=num_samples,
-    dim=(2, 15),
+    dim=(2, 20),
     shift=(1, 1),
     start_angle=0,
     step=360 / num_samples,
@@ -121,10 +118,10 @@ K = (STIM_SHAPE[0] - KERN_SIZE) // STRIDES[0] + 1
 n_hidden_neurons = K * K * N_FILTERS
 n_coding_neurons = N_FILTERS
 n_state_neurons = N_FILTERS
-presentation_time = 0.5
+presentation_time = 0.5  # Leave 0.15s for decay
 duration = num_samples * presentation_time
 sample_every = 1 * dt
-learning_rule = SynapticSampling()
+learning_rule = None #nengo.BCM(3e-9)  # SynapticSampling()
 
 delay = Delay(1, timesteps=int(0.1 / dt))
 
@@ -132,6 +129,21 @@ delay = Delay(1, timesteps=int(0.1 / dt))
 default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.05)
 default_rates = nengo.dists.Choice([rate_target])
 default_intercepts = nengo.dists.Choice([0])
+
+
+def stim_func(t):
+    Xid = int(t / presentation_time) % len(X_train)
+    stage = t - int(t / presentation_time) * presentation_time
+    sample = X_train[Xid].ravel()
+    if stage <= presentation_time - 0.1:
+        return sample
+    else:
+        return np.zeros_like(sample)
+
+
+def state_func(t):
+    return 0
+
 
 # Define layers
 layer_confs = [
@@ -155,7 +167,7 @@ layer_confs = [
     dict(
         name="stimulus",
         neuron=None,
-        output=lambda t: X_train[int(t / presentation_time) % len(X_train)].ravel(),
+        output=stim_func,
     ),
     dict(
         name="stim",
@@ -215,7 +227,7 @@ conn_confs = [
     dict(
         pre="hidden_neurons",
         post="coding_neurons",
-        transform=gen_transform(0),
+        transform=gen_transform("orthogonal_excitation"),
         learning_rule=learning_rule,
         synapse=5e-3,
     ),
