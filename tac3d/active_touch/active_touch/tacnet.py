@@ -305,18 +305,18 @@ class Tacnet(Node):
         pose = np.concatenate([xpos, xquat])
         theta_2 = np.arccos(xquat[0])
         gamma = 2 * np.arccos(xquat[3] / np.sin(theta_2))
-        if len(self._mem) == 0 or "pose" not in self._mem[-1]:
-            self._mem[-1]["pose"] = pose
-        else:
+        if len(self._mem) == 0 or "pose" in self._mem[-1]:
             self._mem.appendleft({"pose": pose})
+        else:
+            self._mem[-1]["pose"] = pose
 
     def subscribe_sensor(self, msg: Locus):
         # Update the tactile data
         data = np.asarray(msg.data)
-        if len(self._mem) == 0 or "data" not in self._mem[-1]:
-            self._mem[-1]["data"] = data
-        else:
+        if len(self._mem) == 0 or "data" in self._mem[-1]:
             self._mem.appendleft({"data": data})
+        else:
+            self._mem[-1]["data"] = data
 
 
 def main(args=None):

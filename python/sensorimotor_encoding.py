@@ -128,7 +128,8 @@ delay = Delay(1, timesteps=int(0.1 / dt))
 # Default neuron parameters
 default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.05)
 default_rates = nengo.dists.Choice([rate_target])
-default_intercepts = nengo.dists.Choice([0])
+default_intercepts = nengo.dists.Choice([0])d
+default_encoders = nengo.dists.ScatteredHypersphere(surface=True)
 
 
 def stim_func(t):
@@ -254,9 +255,7 @@ with nengo.Network(label="tacnet", seed=1) as model:
         name = layer_conf.pop("name")
         n_neurons = layer_conf.pop("n_neurons", 1)
         dimensions = layer_conf.pop("dimensions", 1)
-        encoders = layer_conf.pop(
-            "encoders", nengo.dists.ScatteredHypersphere(surface=True)
-        )
+        encoders = layer_conf.pop("encoders", default_encoders)
         max_rates = layer_conf.pop("max_rates", default_rates)
         radius = layer_conf.pop("radius", 1.0)
         neuron_type = layer_conf.pop("neuron", default_neuron)
