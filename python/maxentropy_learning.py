@@ -13,7 +13,7 @@ M = np.log2(N).astype(int) + 1
 dt = 1e-3
 presentation_time = 0.3
 n_neurons = 100
-deafult_rate = nengo.dists.Choice([100])
+default_rate = nengo.dists.Choice([100])
 duration = 5
 
 
@@ -41,18 +41,20 @@ def inp_func(t):
 with nengo.Network(label="max-entropy", seed=1) as model:
     decimal = nengo.Node(lambda t: int(t / presentation_time) % N)
     inp = nengo.Node(output=inp_func)
-    ens = nengo.Ensemble(n_neurons, M, max_rates=deafult_rate)
+    ens = nengo.Ensemble(n_neurons, M, max_rates=default_rate)
     nengo.Connection(inp, ens)
 
-    output = nengo.Ensemble(N, 1, max_rates=deafult_rate)
-    conn = nengo.Connection(
-        ens.neurons, output.neurons, transform=np.zeros((N, n_neurons))
+    out = nengo.networks.EnsembleArray(
+        16,
+        n_ensembles=N,
+        max_rates=default_rate,
     )
-    conn.learning_rule_type = SynapticSampling()
+    conn = nengo.Connection(ens.neurons, out.input, transform=np.zeros((N, n_neurons)))
+    # conn.learning_rule_type = SynapticSampling()
     nengo.Connection(
-        output.neurons,
-        output.neurons,
-        transform=-np.ones((N, N)) + np.eye(N),
+        out.output,
+        out.input,
+        transform=3 * (-np.ones((N, N)) + np.eye(N)),
         synapse=0.01,
     )
 
@@ -61,7 +63,7 @@ with nengo.Network(label="max-entropy", seed=1) as model:
         "weights",
         synapse=0.01,
     )
-    probe_output = nengo.Probe(output.neurons, synapse=0.01)
+    probe_output = nengo.Probe(out.output, synapse=0.01)
 
 with nengo.Simulator(model, dt=dt) as sim:
     sim.run(duration)
