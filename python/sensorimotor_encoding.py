@@ -14,13 +14,12 @@ from nengo_extras.plot_spikes import plot_spikes
 from OrientationMap import sample_bipole_gaussian
 
 font = {"weight": "normal", "size": 30}
-
 matplotlib.rc("font", **font)
 
 N_FILTERS = 18
-KERN_SIZE = 7
+KERN_SIZE = 5
 STRIDES = (KERN_SIZE - 1, KERN_SIZE - 1)
-STIM_SHAPE = (25, 25)
+STIM_SHAPE = (15, 15)
 
 
 def gen_transform(pattern=None):
@@ -50,7 +49,7 @@ def gen_transform(pattern=None):
                     kernel[:, :, 0, i] = sample_bipole_gaussian(
                         (KERN_SIZE, KERN_SIZE),
                         (KERN_SIZE // 2, KERN_SIZE // 2),
-                        (2, 0.1),
+                        (3, 0.5),
                         i * delta_phi,
                         binary=False,
                     )
@@ -70,12 +69,10 @@ def gen_transform(pattern=None):
                 for i in range(shape[0]):
                     W[i, :] = -np.roll(weight, i + shape[0] // 2)
                 W *= 5 / np.max(np.abs(W))
-            case 0:
-                W = np.zeros(shape)
             case _:
                 W = nengo.Dense(
                     shape,
-                    init=nengo.dists.Uniform(0, 1e-2),
+                    init=nengo.dists.Uniform(0, 1e-5),
                 )
         return W
 
@@ -110,15 +107,12 @@ y_train = y_train / 90 - 1
 
 # Simulation parameters
 dt = 1e-3
-max_rate = 60  # Hz
-amp = 1.0
-rate_target = max_rate * amp  # must be in amplitude scaled units
-
 K = (STIM_SHAPE[0] - KERN_SIZE) // STRIDES[0] + 1
 n_hidden_neurons = K * K * N_FILTERS
-n_coding_neurons = N_FILTERS
-n_state_neurons = N_FILTERS
-presentation_time = 0.5  # Leave 0.15s for decay
+n_coding_neurons = 4 * N_FILTERS
+n_state_neurons = 16
+decay_time = 0.05
+presentation_time = 0.3 + decay_time  # Leave 0.05s for decay
 duration = num_samples * presentation_time
 sample_every = 1 * dt
 learning_rule = SynapticSampling()
@@ -126,9 +120,12 @@ learning_rule = SynapticSampling()
 delay = Delay(1, timesteps=int(0.1 / dt))
 
 # Default neuron parameters
+max_rate = 60  # Hz
+amp = 1.0
+rate_target = max_rate * amp  # must be in amplitude scaled units
 default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.05)
 default_rates = nengo.dists.Choice([rate_target])
-default_intercepts = nengo.dists.Choice([0])d
+default_intercepts = nengo.dists.Choice([0])
 default_encoders = nengo.dists.ScatteredHypersphere(surface=True)
 
 
@@ -136,7 +133,7 @@ def stim_func(t):
     Xid = int(t / presentation_time) % len(X_train)
     stage = t - int(t / presentation_time) * presentation_time
     sample = X_train[Xid].ravel()
-    if stage <= presentation_time - 0.1:
+    if stage <= presentation_time - decay_time:
         return sample
     else:
         return np.zeros_like(sample)
@@ -184,7 +181,7 @@ layer_confs = [
     dict(
         name="coding",
         n_neurons=n_coding_neurons,
-        dimensions=1,
+        dimensions=N_FILTERS,
     ),
 ]
 
@@ -251,7 +248,7 @@ with nengo.Network(label="tacnet", seed=1) as model:
 
     # Create layers
     for k, layer_conf in enumerate(layer_confs):
-        layer_conf = dict(layer_conf)  # Copy layer configuration
+        layer_conf = dict(layer_conf)  # Copy configuration
         name = layer_conf.pop("name")
         n_neurons = layer_conf.pop("n_neurons", 1)
         dimensions = layer_conf.pop("dimensions", 1)
@@ -306,7 +303,7 @@ with nengo.Network(label="tacnet", seed=1) as model:
             probes[name + "_neurons"] = probe
 
     for k, conn_conf in enumerate(conn_confs):
-        conn_conf = dict(conn_conf)  # Copy connection configuration
+        conn_conf = dict(conn_conf)
         pre = conn_conf.pop("pre")
         post = conn_conf.pop("post")
         dim_in = conn_conf.pop("dim_in", None)
