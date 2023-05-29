@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>NxNet Jupyter Tutorials &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1. Compartment, CompartmentPrototype and Probes Setup" href="jupyter/a_compartment_setup.html" />
+    <link rel="prev" title="10. NxNet: Soma Homeostasis" href="net_tutorial_20_soma_homeostasis.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="nxnet_tutorials.html">NxNet Tutorials</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">NxNet Jupyter Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/a_compartment_setup.html">1. Compartment, CompartmentPrototype and Probes Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/b_connecting_compartments.html">2. Connecting compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/c_stimulating_compartments.html">3. Stimulating compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/d_synaptic_plasticity.html">4. Synaptic plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/e_neuronal_homeostasis.html">5. Neuronal homeostasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/f_rewards_learning.html">6. Learning with Rewards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/g_snip_for_threshold_modulation.html">7. SNIPs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/h_reward_trace.html">8. Reward Trace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/i_performance_profiling.html">9. Performance profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/j_soft_reset_core.html">10. Hard vs. soft membrane voltage reset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/j_soft_reset_net.html">11. Soft reset membrane voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/k_interactive_spike_sender_receiver.html">12. Interactive Spike Sender and Spike Receivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/l_snip_for_compartment_setup_with_NxNet_C.html">13. Setup Compartments with NxNet C API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/m_independent_networks_in_same_run.html">14. Independent Networks in Same Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/n_stochastic_networks.html">15. Stochastic Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/n_stochastic_networks.html#C.-Puttin-It-All-Together">16. C. Puttin It All Together</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/n_stochastic_networks.html#Modify-createWtaMotif1-to-Include-Detector-Neuron">17. Modify createWtaMotif1 to Include Detector Neuron</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/o_snip_for_reading_lakemont_spike_count.html">18. Read Lakemont Spike Count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/p_composable_networks.html">19. Composable Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/q_connection_sharing.html">20. Connection Sharing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/r_stubs_and_netmodules.html">21. Stubs and NetModules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/r_stubs_and_netmodules.html#NetModules">22. NetModules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/s_multicx_neuron_self_reward.html">23. Implementation of a multi-compartment neuron with self-reward feedback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/t_vMinExp_and_vMaxExp.html">24. vMinExp and vMaxExp Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/u_join_op_in_multi_compartment_neuron.html">25. Neurons vs Compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/u_join_op_in_multi_compartment_neuron.html#Multi-compartment-neurons">26. Multi-compartment neurons</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore_tutorials.html">NxCore Tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="tutorials.html">Tutorials</a> &raquo;</li>
+        
+      <li>NxNet Jupyter Tutorials</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="nxnet-jupyter-tutorials">
+<h1>NxNet Jupyter Tutorials<a class="headerlink" href="#nxnet-jupyter-tutorials" title="Permalink to this headline">¶</a></h1>
+<p>Following jupyter tutorials reside under <strong>nxsdk/tutorials/ipython</strong></p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/a_compartment_setup.html">1. Compartment, CompartmentPrototype and Probes Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/b_connecting_compartments.html">2. Connecting compartments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/c_stimulating_compartments.html">3. Stimulating compartments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/d_synaptic_plasticity.html">4. Synaptic plasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/e_neuronal_homeostasis.html">5. Neuronal homeostasis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/f_rewards_learning.html">6. Learning with Rewards</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/g_snip_for_threshold_modulation.html">7. SNIPs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/h_reward_trace.html">8. Reward Trace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/i_performance_profiling.html">9. Performance profiling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/j_soft_reset_core.html">10. Hard vs. soft membrane voltage reset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/j_soft_reset_net.html">11. Soft reset membrane voltage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/k_interactive_spike_sender_receiver.html">12. Interactive Spike Sender and Spike Receivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/l_snip_for_compartment_setup_with_NxNet_C.html">13. Setup Compartments with NxNet C API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/m_independent_networks_in_same_run.html">14. Independent Networks in Same Run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/n_stochastic_networks.html">15. Stochastic Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/n_stochastic_networks.html#C.-Puttin-It-All-Together">16. C. Puttin It All Together</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/n_stochastic_networks.html#Modify-createWtaMotif1-to-Include-Detector-Neuron">17. Modify createWtaMotif1 to Include Detector Neuron</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/o_snip_for_reading_lakemont_spike_count.html">18. Read Lakemont Spike Count</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/p_composable_networks.html">19. Composable Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/q_connection_sharing.html">20. Connection Sharing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/r_stubs_and_netmodules.html">21. Stubs and NetModules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/r_stubs_and_netmodules.html#NetModules">22. NetModules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/s_multicx_neuron_self_reward.html">23. Implementation of a multi-compartment neuron with self-reward feedback</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/t_vMinExp_and_vMaxExp.html">24. vMinExp and vMaxExp Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/u_join_op_in_multi_compartment_neuron.html">25. Neurons vs Compartments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/u_join_op_in_multi_compartment_neuron.html#Multi-compartment-neurons">26. Multi-compartment neurons</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="jupyter/a_compartment_setup.html" class="btn btn-neutral float-right" title="1. Compartment, CompartmentPrototype and Probes Setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="net_tutorial_20_soma_homeostasis.html" class="btn btn-neutral float-left" title="10. NxNet: Soma Homeostasis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

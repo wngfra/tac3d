@@ -1,0 +1,1945 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Composability &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Embedded Execution Engine" href="embedded_execution_engine.html" />
+    <link rel="prev" title="NxNet Resource Map Interface" href="nxnet_resource_map.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Composability</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="composability">
+<h1>Composability<a class="headerlink" href="#composability" title="Permalink to this headline">¶</a></h1>
+<p>Composable interface provides a way for different models and implementations to work together and compile down
+to the Loihi NxBoard graph. Composables are comprised of ports and processes. Ports help connect two composables
+while processes provide the ability to add snips.</p>
+<p>You can derive from AbstractComposable and override the necessary methods <em>partition</em>, <em>map</em>, <em>updatesPorts</em>
+and <em>completeConnectivity</em>. Additionally, you could also provide implementations for <em>start</em>
+(in case of async execution), <em>load</em> and <em>save</em>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nxsdk.composable.model</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">nxsdk_modules.dnn.composable.composable_dnn</span> <span class="kn">import</span> <span class="n">ComposableDNN</span>
+<span class="kn">from</span> <span class="nn">nxsdk_modules.input_generator.input_generator</span> <span class="kn">import</span> <span class="n">InputGenerator</span>
+
+<span class="c1"># Create the model</span>
+<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="s2">&quot;dnn_pipeline&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create an instance of composable dnn</span>
+<span class="n">dnn</span> <span class="o">=</span> <span class="n">ComposableDNN</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">spiking_dnn_model</span><span class="p">,</span> <span class="n">num_steps_per_img</span><span class="o">=</span><span class="n">num_steps_per_img</span><span class="p">)</span>
+
+<span class="c1"># Create an instance of input encoder</span>
+<span class="n">input_generator</span> <span class="o">=</span> <span class="n">InputGenerator</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">num_steps_per_img</span><span class="p">)</span>
+
+<span class="c1"># Add composables</span>
+<span class="n">pipeline</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dnn</span><span class="p">)</span>
+<span class="n">pipeline</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">input_generator</span><span class="p">)</span>
+
+<span class="c1"># Connect ports</span>
+<span class="n">input_generator</span><span class="o">.</span><span class="n">ports</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">dnn</span><span class="o">.</span><span class="n">ports</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+
+<span class="c1"># Add dependency between execution of processes</span>
+<span class="n">input_generator</span><span class="o">.</span><span class="n">processes</span><span class="o">.</span><span class="n">inputEncoder</span><span class="o">.</span><span class="n">executeAfter</span><span class="p">(</span><span class="n">dnn</span><span class="o">.</span><span class="n">processes</span><span class="o">.</span><span class="n">reset</span><span class="p">)</span>
+
+<span class="c1"># Compile the complete pipeline</span>
+<span class="n">board</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
+
+<span class="c1"># At this point, user can  further modify the board reference</span>
+
+<span class="c1"># Start the board to send any data over channels etc. before run begins</span>
+<span class="n">pipeline</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">pipeline</span><span class="o">.</span><span class="n">board</span><span class="p">)</span>
+
+<span class="c1"># Invokes board.run(...) internally</span>
+<span class="n">pipeline</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">num_steps_per_img</span><span class="p">)</span>
+
+<span class="c1"># Invokes board.disconnect() internally</span>
+<span class="n">pipeline</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="figure align-default">
+<img alt="Composability Design" src="_images/composability_code_arch.png" />
+</div>
+<dl class="py class">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.abstract_composable.</span></code><code class="sig-name descname"><span class="pre">AbstractComposable</span></code><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Declares the methods required to implement an abstract composable</p>
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.name">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the composable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.registerWithModel">
+<code class="sig-name descname"><span class="pre">registerWithModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Model</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.registerWithModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a weak reference to the composable model which this composable belongs to</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.model">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">model</span></code><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a weak reference to the composable model to which this port belongs to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.addPort">
+<code class="sig-name descname"><span class="pre">addPort</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.addPort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a port to this composable which provides connectivity to other composables.</p>
+<p>See <cite>Port</cite> for additional information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>port</strong> -- Port to be added to this composable</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.addProcess">
+<code class="sig-name descname"><span class="pre">addProcess</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.process.Process" title="nxsdk.composable.interfaces.process.Process"><span class="pre">nxsdk.composable.interfaces.process.Process</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.addProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a process to this composable which provides the ability to execute user code on lmt/host.
+Execution of processes (on lmt/host) within composables or among composables can be ordered using the
+executeAfter or executeBefore API associated with Process object.</p>
+<p>Only EmbeddedSnip processes are currently supported by the composable</p>
+<p>During the model pipeline compilation, all processes are grouped by chipId, lmtId and phase.
+For each group, a wrapper with the aggregated snip code honoring any ordering is generated
+and attached to the board.</p>
+<p>See <cite>Process</cite> for additional information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>process</strong> -- (Process) to be added to this composable</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.ports">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">ports</span></code><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.ports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the ports associated with this composable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.processes">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">processes</span></code><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.processes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the processes associated with this composable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.partition">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">partition</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.graph.graph.Graph</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.abstract_composable.AbstractComposable" title="nxsdk.composable.abstract_composable.AbstractComposable"><span class="pre">nxsdk.composable.abstract_composable.AbstractComposable</span></a><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.partition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Partitions this composable into chips and cores</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.map">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">map</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.graph.graph.Graph</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.abstract_composable.AbstractComposable" title="nxsdk.composable.abstract_composable.AbstractComposable"><span class="pre">nxsdk.composable.abstract_composable.AbstractComposable</span></a><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps this composable into nxcore data structures</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.updatePorts">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">updatePorts</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.graph.graph.Graph</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.abstract_composable.AbstractComposable" title="nxsdk.composable.abstract_composable.AbstractComposable"><span class="pre">nxsdk.composable.abstract_composable.AbstractComposable</span></a><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.updatePorts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update ports with required resource maps (for connected composables to use)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.completeConnectivity">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">completeConnectivity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.graph.graph.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processAggregator</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator" title="nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator"><span class="pre">nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.abstract_composable.AbstractComposable" title="nxsdk.composable.abstract_composable.AbstractComposable"><span class="pre">nxsdk.composable.abstract_composable.AbstractComposable</span></a><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.completeConnectivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Completes the  connectivity and any final steps such as snip or channel creation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.deserialize">
+<code class="sig-name descname"><span class="pre">deserialize</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.deserialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the composable from given path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> -- Path to load the composable from</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>AbstractComposable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.serialize">
+<code class="sig-name descname"><span class="pre">serialize</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.serialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the composable within the given path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> -- Path to save the composable</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.start">
+<code class="sig-name descname"><span class="pre">start</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.graph.graph.Graph</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start this composable.
+It is called by model.start() which starts the board and invokes start on each composable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">composable</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.abstract_composable.AbstractComposable" title="nxsdk.composable.abstract_composable.AbstractComposable"><span class="pre">nxsdk.composable.abstract_composable.AbstractComposable</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect two abstract composables if current composable has a single output port
+and passed in composable has a single input port</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.load">
+<em class="property"><span class="pre">abstract</span> <span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">nxsdk.graph.graph.Graph</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.abstract_composable.AbstractComposable" title="nxsdk.composable.abstract_composable.AbstractComposable"><span class="pre">nxsdk.composable.abstract_composable.AbstractComposable</span></a><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the composable from given path. If the composable has not been compiled before saving, board will be         None. Else, a board object will be instantiated and passed to the composable to attach any channels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> -- Path to load the composable from</p></li>
+<li><p><strong>board</strong> -- Associated board with this composable</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>AbstractComposable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.abstract_composable.AbstractComposable.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.abstract_composable.AbstractComposable.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the composable within the given path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> -- Path to save the composable</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.iterable_indexed_collection.</span></code><code class="sig-name descname"><span class="pre">IterableNamedCollection</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collection of objects stored in a dictionary.
+Accessible both via index and name. Also supports iteration.</p>
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection.add">
+<code class="sig-name descname"><span class="pre">add</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.composable.interfaces.iterable_indexed_collection.NamedEntity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add items to the collection</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection.index">
+<code class="sig-name descname"><span class="pre">index</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.composable.interfaces.iterable_indexed_collection.NamedEntity</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return index (position) of an item in the collection</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection.clear">
+<code class="sig-name descname"><span class="pre">clear</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all entries fom this collection</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection.load">
+<em class="property"><span class="pre">abstract</span> <span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection" title="nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection"><span class="pre">nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a collection from the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection.save">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves a collection to the given path</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.collections.Ports">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.collections.</span></code><code class="sig-name descname"><span class="pre">Ports</span></code><a class="headerlink" href="#nxsdk.composable.collections.Ports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection" title="nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection"><code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection</span></code></a></p>
+<p>Stores a collection of ports</p>
+<dl class="py method">
+<dt id="nxsdk.composable.collections.Ports.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.collections.Ports" title="nxsdk.composable.collections.Ports"><span class="pre">nxsdk.composable.collections.Ports</span></a><a class="headerlink" href="#nxsdk.composable.collections.Ports.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads ports from the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.collections.Ports.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.collections.Ports.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves ports to the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.collections.Ports.add">
+<code class="sig-name descname"><span class="pre">add</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.composable.interfaces.iterable_indexed_collection.NamedEntity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.collections.Ports.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add items to the collection</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.collections.Ports.clear">
+<code class="sig-name descname"><span class="pre">clear</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.collections.Ports.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all entries fom this collection</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.collections.Ports.index">
+<code class="sig-name descname"><span class="pre">index</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.composable.interfaces.iterable_indexed_collection.NamedEntity</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#nxsdk.composable.collections.Ports.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return index (position) of an item in the collection</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.collections.Processes">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.collections.</span></code><code class="sig-name descname"><span class="pre">Processes</span></code><a class="headerlink" href="#nxsdk.composable.collections.Processes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection" title="nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection"><code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection</span></code></a></p>
+<p>Stores a collection of processes</p>
+<dl class="py method">
+<dt id="nxsdk.composable.collections.Processes.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.collections.Processes" title="nxsdk.composable.collections.Processes"><span class="pre">nxsdk.composable.collections.Processes</span></a><a class="headerlink" href="#nxsdk.composable.collections.Processes.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads processes from the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.collections.Processes.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.collections.Processes.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves processes to the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.collections.Processes.add">
+<code class="sig-name descname"><span class="pre">add</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.composable.interfaces.iterable_indexed_collection.NamedEntity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.collections.Processes.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add items to the collection</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.collections.Processes.clear">
+<code class="sig-name descname"><span class="pre">clear</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.collections.Processes.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all entries fom this collection</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.collections.Processes.index">
+<code class="sig-name descname"><span class="pre">index</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.composable.interfaces.iterable_indexed_collection.NamedEntity</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">int</span><a class="headerlink" href="#nxsdk.composable.collections.Processes.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return index (position) of an item in the collection</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.model.Model">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.model.</span></code><code class="sig-name descname"><span class="pre">Model</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.model.Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxsdk.composable.abstract_composable.AbstractComposable" title="nxsdk.composable.abstract_composable.AbstractComposable"><code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk.composable.abstract_composable.AbstractComposable</span></code></a></p>
+<p>Defines a model which acts as a container for composables.</p>
+<p>The model is in itself a self contained composable and can be further be used in a model hierarchy</p>
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.name">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#nxsdk.composable.model.Model.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of the composable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.add">
+<code class="sig-name descname"><span class="pre">add</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">composables</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.abstract_composable.AbstractComposable" title="nxsdk.composable.abstract_composable.AbstractComposable"><span class="pre">nxsdk.composable.abstract_composable.AbstractComposable</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.model.Model" title="nxsdk.composable.model.Model"><span class="pre">nxsdk.composable.model.Model</span></a><a class="headerlink" href="#nxsdk.composable.model.Model.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds composable(s) to this model</p>
+<p>E.g.</p>
+<div class="line-block">
+<div class="line">model.add(composableX)</div>
+<div class="line">model.add(composableX, composableY, composableZ)</div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>composables</strong> -- (AbstractComposable) Instances of a composable</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.board">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">board</span></code><a class="headerlink" href="#nxsdk.composable.model.Model.board" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the reference to the board associated with this model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.isCompiled">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">isCompiled</span></code><a class="headerlink" href="#nxsdk.composable.model.Model.isCompiled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns if the model has been compiled</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.processAggregator">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">processAggregator</span></code><a class="headerlink" href="#nxsdk.composable.model.Model.processAggregator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the instance of process aggregator</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.compile">
+<code class="sig-name descname"><span class="pre">compile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">nxsdk.graph.graph.Graph</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numCoresPerChip</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">128</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">nxsdk.graph.graph.Graph</span><a class="headerlink" href="#nxsdk.composable.model.Model.compile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compiles the model and all its composables</p>
+<p>This method returns the board so that users can then attach additional snips, create channels etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>board</strong> -- (Graph) Instance of a board. Default: None</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Graph: reference to the board object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.composables">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">composables</span></code><a class="headerlink" href="#nxsdk.composable.model.Model.composables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the composables collection which can be indexed by name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.processes">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">processes</span></code><a class="headerlink" href="#nxsdk.composable.model.Model.processes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an aggregated list of process from all composables within this model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.run">
+<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.model.Model.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compiles the model if not yet compiled and then runs the board forwarding the argument to board.run</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.disconnect">
+<code class="sig-name descname"><span class="pre">disconnect</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.model.Model.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnects by invoking board.disconnect</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.finishRun">
+<code class="sig-name descname"><span class="pre">finishRun</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.model.Model.finishRun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Waits for run to finish in case of async execution</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">nxsdk.graph.graph.Graph</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.model.Model" title="nxsdk.composable.model.Model"><span class="pre">nxsdk.composable.model.Model</span></a><a class="headerlink" href="#nxsdk.composable.model.Model.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a model from the specified directory.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.loadModelInternal">
+<code class="sig-name descname"><span class="pre">loadModelInternal</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">nxsdk.graph.graph.Graph</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.model.Model.loadModelInternal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads internals of the model from given path</p>
+<div class="line-block">
+<div class="line">1. Loads Model metadata (state of model e.g. compiled or not)</div>
+<div class="line">2. Loads all its composables.</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.model.Model.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves model metadata and each of the composables</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.partition">
+<code class="sig-name descname"><span class="pre">partition</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.graph.graph.Graph</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.abstract_composable.AbstractComposable" title="nxsdk.composable.abstract_composable.AbstractComposable"><span class="pre">nxsdk.composable.abstract_composable.AbstractComposable</span></a><a class="headerlink" href="#nxsdk.composable.model.Model.partition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Partition this model (no op)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.map">
+<code class="sig-name descname"><span class="pre">map</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.graph.graph.Graph</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.abstract_composable.AbstractComposable" title="nxsdk.composable.abstract_composable.AbstractComposable"><span class="pre">nxsdk.composable.abstract_composable.AbstractComposable</span></a><a class="headerlink" href="#nxsdk.composable.model.Model.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Partition this model (no op)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.updatePorts">
+<code class="sig-name descname"><span class="pre">updatePorts</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.graph.graph.Graph</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.abstract_composable.AbstractComposable" title="nxsdk.composable.abstract_composable.AbstractComposable"><span class="pre">nxsdk.composable.abstract_composable.AbstractComposable</span></a><a class="headerlink" href="#nxsdk.composable.model.Model.updatePorts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call compilation pipeline for the model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.completeConnectivity">
+<code class="sig-name descname"><span class="pre">completeConnectivity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.graph.graph.Graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processAggregator</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator" title="nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator"><span class="pre">nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.abstract_composable.AbstractComposable" title="nxsdk.composable.abstract_composable.AbstractComposable"><span class="pre">nxsdk.composable.abstract_composable.AbstractComposable</span></a><a class="headerlink" href="#nxsdk.composable.model.Model.completeConnectivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invoke compilation of this model</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.start">
+<code class="sig-name descname"><span class="pre">start</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.graph.graph.Graph</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.model.Model.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the board by invoking board.start with args/kwargs and then invoke start on each composable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.addPort">
+<code class="sig-name descname"><span class="pre">addPort</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.model.Model.addPort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a port to this composable which provides connectivity to other composables.</p>
+<p>See <cite>Port</cite> for additional information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>port</strong> -- Port to be added to this composable</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.addProcess">
+<code class="sig-name descname"><span class="pre">addProcess</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.process.Process" title="nxsdk.composable.interfaces.process.Process"><span class="pre">nxsdk.composable.interfaces.process.Process</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.model.Model.addProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a process to this composable which provides the ability to execute user code on lmt/host.
+Execution of processes (on lmt/host) within composables or among composables can be ordered using the
+executeAfter or executeBefore API associated with Process object.</p>
+<p>Only EmbeddedSnip processes are currently supported by the composable</p>
+<p>During the model pipeline compilation, all processes are grouped by chipId, lmtId and phase.
+For each group, a wrapper with the aggregated snip code honoring any ordering is generated
+and attached to the board.</p>
+<p>See <cite>Process</cite> for additional information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>process</strong> -- (Process) to be added to this composable</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">composable</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.abstract_composable.AbstractComposable" title="nxsdk.composable.abstract_composable.AbstractComposable"><span class="pre">nxsdk.composable.abstract_composable.AbstractComposable</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.model.Model.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect two abstract composables if current composable has a single output port
+and passed in composable has a single input port</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.deserialize">
+<code class="sig-name descname"><span class="pre">deserialize</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.model.Model.deserialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the composable from given path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> -- Path to load the composable from</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>AbstractComposable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.model">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">model</span></code><a class="headerlink" href="#nxsdk.composable.model.Model.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a weak reference to the composable model to which this port belongs to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.ports">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">ports</span></code><a class="headerlink" href="#nxsdk.composable.model.Model.ports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the ports associated with this composable</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.registerWithModel">
+<code class="sig-name descname"><span class="pre">registerWithModel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.model.Model" title="nxsdk.composable.model.Model"><span class="pre">Model</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.model.Model.registerWithModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a weak reference to the composable model which this composable belongs to</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.model.Model.serialize">
+<code class="sig-name descname"><span class="pre">serialize</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.model.Model.serialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the composable within the given path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> -- Path to save the composable</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.port_impl.SpikeInputPort">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.port_impl.</span></code><code class="sig-name descname"><span class="pre">SpikeInputPort</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeInputPort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk.composable.interfaces.port.Port</span></code></a></p>
+<p>Defines a spike input port</p>
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeInputPort.composable">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">composable</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeInputPort.composable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a weak reference to the composable to which this port belongs to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeInputPort.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeInputPort.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects this port to another port and both ports stores a weak reference of each other</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeInputPort.connectedPorts">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">connectedPorts</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeInputPort.connectedPorts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of connected ports</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeInputPort.direction">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">direction</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeInputPort.direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port direction</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeInputPort.isConnectedTo">
+<code class="sig-name descname"><span class="pre">isConnectedTo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeInputPort.isConnectedTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this port connected to the given port</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeInputPort.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeInputPort.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a port from the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeInputPort.name">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeInputPort.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeInputPort.registerWithComposable">
+<code class="sig-name descname"><span class="pre">registerWithComposable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">composable</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">AbstractComposable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeInputPort.registerWithComposable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a weak reference to the composable which this port belongs to</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeInputPort.resourceMap">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">resourceMap</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeInputPort.resourceMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the resource map associated to this port.
+See <cite>ResourceMap</cite> for more information on kinds and storage representation of resource maps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeInputPort.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeInputPort.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a port to the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeInputPort.shape">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">shape</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeInputPort.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port shape. Will return None till compiled</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeInputPort.type">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">type</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeInputPort.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.port_impl.SpikeOutputPort">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.port_impl.</span></code><code class="sig-name descname"><span class="pre">SpikeOutputPort</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeOutputPort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk.composable.interfaces.port.Port</span></code></a></p>
+<p>Defines a spike output port</p>
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeOutputPort.composable">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">composable</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeOutputPort.composable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a weak reference to the composable to which this port belongs to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeOutputPort.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeOutputPort.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects this port to another port and both ports stores a weak reference of each other</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeOutputPort.connectedPorts">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">connectedPorts</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeOutputPort.connectedPorts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of connected ports</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeOutputPort.direction">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">direction</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeOutputPort.direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port direction</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeOutputPort.isConnectedTo">
+<code class="sig-name descname"><span class="pre">isConnectedTo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeOutputPort.isConnectedTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this port connected to the given port</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeOutputPort.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeOutputPort.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a port from the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeOutputPort.name">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeOutputPort.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeOutputPort.registerWithComposable">
+<code class="sig-name descname"><span class="pre">registerWithComposable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">composable</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">AbstractComposable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeOutputPort.registerWithComposable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a weak reference to the composable which this port belongs to</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeOutputPort.resourceMap">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">resourceMap</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeOutputPort.resourceMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the resource map associated to this port.
+See <cite>ResourceMap</cite> for more information on kinds and storage representation of resource maps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeOutputPort.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeOutputPort.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a port to the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeOutputPort.shape">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">shape</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeOutputPort.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port shape. Will return None till compiled</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.SpikeOutputPort.type">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">type</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.SpikeOutputPort.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.port_impl.StateInputPort">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.port_impl.</span></code><code class="sig-name descname"><span class="pre">StateInputPort</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.StateInputPort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk.composable.interfaces.port.Port</span></code></a></p>
+<p>Defines a neuron/synapse state input port</p>
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateInputPort.composable">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">composable</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.StateInputPort.composable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a weak reference to the composable to which this port belongs to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateInputPort.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.StateInputPort.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects this port to another port and both ports stores a weak reference of each other</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateInputPort.connectedPorts">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">connectedPorts</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.StateInputPort.connectedPorts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of connected ports</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateInputPort.direction">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">direction</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.StateInputPort.direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port direction</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateInputPort.isConnectedTo">
+<code class="sig-name descname"><span class="pre">isConnectedTo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#nxsdk.composable.port_impl.StateInputPort.isConnectedTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this port connected to the given port</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateInputPort.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a><a class="headerlink" href="#nxsdk.composable.port_impl.StateInputPort.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a port from the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateInputPort.name">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.StateInputPort.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateInputPort.registerWithComposable">
+<code class="sig-name descname"><span class="pre">registerWithComposable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">composable</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">AbstractComposable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.StateInputPort.registerWithComposable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a weak reference to the composable which this port belongs to</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateInputPort.resourceMap">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">resourceMap</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.StateInputPort.resourceMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the resource map associated to this port.
+See <cite>ResourceMap</cite> for more information on kinds and storage representation of resource maps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateInputPort.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.StateInputPort.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a port to the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateInputPort.shape">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">shape</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.StateInputPort.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port shape. Will return None till compiled</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateInputPort.type">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">type</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.StateInputPort.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.port_impl.StateOutputPort">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.port_impl.</span></code><code class="sig-name descname"><span class="pre">StateOutputPort</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.StateOutputPort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk.composable.interfaces.port.Port</span></code></a></p>
+<p>Defines a neuron/synapse state output port</p>
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateOutputPort.composable">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">composable</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.StateOutputPort.composable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a weak reference to the composable to which this port belongs to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateOutputPort.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.StateOutputPort.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects this port to another port and both ports stores a weak reference of each other</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateOutputPort.connectedPorts">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">connectedPorts</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.StateOutputPort.connectedPorts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of connected ports</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateOutputPort.direction">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">direction</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.StateOutputPort.direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port direction</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateOutputPort.isConnectedTo">
+<code class="sig-name descname"><span class="pre">isConnectedTo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#nxsdk.composable.port_impl.StateOutputPort.isConnectedTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this port connected to the given port</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateOutputPort.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a><a class="headerlink" href="#nxsdk.composable.port_impl.StateOutputPort.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a port from the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateOutputPort.name">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.StateOutputPort.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateOutputPort.registerWithComposable">
+<code class="sig-name descname"><span class="pre">registerWithComposable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">composable</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">AbstractComposable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.StateOutputPort.registerWithComposable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a weak reference to the composable which this port belongs to</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateOutputPort.resourceMap">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">resourceMap</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.StateOutputPort.resourceMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the resource map associated to this port.
+See <cite>ResourceMap</cite> for more information on kinds and storage representation of resource maps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateOutputPort.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.port_impl.StateOutputPort.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a port to the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateOutputPort.shape">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">shape</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.StateOutputPort.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port shape. Will return None till compiled</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.port_impl.StateOutputPort.type">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">type</span></code><a class="headerlink" href="#nxsdk.composable.port_impl.StateOutputPort.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port type</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-nxsdk.composable.resource_map"></span><p>Defines the concrete resource maps</p>
+<dl class="py class">
+<dt id="nxsdk.composable.resource_map.AbstractResourceMap">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.resource_map.</span></code><code class="sig-name descname"><span class="pre">AbstractResourceMap</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addresses</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.addresses.Addresses" title="nxsdk.composable.interfaces.addresses.Addresses"><span class="pre">nxsdk.composable.interfaces.addresses.Addresses</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">storageType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.resource_map.AbstractResourceMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Represents a abstract resource map which holds addresses in certain storage type</p>
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.AbstractResourceMap.resourceMapType">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">resourceMapType</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.ResourceMapType" title="nxsdk.composable.interfaces.composable_enums.ResourceMapType"><span class="pre">nxsdk.composable.interfaces.composable_enums.ResourceMapType</span></a><a class="headerlink" href="#nxsdk.composable.resource_map.AbstractResourceMap.resourceMapType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the resource map type. See <cite>ResourceMapType</cite> enum</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.AbstractResourceMap.map">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">map</span></code><a class="headerlink" href="#nxsdk.composable.resource_map.AbstractResourceMap.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the address map stored in certain storage type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.AbstractResourceMap.storageType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">storageType</span></code><a class="headerlink" href="#nxsdk.composable.resource_map.AbstractResourceMap.storageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the storage type used by the resource map</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.AbstractResourceMap.convertToStorageType">
+<code class="sig-name descname"><span class="pre">convertToStorageType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storageType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.resource_map.AbstractResourceMap.convertToStorageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the storage used by this resource map to the given type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>storageType</strong> -- (AddressesStorageType) Storage type to convert to</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.AbstractResourceMap.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.resource_map.AbstractResourceMap.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves resource map to the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.AbstractResourceMap.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#nxsdk.composable.resource_map.AbstractResourceMap" title="nxsdk.composable.resource_map.AbstractResourceMap"><span class="pre">nxsdk.composable.resource_map.AbstractResourceMap</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#nxsdk.composable.resource_map.AbstractResourceMap.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads resource map from given path. If file does not exist, returns None</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.resource_map.CompartmentResourceMap">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.resource_map.</span></code><code class="sig-name descname"><span class="pre">CompartmentResourceMap</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addresses</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.addresses.Addresses" title="nxsdk.composable.interfaces.addresses.Addresses"><span class="pre">nxsdk.composable.interfaces.addresses.Addresses</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">storageType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.resource_map.CompartmentResourceMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxsdk.composable.resource_map.AbstractResourceMap" title="nxsdk.composable.resource_map.AbstractResourceMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk.composable.resource_map.AbstractResourceMap</span></code></a></p>
+<p>Stores the compartment addresses as a resource map</p>
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.CompartmentResourceMap.resourceMapType">
+<code class="sig-name descname"><span class="pre">resourceMapType</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.ResourceMapType" title="nxsdk.composable.interfaces.composable_enums.ResourceMapType"><span class="pre">nxsdk.composable.interfaces.composable_enums.ResourceMapType</span></a><a class="headerlink" href="#nxsdk.composable.resource_map.CompartmentResourceMap.resourceMapType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the resource map type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.CompartmentResourceMap.convertToStorageType">
+<code class="sig-name descname"><span class="pre">convertToStorageType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storageType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.resource_map.CompartmentResourceMap.convertToStorageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the storage used by this resource map to the given type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>storageType</strong> -- (AddressesStorageType) Storage type to convert to</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.CompartmentResourceMap.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#nxsdk.composable.resource_map.AbstractResourceMap" title="nxsdk.composable.resource_map.AbstractResourceMap"><span class="pre">nxsdk.composable.resource_map.AbstractResourceMap</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#nxsdk.composable.resource_map.CompartmentResourceMap.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads resource map from given path. If file does not exist, returns None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.CompartmentResourceMap.map">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">map</span></code><a class="headerlink" href="#nxsdk.composable.resource_map.CompartmentResourceMap.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the address map stored in certain storage type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.CompartmentResourceMap.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.resource_map.CompartmentResourceMap.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves resource map to the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.CompartmentResourceMap.storageType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">storageType</span></code><a class="headerlink" href="#nxsdk.composable.resource_map.CompartmentResourceMap.storageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the storage type used by the resource map</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.resource_map.InputAxonResourceMap">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.resource_map.</span></code><code class="sig-name descname"><span class="pre">InputAxonResourceMap</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addresses</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.addresses.Addresses" title="nxsdk.composable.interfaces.addresses.Addresses"><span class="pre">nxsdk.composable.interfaces.addresses.Addresses</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">storageType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.resource_map.InputAxonResourceMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxsdk.composable.resource_map.AbstractResourceMap" title="nxsdk.composable.resource_map.AbstractResourceMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk.composable.resource_map.AbstractResourceMap</span></code></a></p>
+<p>Stores the input axon addresses as a resource map</p>
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.InputAxonResourceMap.resourceMapType">
+<code class="sig-name descname"><span class="pre">resourceMapType</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.ResourceMapType" title="nxsdk.composable.interfaces.composable_enums.ResourceMapType"><span class="pre">nxsdk.composable.interfaces.composable_enums.ResourceMapType</span></a><a class="headerlink" href="#nxsdk.composable.resource_map.InputAxonResourceMap.resourceMapType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the resource map type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.InputAxonResourceMap.convertToStorageType">
+<code class="sig-name descname"><span class="pre">convertToStorageType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storageType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.resource_map.InputAxonResourceMap.convertToStorageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the storage used by this resource map to the given type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>storageType</strong> -- (AddressesStorageType) Storage type to convert to</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.InputAxonResourceMap.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#nxsdk.composable.resource_map.AbstractResourceMap" title="nxsdk.composable.resource_map.AbstractResourceMap"><span class="pre">nxsdk.composable.resource_map.AbstractResourceMap</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#nxsdk.composable.resource_map.InputAxonResourceMap.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads resource map from given path. If file does not exist, returns None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.InputAxonResourceMap.map">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">map</span></code><a class="headerlink" href="#nxsdk.composable.resource_map.InputAxonResourceMap.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the address map stored in certain storage type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.InputAxonResourceMap.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.resource_map.InputAxonResourceMap.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves resource map to the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.InputAxonResourceMap.storageType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">storageType</span></code><a class="headerlink" href="#nxsdk.composable.resource_map.InputAxonResourceMap.storageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the storage type used by the resource map</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.resource_map.OutputAxonResourceMap">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.resource_map.</span></code><code class="sig-name descname"><span class="pre">OutputAxonResourceMap</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addresses</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.addresses.Addresses" title="nxsdk.composable.interfaces.addresses.Addresses"><span class="pre">nxsdk.composable.interfaces.addresses.Addresses</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">storageType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.resource_map.OutputAxonResourceMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxsdk.composable.resource_map.AbstractResourceMap" title="nxsdk.composable.resource_map.AbstractResourceMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk.composable.resource_map.AbstractResourceMap</span></code></a></p>
+<p>Stores the output axon addresses as a resource map</p>
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.OutputAxonResourceMap.resourceMapType">
+<code class="sig-name descname"><span class="pre">resourceMapType</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.ResourceMapType" title="nxsdk.composable.interfaces.composable_enums.ResourceMapType"><span class="pre">nxsdk.composable.interfaces.composable_enums.ResourceMapType</span></a><a class="headerlink" href="#nxsdk.composable.resource_map.OutputAxonResourceMap.resourceMapType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the resource map type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.OutputAxonResourceMap.convertToStorageType">
+<code class="sig-name descname"><span class="pre">convertToStorageType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storageType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.resource_map.OutputAxonResourceMap.convertToStorageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the storage used by this resource map to the given type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>storageType</strong> -- (AddressesStorageType) Storage type to convert to</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.OutputAxonResourceMap.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#nxsdk.composable.resource_map.AbstractResourceMap" title="nxsdk.composable.resource_map.AbstractResourceMap"><span class="pre">nxsdk.composable.resource_map.AbstractResourceMap</span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#nxsdk.composable.resource_map.OutputAxonResourceMap.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads resource map from given path. If file does not exist, returns None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.OutputAxonResourceMap.map">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">map</span></code><a class="headerlink" href="#nxsdk.composable.resource_map.OutputAxonResourceMap.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the address map stored in certain storage type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.OutputAxonResourceMap.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.resource_map.OutputAxonResourceMap.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves resource map to the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.OutputAxonResourceMap.storageType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">storageType</span></code><a class="headerlink" href="#nxsdk.composable.resource_map.OutputAxonResourceMap.storageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the storage type used by the resource map</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.resource_map.ResourceMapFactory">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.resource_map.</span></code><code class="sig-name descname"><span class="pre">ResourceMapFactory</span></code><a class="headerlink" href="#nxsdk.composable.resource_map.ResourceMapFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Factory to create instances of resource map given resource map type</p>
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.ResourceMapFactory.create">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resourceMapType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.ResourceMapType" title="nxsdk.composable.interfaces.composable_enums.ResourceMapType"><span class="pre">nxsdk.composable.interfaces.composable_enums.ResourceMapType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">addresses</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.addresses.Addresses" title="nxsdk.composable.interfaces.addresses.Addresses"><span class="pre">nxsdk.composable.interfaces.addresses.Addresses</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">storageType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.resource_map.AbstractResourceMap" title="nxsdk.composable.resource_map.AbstractResourceMap"><span class="pre">nxsdk.composable.resource_map.AbstractResourceMap</span></a><a class="headerlink" href="#nxsdk.composable.resource_map.ResourceMapFactory.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an instance of abstract resource map with a certain storage type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.resource_map.ResourceMapFactory.createExplicit">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">createExplicit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resourceMapType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.ResourceMapType" title="nxsdk.composable.interfaces.composable_enums.ResourceMapType"><span class="pre">nxsdk.composable.interfaces.composable_enums.ResourceMapType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.resource_map.AbstractResourceMap" title="nxsdk.composable.resource_map.AbstractResourceMap"><span class="pre">nxsdk.composable.resource_map.AbstractResourceMap</span></a><a class="headerlink" href="#nxsdk.composable.resource_map.ResourceMapFactory.createExplicit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an instance of abstract resource map given resourceMapType and data assuming explicit storage type</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.addresses.Addresses">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.addresses.</span></code><code class="sig-name descname"><span class="pre">Addresses</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rows</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.addresses.Addresses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a collection of addresses useful for resource map representation</p>
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses.Addresses.rows">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rows</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.addresses.Addresses.rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the raw (2D numpy array) address rows associated with this Addresses object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses.Addresses.metadata">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">metadata</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.addresses.Addresses.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the metadata associated with this Addresses object</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-nxsdk.composable.interfaces.addresses_storage"></span><p>Defines the addresses storage types</p>
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.addresses_storage.</span></code><code class="sig-name descname"><span class="pre">AbstractAddressesStorage</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Abstract class which defines a storage type</p>
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage.storageType">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">storageType</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage.storageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the storage type of the addressess associated with a resource map</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage.convertToStorageType">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">convertToStorageType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storageType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage" title="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage"><span class="pre">nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage.convertToStorageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a equivalent stored resource map but converted to the storageType passed in</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage.addresses">
+<em class="property"><span class="pre">abstract</span> <span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">addresses</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage.addresses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns addresses object stored by this storage instance</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves resource map to the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage" title="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage"><span class="pre">nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads and returns an instance of AbstractAddressesStorage given the path</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.addresses_storage.ExplicitAddressesStorage">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.addresses_storage.</span></code><code class="sig-name descname"><span class="pre">ExplicitAddressesStorage</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addresses</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.addresses.Addresses" title="nxsdk.composable.interfaces.addresses.Addresses"><span class="pre">nxsdk.composable.interfaces.addresses.Addresses</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.ExplicitAddressesStorage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage" title="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage</span></code></a></p>
+<p>Stores the addresses as it is (flattened structure like a database table)</p>
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.ExplicitAddressesStorage.storageType">
+<code class="sig-name descname"><span class="pre">storageType</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.ExplicitAddressesStorage.storageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the storage type for addresses (Explicit)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.ExplicitAddressesStorage.addresses">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">addresses</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.ExplicitAddressesStorage.addresses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Addresses stored in this resource map</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.ExplicitAddressesStorage.convertToStorageType">
+<code class="sig-name descname"><span class="pre">convertToStorageType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storageType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage" title="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage"><span class="pre">nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.ExplicitAddressesStorage.convertToStorageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert from explicit storage format to other format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>storageType</strong> -- StorageType to be converted to</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>AbstractAddressesStorage</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.ExplicitAddressesStorage.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage" title="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage"><span class="pre">nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.ExplicitAddressesStorage.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads and returns an instance of AbstractAddressesStorage given the path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.ExplicitAddressesStorage.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.ExplicitAddressesStorage.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves resource map to the given path</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.addresses_storage.RangeAddressesStorage">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.addresses_storage.</span></code><code class="sig-name descname"><span class="pre">RangeAddressesStorage</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addresses</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.addresses.Addresses" title="nxsdk.composable.interfaces.addresses.Addresses"><span class="pre">nxsdk.composable.interfaces.addresses.Addresses</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.RangeAddressesStorage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage" title="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage</span></code></a></p>
+<p>Stores the addresses in range format</p>
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.RangeAddressesStorage.storageType">
+<code class="sig-name descname"><span class="pre">storageType</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.RangeAddressesStorage.storageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the storage type for addresses (Range)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.RangeAddressesStorage.addresses">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">addresses</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.RangeAddressesStorage.addresses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Addresses stored in this resource map</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.RangeAddressesStorage.convertToStorageType">
+<code class="sig-name descname"><span class="pre">convertToStorageType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storageType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage" title="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage"><span class="pre">nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.RangeAddressesStorage.convertToStorageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert from range storage format to other format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>storageType</strong> -- StorageType to be converted to</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>AbstractAddressesStorage</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.RangeAddressesStorage.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage" title="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage"><span class="pre">nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.RangeAddressesStorage.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads and returns an instance of AbstractAddressesStorage given the path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.RangeAddressesStorage.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.RangeAddressesStorage.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves resource map to the given path</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.addresses_storage.RangeAddressWithVariableStrideStorage">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.addresses_storage.</span></code><code class="sig-name descname"><span class="pre">RangeAddressWithVariableStrideStorage</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">addresses</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.addresses.Addresses" title="nxsdk.composable.interfaces.addresses.Addresses"><span class="pre">nxsdk.composable.interfaces.addresses.Addresses</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.RangeAddressWithVariableStrideStorage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage" title="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage"><code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage</span></code></a></p>
+<p>Stores the addresses in range format with variable stride</p>
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.RangeAddressWithVariableStrideStorage.storageType">
+<code class="sig-name descname"><span class="pre">storageType</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.RangeAddressWithVariableStrideStorage.storageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the storage type for addresses</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.RangeAddressWithVariableStrideStorage.addresses">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">addresses</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.RangeAddressWithVariableStrideStorage.addresses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Addresses stored in this resource map</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.RangeAddressWithVariableStrideStorage.convertToStorageType">
+<code class="sig-name descname"><span class="pre">convertToStorageType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storageType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage" title="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage"><span class="pre">nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.RangeAddressWithVariableStrideStorage.convertToStorageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert from range storage format to other format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>storageType</strong> -- StorageType to be converted to</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>AbstractAddressesStorage</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.RangeAddressWithVariableStrideStorage.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage" title="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage"><span class="pre">nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.RangeAddressWithVariableStrideStorage.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads and returns an instance of AbstractAddressesStorage given the path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.RangeAddressWithVariableStrideStorage.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.RangeAddressWithVariableStrideStorage.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves resource map to the given path</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.addresses_storage.AddressStorageFactory">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.addresses_storage.</span></code><code class="sig-name descname"><span class="pre">AddressStorageFactory</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.AddressStorageFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Factory class to create address storage types</p>
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.addresses_storage.AddressStorageFactory.create">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storageType</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="nxsdk.composable.interfaces.composable_enums.AddressesStorageType"><span class="pre">nxsdk.composable.interfaces.composable_enums.AddressesStorageType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">addresses</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.addresses.Addresses" title="nxsdk.composable.interfaces.addresses.Addresses"><span class="pre">nxsdk.composable.interfaces.addresses.Addresses</span></a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage" title="nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage"><span class="pre">nxsdk.composable.interfaces.addresses_storage.AbstractAddressesStorage</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.addresses_storage.AddressStorageFactory.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an instance of address storage given the storage type and addresses</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-nxsdk.composable.interfaces.composable_enums"></span><p>&quot;Defines values for various enumerations useful in constructing composables</p>
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.composable_enums.PortType">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.composable_enums.</span></code><code class="sig-name descname"><span class="pre">PortType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.PortType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ports can be of type spike or state (neuron/synapse)</p>
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.composable_enums.PortType.SPIKE">
+<code class="sig-name descname"><span class="pre">SPIKE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.PortType.SPIKE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.composable_enums.PortType.STATE">
+<code class="sig-name descname"><span class="pre">STATE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.PortType.STATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.composable_enums.PortDirection">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.composable_enums.</span></code><code class="sig-name descname"><span class="pre">PortDirection</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.PortDirection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Direction of a port can be either input or output</p>
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.composable_enums.PortDirection.ALLOW_ONLY_INPUT">
+<code class="sig-name descname"><span class="pre">ALLOW_ONLY_INPUT</span></code><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.PortDirection.ALLOW_ONLY_INPUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.composable_enums.PortDirection.ALLOW_ONLY_OUTPUT">
+<code class="sig-name descname"><span class="pre">ALLOW_ONLY_OUTPUT</span></code><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.PortDirection.ALLOW_ONLY_OUTPUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.composable_enums.ResourceMapType">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.composable_enums.</span></code><code class="sig-name descname"><span class="pre">ResourceMapType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.ResourceMapType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the kinds of resource maps stored by composables</p>
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.composable_enums.ResourceMapType.COMPARTMENT">
+<code class="sig-name descname"><span class="pre">COMPARTMENT</span></code><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.ResourceMapType.COMPARTMENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.composable_enums.ResourceMapType.INPUT_AXON">
+<code class="sig-name descname"><span class="pre">INPUT_AXON</span></code><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.ResourceMapType.INPUT_AXON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.composable_enums.ResourceMapType.OUTPUT_AXON">
+<code class="sig-name descname"><span class="pre">OUTPUT_AXON</span></code><em class="property"> <span class="pre">=</span> <span class="pre">2</span></em><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.ResourceMapType.OUTPUT_AXON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.composable_enums.ResourceMapType.SYNAPSE">
+<code class="sig-name descname"><span class="pre">SYNAPSE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">3</span></em><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.ResourceMapType.SYNAPSE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.composable_enums.ResourceMapType.SPIKE_COUNTER">
+<code class="sig-name descname"><span class="pre">SPIKE_COUNTER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">4</span></em><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.ResourceMapType.SPIKE_COUNTER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.composable_enums.ResourceMapType.TRACE">
+<code class="sig-name descname"><span class="pre">TRACE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">5</span></em><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.ResourceMapType.TRACE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.composable_enums.AddressesStorageType">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.composable_enums.</span></code><code class="sig-name descname"><span class="pre">AddressesStorageType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the kinds of storage types for resource map.
+For e.g. a compartment resource map (chipId, coreId, compartmentId) would get stored as</p>
+<p>Explicit Addressing:</p>
+<div class="line-block">
+<div class="line">chipId coreId compartmentId</div>
+<div class="line">0 4 0</div>
+<div class="line">0 4 1</div>
+<div class="line">0 4 2</div>
+<div class="line">0 4 3</div>
+<div class="line">0 5 0</div>
+<div class="line">0 5 1</div>
+<div class="line">0 5 2</div>
+<div class="line">0 6 0</div>
+<div class="line">1 7 0</div>
+<div class="line">1 7 1</div>
+<div class="line">1 7 3</div>
+</div>
+<p>Range Addressing:</p>
+<div class="line-block">
+<div class="line">chipId coreId compartmentId range</div>
+<div class="line">0 4 0 4</div>
+<div class="line">0 5 0 3</div>
+<div class="line">0 6 0 1</div>
+<div class="line">1 7 0 2</div>
+<div class="line">1 7 3 1</div>
+</div>
+<p>Range with Variable Stride Addressing helps to map addresses when they have a stride pattern. For e.g.</p>
+<p>Explicit Addressing:</p>
+<div class="line-block">
+<div class="line">chipId coreId compartmentId</div>
+<div class="line">0 4 0</div>
+<div class="line">0 4 3</div>
+<div class="line">0 4 6</div>
+<div class="line">0 4 9</div>
+<div class="line">0 5 0</div>
+<div class="line">0 5 3</div>
+<div class="line">0 5 6</div>
+<div class="line">0 6 0</div>
+<div class="line">1 7 0</div>
+<div class="line">1 7 1</div>
+<div class="line">1 7 2</div>
+<div class="line">2 7 1</div>
+<div class="line">2 7 2</div>
+<div class="line">2 7 3</div>
+<div class="line">2 7 6</div>
+<div class="line">2 7 8</div>
+<div class="line">2 7 10</div>
+</div>
+<p>Range with Variable Stride Addressing:</p>
+<div class="line-block">
+<div class="line">chipId coreId compartmentId range stride</div>
+<div class="line">0 4 0 4 3</div>
+<div class="line">0 5 0 3 3</div>
+<div class="line">0 6 0 1 0</div>
+<div class="line">1 7 0 3 1</div>
+<div class="line">2 7 1 3 1</div>
+<div class="line">2 7 6 3 2</div>
+</div>
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.composable_enums.AddressesStorageType.EXPLICIT">
+<code class="sig-name descname"><span class="pre">EXPLICIT</span></code><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType.EXPLICIT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores the addresses as flat list</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.composable_enums.AddressesStorageType.RANGE">
+<code class="sig-name descname"><span class="pre">RANGE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType.RANGE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores the addresses as ranges.
+Each row represent a group with real values ranging from last column to range column (inclusive)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.composable_enums.AddressesStorageType.RANGE_WITH_VARIABLE_STRIDE">
+<code class="sig-name descname"><span class="pre">RANGE_WITH_VARIABLE_STRIDE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">2</span></em><a class="headerlink" href="#nxsdk.composable.interfaces.composable_enums.AddressesStorageType.RANGE_WITH_VARIABLE_STRIDE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores the addresses as ranges with variable strides representing each range</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-nxsdk.composable.interfaces.port"></span><p>Defines a port which can be used for input or output purposes to/from a composable</p>
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.port.Port">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.port.</span></code><code class="sig-name descname"><span class="pre">Port</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.PortType" title="nxsdk.composable.interfaces.composable_enums.PortType"><span class="pre">nxsdk.composable.interfaces.composable_enums.PortType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.composable_enums.PortDirection" title="nxsdk.composable.interfaces.composable_enums.PortDirection"><span class="pre">nxsdk.composable.interfaces.composable_enums.PortDirection</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.port.Port" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Port class to encapsulate the information needed to connect two composables</p>
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.port.Port.name">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.port.Port.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.port.Port.shape">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">shape</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.port.Port.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port shape. Will return None till compiled</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.port.Port.type">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">type</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.port.Port.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.port.Port.direction">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">direction</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.port.Port.direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port direction</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.port.Port.registerWithComposable">
+<code class="sig-name descname"><span class="pre">registerWithComposable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">composable</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">AbstractComposable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.port.Port.registerWithComposable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a weak reference to the composable which this port belongs to</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.port.Port.composable">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">composable</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.port.Port.composable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a weak reference to the composable to which this port belongs to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.port.Port.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.port.Port.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects this port to another port and both ports stores a weak reference of each other</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.port.Port.isConnectedTo">
+<code class="sig-name descname"><span class="pre">isConnectedTo</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#nxsdk.composable.interfaces.port.Port.isConnectedTo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this port connected to the given port</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.port.Port.connectedPorts">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">connectedPorts</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.port.Port.connectedPorts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of connected ports</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.port.Port.resourceMap">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">resourceMap</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.port.Port.resourceMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the resource map associated to this port.
+See <cite>ResourceMap</cite> for more information on kinds and storage representation of resource maps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.port.Port.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.port.Port.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a port to the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.port.Port.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.port.Port" title="nxsdk.composable.interfaces.port.Port"><span class="pre">nxsdk.composable.interfaces.port.Port</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.port.Port.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a port from the given path</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-nxsdk.composable.interfaces.process"></span><p>Defines a process for a composable which acts as a placeholder to be later on aggregated
+when all composables are stitched together during compilation</p>
+<p>Processes can be accessed from a composable in many ways conveniently.</p>
+<p>composable.processes.name | composable.name | composable.processes[index] | composable.processes[name]</p>
+<p>Port and Process names must be unique</p>
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.process.ProcessKey">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.process.</span></code><code class="sig-name descname"><span class="pre">ProcessKey</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chipId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmtId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.process.ProcessKey" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.process.ProcessKey.chipId">
+<code class="sig-name descname"><span class="pre">chipId</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.process.ProcessKey.chipId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process.ProcessKey.count">
+<code class="sig-name descname"><span class="pre">count</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.process.ProcessKey.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of occurrences of value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process.ProcessKey.index">
+<code class="sig-name descname"><span class="pre">index</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.process.ProcessKey.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return first index of value.</p>
+<p>Raises ValueError if the value is not present.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.process.ProcessKey.lmtId">
+<code class="sig-name descname"><span class="pre">lmtId</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.process.ProcessKey.lmtId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.composable.interfaces.process.ProcessKey.phase">
+<code class="sig-name descname"><span class="pre">phase</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.process.ProcessKey.phase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.process.Process">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.process.</span></code><code class="sig-name descname"><span class="pre">Process</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.process.Process" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encapsulates a Process (Currently only supported for EmbeddedSnip)</p>
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process.Process.registerWithComposable">
+<code class="sig-name descname"><span class="pre">registerWithComposable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">composable</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">AbstractComposable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.process.Process.registerWithComposable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a weak reference to the composable which this process belongs to</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process.Process.composable">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">composable</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.process.Process.composable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a weak reference to the composable to which this process belongs to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process.Process.getProcessKey">
+<code class="sig-name descname"><span class="pre">getProcessKey</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.process.ProcessKey" title="nxsdk.composable.interfaces.process.ProcessKey"><span class="pre">nxsdk.composable.interfaces.process.ProcessKey</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.process.Process.getProcessKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the process key for this process</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process.Process.name">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.process.Process.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns name of the process</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process.Process.params">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">params</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.process.Process.params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns params required for process to initialize (Same as board.createSnip)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process.Process.dependsOnProcesses">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dependsOnProcesses</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.process.Process.dependsOnProcesses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of process this process depends on (executes after)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process.Process.executeAfter">
+<code class="sig-name descname"><span class="pre">executeAfter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.process.Process" title="nxsdk.composable.interfaces.process.Process"><span class="pre">nxsdk.composable.interfaces.process.Process</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.process.Process.executeAfter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a dependency of current process over the process passed in.
+This ensures the current process will execute after the process passed in
+if they happen to execute on the same time step.
+Stores only a weak reference to the process passed in.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>process</strong> -- Process on which this process is dependent on for execution</p>
+</dd>
+<dt class="field-even">Returns None</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process.Process.executeBefore">
+<code class="sig-name descname"><span class="pre">executeBefore</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">process</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.process.Process" title="nxsdk.composable.interfaces.process.Process"><span class="pre">nxsdk.composable.interfaces.process.Process</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.process.Process.executeBefore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a dependency of current process over the process passed in.
+This ensures the current process will execute after the process passed in
+if they happen to execute on the same time step.
+Stores only a weak reference to the process passed in.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>process</strong> -- Process on which this process is dependent on for execution</p>
+</dd>
+<dt class="field-even">Returns None</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process.Process.clone">
+<code class="sig-name descname"><span class="pre">clone</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.process.Process" title="nxsdk.composable.interfaces.process.Process"><span class="pre">nxsdk.composable.interfaces.process.Process</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.process.Process.clone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a clone of this process with a new name and additional params</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Cloning the process only copies the params. User needs to ensure that any dependent processes point to          this clone. This can be communicated by the composable in its documentation.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process.Process.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.process.Process.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save a process to the given path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process.Process.load">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.process.Process" title="nxsdk.composable.interfaces.process.Process"><span class="pre">nxsdk.composable.interfaces.process.Process</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.process.Process.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a process from the given path</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-nxsdk.composable.interfaces.process_aggregator_interface"></span><p>A process aggregator interface</p>
+<dl class="py class">
+<dt id="nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.composable.interfaces.process_aggregator_interface.</span></code><code class="sig-name descname"><span class="pre">AbstractProcessAggregator</span></code><a class="headerlink" href="#nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interface which should be able to aggregate multiple process into Embedded snips</p>
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator.aggregateProcesses">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">aggregateProcesses</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processes</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.collections.Processes" title="nxsdk.composable.collections.Processes"><span class="pre">nxsdk.composable.collections.Processes</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.graph.graph.Graph</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">nxsdk.graph.graph.Graph</span><a class="headerlink" href="#nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator.aggregateProcesses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Aggregate a collection of processes and attach a single aggregated snip to the board</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator.getEmbeddedSnipForProcessKey">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">getEmbeddedSnipForProcessKey</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">processKey</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.composable.interfaces.process.ProcessKey" title="nxsdk.composable.interfaces.process.ProcessKey"><span class="pre">nxsdk.composable.interfaces.process.ProcessKey</span></a></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">nxsdk.graph.processes.embedded.embedded_snip.EmbeddedSnip</span><a class="headerlink" href="#nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator.getEmbeddedSnipForProcessKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given process key return the embedded snip (which was formed after aggregation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator.save">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the process aggregator to the directory</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator.load">
+<em class="property"><span class="pre">abstract</span> <span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">load</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">nxsdk.graph.graph.Graph</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator" title="nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator"><span class="pre">nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator</span></a><a class="headerlink" href="#nxsdk.composable.interfaces.process_aggregator_interface.AbstractProcessAggregator.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads and creates a process aggregator in case the board has been compiled</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="embedded_execution_engine.html" class="btn btn-neutral float-right" title="Embedded Execution Engine" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="nxnet_resource_map.html" class="btn btn-neutral float-left" title="NxNet Resource Map Interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

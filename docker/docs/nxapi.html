@@ -1,0 +1,900 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>NxAPI &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NxCore API" href="nxcore.html" />
+    <link rel="prev" title="DVS" href="dvs.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NxAPI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#nxnet">NxNet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-concepts">Basic Concepts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#net">Net</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nodes">Nodes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartment">Compartment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connection">Connection</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#beyond-the-basics-prototypes-and-groups">Beyond the Basics - Prototypes and Groups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#compartmentprototype">CompartmentPrototype</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compartmentgroup">CompartmentGroup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connectionprototype">ConnectionPrototype</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connectiongroup">ConnectionGroup</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#composable-networks">Composable Networks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#nxcore">NxCore</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#n1-n2-n2a-and-so-forth">N1, N2, N2A, and so forth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#navigating-the-hierarchy">Navigating the Hierarchy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#working-with-nxcore-hierarchy">Working with NxCore Hierarchy</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#decomposing-the-compartment">Decomposing the Compartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#decomposing-the-connection">Decomposing the Connection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>NxAPI</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="nxapi">
+<h1>NxAPI<a class="headerlink" href="#nxapi" title="Permalink to this headline">¶</a></h1>
+<p>The following is a decomposition of the entire Nx API. Within this document, we will introduce you first to the highest level components and general concepts and philosophy for the Nx API. We will then decompose each object to show how the high level components are compiled to create efficient network models on Loihi. We will  begin with the basic concepts for NxNet, which we often refer to as the &quot;high-level&quot; API, and then describe the lower level API, called NxCore.</p>
+<p>As you review the APIs keep in mind the general nomenclature. A Network is a set of nodes and connections. In fact, we consider the connections themselves (the edges of a typical graph) as nodes as well. Taken to the final conclusion, a network, in this nomenclature is nothing more than a set of nodes.</p>
+<div class="section" id="nxnet">
+<h2>NxNet<a class="headerlink" href="#nxnet" title="Permalink to this headline">¶</a></h2>
+<p>The intention with <a class="reference internal" href="nxnet.html"><span class="doc">NxNet API</span></a> is to provide a spiking neural network API that doesn't require you to know anything about the underlying hardware. Though you may specify some &quot;anchor&quot; core information (i.e. you may decide on which core to place a grouping of compartments), you will not need to known any hardware details (i.e. core-to-core mappings) in order to connect compartments to other compartments.</p>
+<div class="section" id="basic-concepts">
+<h3>Basic Concepts<a class="headerlink" href="#basic-concepts" title="Permalink to this headline">¶</a></h3>
+<p>Let's start with the basic components of the API: Net and Nodes. We will then continue by looking at the two most common Nodes: Compartments and Connections.</p>
+<div class="section" id="net">
+<h4>Net<a class="headerlink" href="#net" title="Permalink to this headline">¶</a></h4>
+<p>A net is a set of Nodes. More information on the API for Net can be found here <a class="reference internal" href="nxnet.html"><span class="doc">NxNet API</span></a></p>
+</div>
+<div class="section" id="nodes">
+<h4>Nodes<a class="headerlink" href="#nodes" title="Permalink to this headline">¶</a></h4>
+<p>Below are the different Nodes of the Nx API. Nodes marked with a * do not run on the neurocores. They either run on the x86 cores, or they are abstract concepts used only during the programming phase.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 77%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Compartment</p></td>
+<td><p>The building block for a neuron. The simplest neuron is a single compartment.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Connection</p></td>
+<td><p>A connection between other nodes. Connections encapsulate Axons and Synapses.</p></td>
+</tr>
+<tr class="row-even"><td><p>Neuron</p></td>
+<td><p>Can be a single or multiple compartments combined into a single neuron.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Reinforcement Channel</p></td>
+<td><p>A means to communicate reinforcement spikes to a compartment.</p></td>
+</tr>
+<tr class="row-even"><td><p>* Spike Input Port</p></td>
+<td><p>A means to send external spikes into Loihi (for example, from a PC).</p></td>
+</tr>
+<tr class="row-odd"><td><p>* Spike Output Port</p></td>
+<td><p>A means to receive Loihi spikes on a host PC (Kapoho Bay only for now).</p></td>
+</tr>
+<tr class="row-even"><td><p>* Input Stub</p></td>
+<td><p>Allows describing a connection before the source is specified.</p></td>
+</tr>
+<tr class="row-odd"><td><p>* Output Stub</p></td>
+<td><p>Allows describing a connection before the destination is specified.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="compartment">
+<h4>Compartment<a class="headerlink" href="#compartment" title="Permalink to this headline">¶</a></h4>
+<p>A Compartment is a building block for a neuron body (soma) or a collection of dendrites joined in some logical way (dendritic compartment). In fact, you can define a multi-compartment neuron, consisting of a dendritic tree feeding into a soma (see <a class="reference internal" href="neuron.html"><span class="doc">Neuron and NeuronPrototype</span></a>). To learn how to do such things, check out the tutorials included with the Nx SDK. To learn more about Compartments, you can find the API here: <a class="reference internal" href="compartment.html"><span class="doc">Compartment and CompartmentPrototype</span></a></p>
+<p>To learn more about compartment (or neuron) dynamics, check out this interactive demonstration.</p>
+<style>
+ div.tweak {font-family: Arial;font-size:10pt;}
+ div.large {font-family: Arial;font-size:22pt;}
+</style>
+<html>
+    <div style="margin:0 auto;width:600">
+        <canvas id='prime' width='600' height='150' style="border:1px solid #d3d3d3;" onclick="spike()">
+        </canvas>
+        <div id="hz" class="large"></div>
+        <table width='600'>
+        <tr>
+        <td><div style='text-align: right;margin-right: 10px;' class="tweak">Bias Mant</div></td>
+        <td><input  size="30" type="number" id="VbiasMant"/></td>
+        </tr>
+        <tr>
+        <td><div style='text-align: right;margin-right: 10px;' class="tweak">Bias Exp</div></td>
+        <td><input size="30" type="number" id="VbiasExp"/></td>
+        <td><div class="tweak" id="biasFormula"></div></td>
+        </tr>
+        <tr>
+        <td><div style='text-align: right;margin-right: 10px;' class="tweak">vThMant</div></td>
+        <td><input size="30" type="number" id="VvThMant"/></td>
+        <td><div class="tweak" id="actualThreshFormula"></div></td>
+        </tr>
+        <tr>
+        <td><div style='text-align: right;margin-right: 10px;' class="tweak">Current Time Constant</div></td>
+        <td><input size="30" type="number" id="VcurrentTimeConstant"/></td>
+        <td><div class="tweak" id="currentFormula"></div></td>
+        </tr>
+        <tr>
+        <td><div style='text-align: right;margin-right: 10px;' class="tweak">Voltage Time Constant</div></td>
+        <td><input size="30" type="number" id="VvoltageTimeConstant"/></td>
+        <td><div class="tweak" id="voltageFormula"></div></td>
+        </tr>
+        <tr>
+        <td><div style='text-align: right;margin-right: 10px;' class="tweak">Click Spike Weight</div></td>
+        <td><input size="30" type="number" id="clickSpikeWeight"/></td>
+        <td><input id="spikeButton" type="button" value="Send Spike" onclick="spike();"/></td>
+        </tr>
+        <tr>
+        <td><div style='text-align: right;margin-right: 10px;' class="tweak">Send Spikes</div></td>
+        <td><input size="30" type="number" id="modulus"/></td>
+        <td><div class="tweak" id="spiker">modulo</div></td>
+        </tr>
+
+        </table>
+    </div>
+<script language='javascript'>
+var c = document.getElementById('prime');
+var ctx = c.getContext("2d");
+var i = 0;
+
+var biasMant = 10;
+var biasExp = 6;
+var currentTimeConstant = 10;
+var voltageTimeConstant = 16;
+var currentDecay = 0;
+var voltageDecay = 0;
+var current = 0;
+var voltage = 0;
+var vThresh = 1000;
+var actualThresh = 0;
+var count = 500;
+var currentBuckets = Array(500);
+var voltageBuckets = Array(500);
+var timeStep = 0;
+var max = 0;
+var spikeVal = 0;
+var spikeWeight = 6400;
+var spikeSend = 18;
+var opacity = 0;
+var currentTime = new Date();
+var spikesSoFar = 0;
+
+function spike()
+{
+  spikeVal++;
+}
+
+function initialize()
+{
+  var element = document.getElementById('VbiasMant');
+  element.value = biasMant;
+  element = document.getElementById('VbiasExp');
+  element.value = biasExp;
+  element = document.getElementById('VcurrentTimeConstant');
+  element.value = currentTimeConstant;
+  element = document.getElementById('VvoltageTimeConstant');
+  element.value = voltageTimeConstant;
+  element = document.getElementById('VvThMant');
+  element.value = vThresh;
+  element = document.getElementById('clickSpikeWeight');
+  element.value = spikeWeight;
+  element = document.getElementById('modulus');
+  element.value = spikeSend;
+
+  currentDecay = Math.pow(2, 12) - Math.round((1 / currentTimeConstant) * Math.pow(2, 12), 0);
+  voltageDecay = Math.pow(2, 12) - Math.round((1 / voltageTimeConstant) * Math.pow(2, 12), 0);
+  actualThresh = vThresh * Math.pow(2, 6);
+  setMax();
+  timeStep = 0;
+}
+
+function setMax()
+{
+    max = actualThresh + (.5 * actualThresh);
+    var max2 = spikeWeight*5;
+    if(max2 > max)
+        max = max2;
+}
+
+function stepGraph(time, currentValue, voltageValue)
+{
+    if (time >= count)
+        time = time % count;
+    
+    currentBuckets[time] = currentValue;
+    voltageBuckets[time] = voltageValue;
+
+    ctx.clearRect(0, 0, c.width, c.height);
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(0,0,c.width, c.height);
+
+    ctx.beginPath();
+    var s = "rgba(255,0,0,"+opacity.toString()+")";
+    ctx.fillStyle = s;
+    var radius = 10;
+    ctx.ellipse(c.width-radius,radius,radius,radius,Math.PI/4, 0, Math.PI*2);
+    ctx.fill();
+
+    drawScale();
+
+    updateCurrent(time);
+    updateVoltage(time);
+
+    var element = document.getElementById('VbiasMant');
+    biasMant = element.value;
+    element = document.getElementById('VbiasExp');
+    biasExp = element.value;
+    element = document.getElementById('VcurrentTimeConstant');
+    currentTimeConstant = element.value;
+    element = document.getElementById('VvoltageTimeConstant');
+    voltageTimeConstant = element.value;
+    element = document.getElementById('VvThMant');
+    vThresh = element.value;
+    element = document.getElementById('clickSpikeWeight');
+    spikeWeight = element.value;
+    element = document.getElementById('modulus');
+    spikeSend = element.value;
+
+    currentDecay = Math.pow(2, 12) - Math.round((1 / currentTimeConstant) * Math.pow(2, 12), 0);
+    voltageDecay = Math.pow(2, 12) - Math.round((1 / voltageTimeConstant) * Math.pow(2, 12), 0);
+    actualThresh = vThresh * Math.pow(2, 6);
+    setMax();
+
+    var actualB = (biasMant * Math.pow(2, biasExp));
+    var actualCD = Math.round((1 / currentTimeConstant) * Math.pow(2, 12), 0);
+    var actualVD = Math.round((1 / voltageTimeConstant) * Math.pow(2, 12), 0);
+    
+    document.getElementById("biasFormula").innerText = biasMant.toString()+" * 2^"+biasExp.toString()+"="+actualB.toString();
+    document.getElementById("currentFormula").innerText = "(1/"+currentTimeConstant.toString()+" * 2^12) >> 12 = "+actualCD.toString();
+    document.getElementById("voltageFormula").innerText = "(1/"+voltageTimeConstant.toString()+" * 2^12) >> 12 = "+actualVD.toString();
+    document.getElementById("actualThreshFormula").innerText = vThresh.toString() +" * 2^6 = "+ actualThresh.toString();
+    document.getElementById("spiker").innerText = "random modulo "+spikeSend.toString();
+}
+
+function step()
+{
+     opacity -= .01;
+     if(opacity <=0) opacity = 0;
+
+    var test = Math.round(Math.random()*1000, 3);
+    if(spikeSend != 0 && test%spikeSend==0)
+        spikeVal++;
+    
+    var inter1 = ((current * currentDecay) >> 12);
+    current = inter1 + spikeVal*spikeWeight;
+    if (current < 0) current = 0;
+    spikeVal=0;
+    
+    var vInter = (voltage * voltageDecay) >> 12;
+    vInter += (current + (biasMant * Math.pow(2, biasExp)));
+    voltage = vInter;
+    if (voltage < 0) 
+         voltage = 0;
+    
+    var d = new Date();
+    var span = d.getTime()-currentTime.getTime();
+    if(span > 3000)
+    {
+    hz.innerText = "-- Hz";
+    currentTime = new Date();
+    } 
+    
+    if (voltage>actualThresh) 
+    {
+        voltage= 0;
+        opacity = 1;
+        spikesSoFar++;
+        if(span > 1000)
+        {
+            hz.innerText = Math.round(spikesSoFar/(span/1000), 2) + " Hz @ 10 ms";
+            spikesSoFar = 0;
+            currentTime = new Date();
+        }
+    } 
+    
+
+    stepGraph(timeStep, current, voltage);
+
+    timeStep++;
+}
+
+function drawScale()
+{
+    ctx.beginPath();
+    ctx.strokeStyle = "#FFFFFF";
+    ctx.fillStyle = "#FFFFFF";
+    ctx.moveTo(2, c.height);
+    ctx.lineTo(2, 0);
+    var stepSize = c.height/10;
+    var actualStep = max/10;
+    var threshGraph = c.height-c.height*actualThresh/max;
+    var ii = 0;
+    for(var i=0;i<c.height;i+=stepSize)
+    {
+        ctx.moveTo(0, i);
+        ctx.lineTo(10, i);
+        ctx.font="10px Arial";
+        ctx.fillText(((max-actualStep*ii)).toString(),10,i);
+        ii++;
+    }
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.strokeStyle = "#FFFFFF";
+    ctx.setLineDash([5, 15]);
+    ctx.moveTo(0, threshGraph);
+    ctx.lineTo(c.width, threshGraph);
+    ctx.stroke();
+    ctx.setLineDash([]);
+}
+
+function updateCurrent(time)
+{
+  ctx.beginPath();
+  ctx.strokeStyle = "#ffa500";
+  ctx.lineWidth = 2; 
+  ctx.moveTo(0,c.height/2);
+  var prevVal = 0;
+  var midValue = c.height;///4*3;
+
+  for (i = 0; i < time; i++)
+  {
+      var val = midValue-currentBuckets[i]/max*c.height;
+      if(val == midValue && prevVal < midValue)
+         ctx.moveTo(i, val);
+      else
+         ctx.lineTo(i, val);
+      prevVal = val;
+  }
+  ctx.stroke();
+}
+
+function updateVoltage(time)
+{
+  ctx.beginPath();
+  ctx.strokeStyle = "#00FF00";
+  ctx.lineWidth = 1; 
+  ctx.moveTo(0,c.height/2);
+
+  var midValue = c.height;///4*3;
+
+  var prevVal = 0;
+  for (i = 0; i < time; i++)
+  {
+      var val = midValue-voltageBuckets[i]/max*c.height;
+      if(val == midValue && prevVal < midValue)
+         ctx.moveTo(i, val);
+      else
+         ctx.lineTo(i, val);
+      prevVal = val;
+  }
+  ctx.stroke();
+}
+
+initialize();
+timer = setInterval(step, 10);
+
+</script>
+</html></div>
+<div class="section" id="connection">
+<h4>Connection<a class="headerlink" href="#connection" title="Permalink to this headline">¶</a></h4>
+<p>A Connection connects two Nodes together.  Learn more about the Connection API here: <a class="reference internal" href="connection.html"><span class="doc">Connection and ConnectionPrototype</span></a></p>
+<div class="figure align-default">
+<img alt="Basic network" src="_images/image1.png" />
+</div>
+<p>The figure above shows a Net, which is a collection of Compartments connected to other Compartments via Connections.</p>
+<p>The following connections are currently supported in the Nx API</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Source</p></th>
+<th class="head"><p>Destinations</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Compartment</p></td>
+<td><p>Compartment, Reinforcement Channel, Spike Output Port, Input/Output Stub</p></td>
+</tr>
+<tr class="row-odd"><td><p>Neuron</p></td>
+<td><p>Compartment, Reinforcement Channel, Spike Output Port, Input/Output Stub</p></td>
+</tr>
+<tr class="row-even"><td><p>Reinforcement Channel</p></td>
+<td><p>(Reinforcement Channels are used in learning rules)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Spike Input Port</p></td>
+<td><p>Compartment, Neuron, Reinforcement Channel</p></td>
+</tr>
+<tr class="row-even"><td><p>Spike Output Port</p></td>
+<td><p>(Spike Output Ports appear on the host PC, they cannot connect to other nodes)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Input Stub</p></td>
+<td><p>Compartment</p></td>
+</tr>
+<tr class="row-even"><td><p>Output Stub</p></td>
+<td><p>Input Stub, Compartment</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="beyond-the-basics-prototypes-and-groups">
+<h3>Beyond the Basics - Prototypes and Groups<a class="headerlink" href="#beyond-the-basics-prototypes-and-groups" title="Permalink to this headline">¶</a></h3>
+<p>In order to create larger networks, we have to consider how compartments and connections are defined and grouped. Noting that many compartments will be similarly constructed, the NxNet API establishes the notion of prototypes. Procedurally, creating a large network looks something like this:</p>
+<ol class="arabic simple">
+<li><p>Create a prototypical compartment, setting bias information, thresholds and other various state information.</p></li>
+<li><p>Create a large group of these compartments.</p></li>
+<li><p>Create a prototypical connection, setting weight and delay information as well as other various state variables.</p></li>
+<li><p>Create a connection group that connects one group of compartments to another group of compartments, utilizing the connection prototype to define the initial state information for each connection (from compartment to compartment).</p></li>
+</ol>
+<p>The following Nodes can be created in groups:</p>
+<ol class="arabic simple">
+<li><p>Compartment</p></li>
+<li><p>Connection</p></li>
+<li><p>Neuron</p></li>
+<li><p>Spike Input Port</p></li>
+<li><p>Spike Output Port</p></li>
+<li><p>Input Stub</p></li>
+<li><p>Output Stub</p></li>
+</ol>
+<div class="section" id="compartmentprototype">
+<h4>CompartmentPrototype<a class="headerlink" href="#compartmentprototype" title="Permalink to this headline">¶</a></h4>
+<p>A compartment prototype defines a prototypical compartment. Whereas a compartment has over 40 tunable parameters, the CompartmentPrototype allows you to set these once and replicate them in hundreds or thousands of compartments. More documentation on this is here: <a class="reference internal" href="compartment.html"><span class="doc">Compartment and CompartmentPrototype</span></a></p>
+</div>
+<div class="section" id="compartmentgroup">
+<h4>CompartmentGroup<a class="headerlink" href="#compartmentgroup" title="Permalink to this headline">¶</a></h4>
+<p>A compartment group defines group of identical compartments. The following code snippet combines these two concepts (prototypes and groups). More documentation on this is here: <a class="reference internal" href="groups.html"><span class="doc">Groups</span></a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">myCompartmentPrototype</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                                                    <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                                    <span class="n">vThMant</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                                                    <span class="n">functionalState</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                                    <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+                                                    <span class="n">logicalCoreId</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1">#create 100 compartments with the same prototype</span>
+<span class="n">myCompartmentGroup</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">myCompartmentPrototype</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="connectionprototype">
+<h4>ConnectionPrototype<a class="headerlink" href="#connectionprototype" title="Permalink to this headline">¶</a></h4>
+<p>A connection prototype defines a prototypical connection. As with the compartment prototype, a connection is a complex entity with hundreds of settings. The connection prototype enables you to set just the few settings you care about and allow the rest to be defaulted. A connection (via the prototype) also configures all of the routing information necessary to properly connect together compartments or groups of compartments. Learn more about the Connection Prototype API here: <a class="reference internal" href="connection.html"><span class="doc">Connection and ConnectionPrototype</span></a></p>
+</div>
+<div class="section" id="connectiongroup">
+<h4>ConnectionGroup<a class="headerlink" href="#connectiongroup" title="Permalink to this headline">¶</a></h4>
+<p>A connection group is a group of connections. Utilizing the connection prototype, you can quickly create hundreds of connections between two compartment groups using code like this. You can learn more about the API for connection group here: <a class="reference internal" href="groups.html"><span class="doc">Groups</span></a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">myCompartmentPrototype</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                                                    <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                                    <span class="n">vThMant</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                                                    <span class="n">functionalState</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                                    <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+                                                    <span class="n">logicalCoreId</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">myConnectionPrototype</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+<span class="c1">#create 100 compartments with the same prototype</span>
+<span class="n">myCompartmentGroup1</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">myCompartmentPrototype</span><span class="p">)</span>
+<span class="n">myCompartmentGroup2</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">myCompartmentPrototype</span><span class="p">)</span>
+
+<span class="n">connectionGroup1</span> <span class="o">=</span> <span class="n">myCompartmentGroup1</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">myCompartmentGroup2</span><span class="p">,</span> <span class="n">myConnectionPrototype</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weightMatrix</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-default">
+<img alt="Basic network with Prototypes and Groups" src="_images/image2.png" />
+</div>
+</div>
+</div>
+<div class="section" id="composable-networks">
+<h3>Composable Networks<a class="headerlink" href="#composable-networks" title="Permalink to this headline">¶</a></h3>
+<p>The NxSDK API provides the ability to construct composable networks.  Multiple NxNet objects can be created and then
+linked together in a tree structure.  A network can have an arbitrary number of children networks, though a given
+network can only appear once in a tree.</p>
+<div class="figure align-default">
+<img alt="Network Tree" src="_images/composable_networks_tree.png" />
+</div>
+<p>A network tree is constructed by adding a child network to a parent network.  After all the networks within the network
+tree are populated with compartments, connections, etc., the entire network tree can be run by running the root network.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create 4 network objects</span>
+<span class="n">net1</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+<span class="n">net2</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+<span class="n">net3</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+<span class="n">net4</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+
+<span class="c1"># Add net1 as subnetwork of net3</span>
+<span class="n">net3</span><span class="o">.</span><span class="n">addNet</span><span class="p">(</span><span class="n">net1</span><span class="p">)</span>
+<span class="c1"># Add net2 as subnetwork of net3</span>
+<span class="n">net3</span><span class="o">.</span><span class="n">addNet</span><span class="p">(</span><span class="n">net2</span><span class="p">)</span>
+<span class="c1"># Add net4 as subnetwork of net2</span>
+<span class="n">net2</span><span class="o">.</span><span class="n">addNet</span><span class="p">(</span><span class="n">net4</span><span class="p">)</span>
+
+<span class="c1"># Populate net1, net2, net3, and net4</span>
+
+<span class="c1"># Run the network tree by running the root network</span>
+<span class="n">runTime</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">net3</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">runTime</span><span class="p">)</span>
+<span class="n">net3</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>With the preliminary support of composable networks that is currently released, only non-learning connections are supported. A connection between nets takes the form:
+Compartment -&gt; Output Stub -&gt; Input Stub -&gt; Compartment</p>
+<p>In code, a user can directly connect two compartments and the Nx API will take care of creating and connecting the intermediate Output Stub and Input Stub in the background.</p>
+<div class="figure align-default">
+<img alt="Inter-Network Connections" src="_images/composable_networks_connections.png" />
+</div>
+<p>The inter-network connections are created in the same way as intra-network connections.  Connection probes are also
+configured in the same manner.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">net1</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+<span class="c1"># Source compartment is bias driven</span>
+<span class="n">prototype1</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                     <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                     <span class="n">vThMant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                     <span class="n">functionalState</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                     <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+                                     <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">410</span><span class="p">)</span>
+<span class="n">compartment1</span> <span class="o">=</span> <span class="n">net1</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">prototype1</span><span class="p">)</span>
+<span class="n">cx1Probes</span> <span class="o">=</span> <span class="n">compartment1</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">])</span>
+
+<span class="n">net2</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+<span class="c1"># Destination compartment</span>
+<span class="n">prototype2</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">vThMant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                     <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+                                     <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">410</span><span class="p">)</span>
+<span class="n">compartment2</span> <span class="o">=</span> <span class="n">net2</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">prototype2</span><span class="p">)</span>
+<span class="n">cx2Probes</span> <span class="o">=</span> <span class="n">compartment2</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">])</span>
+
+<span class="c1"># Cross network connection</span>
+<span class="n">connProto1</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">compartment1</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">compartment2</span><span class="p">,</span> <span class="n">connProto1</span><span class="p">)</span>
+<span class="n">connProbe</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SYNAPSE_WEIGHT</span><span class="p">])</span>
+
+<span class="c1"># Compose networks</span>
+<span class="n">net1</span><span class="o">.</span><span class="n">addNet</span><span class="p">(</span><span class="n">net2</span><span class="p">)</span>
+
+<span class="c1"># Run</span>
+<span class="n">net1</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">net1</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="nxcore">
+<h2>NxCore<a class="headerlink" href="#nxcore" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="nxcore.html"><span class="doc">NxCore API</span></a> API is much lower level than NxNet. Though still implemented in python, it requires knowledge of neurocore configurations and per-core, per-register, per-field programming. The high-level API (NxNet) is meant to shield you from the details of NxCore; but often times it can be helpful to know how to work at this lower level of abstraction. To that end, we will first provide you an overview of the nodes and hierarchy at this lower level, we will then discuss a few recipes to help decode the node configurations to accomplish essential things (such as connecting two compartments).</p>
+<div class="figure align-default">
+<img alt="NxNet to NxCore" src="_images/nxnetandcore.png" />
+</div>
+<p>For more details on the NxCore objects, see the table of contents below.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#graph">Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#nodesets">NodeSets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#state-monitoring">State monitoring</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="n1-n2-n2a-and-so-forth">
+<h3>N1, N2, N2A, and so forth<a class="headerlink" href="#n1-n2-n2a-and-so-forth" title="Permalink to this headline">¶</a></h3>
+<p>A quick note about the naming conventions and folder structure of the API. You will often see reference to N2A or N2Board, etc. Loihi's pedigree goes back a few generations, starting with N1. The current generation is N2A. N2A denotes both a physical realization in hardware, a particular register and core design and, by extension, a particular flavor for the NxCore API (N2Core). Though the higher level API (NxNet) will remain relatively unchanged from generation to generation (as we abstract away many of the minor generational differences), it too follows this nomenclature.</p>
+</div>
+<div class="section" id="navigating-the-hierarchy">
+<h3>Navigating the Hierarchy<a class="headerlink" href="#navigating-the-hierarchy" title="Permalink to this headline">¶</a></h3>
+<p>As mentioned in the <a class="reference internal" href="introduction.html"><span class="doc">Introductory Material</span></a>, the Loihi hardware is hierarchical and heterogeneous. We will address heterogeneous construction in the <a class="reference internal" href="snips.html"><span class="doc">Programming SNIPs</span></a> section. We will address the hierarchical construction here.</p>
+<ul class="simple">
+<li><p>A Loihi Board has 1-N Chips.</p></li>
+<li><p>A Loihi Chip has 128 Neurocores.</p></li>
+<li><p>A Neurocore has the capacity to define up to 1024 neurons (though if some are multi-compartment, this reduces the total number of &quot;neurons&quot;).</p></li>
+<li><p>A single neuron in a single core can theoretically connect to all other neurons in a chip through synapse registers and tables.</p></li>
+</ul>
+<p>A Neurcore also adheres to some simple design heuristics:</p>
+<ol class="arabic simple">
+<li><p>Neurons are often created in homogeneous groups can share configuration</p></li>
+<li><p>Populations of neurons often connect to populations of other neurons, and these connections are often configured similarly and can therefore share configuration information</p></li>
+<li><p>Precise spike timing is a critical feature for many of the algorithms Loihi supports</p></li>
+</ol>
+<p>As we review the organization of the neurocore register file and resulting python object hierarchy, you will see these design principles come to light.</p>
+<div class="section" id="working-with-nxcore-hierarchy">
+<h4>Working with NxCore Hierarchy<a class="headerlink" href="#working-with-nxcore-hierarchy" title="Permalink to this headline">¶</a></h4>
+<p>Within the NxCore API, most code begins with initialization of an N2Board object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># -------------------------------------------------------------------------</span>
+<span class="c1"># Initialize board</span>
+<span class="c1"># -------------------------------------------------------------------------</span>
+
+<span class="c1"># N2Board ID</span>
+<span class="n">boardId</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># Number of chips</span>
+<span class="n">numChips</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># Number of cores per chip</span>
+<span class="n">numCoresPerChip</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="c1"># Number of synapses per core</span>
+<span class="n">numSynapsesPerCore</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="c1"># Initialize the board</span>
+<span class="n">board</span> <span class="o">=</span> <span class="n">N2Board</span><span class="p">(</span><span class="n">boardId</span><span class="p">,</span><span class="n">numChips</span><span class="p">,</span><span class="n">numCoresPerChip</span><span class="p">,</span><span class="n">numSynapsesPerCore</span><span class="p">)</span>
+<span class="c1"># Obtain the relevant cores (four in total)</span>
+<span class="n">n2Cores</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">n2Chips</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">n2Cores</span>
+</pre></div>
+</div>
+<p>Already, you should note a stark difference between the NxNet API and the NxCore API. Whereas the former assumes nothing about the underlying hardware, the latter requires that you know how many chips per board, and state just how many cores per chip you intend to use...and synapses per core. In short, when using the NxCore API, you need to provide a relative mountain of information in order to get things started. Once you've provided this information, you can begin to use the object hierarchy as expected:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n2Cores</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">n2Chips</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">n2Cores</span>
+<span class="n">n2Cores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cxProfileCfg</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">decayV</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">16</span><span class="o">*</span><span class="mi">2</span><span class="o">**</span><span class="mi">12</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>In the above code example, we can see that from the board, we get the first chip, and from that chip, we retrieve the 4 cores we initialized during the creation and initialization of the board. We can then configure the voltage decay field of the first compartment profile configuration register of the first core to be 1/16.</p>
+<p>For more information and examples on working with the hierarchy, check out the <a class="reference internal" href="tutorials.html"><span class="doc">Tutorials</span></a> or <a class="reference internal" href="graph.html"><span class="doc">N2Board Hierarchy</span></a>.</p>
+<p>To learn more about the decomposition of NxNet into NxCore component nodes and nodesets, continue reading below.</p>
+</div>
+</div>
+<div class="section" id="decomposing-the-compartment">
+<h3>Decomposing the Compartment<a class="headerlink" href="#decomposing-the-compartment" title="Permalink to this headline">¶</a></h3>
+<p>In biology, neurons are composed of a soma body and multiple, incoming dendrites. Dendrites integrate stimuli from incoming synapses or other dendrites as biological dendrites are often organized in dendritic tree structures. Dendrites then finally merge into the soma which integrates all the input. When the soma reaches some threshold, it spikes. These spikes are sent out via the neuron’s axon. An axon emerges from the soma body and eventually split/fan-out into multiple axonal arbors to form long-range connections to the dendrites of other neurons via synaptic connections. A simplified depiction of this architecture is given in the figure below.</p>
+<div class="figure align-default">
+<img alt="Simple view of neurons and connections" src="_images/biology.png" />
+</div>
+<p>In the N2 model, neurons are composed of compartments. Compartments are the fundamental computational units of a neuron that can integrate inputs from three sources: other compartments, input synapses or bias currents. These compartments can be configured to behave as a biological soma or a biological dendrite. In that sense both the soma or a dendrite have an IS-A relationship to the compartment. Just like in biology, neurons/compartments are connected to other compartments possibly via many axons/axon arbors. In N2 however, we don’t have dedicated wires between neurons; the communication is “virtualized” via a shared communication mesh via (an AER type of system). Therefore we adapt/translate the notion of an axon with possibly many arbors into a set of (outputAxon, inputAxon) pairs. The outputAxon is like the terminal with which an arbor connects to its one and only source neuron/axon. The inputAxon is like the main portion/section of the arbor that has the connections to a set of neurons in a certain spatial region (in our case a NeuroCore).</p>
+</div>
+<div class="section" id="decomposing-the-connection">
+<h3>Decomposing the Connection<a class="headerlink" href="#decomposing-the-connection" title="Permalink to this headline">¶</a></h3>
+<p>An NxNet connection decomposes into the following NxCore objects, each of which must be properly configured to establish the desired connection on Loihi:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="axon_map.html"><span class="doc">Axon Map</span></a></p></li>
+<li><p><a class="reference internal" href="axon_cfg.html"><span class="doc">Axon Configuration</span></a></p></li>
+<li><p><a class="reference internal" href="synapses.html"><span class="doc">Synapses</span></a></p></li>
+<li><p><a class="reference internal" href="synapse_fmt.html"><span class="doc">Synapse Format</span></a></p></li>
+<li><p><a class="reference internal" href="synapse_map.html"><span class="doc">Synapse Map</span></a></p></li>
+<li><p><a class="reference internal" href="axon_compiler.html"><span class="doc">Axon Compiler</span></a></p></li>
+</ol>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="nxcore.html" class="btn btn-neutral float-right" title="NxCore API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dvs.html" class="btn btn-neutral float-left" title="DVS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

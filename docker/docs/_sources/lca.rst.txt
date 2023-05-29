@@ -1,0 +1,26 @@
+###
+LCA
+###
+
+The LCA module can be used to solve the constraint LASSO optimization problem
+implemented by a spiking neural network as described in:
+https://arxiv.org/pdf/1705.05475.pdf
+which minimizes the following objective function:
+argmin_a |x - D'*a|**2 + lambda*|a|_1
+where 'x' is the input, 'D' is a dictionary matrix, 'a' is a sparse code and
+'lambda" is a regularization factor. _1 denotes an L1 norm.
+
+The module provides the LcaNet class which represents the neural network to
+solve the sparse coding problem as well as a number of helper classes.
+
+Jupyter notebook illustrating a :doc:`Spiking version of LCA to solve Sparse
+Coding </jupyter/a_solving_convolutional_lasso_with_lca>` resides at **nxsdk_modules/lca/tutorials**
+
+.. automodule:: nxsdk_modules.lca.src.lcanet
+   :members: 
+   :undoc-members:
+
+.. toctree::
+   :maxdepth: 1
+
+   jupyter/a_solving_convolutional_lasso_with_lca

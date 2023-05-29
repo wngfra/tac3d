@@ -1,0 +1,128 @@
+NxCore API
+==========
+
+The NxCore API provides register-level access to the Loihi system and thus
+allows for more fine-grained but significantly more complex programming
+capabilities. At the same time there is less protection from misconfiguring
+the system.
+
+At the hardware level, the system is organized into boards, containing
+multiple chips which each contain multiple neuro cores and embedded Lakemont
+CPUs. Each neuro core in turn consists of a multitude of different
+programmable registers that control the neural and synaptic dynamics of the
+emulated spiking neural network.
+
+The object model of the NxCore API reflects this structure of the hardware
+hierarchy by exposing classes that correspond to these hardware components,
+namely N2Board, N2Chip, N2Core corresponding to boards, chips and neuro cores.
+Each register in a neuro core can be accessed separately via NodeSet
+interfaces. Most registers can be interpreted as structure arrays with
+different fields per register entry. In most cases, the format of each
+register entry is fixed. In a few cases, however, there exist different
+formats or different field-interpretations of a register entry. In all cases
+there is a single NodeSet class per register but potentially different
+NodeSetInterface classes through which register fields can be accessed by name.
+
+Generally, registers can be read/written by accessing the fields directly:
+
+.. code-block:: python
+
+   # Write register field
+   N2Core.<registerName>.<fieldName> = <value>
+   # Read register field
+   <value> = N2Core.<registerName>.<fieldName>
+
+or by using a configure method for each register:
+
+.. code-block:: python
+
+   # Write multiple register fields
+   N2Core.<registerName>.configure(
+       <fieldName[i-1]> = <value[i-1]>,
+       <fieldName[i]>   = <value[i]>,
+       <fieldName[i+1]> = <value[i+1]>)
+
+For those registers with multiple interfaces, the interface name must be
+inserted:
+
+.. code-block:: python
+
+   # Write register field
+   N2Core.<registerName>.<interfaceName>.<fieldName> = <value>
+   # Read register field
+   <value> = N2Core.<registerName>.<interfaceName>.<fieldName>
+   # Write multiple register fields
+   N2Core.<registerName>.<interfaceName>.configure(
+       <fieldName[i-1]> = <value[i-1]>,
+       <fieldName[i]> = <value[i]>,
+       <fieldName[i+1]> = <value[i+1]>)
+
+In addition to programming registers, register fields can be probed to
+observe their temporal evolution during execution. Probe objects are used to
+define what register fields to probe, TimeSeries objects contain the probed
+data and the Monitor class is used to organize probes and time series objects.
+In order to stimulate a neuron network with external spikes, spike generators
+can be defined.
+
+The following pages explain the N2Board, N2Chip, N2Core and NodeSet
+structure as well as Monitor, Probes and TimeSeries and SpikeGenerators. For
+some of the NodeSets that are particularly complex in their configuration
+there exists helper utilities to ease that process.
+
+(Add additional sub headings for NodeSets, State monitoring, Utilities and
+organize pages into these categories. Also name pages by the name of the
+register explicitly. Also organize NodeSet and NoteSetInterface classes in
+right order on respective sub pages.)
+
+
+Graph
+~~~~~
+.. toctree::
+   :maxdepth: 2
+   
+   graph
+
+NodeSets
+~~~~~~~~
+.. toctree::
+   :maxdepth: 2
+
+   cx_profile_cfg
+   cx_cfg
+   cx_meta_state
+   dendrite_accum_cfg
+   dendrite_shared_cfg
+   dendrite_time_state
+   vth_profile_cfg
+   axon_map
+   axon_cfg
+   synapses
+   synapse_fmt
+   synapse_map
+   stdp_post_state
+   stdp_pre_profile_cfg
+   stdp_profile_cfg
+   soma_state
+   num_updates
+   time_state
+
+Utilities
+~~~~~~~~~
+.. toctree::
+   :maxdepth: 2
+
+   axon_compiler
+   tracecfggen
+   inputgen
+
+State monitoring
+~~~~~~~~~~~~~~~~
+.. toctree::
+   :maxdepth: 2
+
+   coremonitor
+   coreprobes
+   coretimeseries
+
+
+

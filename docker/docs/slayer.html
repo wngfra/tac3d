@@ -1,0 +1,895 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>SLAYER Module &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SLIC" href="slic.html" />
+    <link rel="prev" title="Path Planning" href="jupyter/tutorial_path_planning.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Nx SDK Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="characterization.html">Characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dnn.html">DNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dvs.html">DVS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epl.html">EPL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knn.html">K Nearest Neighbour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_generator.html">Input Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lca.html">LCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="path_planning.html">Path Planning</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SLAYER Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#spike-injection">Spike Injection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spike-output">Spike Output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#slayer-python-module-documentation">SLAYER Python Module Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#slayer-auto-module-documentation">SLAYER Auto Module Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="slic.html">SLIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spike_streamer.html">Spike Streamer Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_injection.html">Trace Injection Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Nx SDK Modules</a> &raquo;</li>
+        
+      <li>SLAYER Module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="slayer-module">
+<h1>SLAYER Module<a class="headerlink" href="#slayer-module" title="Permalink to this headline">¶</a></h1>
+<p>The SLAYER module provides NxSDK helper functions for running a SLAYER-trained
+model on Loihi. The SLAYER training code for Loihi is separate and can be obtained
+from <a class="reference external" href="https://github.com/bamsumit/slayerPytorch">https://github.com/bamsumit/slayerPytorch</a>, but the training code is not
+required in order to run SLAYER models on Loihi. Pre-trained SLAYER models can
+be found at <a class="reference external" href="https://github.com/bamsumit/slayerLoihiModelZoo">https://github.com/bamsumit/slayerLoihiModelZoo</a> and are automatically
+downloaded by the tutorials.</p>
+<p>The module contains functions to implement pooling, convolution, and fully
+connected layers. At the moment, model partitioning is a manual process where
+the user must specify layerwise how many compartments to put on each core.</p>
+<p>The module also contains snips and functions to help with efficiently injecting
+spikes into the model and for observing the output spike rates for each sample.</p>
+<p>The NMNIST and DVS Gesture tutorials show how to run and test SLAYER models.</p>
+<div class="section" id="spike-injection">
+<h2>Spike Injection<a class="headerlink" href="#spike-injection" title="Permalink to this headline">¶</a></h2>
+<p>Spike injection is done with custom snips. An assumption is made that all input
+compartment lie on the first chip, which removes the need to communicate to lakemonts
+which chip each spike must be routed to, thus saving on communication time.</p>
+<p>Spike injection can optionally be split across up to 3 lakemonts to share the load.</p>
+<p>The current form of the model precomputes all input spikes before the run starts,
+but a user could also specify their own spikes on-the-fly.</p>
+</div>
+<div class="section" id="spike-output">
+<h2>Spike Output<a class="headerlink" href="#spike-output" title="Permalink to this headline">¶</a></h2>
+<p>A lakemont snip is used to count spikes from the output layer and only return the
+aggregate result at the end of each sample. This saves channel communication and
+helps to accelerate testing.</p>
+<p>If precise spike times are desired, the user can replace the dummy probes and
+counter reading with spike probes attached to the output layer.</p>
+</div>
+<div class="section" id="slayer-python-module-documentation">
+<h2>SLAYER Python Module Documentation<a class="headerlink" href="#slayer-python-module-documentation" title="Permalink to this headline">¶</a></h2>
+<p>When you <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">nxsdk_modules.slayer.src</span> <span class="pre">as</span> <span class="pre">nxSlayer</span></code>, this module will be
+accessible as <code class="docutils literal notranslate"><span class="pre">nxSlayer.s2l</span></code>.</p>
+<span class="target" id="module-nxsdk_modules.slayer.src.slayer2loihi"></span><p>Tools for implementing SLAYER-trained models on Loihi</p>
+<dl class="py class">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.slayer.src.slayer2loihi.</span></code><code class="sig-name descname"><span class="pre">Slayer2Loihi</span></code><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class of static helper functions to assist with implementing
+SLAYER trained models on Loihi.</p>
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.checkAccuracy">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">checkAccuracy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.checkAccuracy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares results to dataset labels to calculate an accuracy.
+In the case of a split decision, an accuracy of 1/winners is assigned
+for the sample.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>list-int</em>) -- The dataset labels</p></li>
+<li><p><strong>results</strong> (<em>nparray-int</em>) -- The results obtained from getResults()</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The final classification accuracy</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.compartmentPrototype">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">compartmentPrototype</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yamlFile</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.compartmentPrototype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a compartment prototype for the model using a yaml file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>yamlFile</strong> (<em>string</em>) -- Path to the slayer network.yaml file</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The compartment prototype</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="compartment.html#nxsdk.net.nodes.compartments.CompartmentPrototype" title="nxsdk.net.nodes.compartments.CompartmentPrototype">CompartmentPrototype</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.convLayer">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">convLayer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layerInput</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convSpec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corenum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentsPerCore</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.convLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new convolution layer. Assumes zero padding for 'same' convolution.
+Does not yet support stride.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layerInput</strong> (<a class="reference internal" href="groups.html#nxsdk.net.groups.CompartmentGroup" title="nxsdk.net.groups.CompartmentGroup"><em>CompartmentGroup</em></a>) -- The input to the convolution layer</p></li>
+<li><p><strong>convSpec</strong> (<em>dict</em>) -- Specifies &quot;dimX&quot;,&quot;dimY&quot;,&quot;dimC&quot; of the filter,
+&quot;connProto&quot;, &quot;compProto&quot; prototypes of the layer,
+&quot;weightFile&quot; where the weights can be read in from.</p></li>
+<li><p><strong>corenum</strong> (<em>float</em>) -- The last output of distributeCompartments()</p></li>
+<li><p><strong>compartmentsPerCore</strong> (<em>int</em>) -- The maximum number of compartments per core</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>layerOutput (CompartmentGroup): The compartments of the convolution layer</p></li>
+<li><p>corenum (float): The last used logicalCoreId</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.distributeCompartments">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">distributeCompartments</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corenum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentsPerCore</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.distributeCompartments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Distributes compartments across cores, starting on the next available
+core as determined from corenum</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layer</strong> (<a class="reference internal" href="groups.html#nxsdk.net.groups.CompartmentGroup" title="nxsdk.net.groups.CompartmentGroup"><em>CompartmentGroup</em></a>) -- The group of compartments to distribute</p></li>
+<li><p><strong>corenum</strong> (<em>float</em>) -- The last used logicalCoreId</p></li>
+<li><p><strong>compartmentsPerCore</strong> (<em>int</em>) -- The maximum number of compartments per core</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The last used logicalCoreId</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.fullLayer">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">fullLayer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layerInput</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fullSpec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corenum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentsPerCore</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.fullLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new fully connected layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layerInput</strong> (<a class="reference internal" href="groups.html#nxsdk.net.groups.CompartmentGroup" title="nxsdk.net.groups.CompartmentGroup"><em>CompartmentGroup</em></a>) -- The input to the fully connected layer</p></li>
+<li><p><strong>fullSpec</strong> (<em>dict</em>) -- Specifies &quot;dim&quot;, the number of neurons,
+&quot;connProto&quot;, &quot;compProto&quot; prototypes of the layer,
+&quot;weightFile&quot; where the weights can be read in from.</p></li>
+<li><p><strong>corenum</strong> (<em>float</em>) -- The last output of distributeCompartments()</p></li>
+<li><p><strong>compartmentsPerCore</strong> (<em>int</em>) -- The maximum number of compartments per core</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>layerOutput (CompartmentGroup): The compartments of the fully connected layer</p></li>
+<li><p>corenum (float): The last used logicalCoreId</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.getModels">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">getModels</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.getModels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pulls the latest SLAYER models from a public repo and
+places them in a subfolder under the slayer module</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The path to the SLAYER models</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.getResults">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">getResults</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spikeCntrChannel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numSamples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numClasses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dummyProbes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saveResults</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.getResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads results from the spike counter channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spikeCntrChannel</strong> (<em>channel</em>) -- The channel over which results will be received</p></li>
+<li><p><strong>numSamples</strong> (<em>int</em>) -- The number of results to receive</p></li>
+<li><p><strong>numClasses</strong> (<em>int</em>) -- The number of classes in each result</p></li>
+<li><p><strong>dummyProbes</strong> (<em>list-probes</em>) -- The dummy probes used to setup spike counters</p></li>
+<li><p><strong>saveResult</strong> (<em>bool</em>) -- Option to save results to file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The spike count results for the run</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>nparray-int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.initBoard">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">initBoard</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.initBoard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes a board object from file with the correct number of chips/cores/synapses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>string</em>) -- The name of the file to load from (without extension)</p>
+</dd>
+<dt class="field-even">Return N2Board board</dt>
+<dd class="field-even"><p>The board object</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>board (N2Board): The N2Board object</p></li>
+<li><p>dummyProbes (list-probes): A list of probes used to setup spike counters</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.inputLayer">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">inputLayer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputSpec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corenum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentsPerCore</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.inputLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new input layer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputSpec</strong> (<em>dict</em>) -- Specifies the dimensions of the layer, &quot;sizeX&quot;, &quot;sizeY&quot;, &quot;sizeC&quot;</p></li>
+<li><p><strong>corenum</strong> (<em>float</em>) -- The last used logicalCoreId</p></li>
+<li><p><strong>compartmentsPerCore</strong> (<em>int</em>) -- The maximum number of compartments per core</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>layerInput (compartmentGroup): The input compartment group</p></li>
+<li><p>inputConnectionGroup (ConnectionGroup): connections to the input compartment group</p></li>
+<li><p>corenum (float): The last used logicalCoreId</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.loadBoard">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">loadBoard</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.loadBoard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads neurocore state from file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> (<em>N2Board</em>) -- The board object for which neurocore state should be loaded</p></li>
+<li><p><strong>filename</strong> (<em>string</em>) -- The name of the file to load from (without extension)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.optimizeWeightBits">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">optimizeWeightBits</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.optimizeWeightBits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.poolingLayer">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">poolingLayer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layerInput</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poolSpec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corenum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentsPerCore</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.poolingLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new pooling layer. Assumes that pooling and stride are equal
+(i.e. non-overlapping pooling regions)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>layerInput</strong> (<a class="reference internal" href="groups.html#nxsdk.net.groups.CompartmentGroup" title="nxsdk.net.groups.CompartmentGroup"><em>CompartmentGroup</em></a>) -- The input to the pooling layer</p></li>
+<li><p><strong>poolSpec</strong> (<em>dict</em>) -- Specifies the &quot;stride&quot;, &quot;connProto&quot;, &quot;compProto&quot;</p></li>
+<li><p><strong>corenum</strong> (<em>float</em>) -- The last output of distributeCompartments()</p></li>
+<li><p><strong>compartmentsPerCore</strong> (<em>int</em>) -- The maximum number of compartments per core</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>layerOutput (CompartmentGroup) : The compartments of the pooling layer</p></li>
+<li><p>corenum (float): The last used logicalCoreId</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.prepSpikeCounter">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">prepSpikeCounter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numSamples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numClasses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corenum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.prepSpikeCounter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the spike counter snip.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> (<em>N2Board</em>) -- The N2 Board object</p></li>
+<li><p><strong>numSamples</strong> (<em>int</em>) -- The number of samples to be processed in this run</p></li>
+<li><p><strong>corenum</strong> (<em>float</em>) -- The logical coreId of the output layer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The channel over which results will be received</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>channel</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.prepSpikeData">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">prepSpikeData</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spikesPerPacket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layerInput</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numSamples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampleLength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numSnips</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.prepSpikeData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares spike data for injection</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>core</strong> (<em>list-int</em>) -- A list of the core id for each input neuron</p></li>
+<li><p><strong>core</strong> -- A list of the axon id for each input neuron</p></li>
+<li><p><strong>spikesPerPacket</strong> (<em>int</em>) -- The number of spikes to send per packet</p></li>
+<li><p><strong>layerInput</strong> (<em>compartmentGroup</em>) -- The input compartment group</p></li>
+<li><p><strong>dataset</strong> (<em>dataset</em>) -- The dataset handle, which returns a sample when indexed</p></li>
+<li><p><strong>numSamples</strong> (<em>int</em>) -- How many samples to prepare</p></li>
+<li><p><strong>sampleLength</strong> (<em>int</em>) -- The number of timesteps per sample</p></li>
+<li><p><strong>numSnips</strong> (<em>int</em>) -- The number of Lakemonts to use for spike injection</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>snipdata (list-nparray): Spike data returned as a list with one numpy integer array per Lakemont</p></li>
+<li><p>numSteps (int): The duration of the run</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.prepSpikeInjection">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">prepSpikeInjection</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputConnectionGroup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spikesPerPacket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampleLength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numSnips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerateCoreAxon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.prepSpikeInjection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines the core/axon location of the model input axons and sets up snips
+which will later be used to inject spikes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputConnectionGroup</strong> (<a class="reference internal" href="groups.html#nxsdk.net.groups.ConnectionGroup" title="nxsdk.net.groups.ConnectionGroup"><em>ConnectionGroup</em></a>) -- The input connection group for the model</p></li>
+<li><p><strong>board</strong> (<em>N2Board</em>) -- The compiled board object</p></li>
+<li><p><strong>spikesPerPacket</strong> (<em>int</em>) -- The number of spikes to send per packet</p></li>
+<li><p><strong>sampleLength</strong> (<em>int</em>) -- The number of timesteps per sample</p></li>
+<li><p><strong>numSnips</strong> (<em>int</em>) -- The number of Lakemonts to distribute spikes across</p></li>
+<li><p><strong>regenerateCoreAxon</strong> (<em>bool</em>) -- Whether to load core/axon values from file or precompute them</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.relayLayer">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">relayLayer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relaySpec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">corenum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentsPerCore</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.relayLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a spike relay layer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>net</strong> -- nxNet object</p></li>
+<li><p><strong>relaySpec</strong> (<em>dict</em>) -- Specifies the dimensions of the layer, &quot;sizeX&quot;, &quot;sizeY&quot;, &quot;sizeC&quot;</p></li>
+<li><p><strong>corenum</strong> (<em>float</em>) -- The last used logicalCoreId</p></li>
+<li><p><strong>compartmentsPerCore</strong> (<em>int</em>) -- The maximum number of compartments per core</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>layerRelay (compartmentGroup): The relay compartment group</p></li>
+<li><p>corenum (float): The last used logicalCoreId</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.reorderLayer">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">reorderLayer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layerIn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.reorderLayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a compartment group from WHC to CHW order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>layerIn</strong> (<a class="reference internal" href="groups.html#nxsdk.net.groups.CompartmentGroup" title="nxsdk.net.groups.CompartmentGroup"><em>CompartmentGroup</em></a>) -- The layer to reorder.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The re-ordered layer</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="groups.html#nxsdk.net.groups.CompartmentGroup" title="nxsdk.net.groups.CompartmentGroup">CompartmentGroup</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.saveBoard">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">saveBoard</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dummyProbes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.saveBoard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes an N2Board to a file which can be reloaded later.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> (<em>N2Board</em>) -- The board to be written</p></li>
+<li><p><strong>filename</strong> (<em>string</em>) -- The name of the file to write (without extension)</p></li>
+<li><p><strong>dummyProbes</strong> (<em>list-probes</em>) -- The dummy probes used to setup spike counters</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.sendSnipInitialization">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">sendSnipInitialization</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initChannels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.sendSnipInitialization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends the core/axon addresses of input axons to the snips for use as a LUT</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initChannels</strong> (<em>list</em><em>(</em><a class="reference internal" href="channels.html#nxsdk.graph.channel.Channel" title="nxsdk.graph.channel.Channel"><em>Channel</em></a><em>)</em>) -- The initialization channel for each lakemont</p></li>
+<li><p><strong>core</strong> (<em>list</em><em>(</em><em>int</em><em>)</em>) -- The core address for each address</p></li>
+<li><p><strong>axon</strong> (<em>list</em><em>(</em><em>int</em><em>)</em>) -- The axons address for each address</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.sendSpikeData">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">sendSpikeData</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snipData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spikeChannels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spikesPerPacket</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.sendSpikeData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends spike data over spikeChannels to the model during runtime.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nparray</strong><strong>) </strong><strong>snipData</strong> (<em>list</em><em>(</em><em>int</em>) -- Data to send to snips. One nparray per snip.</p></li>
+<li><p><strong>spikeChannels</strong> (<em>list</em><em>(</em><em>channel</em><em>)</em>) -- A list of channels to send the data over</p></li>
+<li><p><strong>spikePerPacket</strong> (<em>int</em>) -- The number of spikes to send per call to channel.write()</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.setupSpikeCounters">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">setupSpikeCounters</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputLayer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.setupSpikeCounters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates dummy probes to setup the spike counters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>outputLayer</strong> (<a class="reference internal" href="groups.html#nxsdk.net.groups.CompartmentGroup" title="nxsdk.net.groups.CompartmentGroup"><em>CompartmentGroup</em></a>) -- The compartments of the last layer</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The dummy probes used to setup spike counters</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list-probes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.writeHeader">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">writeHeader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layerOutput</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spikesPerPacket</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampleLength</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.slayer2loihi.Slayer2Loihi.writeHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the temporary header files which defines constants used by snips.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputConnectionGroup</strong> (<em>connectionGroup</em>) -- Connections to the input neurons</p></li>
+<li><p><strong>layerOutput</strong> (<em>compartmentGroup</em>) -- The output compartment group</p></li>
+<li><p><strong>spikesPerPacket</strong> (<em>int</em>) -- How many spikes will be communicated in each channel packet</p></li>
+<li><p><strong>sampleLength</strong> (<em>int</em>) -- The duration of each sample, used to determine how frequently to report output spike counts</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="slayer-auto-module-documentation">
+<h2>SLAYER Auto Module Documentation<a class="headerlink" href="#slayer-auto-module-documentation" title="Permalink to this headline">¶</a></h2>
+<p>When you <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">nxsdk_modules.slayer.src</span> <span class="pre">as</span> <span class="pre">nxSlayer</span></code>, this module will be
+accessible as <code class="docutils literal notranslate"><span class="pre">nxSlayer.auto</span></code>.</p>
+<span class="target" id="module-nxsdk_modules.slayer.src.s2lWrapper"></span><p>Auto tools for implementing SLAYER-trained models on Loihi.
+This is a wrapper code that generates feedforward network from the hdf5
+network file that results from slayer training(<a href="#id1"><span class="problematic" id="id2">*</span></a>.net). This will also
+include modules to output a nxsdk net that can be run in Loihi.</p>
+<p>The hdf5 field description is as follows</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">./</span>
+<span class="o">|-&gt;</span><span class="n">simulation</span> <span class="c1"># simulation description</span>
+<span class="o">|</span>   <span class="o">|-&gt;</span><span class="n">Ts</span> <span class="c1"># sampling time. Usually 1</span>
+<span class="o">|</span>   <span class="o">|-&gt;</span><span class="n">tSample</span> <span class="c1"># length of the sample to run</span>
+<span class="o">|-&gt;</span><span class="n">layer</span> <span class="c1"># description of network layer blocks such as input, dense, conv, pool, flatten, average</span>
+    <span class="o">|-&gt;</span><span class="mi">0</span>
+    <span class="o">|</span>   <span class="o">|-&gt;</span><span class="p">{</span><span class="n">shape</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="o">...</span><span class="p">}</span> <span class="c1"># each layer description has ateast shape and type attribute</span>
+    <span class="o">|-&gt;</span><span class="mi">1</span>
+    <span class="o">|</span>   <span class="o">|-&gt;</span><span class="p">{</span><span class="n">shape</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="o">...</span><span class="p">}</span>
+    <span class="p">:</span>
+    <span class="o">|-&gt;</span><span class="n">n</span>
+        <span class="o">|-&gt;</span><span class="p">{</span><span class="n">shape</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="o">...</span><span class="p">}</span>
+
+<span class="nb">input</span>  <span class="p">:</span> <span class="p">{</span><span class="n">shape</span><span class="p">,</span> <span class="nb">type</span><span class="p">}</span>
+<span class="n">flatten</span><span class="p">:</span> <span class="p">{</span><span class="n">shape</span><span class="p">,</span> <span class="nb">type</span><span class="p">}</span>
+<span class="n">average</span><span class="p">:</span> <span class="p">{</span><span class="n">shape</span><span class="p">,</span> <span class="nb">type</span><span class="p">}</span>
+<span class="n">dense</span>  <span class="p">:</span> <span class="p">{</span><span class="n">shape</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">neuron</span><span class="p">,</span> <span class="n">inFeatures</span><span class="p">,</span> <span class="n">outFeatures</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">delay</span><span class="p">(</span><span class="k">if</span> <span class="n">available</span><span class="p">)}</span>
+<span class="n">pool</span>   <span class="p">:</span> <span class="p">{</span><span class="n">shape</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">neuron</span><span class="p">,</span> <span class="n">kernelSize</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="p">,</span> <span class="n">dilation</span><span class="p">,</span> <span class="n">weight</span><span class="p">}</span>
+<span class="n">conv</span>   <span class="p">:</span> <span class="p">{</span><span class="n">shape</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">neuron</span><span class="p">,</span> <span class="n">inChannels</span><span class="p">,</span> <span class="n">outChannels</span><span class="p">,</span> <span class="n">kernelSize</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">padding</span><span class="p">,</span> <span class="n">dilation</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">weight</span><span class="p">,</span> <span class="n">delay</span><span class="p">(</span><span class="k">if</span> <span class="n">available</span><span class="p">)}</span>
+                        <span class="o">|-&gt;</span> <span class="n">this</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">description</span> <span class="n">of</span> <span class="n">the</span> <span class="n">compartment</span> <span class="n">parameters</span>
+                        <span class="o">|-&gt;</span> <span class="p">{</span><span class="n">iDecay</span><span class="p">,</span> <span class="n">vDecay</span><span class="p">,</span> <span class="n">vThMant</span><span class="p">,</span> <span class="n">refDelay</span><span class="p">,</span> <span class="o">...</span> <span class="p">(</span><span class="n">other</span> <span class="n">additional</span> <span class="n">parameters</span> <span class="n">can</span> <span class="n">exist</span><span class="p">)}</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="nxsdk_modules.slayer.src.s2lWrapper.Network">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.slayer.src.s2lWrapper.</span></code><code class="sig-name descname"><span class="pre">Network</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">netConfigFile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">net</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probeOutput</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noDelay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.s2lWrapper.Network" title="Permalink to this definition">¶</a></dt>
+<dd><p>This Class encapsulates the network creation, mapping and execution in
+Loihi hardware. The trained network is passed as a <cite>netCofigFile</cite> (a hdf5 file
+that describes the sequential network configuration blocks and the trained
+synaptic weights and axonal delays)</p>
+<p>Note: axonal delays are implemented as synaptic delays at the moment.</p>
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.s2lWrapper.Network.compile">
+<code class="sig-name descname"><span class="pre">compile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.s2lWrapper.Network.compile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compile the nxNet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fileName</strong> (<em>string</em><em>, </em><em>optional</em>) -- If None, the network is compiled for execution on
+the hardware. If it is a string, it should represent the path to the saved board
+state which will be loaded instead of compiling the whole network. Defaults to None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.s2lWrapper.Network.create">
+<code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corenum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">customCompPerCore</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numLayers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relayInput</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.s2lWrapper.Network.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a nxNet network based on the trained network configuration
+initialized during instance creation. This value is internally stored as
+<cite>self.netConfig</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>corenum</strong> (<em>int</em><em>, </em><em>optional</em>) -- The core number to start placing the network from.
+Use the default value unless you want to implement two nets side by side. Defaults to 0.</p></li>
+<li><p><strong>customCompPerCore</strong> (<em>list</em><em>, </em><em>optional</em>) -- A list of a tuple/ordered pair to overwrite
+the automatic compartments per core calculation. To be used when the automatic
+comapartments per core calculation fails (Hope it does not). Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>Exception</strong> -- If the input layer is not found at the begining of the network configuration</p></li>
+<li><p><strong>Exception</strong> -- If the layer type read is not one of the recognized types</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>core number where the network placement ended. It can be used to place the</dt><dd><p>next network from. Usually, the return value can be ignored.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.s2lWrapper.Network.run">
+<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.s2lWrapper.Network.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the network in Loihi hardware</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of spike count of the output layer neurons for each input sample presented.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.s2lWrapper.Network.save">
+<code class="sig-name descname"><span class="pre">save</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.s2lWrapper.Network.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save the network compiled board state to file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fileName</strong> (<em>string</em>) -- The filename to save the compiled board state.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.s2lWrapper.Network.setupIO">
+<code class="sig-name descname"><span class="pre">setupIO</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spikesPerPacket</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numSnips</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blankTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spikeTime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.s2lWrapper.Network.setupIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup the input output connections to inject spikes to the input layer and collect
+spike counts from the output layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> -- Any dataset that returns an event object where events are accessible as <cite>x</cite>, <cite>y</cite>, <cite>p</cite>, <cite>t</cite> fields.
+A generic dataset wrapped with <cite>s2lDataset</cite> is the suitable candidate most of the time. Custom
+objects are also possible.</p></li>
+<li><p><strong>spikesPerPacket</strong> (<em>int</em><em>, </em><em>optional</em>) -- Number of spikes to be sent per packet. Defaults to 2048.</p></li>
+<li><p><strong>numSnips</strong> (<em>int</em><em>, </em><em>optional</em>) -- Number of snips processors to use for spike injection. Defaults to 1.</p></li>
+<li><p><strong>blankTime</strong> (<em>int</em><em>, </em><em>optional</em>) -- Number of blank steps (no input period) between two samples. This allows
+for the neurons to reset before the next sample. Defaults to 100.</p></li>
+<li><p><strong>spikeTime</strong> (<em>int</em><em>, </em><em>optional</em>) -- Number of time tikcs per sample to use. If None, the value from
+<cite>self.netConfig['simulation']['tSample']</cite> is used implicitly. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.slayer.src.s2lWrapper.Network.shareResources">
+<code class="sig-name descname"><span class="pre">shareResources</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.s2lWrapper.Network.shareResources" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk_modules.slayer.src.s2lWrapper.s2lDataset">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.slayer.src.s2lWrapper.</span></code><code class="sig-name descname"><span class="pre">s2lDataset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.slayer.src.s2lWrapper.s2lDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class that wraps a generic dataset object to a suitable form compatible with
+<cite>slayer2loihi</cite> spike injection mechanism. The generic dataset object must return
+a numpy event (x,y,p,t in ms) format when indexed with the sample index and
+the number of samples when queried with <cite>len()</cite>. Normally, the generic dataset classed defined
+during SLAYER training is supposed to be reused.</p>
+<p>A list of the lables of the samples is stored in <cite>labels</cite> member as the dataset is indexed. This can
+be used to find the ground truth labels to evaluate the network accuracy. Note: it is
+up to the user to reset the <cite>labels</cite> member after every epoch (the network is expected
+to be run for one epoch only during inference).</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nxsdk_modules.slayer.src</span> <span class="k">as</span> <span class="nn">nxSlayer</span>
+<span class="kn">from</span> <span class="nn">my_dataset</span> <span class="kn">import</span> <span class="n">MyDataset</span> <span class="c1"># user&#39;s custom basic dataset</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">nxSlayer</span><span class="o">.</span><span class="n">auto</span><span class="o">.</span><span class="n">s2lDataset</span><span class="p">(</span><span class="n">MyDataset</span><span class="p">(</span><span class="o">&lt;</span><span class="n">parms_for_mydataset</span><span class="o">&gt;</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="slic.html" class="btn btn-neutral float-right" title="SLIC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="jupyter/tutorial_path_planning.html" class="btn btn-neutral float-left" title="Path Planning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

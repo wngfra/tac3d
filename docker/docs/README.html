@@ -1,0 +1,3592 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>NxSDK Release History &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="NxSDK Performance Test Suite" href="performance-suite.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NxSDK Release History</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">1.0.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-features-improvements">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general">General</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxsdk-modules">NxSDK Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#known-issues">Known Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-1">0.9.9</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-1">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general-1">General</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxsdk-modules-1">NxSDK Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#known-issues-1">Known Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-2">0.9.8</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-2">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general-2">General</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxnet">NxNet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxsdk-modules-2">NxSDK Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxcore">NxCore</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#known-issues-2">Known Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#major-bug-fixes-for-release">Major bug fixes for release</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-3">0.9.5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-3">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general-3">General</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxnet-1">NxNet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxsdk-modules-3">NxSDK Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxcore-1">NxCore</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-changes-deprecations">API Changes/Deprecations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#known-issues-3">Known Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#major-bug-fixes-for-release-1">Major bug fixes for release</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-4">0.9.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-4">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general-4">General</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxnet-2">NxNet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxsdk-modules-4">NxSDK Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxcore-2">NxCore</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-changesdeprecations-1">API Changes/Deprecations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#major-bug-fixes-for-release-2">Major bug fixes for release</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-5">0.8.7</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-5">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nxnet-3">NxNet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxcore-3">NxCore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#general-5">General</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-changesdeprecations-2">API Changes/Deprecations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#major-bug-fixes-for-release-3">Major bug fixes for release</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-6">0.8.5.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-6">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nxcore-4">NxCore</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-7">0.8.5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-7">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nxnet-4">NxNet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxcore-5">NxCore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#general-6">General</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-changesdeprecations-3">API Changes/Deprecations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#major-bug-fixes-for-release-4">Major bug fixes for release</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-8">0.8.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-8">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nxnet-5">NxNet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#general-7">General</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-9">0.8.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-9">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nxnet-6">NxNet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxcore-6">NxCore</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#major-bug-fixes-for-release-5">Major bug fixes for release</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#known-issues-4">Known Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-changesdeprecations-4">API Changes/Deprecations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-10">0.7.5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-10">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nxnet-7">NxNet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxcore-7">NxCore</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#major-bug-fixes-for-release-6">Major bug fixes for release</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-changesdeprecations-5">API Changes/Deprecations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-11">0.7.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#major-bug-fixes-for-release-7">Major bug fixes for release</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#known-issues-5">Known Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#any-new-supported-platforms-hardware">Any new/supported platforms/Hardware</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-12">0.7.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tutorials">Tutorials</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#jupyter-tutorials-ipython-notebooks">Jupyter Tutorials (IPython Notebooks)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python-tutorials">Python Tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#to-view-documentation">To View Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#release-notes-0-7-0">Release Notes 0.7.0</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new-featuresimprovements-11">New Features/Improvements</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#major-bug-fixes-for-release-8">Major bug fixes for release</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#any-newsupported-platformshardware-1">Any new/supported platforms/Hardware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-changesdeprecations-6">API Changes/Deprecations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-13">0.5.5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#to-view-documentation-1">To View Documentation:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#release-notes-0-5-5">Release Notes 0.5.5</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new-featuresimprovements-12">New Features/Improvements</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-14">0.5.4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-13">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nxnet-10">NxNet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxcore-9">NxCore</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#major-bug-fixes-for-release-9">Major bug fixes for release</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-15">0.5.3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-14">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nxnet-11">NxNet</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#known-issues-limitations">Known issues/limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#major-bug-fixes-for-release-10">Major bug fixes for release</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-16">0.5.2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-15">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nxnet-12">NxNet</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#known-issueslimitations-1">Known issues/limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#major-bug-fixes-for-release-11">Major bug fixes for release</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-17">0.5.1</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-16">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nxnet-13">NxNet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxcore-10">NxCore</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#known-issues-6">Known Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#major-bug-fixes">Major Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#section-18">0.5</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#new-featuresimprovements-17">New Features/Improvements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nxnet-14">NxNet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nxcore-11">NxCore</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#known-issues-7">Known Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#major-bug-fixes-1">Major Bug Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#new-supported-platforms-hardware">New supported platforms/Hardware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-changesdeprecations-7">API Changes/Deprecations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>NxSDK Release History</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="nxsdk-release-history">
+<h1>NxSDK Release History<a class="headerlink" href="#nxsdk-release-history" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2>1.0.0<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-features-improvements">
+<h3>New Features/Improvements<a class="headerlink" href="#new-features-improvements" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="general">
+<h4>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>lakemont_driver has been re-named to nx</p></li>
+<li><p>Timestamps for time and energy probes are collected on x86 cores
+between tStart and tEnd, as indicated in the probe condition,
+reducing the number of times the x86 and host must sync.</p></li>
+<li><p>Boot-up times accelerated by initializing only used chips and
+powering down the unused cores.</p></li>
+<li><p>Energy probes on Kapoho Bay now include start and end temperatures
+(all timesteps in between will return NaN to indicate no valid
+temerature reading)</p></li>
+<li><p>Fixed a bug where the number of unique axonal delays per core was
+artificially limited by NxSDK</p></li>
+<li><p>The location of N2Board has changed. It must now be imported from
+nxsdk.arch.n2a.n2board, or through the N2A API as
+nxsdk.api.n2a.NxBoard</p></li>
+<li><p>The syntax board.n2Chips[].n2Cores[] is still supported for now, but
+will give a deprecation warning because the syntax is changing to
+board.nxChips[].nxCores[] to make changing between chip and core
+versions easier</p></li>
+</ul>
+</div>
+<div class="section" id="nxsdk-modules">
+<h4>NxSDK Modules<a class="headerlink" href="#nxsdk-modules" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>NxSlayer auto modules: Release of NxSlayer auto modules that enable
+seamless network creation and execution of SLAYER-Loihi trained
+models in Loihi hardware. The auto modules are available as
+<code class="docutils literal notranslate"><span class="pre">nxSlayer.auto.{s2lDataset,</span> <span class="pre">Network}</span></code></p></li>
+<li><p>NxSlayer benchmarking module: Utililty to create multiple copies of
+NxSlayer auto network and replicate it over multiple Loihi chips for
+accurate energy benchmarking. It is available as
+<code class="docutils literal notranslate"><span class="pre">nxSlayer.benchmark.MultiChipNetwork</span></code></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="known-issues">
+<h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="section-1">
+<span id="id2"></span><h2>0.9.9<a class="headerlink" href="#section-1" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-1">
+<span id="id3"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="general-1">
+<span id="id4"></span><h4>General<a class="headerlink" href="#general-1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Power Telemetry measurement for Kapoho Bay is now supported</p></li>
+</ul>
+</div>
+<div class="section" id="nxsdk-modules-1">
+<span id="id5"></span><h4>NxSDK Modules<a class="headerlink" href="#nxsdk-modules-1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>KNN : Release of the approximate nearest neighbor module accompanying
+the paper: E. Paxon Frady, Garrick Orchard, David Florey, Nabil Imam,
+Ruokun Liu, Joyesh Mishra, Jonathan Tse, Andreas Wild, Friedrich T.
+Sommer, and Mike Davies. 2020. Neuromorphic Nearest Neighbor Search
+Using Intel’s Pohoiki Springs. In Proceedings of the Neuro-inspired
+Computational Elements Workshop (NICE ’20). Association for Computing
+Machinery, New York, NY, USA, Article 23, 1–10.
+DOI:https://doi.org/10.1145/3381755.3398695</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="known-issues-1">
+<span id="id6"></span><h3>Known Issues<a class="headerlink" href="#known-issues-1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>The frequency at which energy measurements are obtained on Kapoho Bay
+is significantly lower than for Nahuku32, so some workloads need to
+be run for more timesteps to get enough energy measurements for
+automatic calculation of dynamic power consumption</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-2">
+<span id="id7"></span><h2>0.9.8<a class="headerlink" href="#section-2" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-2">
+<span id="id8"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-2" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="general-2">
+<span id="id9"></span><h4>General<a class="headerlink" href="#general-2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>NxSDK Support for Pohoiki Springs</p></li>
+<li><p>Power Telemetry measurement for Pohoiki Springs</p></li>
+<li><p>When using energy probes on Pohoiki Springs, LMT option platform-args
+must be set to specify the column to probe. This can be set through
+the command line arguments via
+<code class="docutils literal notranslate"><span class="pre">LMTOPTIONS=[--platform-args=&quot;&lt;relative_column&gt;/&lt;total_columns&gt;/&lt;absolute_column&gt;&quot;]</span></code>
+or through board.options. For example
+<code class="docutils literal notranslate"><span class="pre">LMTOPTIONS=[--platform-args=&quot;0/1/0&quot;]</span></code> ,
+<code class="docutils literal notranslate"><span class="pre">LMTOPTIONS=[--platform-args=&quot;0/1/1&quot;]</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">LMTOPTIONS=[--platform-args=&quot;0/1/2&quot;]</span></code> will probe the leftmost
+column, middle column and rightmost column, respectively.</p></li>
+<li><p>Added support for all python versions by removing the pyc
+precompilation step during pip packaging</p></li>
+</ul>
+</div>
+<div class="section" id="nxnet">
+<h4>NxNet<a class="headerlink" href="#nxnet" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>enableDelay attributed in Connection and ConnectionPrototype has been
+replaced by disableDelay. If disableDelay is set to True, then delay
+is not used as a synaptic delay but a general purpose variable for
+learning only.</p></li>
+<li><p>Added compiler support for synaptic tag variables to allow
+specification of initial tag values.</p></li>
+</ul>
+</div>
+<div class="section" id="nxsdk-modules-2">
+<span id="id10"></span><h4>NxSDK Modules<a class="headerlink" href="#nxsdk-modules-2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Spike Input Generator module has been released for the Composable
+Framework (can be found in the Github repo)</p></li>
+<li><p>Spike Input Streamer provides a means to inject spikes into a model
+at deterministic times while the model is running on Loihi.</p></li>
+</ul>
+</div>
+<div class="section" id="nxcore">
+<h4>NxCore<a class="headerlink" href="#nxcore" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>A new snip phase <code class="docutils literal notranslate"><span class="pre">EMBEDDED_REMOTE_MGMT</span></code> allows code to be remotely
+triggered by pre-emption.</p></li>
+<li><p>Upper limit of user channels which can be created has been increased
+to 1024</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="known-issues-2">
+<span id="id11"></span><h3>Known Issues<a class="headerlink" href="#known-issues-2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Energy probes for Pohoiki Springs will not be recording temperature.
+This feature will be removed across all hardware in future as it adds
+no meaningful insight.</p></li>
+<li><p>Static power measurement across Pohoiki Springs boards should be
+ignored for now.</p></li>
+</ul>
+</div>
+<div class="section" id="major-bug-fixes-for-release">
+<h3>Major bug fixes for release<a class="headerlink" href="#major-bug-fixes-for-release" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>DVS module’s addSpikes() function now correctly configures x86 cores
+to receive spikes from the host instead of expecting a live hardware
+interface from DAVIS240C.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-3">
+<span id="id12"></span><h2>0.9.5<a class="headerlink" href="#section-3" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-3">
+<span id="id13"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="general-3">
+<span id="id14"></span><h4>General<a class="headerlink" href="#general-3" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Introduced a flag in /etc/nx/board.conf to hint whether a board
+supports power measurement or not (“supportsPowerMeasurement”:“false”
+or “true”). If this flag does not exist, the default behaviour is
+true.</p></li>
+<li><p>Few modules such as EPL, DNN and Loihi backend for SNNToolbox have
+been moved out to external github
+<a class="reference external" href="https://github.com/intel-nrc-ecosystem">https://github.com/intel-nrc-ecosystem</a>.</p></li>
+<li><p>Optimized barrier sync algorithm which will lead to reduction in time
+per time step and lower energy consumption in some cases.</p></li>
+</ul>
+</div>
+<div class="section" id="nxnet-1">
+<span id="id15"></span><h4>NxNet<a class="headerlink" href="#nxnet-1" title="Permalink to this headline">¶</a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Jupyter Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>u_join_op_in_multi-
+compartment_neuron.
+ipynb</p></td>
+<td><p>Compartment
+settings</p></td>
+<td><p>This tutorial
+demonstrates
+the different
+joint
+operations in
+a
+multi-compart
+ment
+neuron.</p></td>
+<td><p>Multi-co
+mpartmen
+t
+neuron</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="nxsdk-modules-3">
+<span id="id16"></span><h4>NxSDK Modules<a class="headerlink" href="#nxsdk-modules-3" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Documentation for the SNN-Toolbox backend for Loihi (See NxSDK
+Modules -&gt; DNN).</p></li>
+<li><p>Several bug fixes of the SNN-Toolbox backend and NxTF.</p></li>
+<li><p>Overhauled ANN to SNN conversion now supporting different activation
+behaviors (reset-to-zero, reset-by-subtraction, saturation).
+Especially reset-by-subtraction allows for higher accuracy.</p></li>
+<li><p>Complete integration of InputGenerator with NxModel for faster input
+injection.</p></li>
+<li><p>New end to end tutorial for CIFAR-10 from network setup and training
+to conversion with the SNN-Toolbox and fast inference with the
+InputGenerator.</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Jupyter Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>a_image_classificat
+ion_mnist.ipynb</p></td>
+<td><p>DNN</p></td>
+<td><p>Demonstrate
+running DNN
+and
+Composability
+on Loihi on
+MNIST data</p></td>
+<td><p>DNN</p></td>
+</tr>
+<tr class="row-odd"><td><p>b_image_classificat
+ion_cifar.ipynb</p></td>
+<td><p>DNN</p></td>
+<td><p>Demonstrate
+running DNN,
+Composability
+and SNN
+Toolbox on
+Loihi on
+CIFAR10 data</p></td>
+<td><p>DNN</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="nxcore-1">
+<span id="id17"></span><h4>NxCore<a class="headerlink" href="#nxcore-1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Channels in python now support probeChannel. So users can now probe
+the channel to avoid a blocking read (in case of recv channel) or
+blocking write (in case of send channel).</p></li>
+<li><p>Board object exposes a new attribute accessible via
+<code class="docutils literal notranslate"><span class="pre">board.energyTimeMonitor.powerProfileStats</span></code>. This is populated once
+board.disconnect is invoked and stores (as dictionary) resource and
+power utilization of the execution.</p></li>
+<li><p>Execution Time and Energy Probes now use more precise timestamps. So
+using them will increase the memory utilization on lmt 0 chip 0 and
+leave less memory for SNIP scheduled on that specific cpu since this
+release. Other lakemont CPUs are unaffected. If you get linking error
+while compiling snips, please adjust the bin size and buffer size to
+accumulate lesser data.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="api-changes-deprecations">
+<h3>API Changes/Deprecations<a class="headerlink" href="#api-changes-deprecations" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>tracecfggen module has moved to nxsdk/arch/n2a/compiler/tracecfggen</p></li>
+</ul>
+</div>
+<div class="section" id="known-issues-3">
+<span id="id18"></span><h3>Known Issues<a class="headerlink" href="#known-issues-3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Messages sent from chips other than chip 0 to superhost on the last
+timestep of the run might not be delivered. The workaround to fix it
+is to run for 1 extra timestep which ensures all messages are flushed
+correctly before the next timestep starts.</p></li>
+</ul>
+</div>
+<div class="section" id="major-bug-fixes-for-release-1">
+<span id="id19"></span><h3>Major bug fixes for release<a class="headerlink" href="#major-bug-fixes-for-release-1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>A deadlock issue related to channel communication due to race
+condition was fixed. It was primarily observed on KapohoBay.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-4">
+<span id="id20"></span><h2>0.9.0<a class="headerlink" href="#section-4" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-4">
+<span id="id21"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-4" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="general-4">
+<span id="id22"></span><h4>General<a class="headerlink" href="#general-4" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p><strong>NxTF</strong> : Users should be able to create (or port from existing)
+deep neural networks on Loihi. NxTF implements the Keras interface.
+Users can also use SNN Toolbox to port exist DNNs to Loihi.</p></li>
+<li><p><strong>Composability</strong> : Provides an interface to enable modules,
+applications and frameworks to be stitched together and compiled down
+to the NxBoard Graph.</p></li>
+<li><p><strong>Slayer</strong> : Slayer integration has been added within nxsdk_modules.
+It allows to run models pre-trained using slayer on Loihi</p></li>
+<li><p><strong>Embedded Execution Engine</strong> : A new execution engine to run on
+embedded platform with minimum memory requirements</p></li>
+<li><p>Concurrent Host Snips are now available for users to run concurrent
+execution on host while neurocore execution is in progress</p></li>
+<li><p>DVS :</p>
+<ul>
+<li><p>Performance improvement - Access to the snip for users to modify
+the spike injection</p></li>
+</ul>
+</li>
+<li><p>Basic Spike Generator : Optimized the spike gen (5-10x improvement)</p>
+<ul>
+<li><p>Users can specify which LMT it will run on (removing the
+requirement that they are on the same LMT in same phase)</p></li>
+</ul>
+</li>
+<li><p>Dependencies for nxsdk_modules have been moved out of nxsdk into its
+own requirements.txt. Hence, you might need to optionally run
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">nxsdk-apps/nxsdk_modules/requirements.txt</span></code> to fetch
+dependencies for some of these modules.</p></li>
+<li><p>Optimized barrier sync algorithm which will lead to reduction in time
+per time step and lower energy consumption in some cases.</p></li>
+</ul>
+</div>
+<div class="section" id="nxnet-2">
+<span id="id23"></span><h4>NxNet<a class="headerlink" href="#nxnet-2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>NxSDK compiler now supports user specified custom partitioners and
+mappers. A custom partitioner and mapper can be individually
+specified for each network in a network tree.</p></li>
+<li><p>Updated documentation for APIs to use and query resource maps</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Jupyter Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>s_multicx_neuron_se
+lf_reward.ipynb</p></td>
+<td><p>Mutlicompartment
+neurons, reward
+channels</p></td>
+<td><p>This tutorial
+illustrates
+learning a
+synaptic
+weight to
+synchronise
+spiking of
+soma and
+dendrite
+compartments</p></td>
+<td><p>NxNet</p></td>
+</tr>
+<tr class="row-odd"><td><p>t_vMinExp_and_vMaxE
+xp.ipynb</p></td>
+<td><p>Compartment
+settings</p></td>
+<td><p>This tutorial
+demonstrates
+the usage of
+vMaxExp and
+vMinExp in
+compartments</p></td>
+<td><p>NxNet</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Python Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>tutorial_26_concur
+rent_host_snips_wi
+th_yarp_integratio
+n</p></td>
+<td><p>Host Snips</p></td>
+<td><p>This tutorial
+demonstrates
+using yarp
+ports with
+concurrent
+host snips.</p></td>
+<td><p>Snips</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="nxsdk-modules-4">
+<span id="id24"></span><h4>NxSDK Modules<a class="headerlink" href="#nxsdk-modules-4" title="Permalink to this headline">¶</a></h4>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Jupyter Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>nxsdk_modules/dnn/t
+utorials/a_nxtf_par
+titioning_mapping</p></td>
+<td><p>DNN mapping</p></td>
+<td><p>This tutorial
+demonstrates
+how to use
+the NxTF
+framework to
+partition a
+DNN for
+Loihi.</p></td>
+<td><p>NxTF</p></td>
+</tr>
+<tr class="row-odd"><td><p>nxsdk_modules/dnn/t
+utorials/b_nxtf_mni
+st</p></td>
+<td><p>DNN mapping</p></td>
+<td><p>This tutorial
+demonstrates
+how to use
+the NxTF
+framework to
+run a DNN on
+Loihi.</p></td>
+<td><p>NxTF</p></td>
+</tr>
+<tr class="row-even"><td><p>nxsdk_modules/dnn/t
+utorials/c_snntb_mn
+ist</p></td>
+<td><p>DNN mapping</p></td>
+<td><p>This tutorial
+demonstrates
+how to use
+the SNN
+Toolbox to
+run a DNN on
+Loihi.</p></td>
+<td><p>NxTF</p></td>
+</tr>
+<tr class="row-odd"><td><p>nxsdk_modules/dnn/t
+utorials/d_mnist_us
+ing_composables</p></td>
+<td><p>Composables</p></td>
+<td><p>This tutorial
+demonstrates
+how to use
+the
+composability
+interface to
+compose DNN
+with Input
+Generator and
+run the MNIST
+network on
+Loihi.</p></td>
+<td><p>NxTF</p></td>
+</tr>
+<tr class="row-even"><td><p>nxsdk_modules/slaye
+r/tutorials/nmnist/
+NMNIST</p></td>
+<td><p>SLAYER fully
+connected</p></td>
+<td><p>This tutorial
+demonstrates
+how to run a
+SLAYER-traine
+d
+fully
+connected
+model on
+Loihi.</p></td>
+<td><p>SLAYER</p></td>
+</tr>
+<tr class="row-odd"><td><p>nxsdk_modules/slaye
+r/tutorials/gesture
+/gesture</p></td>
+<td><p>SLAYER convnet</p></td>
+<td><p>This tutorial
+demonstrates
+how to run a
+SLAYER-traine
+d
+convolutional
+model on
+Loihi.</p></td>
+<td><p>SLAYER</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="nxcore-2">
+<span id="id25"></span><h4>NxCore<a class="headerlink" href="#nxcore-2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p><strong>Embedded Execution</strong>: Use board.generateEEEArtifacts() to package
+and distribute execution artifact to be run in an embedded
+environment. This is primarily useful when the only interaction is
+via host snips (All communication and execution happen between host
+and neurocores/lmt)</p></li>
+<li><p>Serialization/Deserialization performance has been improved by using
+binary format. This makes board.dumpNeuroCores(…) and
+board.dumpNeuroCores(…) faster</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Python Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>tutorial_22_host_s
+nips_with_yarp_int
+egration</p></td>
+<td><p>Host Snips</p></td>
+<td><p>This tutorial
+demonstrates
+using yarp
+ports with
+host snips.</p></td>
+<td><p>Snips</p></td>
+</tr>
+<tr class="row-odd"><td><p>tutorial_23_host_s
+nips_with_ros_inte
+gration</p></td>
+<td><p>Host Snips</p></td>
+<td><p>This tutorial
+demonstrates
+using ros
+with host
+snips.</p></td>
+<td><p>Snips</p></td>
+</tr>
+<tr class="row-even"><td><p>tutorial_24_contro
+l_loop_using_rospy</p></td>
+<td><p>Snips</p></td>
+<td><p>This tutorial
+demonstrates
+using ros
+with channels
+from
+superhost
+useful for
+proto-typing
+with ROS.</p></td>
+<td><p>Snips</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="api-changesdeprecations-1">
+<span id="id26"></span><h3>API Changes/Deprecations<a class="headerlink" href="#api-changesdeprecations-1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Custom partitioners that partitioned an entire network tree is no
+longer supported. Custom partitioners are now specified on a per
+NxNet object level.</p></li>
+<li><p>In createChannel : elementType would be deprecated in 0.9 in favor of
+messageSize, which provides more flexibility of specifying size of a
+message.</p></li>
+</ul>
+</div>
+<div class="section" id="major-bug-fixes-for-release-2">
+<span id="id27"></span><h3>Major bug fixes for release<a class="headerlink" href="#major-bug-fixes-for-release-2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Fixed the slowness issue while loading neurocores
+(board.loadNeuroCores) on KapohoBay</p></li>
+<li><p>Fixed a bug related to logical id spilling over core boundary</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-5">
+<span id="id28"></span><h2>0.8.7<a class="headerlink" href="#section-5" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-5">
+<span id="id29"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-5" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="nxnet-3">
+<span id="id30"></span><h4>NxNet<a class="headerlink" href="#nxnet-3" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">epl</span></code> : EPL module now works for multi-pattern learning and has an
+updated Jupyter notebook tutorial which shows how the EPL network can
+learn and recall not only odors but also images. EPL is a
+neuromorphic one-shot learning algorithm which can learn and recall
+patterns using a spatio-temporal attractor network inspired by the
+neural circuitry of the external plexiform layer (EPL) of the
+mammalian olfactory bulb.</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Python Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>tutorial_25_sequen
+tial_host_snips</p></td>
+<td><p>Host Snips</p></td>
+<td><p>This tutorial
+demonstrates
+how to setup
+sequential
+host snips,
+provide
+implementatio
+n
+and
+scheduling
+and connect
+them to
+embedded
+snips via
+channels</p></td>
+<td><p>Snips</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="nxcore-3">
+<span id="id31"></span><h4>NxCore<a class="headerlink" href="#nxcore-3" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>N2Board and N2Chip now expose various methods for allocating chips
+and cores on demand (not only during N2Board setup) at manually or
+automatically determined mesh locations. Manually determine mesh
+locations can be specified by (x, y, p) address or logical core
+index.</p></li>
+</ul>
+</div>
+<div class="section" id="general-5">
+<span id="id32"></span><h4>General<a class="headerlink" href="#general-5" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Board supports creation of host snips in sequential and concurrent
+mode. See documentation for further detail on host snips api.</p></li>
+<li><p>Improved live DVS support. Users can now write their own snips to
+receive live DVS spikes and inject them into their model.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="api-changesdeprecations-2">
+<span id="id33"></span><h3>API Changes/Deprecations<a class="headerlink" href="#api-changesdeprecations-2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>board.createProcess API is being deprecated. Use board.createSnip
+instead.</p></li>
+<li><p>board.n2Chips[k].n2Cores now returns a dict mapping the logical core
+index to the n2Core object instead of a list of n2Core objects. This
+is to support the ability to allocate cores at arbitrary mesh
+locations. A list of allocated n2Core objects can be accessed through
+board.n2Chips[k].n2CoresAsList.</p></li>
+<li><p>net.createDVSSpikeGenProcess API is being deprecated. Use the DVS
+module instead. See the DVS module tutorial for an example.</p></li>
+</ul>
+</div>
+<div class="section" id="major-bug-fixes-for-release-3">
+<span id="id34"></span><h3>Major bug fixes for release<a class="headerlink" href="#major-bug-fixes-for-release-3" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="section-6">
+<span id="id35"></span><h2>0.8.5.1<a class="headerlink" href="#section-6" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-6">
+<span id="id36"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="nxcore-4">
+<span id="id37"></span><h4>NxCore<a class="headerlink" href="#nxcore-4" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Synapse sharing between discrete axons</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="section-7">
+<span id="id38"></span><h2>0.8.5<a class="headerlink" href="#section-7" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-7">
+<span id="id39"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="nxnet-4">
+<span id="id40"></span><h4>NxNet<a class="headerlink" href="#nxnet-4" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Composable networks</p></li>
+<li><p>Connection sharing (i.e. synapse sharing)</p></li>
+<li><p>Following modules have been added under nxsdk_modules (Each module
+comes with tutorials to demonstrate applications or re-usable feature
+set)</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">noise</span> <span class="pre">filter</span></code> : Performs noise filtering on a DVS stream.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dvs</span></code> : Provides an interface to DVS sensors. Currently only
+supports the DAVIS240C.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">trace</span> <span class="pre">injection</span></code> : A module showing how non-local information
+can be injected into traces available to the learning rules.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span> <span class="pre">planning</span></code> : Path planning model is based on the planning
+algorithm modeled after the operational principles of hippocampal
+place cells. The algorithm infers associations between neurons in
+a network from the asymmetric effects of STDP on a propagating
+sequence of spikes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">epl</span></code> : A neuromorphic one-shot learning algorithm which can
+learn and recall patterns using a spatio-temporal attractor
+network inspired by the neural circuitry of the external plexiform
+layer (EPL) of the mammalian olfactory bulb.</p></li>
+</ul>
+</li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Jupyter Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>p_composable_networ
+ks.ipynb</p></td>
+<td><p>Composable
+networks</p></td>
+<td><p>This tutorial
+illustrates
+how to
+connect
+multiple
+NxNet objects</p></td>
+<td><p>NxNet</p></td>
+</tr>
+<tr class="row-odd"><td><p>q_connection_sharin
+g.ipynb</p></td>
+<td><p>Connection sharing</p></td>
+<td><p>This tutorial
+illustrates
+the use of
+shared
+connections</p></td>
+<td><p>NxNet</p></td>
+</tr>
+<tr class="row-even"><td><p>r_stubs_and_netmodu
+les.ipynb</p></td>
+<td><p>Stubs and
+NetModules</p></td>
+<td><p>This tutorial
+illustrates
+the use of
+connection
+stubs and
+making a
+module</p></td>
+<td><p>NxNet</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="nxcore-5">
+<span id="id41"></span><h4>NxCore<a class="headerlink" href="#nxcore-5" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Axon Compiler now supports remote population axons</p></li>
+<li><p>BasicSpikeGenerator now supports pop16 and pop32 spike type</p></li>
+</ul>
+</div>
+<div class="section" id="general-6">
+<span id="id42"></span><h4>General<a class="headerlink" href="#general-6" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Several improvements in transfer performance (Network/IO) should
+speed up data transfer. Speedup has been observed in configuring
+chips/registers and probe post-processing.</p></li>
+<li><p>Speed and memory use for creating large compartment groups and
+connection groups have both been significantly improved.</p></li>
+<li><p>SpikeOutputPorts allow fast communication of spikes from Loihi to a
+pipe on the host when using Kapoho Bay</p></li>
+<li><p>Improved DVS support for Kapoho Bay</p></li>
+<li><p>Support for custom partitioners</p></li>
+<li><p>Setup instructions have been updated for KapohoBay and boards which
+are maintained outside INRC. Please revisit getting started guides</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="api-changesdeprecations-3">
+<span id="id43"></span><h3>API Changes/Deprecations<a class="headerlink" href="#api-changesdeprecations-3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>NxNet.createConnection(src, dst, …) and
+NxNet.createConnectionGroup(src, dst, …) are no longer supported. The
+supported way to create connections is src.connect(dst, …).</p></li>
+<li><p>nx.ConnectionGroup(…), nx.CompartmentGroup(…), and nx.NeuronGroup(…)
+have been deprecated. The supported method for creating these groups
+is net.createConnectionGroup(…), net.createCompartmentGroup(…), and
+net.createNeuronGroup(…)</p></li>
+<li><p>Spike Probes will only start accumulating spikes only after tstart
+has been configured and any previous spikes are discarded.</p></li>
+<li><p>Synapse recompilation is not supported. Re-encoding should be done
+via SNIPs which provide a faster way for re-configuration.</p></li>
+<li><p>The group id property (for example, CompartmentGroup.id) has been
+renamed to groupId (i.e. CompartmentGroup.groupId) to avoid confusion
+with python id() function.</p></li>
+<li><p>nxDriver is deprecated as a property of Graph/N2Board. Instead please
+use board.executor.</p></li>
+<li><p>startDriver is being deprecated. Instead please use board.start.</p></li>
+<li><p>Spike Generators have been moved within nxsdk.graph.nxinputgen
+module. For e.g. to import BasicSpikeGenerator you would <strong>import
+nxsdk.graph.nxinputgen.nxinputgen.BasicSpikeGenerator</strong>.</p></li>
+<li><p>Spike Receivers will now only send incremental data since the last
+invocation.</p></li>
+<li><p>board.dump() and board.load() have been renamed to
+board.dumpNeuroCores() and board.loadNeuroCores() respectively.</p></li>
+<li><p>The DVS noise filter interface has changed. See the corresponding
+tutorials for examples of how to use it.</p></li>
+</ul>
+</div>
+<div class="section" id="major-bug-fixes-for-release-4">
+<span id="id44"></span><h3>Major bug fixes for release<a class="headerlink" href="#major-bug-fixes-for-release-4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Add proper handling when a compartment prototype is used multiple
+times in a compartment prototype tree (neuron API)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-8">
+<span id="id45"></span><h2>0.8.1<a class="headerlink" href="#section-8" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-8">
+<span id="id46"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-8" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="nxnet-5">
+<span id="id47"></span><h4>NxNet<a class="headerlink" href="#nxnet-5" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Compilation and network creation optimizations</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Jupyter Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a href="#id102"><span class="problematic" id="id103">o_snip_for_reading_</span></a>
+lakemont_spike_coun
+t.ipynb</p></td>
+<td><p>spikes count</p></td>
+<td><p>This tutorial
+illustrates
+the use of
+spike probes
+to capture
+the spikes
+count from
+lakemont via
+SNIP</p></td>
+<td><p>SNIP</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="general-7">
+<span id="id48"></span><h4>General<a class="headerlink" href="#general-7" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Added test_pio.bin to test defects on parallel IO (PIO) links and
+validate chip-to-chip PIO links</p></li>
+<li><p>Improved DVS integration</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="section-9">
+<span id="id49"></span><h2>0.8.0<a class="headerlink" href="#section-9" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-9">
+<span id="id50"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-9" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="nxnet-6">
+<span id="id51"></span><h4>NxNet<a class="headerlink" href="#nxnet-6" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Spike Receivers are enabled in NxNet for asynchronous and interactive
+probing of spikes</p></li>
+<li><p>Enhancements were added to performance framework to report phase wise
+distribution including energy metrics and new workloads and
+categories have been added</p></li>
+<li><p>Logging support is now enabled within NxSDK</p></li>
+<li><p>Compiler optimizations to shorten compilation time</p></li>
+<li><p>Addition of the neuron API to simplify the construction of
+multi-compartment neurons. See Neuron and NeuronPrototype
+documentation for details</p></li>
+<li><p>Energy probes are now enabled on all platforms (WM, Nahuku) except
+KapohoBay (USB)</p></li>
+<li><p>Improved stability and speedup of NxSDK on KapohoBay (USB)</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Jupyter Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>i_performance_profi
+ling.ipynb</p></td>
+<td><p>Performance
+Profiling
+(Execution Time
+and Energy)</p></td>
+<td><p>This tutorial
+demonstrates
+how to
+measure the
+performance
+of your
+networks from
+the
+perspective
+of time,
+energy and
+power
+utilization
+as well as
+phase-wise
+distribution</p></td>
+<td><p>Probes</p></td>
+</tr>
+<tr class="row-odd"><td><p>j_soft_reset_net.ip
+ynb</p></td>
+<td><p>neuron API</p></td>
+<td><p>This tutorial
+demonstrates
+soft reset
+membrane
+voltage at
+NxNet level
+using neuron
+API</p></td>
+<td><p>NxNet</p></td>
+</tr>
+<tr class="row-even"><td><p>k_interactive_spike
+_sender_receiver.ip
+ynb</p></td>
+<td><p>Interactive
+SpikeGen and Spike
+Receiver</p></td>
+<td><p>This tutorial
+demonstrates
+how to set up
+spike
+generators
+(basic and
+interactive)
+which enable
+to send
+stimuli both
+before and
+during the
+run. It also
+highlights
+the use of
+Spike
+Receivers to
+receive
+spikes in a
+non-blocking
+manner during
+the run</p></td>
+<td><p>Spike
+Injectio
+n,
+Probes</p></td>
+</tr>
+<tr class="row-odd"><td><p>l_snip_for_compartm
+ent_setup_with_NxNe
+t_C.ipynb</p></td>
+<td><p>NxNet C API</p></td>
+<td><p>This tutorial
+demonstrates
+how to use
+NxNet C API
+to setup
+compartments</p></td>
+<td><p>SNIP</p></td>
+</tr>
+<tr class="row-even"><td><p>m_independent_netwo
+rks_in_same_run.ipy
+nb</p></td>
+<td><p>networks</p></td>
+<td><p>This tutorial
+demonstrates
+that several
+independent
+and
+disconnected
+networks can
+be configured
+in the same
+run</p></td>
+<td><p>NxNet</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="nxcore-6">
+<span id="id52"></span><h4>NxCore<a class="headerlink" href="#nxcore-6" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Snips can now run on any lakemont on any chip provided, number of
+chips allocated &gt; chipId for the snip.</p></li>
+<li><p>Added Tutorial 21 demonstrating the multi-lmt snips api.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="major-bug-fixes-for-release-5">
+<span id="id53"></span><h3>Major bug fixes for release<a class="headerlink" href="#major-bug-fixes-for-release-5" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Deadlock arising from incorrect packing of synapses when learning is
+enabled has been fixed. This fix was a regression in 0.7.5 where a
+fix was put in to syn pack/unpack mechanism.</p></li>
+<li><p>Memory leaks in probes has been fixed on host</p></li>
+<li><p>Fixed a problem where, depending on the compartment ordering,
+compartment voltage may have non-zero decay even though voltage decay
+is set to 0.</p></li>
+<li><p>Issue with using the spike generator to send spikes selectively
+across multiple net.run invocations has been fixed.</p></li>
+</ul>
+</div>
+<div class="section" id="known-issues-4">
+<span id="id54"></span><h3>Known Issues<a class="headerlink" href="#known-issues-4" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p>In certain circumstances, compressionMode = DENSE can cause undefined
+behavior. We recommend not specifying dense mode unless you truly
+need it.</p></li>
+<li><p>Due to limited memory availability on the embedded device (Lakemont),
+allocating large memory segments within SNIPs might result in a
+linking error such as</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>collect2: error: ld returned 1 exit status
+/usr/bin/ld: temp/launcher.link section `.data&#39; will not fit in region `DTCM&#39;
+/usr/bin/ld: region `DTCM&#39; overflowed by 472005 bytes
+</pre></div>
+</div>
+<p>Reduce the memory utilization or use efficient packing protocols to
+create your data structures. If you are getting these errors while
+using execution time/energy probes, use binning with appropriate bin
+size.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="api-changesdeprecations-4">
+<span id="id55"></span><h3>API Changes/Deprecations<a class="headerlink" href="#api-changesdeprecations-4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>NxSDK module layout has been refactored to support new generations of
+hardware. Common code was moved to the base level of the module. Some
+user code might need to modify their imports if they are using these
+sub-modules (nxsdk.arch.n2a.compiler -&gt; nxsdk.compiler,
+nxsdk.arch.n2a.graph -&gt; nxsdk.graph and so on).</p></li>
+<li><p>Removed chipGen parameter from NxCore board.run interface. Chip
+generation is now automatically configured.</p></li>
+<li><p>avoid-deadlock is removed from list of valid compiler options.</p></li>
+<li><p>Learning rule specification using bracket expressions, i.e. (v+C),
+requires expanding out the terms for certain ranges of C values. See
+Specifying a Learning Rule documentation for details.</p></li>
+<li><p>ChipId is now a 3D structure with x,y,z fields, while the id union
+remains 14 bits. This will better support the topology of the
+upcoming Poihiki Springs systems.</p></li>
+<li><p>Various <a href="#id104"><span class="problematic" id="id105">nx_sw_</span></a>* and <a href="#id106"><span class="problematic" id="id107">nx_ne_</span></a>* functions are renamed to <a href="#id108"><span class="problematic" id="id109">nx_min_</span></a>* and
+<a href="#id110"><span class="problematic" id="id111">nx_max_</span></a>* for improved clarity with the 3D coordinates.</p></li>
+<li><p>The nx_phys_chipid/nx_phys_coreid functions are deprecated, replaced
+by nx_nth_chipid/nx_nth_coreid. The new functions return ChipId or
+CoreId’s id fields that increase monotonically with n. That is, the
+order in which chips are connected on the FPIO serial chain is now
+hidden. Therefore nx_nth_chipid(0) will always be nx_min_chipid() and
+nx_nth_chipid(nx_num_chips()-1) will always be nx_max_chipid()
+Requesting an out-of-bounds core or chip will exit with an error.</p></li>
+<li><p>runState structure’s fields, time and nsteps have been renamed to
+time_step and total_steps respectively.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-10">
+<span id="id56"></span><h2>0.7.5<a class="headerlink" href="#section-10" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-10">
+<span id="id57"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-10" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="nxnet-7">
+<span id="id58"></span><h4>NxNet<a class="headerlink" href="#nxnet-7" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Enable “useDiscreteVTh” parameter in compartment prototype. This
+parameter should be enabled if many different threshold voltages are
+set in a given core.</p></li>
+<li><p>Enable “axonDelay” parameter in compartment prototype to set the axon
+delay.</p></li>
+<li><p>Added runAsync and stop (abort) API to NxNet for interactive
+processing.</p></li>
+<li><p>NxNet supports InteractiveSpikeGenProcess to send spikes during
+runtime (post compilation).</p></li>
+<li><p>Added support for saving and loading the state of the board
+(serialization and deserialization)</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Python Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>tutorial_22_activi
+ty_probe</p></td>
+<td><p>Activity Probe</p></td>
+<td><p>This tutorial
+demonstrates
+how to set up
+activity
+probes to
+monitor
+spikes. The
+SDK offers
+spike probes
+which execute
+faster and
+are easier to
+set up but
+are limited
+by the
+available
+spike
+counters
+limited by
+the number of
+spike
+counters per
+chip. Per
+chip we offer
+around 2400
+counters. As
+a workaround
+for the
+limited
+number of
+spike
+counters per
+chip,
+activity
+probes can be
+used instead.
+Since the
+update of the
+compartment
+activity
+variable is
+bound to the
+threshold
+homeostasis
+feature,
+threshold
+homeostasis
+must be
+enabled. In
+order to
+prevent the
+actual
+threshold to
+change the
+homeostasisGa
+in
+parameter
+must be set
+to zero. In
+addition,
+since the
+activity
+variable is
+modeled as a
+spike trace,
+its decay
+time constant
+must be set
+to a large
+value for it
+to act as a
+spike
+counter.</p></td>
+<td><p>Probes</p></td>
+</tr>
+<tr class="row-odd"><td><p>tutorial_21_dvs_in
+putfile_with_serde</p></td>
+<td><p>Serialization/De-s
+erialization</p></td>
+<td><p>This tutorial
+illustrates
+how to use
+serialization
+/de-serializa
+tion
+to skip pass
+the
+compilation
+phase by
+saving the
+state of the
+board during
+a successful
+run and
+reload it the
+later run.
+DVS tutorial
+is used to
+demonstrate
+this.</p></td>
+<td><p>Utility</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="nxcore-7">
+<span id="id59"></span><h4>NxCore<a class="headerlink" href="#nxcore-7" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Updated NxCore API documentation by adding a section that explains
+the basic object hierachy as well as more detailed register field
+explanations.</p></li>
+<li><p>Add population mode support to axon compiler.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="major-bug-fixes-for-release-6">
+<span id="id60"></span><h3>Major bug fixes for release<a class="headerlink" href="#major-bug-fixes-for-release-6" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>NxNet rewards compilation unexpectedly raises a bounds error when
+more than 4 compartments attempt to share a reward.</p></li>
+<li><p>Synapse compilation error results in unexpected behavior when
+switching between sign modes.</p></li>
+</ul>
+</div>
+<div class="section" id="api-changesdeprecations-5">
+<span id="id61"></span><h3>API Changes/Deprecations<a class="headerlink" href="#api-changesdeprecations-5" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>In NxNet, the relationship between synaptic “delay” and the
+compartment prototype parameter “numDendriticAccumulators” has been
+updated to properly reflect Loihi behavior. Specifically, for all
+synapses connecting to a given compartment, the maximum synaptic
+“delay” &lt; “numDendriticAccumulators”-1.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-11">
+<span id="id62"></span><h2>0.7.1<a class="headerlink" href="#section-11" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="major-bug-fixes-for-release-7">
+<span id="id63"></span><h3>Major bug fixes for release<a class="headerlink" href="#major-bug-fixes-for-release-7" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Jupyter tutorial for LCA has been fixed to correctly find the
+associated dictionary and input image dataset</p></li>
+<li><p>Version in requirements.txt and setup.py are not pinned to exact
+versions instead allow a range of versions for python dependencies</p></li>
+</ul>
+</div>
+<div class="section" id="known-issues-5">
+<span id="id64"></span><h3>Known Issues<a class="headerlink" href="#known-issues-5" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Networks using more than 2 chips might fail on N2A2 based Kapoho Bay
+which can only support upto 2 Chips at the moment. Such runs might
+hang.</p></li>
+</ul>
+</div>
+<div class="section" id="any-new-supported-platforms-hardware">
+<h3>Any new/supported platforms/Hardware<a class="headerlink" href="#any-new-supported-platforms-hardware" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Software support for N2A2 based Kapoho Bay was added</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-12">
+<span id="id65"></span><h2>0.7.0<a class="headerlink" href="#section-12" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>python 3.5.2</p></li>
+<li><p>pip</p></li>
+<li><p>jupyter (for running IPython notebooks)</p></li>
+</ul>
+<p>We highly recommend you to create a virtual environment first.</p>
+<p>If you are working on INRC cloud, these packages are pre-installed. To
+use jupyter within INRC, see <strong>Jupyter Tutorials</strong> section below.</p>
+</div>
+<div class="section" id="setup">
+<h3>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h3>
+<p>NxSDK is now packaged as a pip package. The tutorials, documentation and
+modules are separately distributed as a tarball.</p>
+<p>You may look into the modules to understand how to implement your own
+modules or extend them. Follow the instructions below to install NxSDK.</p>
+<p>Please Note: The same instructions apply while you test NxSDK on Kapoho
+Bay USB device; however as a pre-requisite - you need to download all
+the necessary installation bits to your host machine from the INRC
+Cloud. Follow the instructions you received with Kapoho Bay.</p>
+<ol class="arabic">
+<li><p>The installation bits are located at <strong>/nfs/ncl/releases</strong>. SSH
+into the INRC Cloud and check the contents of this directory:</p>
+<ul class="simple">
+<li><p><strong>ssh user&#64;YOURVM.research.intel-research.net</strong></p></li>
+<li><p><strong>cd /nfs/ncl/releases</strong></p></li>
+</ul>
+<p>Identify the version you want to install. It is recommended to
+install the latest version.</p>
+</li>
+<li><p>There should be 2 packages within the &lt;latest_version&gt; sub-directory:</p>
+<ol class="arabic">
+<li><p><em>nxsdk-&lt;latest_version&gt;.tar.gz</em> - A pip installable tarball to
+install NxSDK</p></li>
+<li><p><em>nxsdk-apps-&lt;latest_version&gt;.tar.gz</em> - Tarball for Jupyter/Python
+based tutorials, complete NxSDK documentation and NxSDK Modules</p>
+<p>Substitute above your username, VM and version information before
+running the next commands.</p>
+</li>
+</ol>
+</li>
+<li><p>Create a virtual environment in your home directory:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">~</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">venv</span> <span class="pre">python3_venv</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">python3_venv/bin/activate</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">pip</span></code></p></li>
+<li><p>Do all following steps within the virtual environment</p></li>
+</ul>
+</li>
+<li><p>Copy Release Artifacts: <strong>cp /nfs/ncl/releases/&lt;latest_version&gt;/*
+.</strong></p></li>
+<li><p>Install NxSDK: <strong>python -m pip install
+nxsdk-&lt;latest_version&gt;.tar.gz</strong></p>
+<ul class="simple">
+<li><p>Ignore the “Failed building wheel for nxsdk” and the associated
+“Failed to build nxsdk”. This is a known error and pip will retry
+with setup.py.</p></li>
+</ul>
+</li>
+<li><p>Verify NxSDK installation: <strong>python -c “import nxsdk;
+print(nxsdk.__version__)”</strong></p></li>
+<li><p>Find NxSDK installation directory (nxsdk_install_dir): <strong>python -c
+“import nxsdk; print(nxsdk.__path__)”</strong></p></li>
+<li><p>Unzip Tutorials, Docs and Modules in your home directory: <strong>mkdir
+nxsdk-apps &amp;&amp; tar xzf nxsdk-apps-&lt;latest_version&gt;.tar.gz -C
+nxsdk-apps –strip-components 1</strong></p>
+<ul class="simple">
+<li><p>Run tutorials per instructions in the following sections.</p></li>
+</ul>
+</li>
+<li><p>When complete, deactivate the virtual environment by running
+<code class="docutils literal notranslate"><span class="pre">deactivate</span></code></p></li>
+</ol>
+</div>
+<div class="section" id="tutorials">
+<h3>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="jupyter-tutorials-ipython-notebooks">
+<h4>Jupyter Tutorials (IPython Notebooks)<a class="headerlink" href="#jupyter-tutorials-ipython-notebooks" title="Permalink to this headline">¶</a></h4>
+<p>If you are working within the INRC Cloud, follow instructions below to
+run Jupyter</p>
+<ul class="simple">
+<li><p>Ensure you are in the virtual environment
+(<code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">python3_venv/bin/activate</span></code>)</p></li>
+<li><p>Run <strong>SLURM=1 /nfs/ncl/bin/jupyter_nx.sh</strong></p></li>
+<li><p>Follow the instructions on your terminal screen to enable SSH
+tunneling and browser access and use Jupyter from the web</p>
+<ul>
+<li><p>If the browser asks for a password or token, please copy and paste
+the hex string at the end of the web address into the token field.</p></li>
+<li><p>For example:</p>
+<ul>
+<li><p><a class="reference external" href="http://localhost:8891/?token=c14eb1f2cee91e5b2fea550e9ca1ce65721c892b4b88dbf1">http://localhost:8891/?token=c14eb1f2cee91e5b2fea550e9ca1ce65721c892b4b88dbf1</a></p></li>
+<li><p>The token is: c14eb1f2cee91e5b2fea550e9ca1ce65721c892b4b88dbf1</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Once you can access the jupyter web UI from your browser, locate the
+nxsdk-apps directory and open the IPython notebooks from paths
+mentioned below</p></li>
+</ul>
+<p>Jupyter based tutorials demonstrate NxSDK features and examples using
+Python code snippets. Each tutorial focuses on certain feature set of
+the NxSDK API.</p>
+<p>You will find all foundational jupyter notebooks
+under <strong>nxsdk-apps/tutorials/ipython</strong></p>
+<p>Jupyter notebooks to demonstrate modules are located under each module.</p>
+<p>For example, the jupyter notebook for LCA tutorial is
+at <strong>nxsdk-apps/nxsdk_modules/lca/tutorials/lca_single_image_reconstruction.ipynb</strong></p>
+</div>
+<div class="section" id="python-tutorials">
+<h4>Python Tutorials<a class="headerlink" href="#python-tutorials" title="Permalink to this headline">¶</a></h4>
+<p>Python based tutorials demonstrate NxSDK features and examples using
+Python code snippets.</p>
+<p>Each tutorial focuses on certain feature set of the NxSDK API and can be
+run both from command line or IDE based tools</p>
+<p><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">python3_venv/bin/activate</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">cd nxsdk-apps/tutorials</span></code></p>
+<p>To run a NxNet
+tutorial, <code class="docutils literal notranslate"><span class="pre">SLURM=1</span> <span class="pre">python</span> <span class="pre">-m</span> <span class="pre">nxnet.tutorial_01_single_compartment_with_bias</span></code></p>
+<ul class="simple">
+<li><p>All NxNet tutorials are under <strong>nxsdk-apps/tutorials/nxnet</strong></p></li>
+</ul>
+<p>To run a NxCore
+tutorial, <code class="docutils literal notranslate"><span class="pre">SLURM=1</span> <span class="pre">python</span> <span class="pre">-m</span> <span class="pre">nxcore.tutorial_01_single_compartment_with_bias</span></code></p>
+<ul class="simple">
+<li><p>All NxCore tutorials are under <strong>nxsdk-apps/tutorials/nxcore</strong></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="to-view-documentation">
+<h3>To View Documentation<a class="headerlink" href="#to-view-documentation" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">nxsdk-apps/docs</span></code></p>
+<p>You can start a simple http server or serve the docs via web-server like
+Apache or Nginx</p>
+<p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">http.server</span></code></p>
+<p>You would need to do SSH tunneling to view the docs.</p>
+<p>Alternatively, you may download the docs directory to your local machine
+(Windows or Mac) and click on the index.html. You can do the same if you
+have a VNC session connected to the INRC Cloud.</p>
+</div>
+<div class="section" id="release-notes-0-7-0">
+<h3>Release Notes 0.7.0<a class="headerlink" href="#release-notes-0-7-0" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="new-featuresimprovements-11">
+<span id="id66"></span><h4>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-11" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="nxnet-8">
+<span id="id67"></span><h5>NxNet<a class="headerlink" href="#nxnet-8" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><p>0.7 introduces the NxNet Modules</p>
+<ul>
+<li><p>Modules are higher level abstractions to re-use existing networks
+and create applications on top of them using very few lines of
+code</p></li>
+<li><p>Modules bundled in this release are:</p>
+<ul>
+<li><p>Spiking Locally Competitive Algorithm (LCA)</p></li>
+<li><p>Single Layer Image Classification (SLIC)</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Full support for Kapoho Bay USB device to run NxSDK</p></li>
+<li><p>Support reinforcement on a learning rule using Reinforcement Channels</p></li>
+<li><p>DVS Camera interface to inject spikes into compartments in NxNet</p></li>
+<li><p>Support for execution time probes and energy probes (only for Wolf
+Mountain boards)</p></li>
+<li><p>Several performance speed-ups such as compilation time improvements,
+time-series processing and message aggregations</p></li>
+<li><p>NxNet now supports run and disconnect APIs. Users can call net.run()
+directly instead of using the N2Compiler explicitly</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Jupyter Notebooks</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>a_compartment_setup
+.ipynb</p></td>
+<td><p>NxSDK Core
+Components 1.
+Basic compartment
+with probes 2.
+Compartment with
+compartmentVoltage
+Decay
+3. Compartment
+with (stochastic)
+compartmentVoltage
+4. Compartment
+with (stochastic)
+refractoryDelay</p></td>
+<td><p>Within this
+tutorial, you
+will learn
+how to create
+a compartment
+neuron,
+configure the
+bias current
+and monitor
+the resulting
+spike
+behavior
+using probes.
+You will also
+learn to
+configure
+voltage
+decays,
+refractory
+delays as
+well as
+stochasticity
+in
+compartment
+voltage or
+current due
+to uniform
+random noise
+injection.</p></td>
+<td><p>Compartm
+ents</p></td>
+</tr>
+<tr class="row-odd"><td><p>b_connecting_compar
+tments.ipynb</p></td>
+<td><p>Configuring
+Connections using
+Connection
+Prototypes and
+Connection Groups
+1. Connecting
+single
+compartments 2.
+Connecting
+compartment groups
+with discrete
+weight and delay
+matrices 3. Create
+connections with
+different sign
+mode 4. Create
+connections with
+different post
+synaptic response
+mode</p></td>
+<td><p>The second
+tutorial
+builds on the
+first,
+showing you
+now how to
+connect
+compartments
+using
+connection
+prototypes
+and
+connections.
+It walk you
+through
+simple
+connections
+to using
+features in
+the
+Connection
+Prototype to
+support more
+complex
+synaptic
+attributes.</p></td>
+<td><p>Connecti
+vity
+and Flow</p></td>
+</tr>
+<tr class="row-even"><td><p>c_stimulating_compa
+rtments.ipynb</p></td>
+<td><p>Stimulate
+compartments by
+injecting spikes</p></td>
+<td><p>The third
+tutorial
+builds on the
+first two to
+demonstrate
+how to
+stimulate
+compartments
+by injecting
+spikes using
+a Spike
+Generator. A
+spike
+generator is
+a class that
+can either
+generate
+spikes based
+on some
+algorithm,
+from a file
+or represent
+a hardware
+sensor such
+as a DVS
+camera.</p></td>
+<td><p>Connecti
+vity
+and Flow</p></td>
+</tr>
+<tr class="row-odd"><td><p>d_synaptic_plastici
+ty.ipynb</p></td>
+<td><p>Demonstrate
+synaptic
+plasticity to
+study the weight
+dynamics of a
+synapse subject to
+an excitatory STDP
+learning rule</p></td>
+<td><p>In this
+tutorial, the
+network we
+configure
+consists of a
+spike
+generator
+that
+stimulates a
+learning-enab
+led
+synapse using
+an E-STDP
+learning
+rule. We then
+use another
+spike
+generator to
+independently
+drive a
+compartment
+that forms a
+post synaptic
+connection of
+the
+learning-enab
+led
+synapse. This
+test setup
+allows to
+control the
+pre and post
+synaptic
+spike times
+at will
+independently
+and to study
+the induced
+weight
+dynamics.</p></td>
+<td><p>Connecti
+vity
+and Flow</p></td>
+</tr>
+<tr class="row-even"><td><p>e_neuronal_homeosta
+sis.ipynb</p></td>
+<td><p>Demonstrates
+Neuronal
+homeostasis to
+adapt the
+excitability of a
+neuron to
+different levels
+of input stimulus
+intensity</p></td>
+<td><p>The Loihi
+neuron model
+supports a
+built-in
+homeostasis
+rule which we
+call <em>range
+homeostasis.</em>
+Other
+mechanisms to
+adapt the
+excitability
+of a
+compartment
+can be
+implemented
+by
+constructing
+multi-compart
+ment
+neurons which
+allows to
+design more
+complex
+neural
+behaviors. In
+this
+tutorial, we
+demonstrate
+the
+implementatio
+n
+of another
+homeostatic
+rule which we
+call
+‘exponential-
+decay’
+homeostasis.</p></td>
+<td><p>Compartm
+ents</p></td>
+</tr>
+<tr class="row-odd"><td><p>f_rewards_learning.
+ipynb</p></td>
+<td><p>Demonstrates
+Learning with
+Rewards</p></td>
+<td><p>Loihi
+provides the
+capability to
+send
+reinforcement
+signals to
+learning
+enabled
+connections.
+This tutorial
+shows how to
+reinforce the
+contingent
+firing of two
+neurons by a
+delayed
+reward
+(fundamental
+mechanism
+described by
+Izhikevich et
+al. to solve
+the distal
+reward
+problem)</p></td>
+<td><p>Learning</p></td>
+</tr>
+<tr class="row-even"><td><p>g_snip_for_threshol
+d_modulation.ipynb</p></td>
+<td><p>Demonstrates the
+basic use of SNIP</p></td>
+<td><p>We stimulate
+a single
+compartment
+with a spike
+generator but
+vary the
+membrane
+threshold
+over time via
+a SNIP. We
+send the new
+membrane
+threshold
+value from
+the super
+host to a
+SNIP
+executing in
+the
+management
+phase on the
+embedded
+Lakemont
+processor via
+a channel and
+return the
+time of
+modification
+to the super
+host via
+another
+channel</p></td>
+<td><p>SNIP</p></td>
+</tr>
+<tr class="row-odd"><td><p>lca_single_image_re
+construction.ipynb</p></td>
+<td><p>Spiking Locally
+Competitive
+Algorithm</p></td>
+<td><p>The LCA
+network
+solves a
+sparse coding
+problem using
+a spiking
+version of a
+locally
+competitive
+algorithm
+(LCA). The
+purpose of
+this tutorial
+is to
+illustrate
+the basic
+network and
+setup
+procedure as
+well as how
+to solve a
+sparse coding
+problem and
+retrieve the
+results.</p></td>
+<td><p>Modules</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Python Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>tutorial_11_box_sy
+napse</p></td>
+<td><p>Box Synapse</p></td>
+<td><p>This tutorial
+introduces a
+box synapse.
+Instead of an
+exponentially
+decaying post
+synaptic
+response
+after
+receiving a
+spike, we
+want to have
+a box
+response,
+i.e. a
+constant post
+synaptic
+current for a
+specified
+amount of
+time.</p></td>
+<td><p>Connecti
+vity</p></td>
+</tr>
+<tr class="row-odd"><td><p>tutorial_21_dvs_in
+putfile</p></td>
+<td><p>DVS Camera
+integration</p></td>
+<td><p>This tutorial
+provides a
+basic example
+of building
+an input
+layer to
+accept DVS
+Input, and
+then reading
+a DVS file
+and sending
+spikes into
+the input
+layer.
+Additionally
+it shows how
+to probe the
+activity of
+that input
+layer and
+recreate the
+DVS input
+(plot)</p></td>
+<td><p>Sensor</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="nxcore-8">
+<span id="id68"></span><h5>NxCore<a class="headerlink" href="#nxcore-8" title="Permalink to this headline">¶</a></h5>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 31%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Python Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>tutorial_04b_synap
+tic_delays_spike_i
+njection_snip</p></td>
+<td><p>Synaptic Delay,
+Spike Injection,
+SNIPs</p></td>
+<td><p>This tutorial
+introduces
+synaptic
+delays and
+will
+demonstrate
+how they work
+and how to
+configure
+them using
+SNIPs</p></td>
+<td><p>SNIP</p></td>
+</tr>
+<tr class="row-odd"><td><p><a href="#id112"><span class="problematic" id="id113">tutorial_19b_soma_</span></a>
+traces_spike_injec
+tion_snip</p></td>
+<td><p>Soma Activity,
+Spike Injection,
+SNIPs</p></td>
+<td><p>This tutorial
+introduces
+soma traces
+and will
+demonstrate
+how they work
+and how to
+configure
+them using
+SNIPs</p></td>
+<td><p>SNIP</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="section" id="major-bug-fixes-for-release-8">
+<span id="id69"></span><h3>Major bug fixes for release<a class="headerlink" href="#major-bug-fixes-for-release-8" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Learning enabled connections could now be placed along with
+non-learning connections during creation of a NxNet network</p></li>
+</ul>
+</div>
+<div class="section" id="any-newsupported-platformshardware-1">
+<span id="id70"></span><h3>Any new/supported platforms/Hardware<a class="headerlink" href="#any-newsupported-platformshardware-1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>NxSDK now supports the Kapoho Bay USB Platform and users can run
+NxNet and NxCore tutorials over this pluggable USB device</p></li>
+<li><p>NxSDK now supports networks that span multiple Loihi chips</p></li>
+<li><p>For those that were running in non-SLURM mode, here is the new
+procedure:</p>
+<ul>
+<li><p>run export <strong>NXSDKHOST=&lt;IP_OR_HOSTNAME_OF_BOARD&gt;</strong> and execute
+your scripts without setting <strong>SLURM=1</strong></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="api-changesdeprecations-6">
+<span id="id71"></span><h3>API Changes/Deprecations<a class="headerlink" href="#api-changesdeprecations-6" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>To be compatible with future versions of python, we have updated the
+variable name async&gt;aSync and all uses thereto</p></li>
+<li><p>python_nx is deprecated. NxSDK needs Python 3.5.2 as some modules are
+compiled against this version.</p></li>
+<li><p>External Git access is deprecated. Please use the pip installation
+procedure mentioned in the setup to install and use NxSDK 0.7
+release. We will introduce a new way to contribute code to NxSDK
+shortly.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-13">
+<span id="id72"></span><h2>0.5.5<a class="headerlink" href="#section-13" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h3>
+<p>Please ensure you have access to YOURVM.research.intel-research.net.
+Packaged release resides in <strong>/nfs/ncl/git/NxSDK.git</strong></p>
+<ol class="arabic simple">
+<li><p>Run the following to clone the repository:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">nxsdk</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="o">/</span><span class="n">nfs</span><span class="o">/</span><span class="n">ncl</span><span class="o">/</span><span class="n">git</span><span class="o">/</span><span class="n">NxSDK</span><span class="o">.</span><span class="n">git</span> <span class="n">nxsdk</span>
+<span class="n">cd</span> <span class="n">nxsdk</span>
+<span class="c1"># You might optionally add the git remote URL: ssh://user@YOURVM.research.intel-research.net:/nfs/ncl/git/NxSDK.git</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>All host and embedded binaries and libraries are pre-built. Set
+<strong>PROJECT_ITOOLS</strong> environment variable to point to .itools file in
+the git repo: <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PROJECT_ITOOLS=$HOME/nxsdk/.itools</span></code></p></li>
+<li><p>Setup your python virtual environment:
+<code class="docutils literal notranslate"><span class="pre">python_nx</span> <span class="pre">-m</span> <span class="pre">venv</span> <span class="pre">nxsdk_env</span></code></p></li>
+<li><p>Activate your python virtual environment:
+<code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">nxsdk_env/bin/activate</span></code></p></li>
+<li><p>Install the python dependencies by running:
+<code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">pip3</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.txt</span></code></p></li>
+</ol>
+</div>
+<div class="section" id="getting-started">
+<h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h3>
+<p>To run a <strong>NxNet</strong> tutorial, execute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SLURM</span><span class="o">=</span><span class="mi">1</span> <span class="n">python_nx</span> <span class="o">-</span><span class="n">m</span> <span class="n">examples</span><span class="o">.</span><span class="n">tutorials</span><span class="o">.</span><span class="n">nxnet</span><span class="o">.</span><span class="n">tutorial_01_single_compartment_with_bias</span>
+</pre></div>
+</div>
+<p>All NxNet tutorials are under <strong>nxsdk/examples/tutorials/nxnet</strong></p>
+<p>To run a <strong>NxCore</strong> tutorial, execute</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SLURM</span><span class="o">=</span><span class="mi">1</span> <span class="n">python_nx</span> <span class="o">-</span><span class="n">m</span> <span class="n">examples</span><span class="o">.</span><span class="n">tutorials</span><span class="o">.</span><span class="n">nxcore</span><span class="o">.</span><span class="n">tutorial_01_single_compartment_with_bias</span>
+</pre></div>
+</div>
+<p>All NxCore tutorials are under <strong>nxsdk/examples/tutorials/nxcore</strong></p>
+<p>[Optional] If you are not using SLURM, execute on a terminal:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">srun</span> <span class="o">/</span><span class="n">nfs</span><span class="o">/</span><span class="n">ncl</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">n2driverservice</span> <span class="o">|</span> <span class="n">tee</span> <span class="o">-</span><span class="n">i</span> <span class="n">n2driver</span><span class="o">.</span><span class="n">log</span>
+<span class="c1"># Then you can submit your python job as:</span>
+<span class="n">python_nx</span> <span class="o">-</span><span class="n">m</span> <span class="n">examples</span><span class="o">.</span><span class="n">tutorials</span><span class="o">.</span><span class="n">nxnet</span><span class="o">.</span><span class="n">tutorial_01_single_compartment_with_bias</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="to-view-documentation-1">
+<span id="id73"></span><h3>To View Documentation:<a class="headerlink" href="#to-view-documentation-1" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">docs</span>
+<span class="c1"># You can start a simple http server or serve the docs via web-server like Apache or Nginx</span>
+<span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">http</span><span class="o">.</span><span class="n">server</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="release-notes-0-5-5">
+<h3>Release Notes 0.5.5<a class="headerlink" href="#release-notes-0-5-5" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="new-featuresimprovements-12">
+<span id="id74"></span><h4>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-12" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="nxnet-9">
+<span id="id75"></span><h5>NxNet<a class="headerlink" href="#nxnet-9" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
+<li><p>Added support for DVS Camera using dvsSpikeGen interface</p></li>
+<li><p>Added caching to speedup processing of time-series data from synapse
+probes (for weight, delay, tag).</p></li>
+<li><p>Changed name of ‘weights’, ‘delays’, ‘tags’ in
+NxNet.createConnectionGroup to ‘weight’, ‘delay’, ‘tag’</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="section-14">
+<span id="id76"></span><h2>0.5.4<a class="headerlink" href="#section-14" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-13">
+<span id="id77"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-13" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="nxnet-10">
+<span id="id78"></span><h4>NxNet<a class="headerlink" href="#nxnet-10" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Improved time consumed during synapse compilation for networks with
+large number of synapses</p></li>
+<li><p>Improved time spent during sending spike inputs while using
+<code class="docutils literal notranslate"><span class="pre">SpikeGenProcess.addSpikes</span></code> (Preparing Input phase)</p></li>
+<li><p>Added basic support for multiple connections with different learning
+rules going to the same destination compartment.</p></li>
+<li><p>Network compilation time improvements.</p></li>
+</ul>
+</div>
+<div class="section" id="nxcore-9">
+<span id="id79"></span><h4>NxCore<a class="headerlink" href="#nxcore-9" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Improved time spent during sending spike inputs while using
+<code class="docutils literal notranslate"><span class="pre">BasicSpikeGenerator.addSpike</span></code> (Preparing Input phase)</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="major-bug-fixes-for-release-9">
+<span id="id80"></span><h3>Major bug fixes for release<a class="headerlink" href="#major-bug-fixes-for-release-9" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Removed compiler restriction that if connections exist in the
+network, then all cores with compartments must have connections.</p></li>
+<li><p>Fixed the problem of allocating an unnecessarily large number of
+input axons causing the synapseMap to fill up.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-15">
+<span id="id81"></span><h2>0.5.3<a class="headerlink" href="#section-15" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-14">
+<span id="id82"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-14" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="nxnet-11">
+<span id="id83"></span><h4>NxNet<a class="headerlink" href="#nxnet-11" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Add support for no-factor learning rules (e.g. <code class="docutils literal notranslate"><span class="pre">dw</span> <span class="pre">=</span> <span class="pre">-2*u0</span></code>)</p></li>
+<li><p>Default numTagBits and numDelayBits to 0</p></li>
+<li><p>Support multiple literals in an equation like <code class="docutils literal notranslate"><span class="pre">dw</span> <span class="pre">=</span> <span class="pre">-2^3*x0*3*2</span></code>.
+There is also a new option: combineLiterals=True which will collapse
+all subsequent literals into one (the old behavior). For now, we can
+keep them separate. This will be necessary sometimes.</p></li>
+<li><p>MicroCode class now determines the stdpProfileCfg.usesXEpoch
+parameter automatically.</p></li>
+<li><p>Support x0, y0, r0 as explicit binary factors (before it was only
+used as dependency factors to gate the evaluation of a product).</p></li>
+<li><p>Process (Channel) based spike injection is turned on by default</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="known-issues-limitations">
+<h3>Known issues/limitations<a class="headerlink" href="#known-issues-limitations" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><strong>NxNet</strong>:</p>
+<ul>
+<li><p>Multiple connections with different learning rules going to the
+same destination compartment are not supported. Error will be
+raised.</p></li>
+<li><p>There is a limit to the number of synapses connected to a single
+compartment. The limit varies depending on the network
+configuration. Error will be raised.</p></li>
+<li><p>Learning connections must be placed at the end (i.e. after
+non-learning connections) explicitly by the user in NxNet.
+Currently no error is raised by compiler.</p></li>
+<li><p>Learning rules must have a pre-trace component. Learning rules
+without any pre-trace term will not learn. Workaround is to
+include the dummy term <code class="docutils literal notranslate"><span class="pre">0*x1*u0</span></code>.</p></li>
+<li><p>Reward learning is not supported.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="major-bug-fixes-for-release-10">
+<span id="id84"></span><h3>Major bug fixes for release<a class="headerlink" href="#major-bug-fixes-for-release-10" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>NxNet API documentation is fixed</p></li>
+<li><p>Fixed a validation bug in which MicroCode should have failed if the
+user specifies multiple decimal exponents per learning rule</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-16">
+<span id="id85"></span><h2>0.5.2<a class="headerlink" href="#section-16" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-15">
+<span id="id86"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-15" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="nxnet-12">
+<span id="id87"></span><h4>NxNet<a class="headerlink" href="#nxnet-12" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>LCA documentation</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 35%" />
+<col style="width: 27%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>New
+Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>18b</p></td>
+<td><p>Learning on
+connections from
+spike generator to
+compartment</p></td>
+<td><p>This tutorial
+illustrates the
+use of the ESTDP
+learning rule.
+The difference
+between tutorial
+18 and 18b is
+that 18b has the
+spike generators
+directly
+connected to
+compartment 3
+and learning
+occurs on the
+connection
+between a spike
+generator and
+c3.</p></td>
+<td><p>Learning</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="known-issueslimitations-1">
+<span id="id88"></span><h3>Known issues/limitations<a class="headerlink" href="#known-issueslimitations-1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><strong>NxNet</strong>:</p>
+<ul>
+<li><p>Multiple connections with different learning rules going to the
+same destination compartment are not supported. Error will be
+raised.</p></li>
+<li><p>There is a limit to the number of synapses connected to a single
+compartment. The limit varies depending on the network
+configuration. Error will be raised.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="major-bug-fixes-for-release-11">
+<span id="id89"></span><h3>Major bug fixes for release<a class="headerlink" href="#major-bug-fixes-for-release-11" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>NxNet tutorials now work properly without a GUI</p></li>
+<li><p>NxNet tutorial 04 gave an error due to improper use of the basic
+spike generator. The tutorial has been updated to use the NxNet spike
+generator.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-17">
+<span id="id90"></span><h2>0.5.1<a class="headerlink" href="#section-17" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-16">
+<span id="id91"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-16" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="nxnet-13">
+<span id="id92"></span><h4>NxNet<a class="headerlink" href="#nxnet-13" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Spike injection is now supported using createSpikeGenProcess,
+createSpikeInputPort and createSpikeInputPortGroup APIs</p></li>
+<li><p>Convenience methods to set compartmentCurrentTimeConstant,
+compartmentVoltageTimeConstant, compartmentThreshold and bias are
+supported in Compartment and CompartmentPrototypes</p></li>
+<li><p>NxNet now supports the run and disconnect api directly. Users do not
+have to instantiate N2Compiler or board to run a network</p></li>
+<li><p>Importing all necessary classes to create and run a network could now
+be done via “import nxsdk.arch.n2a as nx”. See example nxnet
+tutorials</p></li>
+<li><p>Preliminary support for multi-compartment neurons has been added</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 35%" />
+<col style="width: 27%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>New
+Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>19</p></td>
+<td><p>Demonstrate <strong>soma
+traces</strong>
+configuration</p></td>
+<td><p>In this tutorial
+we configure a
+compartmentGroup
+with 6
+compartments
+driven by input
+spikes and
+activated
+homeostasis. We
+introduce soma
+traces and will
+demonstrate how
+they work and
+how to configure
+them. The trace
+of the current,
+spikes and soma
+for different
+time constants
+is probed</p></td>
+<td><p>Compartmen
+ts</p></td>
+</tr>
+<tr class="row-odd"><td><p>20</p></td>
+<td><p>Demonstrate
+<strong>homeostasis</strong>
+feature of the
+<strong>soma</strong> threshold</p></td>
+<td><p>This tutorial
+introduces the
+homeostasis
+feature of the
+soma threshold
+and will
+demonstrate how
+it can be
+configured and
+how it works.
+Different
+examples show
+the possible
+solutions to
+change the
+membrane
+threshold of
+compartments</p></td>
+<td><p>Compartmen
+ts</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="nxcore-10">
+<span id="id93"></span><h4>NxCore<a class="headerlink" href="#nxcore-10" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>SNIP support has been added (back)</p></li>
+<li><p>API to convert chip number to physical chip ID to call within SNIP
+code <code class="docutils literal notranslate"><span class="pre">ChipId</span> <span class="pre">nx_nth_chipid(uint16_t</span> <span class="pre">chip_number);</span></code></p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 33%" />
+<col style="width: 24%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>New Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>04b</p></td>
+<td><p>Creating a 1 -&gt; 4
+<strong>synaptic fanout</strong>
+driven by a <strong>SNIP
+based spike
+generator</strong>.
+Configuring each
+<strong>synapse</strong> with a
+different delay
+while ellucidating
+the relationship
+between <strong>dendritic
+compartments</strong> and
+<strong>delay precision</strong></p></td>
+<td><p>This tutorial
+shows a number
+of useful
+components:
+setting up and
+using a SNIP
+based spike
+generator,
+configuring
+synaptic
+fanout with
+delay and
+understanding
+the
+hardware-based
+relationships
+between
+dendritic
+compartments
+and delay
+precision</p></td>
+<td><p>SNIP,
+Connectiv
+ity
+and Flow</p></td>
+</tr>
+<tr class="row-odd"><td><p>19b</p></td>
+<td><p>Demonstrate <strong>soma
+traces</strong>
+configuration with
+<strong>SNIP based spike
+injection</strong> and
+<strong>channels</strong></p></td>
+<td><p>In this
+tutorial we
+configure 6
+cores with 1
+compartments
+driven by
+input spikes
+and activated
+homeostasis.
+We introduce
+soma traces
+and will
+demonstrate
+how they work
+and how to
+configure
+them. The
+trace of the
+current,
+spikes and
+soma for
+different time
+constants is
+probed</p></td>
+<td><p>SNIP,
+Compartme
+nts</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="known-issues-6">
+<span id="id94"></span><h3>Known Issues<a class="headerlink" href="#known-issues-6" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><strong>NxNet</strong>:</p>
+<ul>
+<li><p>Multiple connections with different learning rules going to the
+same destination compartment are not supported. Error will be
+raised.</p></li>
+<li><p>There is a limit to the number of synapses connected to a single
+compartment. The limit varies depending on the network
+configuration. Error will be raised.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="major-bug-fixes">
+<h3>Major Bug Fixes<a class="headerlink" href="#major-bug-fixes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Fixed bugs related to unreliable SNIP communication over channels</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="section-18">
+<span id="id95"></span><h2>0.5<a class="headerlink" href="#section-18" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="new-featuresimprovements-17">
+<span id="id96"></span><h3>New Features/Improvements<a class="headerlink" href="#new-featuresimprovements-17" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="nxnet-14">
+<span id="id97"></span><h4>NxNet<a class="headerlink" href="#nxnet-14" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>0.5 introduces the NxNet API which provides a higher level of
+abstraction over the NxCore API for network configuration:</p>
+<ul>
+<li><p>The user is no longer required to configure neural networks in
+terms of low level registers but in terms of high level
+compartments and connections.</p></li>
+<li><p>Compartment and CompartmentGroups can be configured using
+CompartmentPrototypes.</p></li>
+<li><p>Connections and ConnectionGroups can be configured using
+ConnectionPrototypes.</p></li>
+<li><p>Synaptic learning rules including dynamic state equations and
+pre-, post- trace configuration can be configured and assigned to
+connections.</p></li>
+<li><p>Probes to monitor the evolution of network state (compartment
+voltage, current, … synaptic weights, delays, …).</p></li>
+</ul>
+</li>
+<li><p>Underlying hardware limit validations are enforced during network
+compilation and user gets informed in case of violations</p></li>
+<li><p>Tutorials were added to show feature availability and parity with
+NxCore</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 35%" />
+<col style="width: 27%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>01</p></td>
+<td><p>Creating a <strong>single
+compartment neuron</strong>
+with a <strong>bias</strong>
+current</p></td>
+<td><p>Within this
+tutorial, you
+will learn how
+to create a
+single
+compartment
+neuron,
+configure the
+bias current and
+monitor the
+resulting spike
+behavior.</p></td>
+<td><p>Compartmen
+ts</p></td>
+</tr>
+<tr class="row-odd"><td><p>02</p></td>
+<td><p>Creating a <strong>single
+compartment neuron</strong>
+and <strong>connect</strong> it to
+two other
+compartments in the
+same neurocore</p></td>
+<td><p>The second
+tutorial builds
+on the first,
+showing you now
+how to connect
+compartments
+using connection
+prototypes and
+connections</p></td>
+<td><p>Connectivi
+ty
+and Flow</p></td>
+</tr>
+<tr class="row-even"><td><p>03</p></td>
+<td><p>Creating a <strong>single
+compartment neuron</strong>
+and <strong>connect</strong> it to
+three other
+compartments in
+<strong>different logical
+neurocores</strong></p></td>
+<td><p>The third
+tutorial builds
+on the first two
+to demonstrate
+how to place
+compartments on
+different
+neurocores and
+connect them to
+create the
+desired network</p></td>
+<td><p>Connectivi
+ty
+and Flow</p></td>
+</tr>
+<tr class="row-odd"><td><p>04</p></td>
+<td><p>Creating a 1 -&gt; 4
+<strong>connection
+fanout</strong>, driven by a
+<strong>spike generator</strong>.
+Configuring each
+<strong>connection</strong> with a
+different delay while
+elucidating the
+relationship between
+<strong>dendritic
+compartments</strong> and
+<strong>delay precision</strong></p></td>
+<td><p>This tutorial
+shows a number
+of useful
+components:
+setting up and
+using a spike
+generator,
+configuring
+synaptic fanout
+with delay and
+understanding
+the
+hardware-based
+relationships
+between
+dendritic
+compartments and
+delay precision</p></td>
+<td><p>Connectivi
+ty
+and Flow</p></td>
+</tr>
+<tr class="row-even"><td><p>08</p></td>
+<td><p>Demonstrates <strong>static
+and stochastic
+refractory delays</strong></p></td>
+<td><p>Configures four
+different
+single-compartme
+nt
+neurons with
+different
+profiles. Each
+profile utilizes
+a different
+refractory
+delay. The
+tutorial then
+sets up probes
+to monitor the
+results</p></td>
+<td><p>Compartmen
+ts</p></td>
+</tr>
+<tr class="row-odd"><td><p>12</p></td>
+<td><p>Demonstrates how to
+configure <strong>synaptic
+weight precision</strong></p></td>
+<td><p>Utilizing 4
+different
+connections,
+this tutorial
+shows how
+weights can be
+configured to
+achieve
+different
+results</p></td>
+<td><p>Connectivi
+ty
+and Flow</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>Demonstrate how to
+<strong>inject noise</strong> into
+compartments and
+<strong>randomize current</strong>
+and/or <strong>voltage</strong></p></td>
+<td><p>Within this
+tutorial, we
+inject noise
+into current
+variable
+(randomizeCurren
+t)
+for a
+compartment in
+logical core 0
+and into voltage
+variable
+(randomizeVoltag
+e)
+for a
+compartment in
+logical core 1
+and probe the
+states to show
+impact of noise
+injection</p></td>
+<td><p>Compartmen
+ts</p></td>
+</tr>
+<tr class="row-odd"><td><p>18</p></td>
+<td><p>Demonstrate <strong>ESTDP
+learning</strong> on a
+learning enabled
+connection between
+two compartments</p></td>
+<td><p>This tutorial
+illustrates the
+use of the ESTDP
+learning rule.
+Two connections
+are connected
+via independent
+synapses to the
+same compartment
+3, one being a
+learning enabled
+connection. We
+configure
+pre-synaptic
+traces (X) which
+act as inputs
+into learning
+rule and
+post-synaptic
+traces (Y).
+Connection
+weights are
+probed to show
+learning
+behaviour</p></td>
+<td><p>Learning</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="nxcore-11">
+<span id="id98"></span><h4>NxCore<a class="headerlink" href="#nxcore-11" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Performance of Spike generation was improved using message passing</p></li>
+<li><p>Energy probe was added</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 33%" />
+<col style="width: 24%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>New Tutorials</p></th>
+<th class="head"><p>Feature Covered</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Category</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>03</p></td>
+<td><p>Creating a <strong>single
+compartment neuron</strong>
+and <strong>connect</strong> it
+to three other
+compartments in
+<strong>different
+neurocores</strong></p></td>
+<td><p>The third
+tutorial
+builds on the
+first two to
+demonstrate
+how to place
+compartments
+on different
+neurocores and
+connect them
+to create the
+desired
+network</p></td>
+<td><p>Connectiv
+ity
+and Flow</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>Demonstrates
+<strong>axonal delay</strong> on
+two different
+compartments</p></td>
+<td><p>Within this
+tutorial, we
+set different
+axonal delays
+for each
+neuron to
+illustrate the
+delay from
+when the
+neuron
+generates the
+spike to when
+the spike is
+actually sent
+out to
+connected
+compartments</p></td>
+<td><p>Compartme
+nts</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>Demonstrate how to
+<strong>inject noise</strong>
+into compartments
+and <strong>randomize
+current</strong> and/or
+<strong>voltage</strong></p></td>
+<td><p>Within this
+tutorial, we
+inject noise
+into current
+variable (u)
+for
+compartment 0
+of core 0 and
+into voltage
+variable (v)
+for
+compartment 0
+of core 1 and
+probe the
+states to show
+impact of
+noise
+injection</p></td>
+<td><p>Compartme
+nts</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>Demonstrate how to
+create a
+<strong>multi-compartment
+neuron</strong> and
+demonstrate basic
+principle how
+information flows
+from one compartment
+via <strong>stack</strong> to
+another one</p></td>
+<td><p>In this
+tutorial we
+will create a
+two
+compartment
+neuron by
+configuring
+stackOut and
+stackInt and
+using basic
+ADD join
+function</p></td>
+<td><p>Compartme
+nts</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>Demonstrate the
+impact of the
+<strong>tepoch setting</strong>
+when
+<strong>axonal_delay</strong> is
+enabled</p></td>
+<td><p>In this
+tutorial we
+configure two
+independent
+compartments
+with same
+axonal delay
+each connected
+to a separate
+compartment
+through a
+synapse. Using
+different v
+threshold
+values, we
+demonstrate
+the impact of
+tepoch setting
+on when spikes
+occur within
+the tepoch</p></td>
+<td><p>Compartme
+nts</p></td>
+</tr>
+<tr class="row-odd"><td><p>17</p></td>
+<td><p>Demonstrate <strong>spike
+probes</strong> to capture
+the occurrence and
+count of <strong>spikes</strong>
+by configuring
+different
+<strong>SpikeProbeConditio
+ns</strong></p></td>
+<td><p>In this
+tutorial we
+configure the
+spike probe on
+a compartment
+and configure
+three
+different
+spike probe
+conditions to
+capture the
+occurrence and
+count of
+spikes over
+specified
+intervals of
+time</p></td>
+<td><p>Compartme
+nts</p></td>
+</tr>
+<tr class="row-even"><td><p>18</p></td>
+<td><p>Demonstrate
+<strong>learning</strong> to
+drive change in
+synaptic weights
+using <strong>ESTDP
+rules</strong></p></td>
+<td><p>This tutorial
+illustrates
+the use of
+learning rules
+using two
+input axons,
+one with
+learning
+enabled, are
+connected via
+independent
+synapses to
+same
+compartment.
+Various
+learning rules
+are configured
+along with
+various spike
+timings to
+illustrate the
+affects of
+learning</p></td>
+<td><p>Learning</p></td>
+</tr>
+<tr class="row-odd"><td><p>18b</p></td>
+<td><p>Demonstrate <strong>delay
+learning</strong> to drive
+change in synaptic
+weights using
+<strong>ESTDP rules</strong></p></td>
+<td><p>This tutorial
+illustrates
+the use of
+learning rules
+using two
+input axons,
+one with
+learning
+enabled, are
+connected via
+independent
+synapses to
+same
+compartment.
+Various
+learning rules
+are configured
+along with
+various spike
+timings to
+illustrate the
+affects of
+learning.
+Additionally,
+synaptic delay
+is added to
+demonstrate
+the delay in
+learning
+behavior</p></td>
+<td><p>Learning</p></td>
+</tr>
+<tr class="row-even"><td><p>19</p></td>
+<td><p>Demonstrate <strong>soma
+traces</strong>
+configuration</p></td>
+<td><p>In this
+tutorial we
+configure 6
+cores with 1
+compartments
+driven by
+input spikes
+and activated
+homeostasis.
+We introduce
+soma traces
+and will
+demonstrate
+how they work
+and how to
+configure
+them. The
+trace of the
+current,
+spikes and
+soma for
+different time
+constants is
+probed</p></td>
+<td><p>Compartme
+nts</p></td>
+</tr>
+<tr class="row-odd"><td><p>20</p></td>
+<td><p>Demonstrate
+<strong>homeostasis</strong>
+feature of the
+<strong>soma threshold</strong></p></td>
+<td><p>This tutorial
+introduces the
+homeostasis
+feature of the
+soma threshold
+and will
+demonstrate
+how it can be
+configured and
+how it works.
+Different
+examples show
+the possible
+solutions to
+change the
+membrane
+threshold of
+compartments</p></td>
+<td><p>Compartme
+nts</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="known-issues-7">
+<span id="id99"></span><h3>Known Issues<a class="headerlink" href="#known-issues-7" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><strong>NxCore</strong>:</p>
+<ul>
+<li><p>Using Spike probes on compartments along with manually configuring
+axons is unsupported. Use createDiscreteAxon API from AxonCompiler
+instead.</p></li>
+<li><p>SNIP communication over channels might give unexpected results if
+there are outstanding reads to be serviced.</p></li>
+<li><p>bapSrc being set to 0 or 1 appears to make no difference when
+bapAction is set to 2 (Propagate backwards).</p></li>
+</ul>
+</li>
+<li><p><strong>NxNet</strong>:</p>
+<ul>
+<li><p>Core-agnostic programming is not yet fully supported. The user is
+still required to assign logicalCoreIds to high level compartments
+in the network but the compiler will automatically determine all
+associated register entry placements.</p></li>
+<li><p>Synaptic encoding/compression:</p>
+<ul>
+<li><p>The user has the option to select a synaptic compression mode
+(sparse, runlength, dense) manually through the NxNet API or
+let NxCompiler chose a compression mode automatically.</p></li>
+<li><p>Currently NxCompiler always selects ‘sparse’ as the default
+synaptic compression mode.</p></li>
+</ul>
+</li>
+<li><p>All connections/connection-groups created from ConnectionPrototype
+with learning-enabled should be defined after regular
+connections/connection-groups (which do not have learning
+enabled).</p></li>
+<li><p>Mapping tables from high level NxNet nodeIds to register addresses
+(aka resource map) not yet available. Thus network state cannot be
+interactively modified by SNIPs when using high level API.</p></li>
+</ul>
+</li>
+<li><p><strong>General</strong>:</p>
+<ul>
+<li><p>Chip to chip communication is currently not supported.</p></li>
+<li><p>Mesh deadlocks during high levels of spike activity between
+neurons. Typically throws “ERROR: nx_wait_barrier timeout” error
+message. Resolution: Use avoid-deadlock=1 in compiler options to
+enable a workaround (this will potentially slow down the
+execution).</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="major-bug-fixes-1">
+<span id="id100"></span><h3>Major Bug Fixes<a class="headerlink" href="#major-bug-fixes-1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Mesh deadlocks during high levels of spike activity between neurons.
+Typically throws “ERROR: nx_wait_barrier timeout” error message.
+Resolution: Use avoid-deadlock=1 in compiler options to enable a
+workaround (this will potentially slow down the execution).</p></li>
+<li><p>Incorrect weight scaling by wgtExp for negative wgtExp values.</p></li>
+</ul>
+</div>
+<div class="section" id="new-supported-platforms-hardware">
+<h3>New supported platforms/Hardware<a class="headerlink" href="#new-supported-platforms-hardware" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><strong>Nahuku</strong> boards will be supported for running NxNet and NxCore
+applications.</p></li>
+</ul>
+</div>
+<div class="section" id="api-changesdeprecations-7">
+<span id="id101"></span><h3>API Changes/Deprecations<a class="headerlink" href="#api-changesdeprecations-7" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>0.5 introduces <strong>NxNet</strong> API which provides a higher level of
+abstraction to create and run a spiking neural network in Python.
+NxCore API is still available for neuro-core and board level usage,
+however using NxNet to model networks and experiments is <strong>highly
+encouraged</strong>.</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="performance-suite.html" class="btn btn-neutral float-left" title="NxSDK Performance Test Suite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

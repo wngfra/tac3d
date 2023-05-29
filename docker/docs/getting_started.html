@@ -1,0 +1,569 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Getting Started &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installing and Running NxSDK on KapohoBay" href="getting_started_kb.html" />
+    <link rel="prev" title="Programming SNIPs on Host" href="host_snips.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation-guide">Installation Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tutorials">Tutorials</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#jupyter-tutorials-ipython-notebooks">Jupyter Tutorials (IPython Notebooks)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python-tutorials">Python Tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#to-view-documentation">To View Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#execution-configuration-options-and-utilities">Execution Configuration Options and Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-for-non-slurm-or-non-nfs-deployments">Setup for Non-Slurm or Non-NFS deployments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started-with-kapohobay">Getting Started with KapohoBay</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="getting_started_kb.html">Installing and Running NxSDK on KapohoBay</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-dvs-with-kapohobay">Setting up DVS with KapohoBay</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dvs.html">DVS</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Getting Started</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation-guide">
+<h2>Installation Guide<a class="headerlink" href="#installation-guide" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="section" id="prerequisites">
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>python 3.5.2</p></li>
+<li><p>pip</p></li>
+<li><p>jupyter (for running IPython notebooks)</p></li>
+</ul>
+<p>We highly recommend you to create a virtual environment first.</p>
+<p>If you are working on INRC cloud, these packages are pre-installed. To
+use jupyter within INRC, see <strong>Jupyter Tutorials</strong> section below.</p>
+</div>
+<div class="section" id="setup">
+<h3>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h3>
+<p>NxSDK is now packaged as a pip package. The tutorials, documentation and
+modules are separately distributed as a tarball.</p>
+<p>You may look into the modules to understand how to implement your own
+modules or extend them. Follow the instructions below to install NxSDK.</p>
+<p>Please Note: The same instructions apply while you test NxSDK on Kapoho
+Bay USB device; however as a pre-requisite - you need to download all
+the necessary installation bits to your host machine from the INRC
+Cloud. Follow the instructions you received with Kapoho Bay.</p>
+<ol class="arabic" start="0">
+<li><p>(Optional - Only applies for boards outside INRC):</p>
+<ul class="simple">
+<li><p>Install the following commands on the board (Host OS)</p></li>
+<li><p>sudo apt install libgoogle-glog-dev</p></li>
+<li><p>sudo apt-get install libgflags-dev</p></li>
+<li><p>wget <a class="reference external" href="http://ftp.debian.org/debian/pool/main/p/protobuf/libprotobuf17_3.6.1-4~bpo9+1_armhf.deb">http://ftp.debian.org/debian/pool/main/p/protobuf/libprotobuf17_3.6.1-4~bpo9+1_armhf.deb</a></p></li>
+<li><p>sudo dpkg -i libprotobuf17_3.6.1-4~bpo9+1_armhf.deb</p></li>
+</ul>
+</li>
+<li><p>The installation bits are located at <strong>/nfs/ncl/releases</strong>. SSH
+into the INRC Cloud and check the contents of this directory:</p>
+<ul class="simple">
+<li><p><strong>ssh user&#64;YOURVM.research.intel-research.net</strong></p></li>
+<li><p><strong>cd /nfs/ncl/releases</strong></p></li>
+</ul>
+<p>Identify the version you want to install. It is recommended to
+install the latest version.</p>
+</li>
+<li><p>There should be 2 packages within the sub-directory:</p>
+<ol class="arabic">
+<li><p><em>nxsdk-&lt;latest_version&gt;.tar.gz</em> - A pip installable tarball to
+install NxSDK</p></li>
+<li><p><em>nxsdk-apps-&lt;latest_version&gt;.tar.gz</em> - Tarball for Jupyter/Python
+based tutorials, complete NxSDK documentation and NxSDK Modules</p>
+<p>Substitute above your username, VM and version information before
+running the next commands.</p>
+</li>
+</ol>
+</li>
+<li><p>Create a virtual environment in your home directory:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">~</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">venv</span> <span class="pre">python3_venv</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">python3_venv/bin/activate</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">pip</span></code></p></li>
+<li><p>Do all following steps within the virtual environment</p></li>
+</ul>
+</li>
+<li><p>Copy Release Artifacts:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please note the <strong>dot</strong> at the end of the command</p>
+<p><strong>cp /nfs/ncl/releases/&lt;latest_version&gt;/* .</strong></p>
+</div>
+</li>
+<li><p>Install NxSDK: <strong>python -m pip install
+nxsdk-&lt;latest_version&gt;.tar.gz</strong></p>
+<ul class="simple">
+<li><p>Ignore the &quot;Failed building wheel for nxsdk&quot; and the associated
+&quot;Failed to build nxsdk&quot;. This is a known error and pip will retry
+with setup.py.</p></li>
+</ul>
+</li>
+<li><p>Verify NxSDK installation: <strong>python -c &quot;import nxsdk;
+print(nxsdk.__version__)&quot;</strong></p></li>
+<li><p>Find NxSDK installation directory (nxsdk_install_dir): <strong>python -c
+&quot;import nxsdk; print(nxsdk.__path__)&quot;</strong></p></li>
+<li><p>Unzip Tutorials, Docs and Modules in your home directory: <strong>mkdir
+nxsdk-apps &amp;&amp; tar xzf nxsdk-apps-&lt;latest_version&gt;.tar.gz -C
+nxsdk-apps --strip-components 1</strong></p>
+<ul class="simple">
+<li><p>Run tutorials per instructions in the following sections.</p></li>
+<li><p>(Optional) Some modules need additional dependencies. To install these, run: <strong>pip install -r nxsdk-apps/nxsdk_modules/requirements.txt</strong></p></li>
+</ul>
+</li>
+<li><p>When complete, deactivate the virtual environment by running
+<code class="docutils literal notranslate"><span class="pre">deactivate</span></code></p></li>
+</ol>
+</div>
+<div class="section" id="tutorials">
+<h3>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="jupyter-tutorials-ipython-notebooks">
+<h4>Jupyter Tutorials (IPython Notebooks)<a class="headerlink" href="#jupyter-tutorials-ipython-notebooks" title="Permalink to this headline">¶</a></h4>
+<p>If you are working within the INRC Cloud, follow instructions below to
+run Jupyter</p>
+<ul class="simple">
+<li><p>Ensure you are in the virtual environment
+(<code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">python3_venv/bin/activate</span></code>)</p></li>
+<li><p>Set PYTHONPATH to the location of nxsdk-apps :
+export PYTHONPATH=/path-to-nxsdk-apps/nxsdk-apps</p></li>
+<li><p>Run <strong>SLURM=1 /nfs/ncl/bin/jupyter_nx.sh</strong></p></li>
+<li><p>Follow the instructions on your terminal screen to enable SSH
+tunneling and browser access and use Jupyter from the web</p>
+<ul>
+<li><p>If the browser asks for a password or token, please copy and paste
+the hex string at the end of the web address into the token field.</p></li>
+<li><p>For example:</p>
+<ul>
+<li><p><a class="reference external" href="http://localhost:8891/?token=c14eb1f2cee91e5b2fea550e9ca1ce65721c892b4b88dbf1">http://localhost:8891/?token=c14eb1f2cee91e5b2fea550e9ca1ce65721c892b4b88dbf1</a></p></li>
+<li><p>The token is: c14eb1f2cee91e5b2fea550e9ca1ce65721c892b4b88dbf1</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Once you can access the jupyter web UI from your browser, locate the
+nxsdk-apps directory and open the IPython notebooks from paths
+mentioned below</p></li>
+</ul>
+<p>Jupyter based tutorials demonstrate NxSDK features and examples using
+Python code snippets. Each tutorial focuses on certain feature set of
+the NxSDK API.</p>
+<p>You will find all foundational jupyter notebooks
+under <strong>nxsdk-apps/tutorials/ipython</strong></p>
+<p>Jupyter notebooks to demonstrate modules are located under each module.</p>
+<p>For example, the jupyter notebook for LCA tutorial is
+at <strong>nxsdk-apps/nxsdk_modules/lca/tutorials/lca_single_image_reconstruction.ipynb</strong></p>
+</div>
+<div class="section" id="python-tutorials">
+<h4>Python Tutorials<a class="headerlink" href="#python-tutorials" title="Permalink to this headline">¶</a></h4>
+<p>Python based tutorials demonstrate NxSDK features and examples using
+Python code snippets.</p>
+<p>Each tutorial focuses on certain feature set of the NxSDK API and can be
+run both from command line or IDE based tools</p>
+<p><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">python3_venv/bin/activate</span></code></p>
+<p>Set PYTHONPATH to the location of nxsdk-apps :
+export PYTHONPATH=/path-to-nxsdk-apps/nxsdk-apps</p>
+<p><code class="docutils literal notranslate"><span class="pre">cd nxsdk-apps/tutorials</span></code></p>
+<p>To run a NxNet
+tutorial, <code class="docutils literal notranslate"><span class="pre">SLURM=1</span> <span class="pre">python</span> <span class="pre">-m</span> <span class="pre">nxnet.tutorial_01_single_compartment_with_bias</span></code></p>
+<ul class="simple">
+<li><p>All NxNet tutorials are under <strong>nxsdk-apps/tutorials/nxnet</strong></p></li>
+</ul>
+<p>To run a NxCore
+tutorial, <code class="docutils literal notranslate"><span class="pre">SLURM=1</span> <span class="pre">python</span> <span class="pre">-m</span> <span class="pre">nxcore.tutorial_01_single_compartment_with_bias</span></code></p>
+<ul class="simple">
+<li><p>All NxCore tutorials are under <strong>nxsdk-apps/tutorials/nxcore</strong></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="to-view-documentation">
+<h3>To View Documentation<a class="headerlink" href="#to-view-documentation" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">nxsdk-apps/docs</span></code></p>
+<p>You can start a simple http server or serve the docs via web-server like
+Apache or Nginx</p>
+<p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">http.server</span></code></p>
+<p>You would need to do SSH tunneling to view the docs.</p>
+<p>Alternatively, you may download the docs directory to your local machine
+(Windows or Mac) and click on the index.html. You can do the same if you
+have a VNC session connected to the INRC Cloud.</p>
+</div>
+</div>
+<div class="section" id="execution-configuration-options-and-utilities">
+<h2>Execution Configuration Options and Utilities<a class="headerlink" href="#execution-configuration-options-and-utilities" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<p>SLURM=1</p>
+<ul class="simple">
+<li><p>All execution on the INRC cloud shall be executed with the SLURM=1 option.</p></li>
+<li><p>Example: <code class="docutils literal notranslate"><span class="pre">SLURM=1</span> <span class="pre">python</span> <span class="pre">-m</span> <span class="pre">nxnet.tutorial_01_single_compartment_with_bias</span></code></p></li>
+</ul>
+<p>Getting SLURM information</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">squeue</span></code>: Typing <em>squeue</em> in the command line will give the status of the SLURM queue.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sinfo</span></code>: Typing <em>sinfo</em> in the command line will give a list of all available partitions and the current status.</p></li>
+</ul>
+<p>Partitions: Each partition contains a set of Loihi systems with certain properties.  Please use <code class="docutils literal notranslate"><span class="pre">sinfo</span></code> to see the latest partitions.</p>
+<ul class="simple">
+<li><p>nahuku32</p>
+<ul>
+<li><p>32 N2A2 chips, 20 minute execution time limit</p></li>
+</ul>
+</li>
+<li><p>nahuku32_2h</p>
+<ul>
+<li><p>32 N2A2 chips, 120 minute execution time limit</p></li>
+</ul>
+</li>
+<li><p>nahuku08</p>
+<ul>
+<li><p>8 N2A1 chips, 20 minute execution time limit</p></li>
+<li><p>N2A1 chips have a HW bug that sometimes may cause the following error: <em>ERROR: nx_wait_barrier stalled for 60000002us</em>.  If this problem is seen, please try running on a N2A2 chip partition to determine if this bug is the problem.</p></li>
+</ul>
+</li>
+<li><p>loihi</p>
+<ul>
+<li><p>4 N2A1 chips, 20 minute execution time limit</p></li>
+<li><p>N2A1 chips have a HW bug that sometimes may cause the following error: <em>ERROR: nx_wait_barrier stalled for 60000002us</em>.  If this problem is seen, please try running on a N2A2 chip partition to determine if this bug is the problem.</p></li>
+</ul>
+</li>
+<li><p>loihi_2h</p>
+<ul>
+<li><p>4 N2A1 chips, 120 minute execution time limit</p></li>
+<li><p>N2A1 chips have a HW bug that sometimes may cause the following error: <em>ERROR: nx_wait_barrier stalled for 60000002us</em>.  If this problem is seen, please try running on a N2A2 chip partition to determine if this bug is the problem.</p></li>
+</ul>
+</li>
+</ul>
+<p>Choosing a specific partition for execution</p>
+<ul class="simple">
+<li><p>Option 1: Environment variables</p>
+<ul>
+<li><p>PARTITION=&lt;partition&gt;</p></li>
+<li><p>Example: To execute NxNet tutorial 01 on the nahuku08 partition, do the following: <code class="docutils literal notranslate"><span class="pre">SLURM=1</span> <span class="pre">PARTITION=nahuku08</span> <span class="pre">python</span> <span class="pre">-m</span> <span class="pre">nxnet.tutorial_01_single_compartment_with_bias</span></code></p></li>
+</ul>
+</li>
+<li><p>Option 2: NxNet</p>
+<ul>
+<li><p>net.run(numTimeSteps, executionOptions={'partition':'&lt;partition&gt;'})</p></li>
+</ul>
+</li>
+<li><p>Option 3: NxCore</p>
+<ul>
+<li><p>board.run(numTimeSteps, partition='&lt;partition&gt;')</p></li>
+</ul>
+</li>
+</ul>
+<p>For performance testing options, please see the <code class="docutils literal notranslate"><span class="pre">NxSDK</span> <span class="pre">Performance</span> <span class="pre">Test</span> <span class="pre">Suite</span> <span class="pre">documentation</span></code>.</p>
+</div>
+<div class="section" id="setup-for-non-slurm-or-non-nfs-deployments">
+<h2>Setup for Non-Slurm or Non-NFS deployments<a class="headerlink" href="#setup-for-non-slurm-or-non-nfs-deployments" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<ul class="simple">
+<li><p><strong>On Host (Nahuku Boards)</strong></p>
+<ol class="arabic simple">
+<li><p>Ensure the board is on the network and has an IP address. Note its IP address and hostname as it will be used to submit the job.</p></li>
+<li><p>For every user which intends to use the board, we need to ensure they can ssh into the board. We internally use ssh to copy SNIPs at runtime which are compiled on the fly. Basically, anyone who wishes to use the board should be able to ssh/scp to NXSDKHOST (mentioned in step 4). To enable this:</p>
+<ul>
+<li><p>You can create an user account for every user on the board and make sure they can ssh in</p></li>
+<li><p>Alternatively, you could setup .ssh/config and map to a common account, instead of having individual accounts.</p></li>
+</ul>
+</li>
+<li><p><cite>[If not using NFS between superhost and host]</cite> Untar nxsdk pip package on the board in an accessible location for users and get the path to nxsdk/bin/arm/nx_driver_server</p></li>
+</ol>
+</li>
+<li><p><strong>On Superhost (User Machines)</strong></p>
+<ol class="arabic simple" start="4">
+<li><p>You are ready now. The following environment variables should be added to your bashrc (or passed via command line) on the superhost</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">NOSLURM=1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NXSDKHOST=&lt;IP_ADDRESS_OF_BOARD_OR_HOSTNAME_OF_BOARD&gt;</span></code></p></li>
+<li><p><cite>[If not using NFS between superhost and host]</cite> <code class="docutils literal notranslate"><span class="pre">HOST_BINARY=&lt;ABSOLUTE_PATH_OF_NX_DRIVER_SERVER_ON_BOARD&gt;</span></code></p></li>
+</ul>
+</li>
+<li><p>Follow rest of instructions to install and test NxSDK here: <a class="reference internal" href="#setup">Setup</a></p></li>
+</ol>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Without a workload manager like SLURM, multiple users can still use the board but they can’t use it at the same time.</p>
+</div>
+</div>
+<div class="section" id="getting-started-with-kapohobay">
+<h2>Getting Started with KapohoBay<a class="headerlink" href="#getting-started-with-kapohobay" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started_kb.html">Installing and Running NxSDK on KapohoBay</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started_kb.html#recommended-setup">Recommended Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started_kb.html#installation-guide">Installation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started_kb.html#daily-use">Daily Use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started_kb.html#python-tutorials">Python Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started_kb.html#jupyter-ipython-tutorials">Jupyter/IPython Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started_kb.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started_kb.html#software-updates">Software Updates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started_kb.html#questions-suggestions">Questions/Suggestions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started_kb.html#frequently-asked-questions-faq">Frequently Asked Questions (FAQ)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="setting-up-dvs-with-kapohobay">
+<h2>Setting up DVS with KapohoBay<a class="headerlink" href="#setting-up-dvs-with-kapohobay" title="Permalink to this headline">¶</a></h2>
+<hr class="docutils" />
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dvs.html">DVS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dvs.html#direct-hardware-interface">Direct Hardware Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dvs.html#aedat-interface">AEDAT Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dvs.html#manual-spike-interface">Manual Spike Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dvs.html#module-nxsdk_modules.dvs.src.dvs">DVS Python Module Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="getting_started_kb.html" class="btn btn-neutral float-right" title="Installing and Running NxSDK on KapohoBay" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="host_snips.html" class="btn btn-neutral float-left" title="Programming SNIPs on Host" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

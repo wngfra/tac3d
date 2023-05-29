@@ -1,0 +1,456 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>DVS &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NxAPI" href="nxapi.html" />
+    <link rel="prev" title="Installing and Running NxSDK on KapohoBay" href="getting_started_kb.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Nx SDK Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="characterization.html">Characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dnn.html">DNN</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">DVS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#direct-hardware-interface">Direct Hardware Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#aedat-interface">AEDAT Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manual-spike-interface">Manual Spike Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-nxsdk_modules.dvs.src.dvs">DVS Python Module Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="epl.html">EPL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knn.html">K Nearest Neighbour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_generator.html">Input Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lca.html">LCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="path_planning.html">Path Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slayer.html">SLAYER Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slic.html">SLIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spike_streamer.html">Spike Streamer Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_injection.html">Trace Injection Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="getting_started.html">Getting Started</a> &raquo;</li>
+        
+      <li>DVS</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="dvs">
+<h1>DVS<a class="headerlink" href="#dvs" title="Permalink to this headline">¶</a></h1>
+<p>The DVS module provides an Nx SDK interface to Dynamic Vision Sensors.
+This interface can take 3 main forms:</p>
+<ul class="simple">
+<li><p>A direct hardware interface from DAVIS240C to Kapoho Bay or Nahuku32</p></li>
+<li><p>A software interface from a pre-recorded .AEDAT file</p></li>
+<li><p>A software interface from manually specified x, y, p values</p></li>
+</ul>
+<p>All three of the above interfaces are shown in <strong>nxsdk_modules/dvs/tutorials</strong></p>
+<p>Whether using a hardware or software interface, the spikes are delivered to a
+SNIP which handles the spike injection.
+The default snip can be found at <strong>nxsdk_modules/dvs/src/snips</strong>.
+Custom snip examples are covered by the tutorial and can be
+found at <strong>nxsdk_modules/dvs/tutorials/snips</strong>.</p>
+<p>The DVS module also provides an example of live spike visualization.
+This feature uses spikeOutputPorts which are currently only supported on Kapoho Bay.
+The visualizer code is found at <strong>nxsdk_modules/dvs/tutorials/visualizer</strong> and use
+of the visualizer is covered by the dvs_live tutorial.</p>
+<div class="section" id="direct-hardware-interface">
+<h2>Direct Hardware Interface<a class="headerlink" href="#direct-hardware-interface" title="Permalink to this headline">¶</a></h2>
+<p>The top PCB on Kapoho Bay (or connector card for Nahuku32) will pull events
+off the DAVIS sensor and deliver them to the SNIP.</p>
+<p>A FIFO for buffering events sits between the DAVIS240C chip and the KapohoBay Lakemont.
+If this FIFO fills up, the buffered spikes will be dropped.
+The default SNIP runs fast enough to inject DAVIS240C spikes without dropping any,
+but more complex custom SNIPs could result in the loss of spikes.</p>
+<p><strong>Prerequisites:</strong></p>
+<ol class="arabic simple">
+<li><p>Kapoho Bay or a Nahuku32 board with DVS adapter card.</p></li>
+<li><p>OS: Ubuntu 16.04 LTS (x86_64)</p></li>
+<li><p>Python 3.5.2</p></li>
+<li><p>pip (latest)</p></li>
+<li><p>DAVIS240C Camera (See <a class="reference external" href="https://inivation.com/support/hardware/davis240/">https://inivation.com/support/hardware/davis240/</a> )
+for additional software/hardware instructions and FAQ)</p></li>
+<li><p>Either libcaer <a class="reference external" href="https://inivation.com/support/software/libcaer/#ubuntu-linux">https://inivation.com/support/software/libcaer/#ubuntu-linux</a> or jAER <a class="reference external" href="https://github.com/SensorsINI/jaer">https://github.com/SensorsINI/jaer</a></p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you get error due to incorrect version of libcaer.so, please clone the correct version from
+<a class="reference external" href="https://github.com/inivation/libcaer/releases/tag/2.5.2">https://github.com/inivation/libcaer/releases/tag/2.5.2</a> and follow instructions to build and install.</p>
+</div>
+<p><strong>Setup Instructions:</strong></p>
+<p>1.  Follow NxSDK setup instructions to create the python virtual environment, install
+NxSDK, and verify that Loihi is working properly from your laptop.</p>
+<ol class="arabic simple" start="2">
+<li><p>Follow instructions for cAER or jAER and verify that the DAVIS sensor is working correctly.</p></li>
+</ol>
+<p>3.  Connect the DVS to Loihi using the data cable. The cable used for the connection
+is <strong>SAMTEC FFSD-20-D-X-01-N</strong> (where <strong>X</strong> is cable length). The image below shows the
+correct cable configuration.</p>
+<div class="figure align-default">
+<img alt="Kapoho Bay with DVS attached" src="_images/KBdvs.png" />
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Plug in the DVS USB Power cable to the laptop USB Port. Plug in KapohoBay to another USB Port.</p></li>
+<li><p>Enable DAVIS AER Interface:</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>jAER instructions (version 1.6.3):</p>
+<ul>
+<li><p>launch jAERviewer and confirm that the DAVIS240C is detected</p></li>
+<li><p>click the &quot;HW configuration&quot; button in the lower left</p></li>
+<li><p>go to the &quot;Multiplexer Config&quot; tab and select &quot;Mux.ForceChipBiasEnable&quot;</p></li>
+<li><p>go to the &quot;DVS config&quot; tab and select &quot;DVS.ExternalAERControl&quot;</p></li>
+<li><p>also on the &quot;DVS config&quot; tab, deselect &quot;DVS.Run&quot;</p></li>
+</ul>
+</li>
+<li><p>cAER instructions:</p>
+<ul>
+<li><p>cAER is available from <a class="reference external" href="https://gitlab.com/inivation/libcaer">https://gitlab.com/inivation/libcaer</a></p></li>
+<li><p>Follow the instructions to build and run <strong>examples/davis_enable_aer.cpp</strong></p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="6">
+<li><p>You should now be able to run the tutorial at <strong>nxsdk_modules.dvs.tutorials.dvs_live</strong> without error.</p></li>
+</ol>
+</div>
+<div class="section" id="aedat-interface">
+<h2>AEDAT Interface<a class="headerlink" href="#aedat-interface" title="Permalink to this headline">¶</a></h2>
+<p>The AEDAT interface allows the user to inject spikes from a pre-recorded DVS file created with jAER.
+This functionality is useful for repeatedly testing a model with the exact same input data.</p>
+<p>The spikes are delivered to the same SNIP as the direct hardware interface, so transitioning from
+AEDAT file to the direct hardware interface should be seamless.</p>
+</div>
+<div class="section" id="manual-spike-interface">
+<h2>Manual Spike Interface<a class="headerlink" href="#manual-spike-interface" title="Permalink to this headline">¶</a></h2>
+<p>The manual spike interface allows the user to explicitly state the x, y, p, t event values.
+This is useful for running simple tests on synthetic data to verify a network is operating
+correctly.</p>
+<p>The manual spike interface uses the same SNIP as the AEDAT and Hardware interfaces so
+transitioning between interfaces should be seamless.
+A spikeGen could be used in place of the Manual Spike Interface, but it would not make use
+of the DVS SNIPs.</p>
+</div>
+<div class="section" id="module-nxsdk_modules.dvs.src.dvs">
+<span id="dvs-python-module-documentation"></span><h2>DVS Python Module Documentation<a class="headerlink" href="#module-nxsdk_modules.dvs.src.dvs" title="Permalink to this headline">¶</a></h2>
+<p>Support for DVS sensors, both live and from file.</p>
+<dl class="py class">
+<dt id="nxsdk_modules.dvs.src.dvs.DVS">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.dvs.src.dvs.</span></code><code class="sig-name descname"><span class="pre">DVS</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimX</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">240</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimY</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">180</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimP</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isTestMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.dvs.src.dvs.DVS" title="Permalink to this definition">¶</a></dt>
+<dd><p>DVS module. Provides support for DVS sensors.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is in Alpha and likely to change.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The live DVS module requires that DVS.setupSnips(board) be called. This will instantiate a Spiking phase snip on Chip 0 Lakemont 0, which prevents the user from using their own snip in the Spiking phase on the same Lakemont and Chip (just use another Lakemont).</p>
+</div>
+<dl class="py method">
+<dt id="nxsdk_modules.dvs.src.dvs.DVS.addFile">
+<code class="sig-name descname"><span class="pre">addFile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filePath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeDuration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.dvs.src.dvs.DVS.addFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses an .AEDAT file as the source of spikes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> (<em>NxGraph</em>) -- A compiled board</p></li>
+<li><p><strong>filePath</strong> (<em>string</em>) -- The .AEDAT file to be used</p></li>
+<li><p><strong>timeDuration</strong> (<em>int</em>) -- How many .AEDAT file timesteps correspond to one Loihi timestep</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.dvs.src.dvs.DVS.addSpikes">
+<code class="sig-name descname"><span class="pre">addSpikes</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.dvs.src.dvs.DVS.addSpikes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for adding spikes to a dvs input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> (<em>NxGraph</em>) -- A compiled board</p></li>
+<li><p><strong>time</strong> (<em>int</em>) -- The spike times (in units of loihi timesteps)</p></li>
+<li><p><strong>x</strong> (<em>int</em>) -- The spike x addresses</p></li>
+<li><p><strong>y</strong> (<em>int</em>) -- The spike y addresses</p></li>
+<li><p><strong>p</strong> (<em>int</em>) -- The spike polarities</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.dvs.src.dvs.DVS.numPixels">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numPixels</span></code><a class="headerlink" href="#nxsdk_modules.dvs.src.dvs.DVS.numPixels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of pixels</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.dvs.src.dvs.DVS.pResolution">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pResolution</span></code><a class="headerlink" href="#nxsdk_modules.dvs.src.dvs.DVS.pResolution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of different polarities</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.dvs.src.dvs.DVS.setupSnips">
+<code class="sig-name descname"><span class="pre">setupSnips</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funcName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guardName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.dvs.src.dvs.DVS.setupSnips" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must be called. Allows a custom DVS spike injection snip to be specified.
+Defaults to a predefined snip if none are specified.
+Either all of snip, funcName, guardName must be specified, or none.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> (<em>NxGraph</em>) -- A compiled board.</p></li>
+<li><p><strong>snip</strong> (<em>string</em>) -- Optional. Full path to the custom snip file.</p></li>
+<li><p><strong>funcName</strong> (<em>string</em>) -- Optional. The function to run.</p></li>
+<li><p><strong>guardName</strong> (<em>string</em>) -- Optional. The guard function to run.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.dvs.src.dvs.DVS.xResolution">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">xResolution</span></code><a class="headerlink" href="#nxsdk_modules.dvs.src.dvs.DVS.xResolution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Horizontal resolution in pixels</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.dvs.src.dvs.DVS.yResolution">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">yResolution</span></code><a class="headerlink" href="#nxsdk_modules.dvs.src.dvs.DVS.yResolution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Vertical resolution in pixels</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="nxapi.html" class="btn btn-neutral float-right" title="NxAPI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="getting_started_kb.html" class="btn btn-neutral float-left" title="Installing and Running NxSDK on KapohoBay" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

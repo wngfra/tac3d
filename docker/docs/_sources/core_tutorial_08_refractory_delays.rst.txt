@@ -1,0 +1,33 @@
+NxCore: Refractory Delays
+=========================
+
+Motivation
+----------
+Refractory delays are a key aspect of any spiking neuron. Refactory delays enable you to control the rate at which a neuron can send a spike by imposing a delay after a spike is sent down the axon and before the neuron's voltage can again accumulate a charge.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_08.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_08_refractory_delays.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`cx_meta_state`
+* :doc:`dendrite_shared_cfg`
+* :doc:`vth_profile_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+* :doc:`inputgen`
+

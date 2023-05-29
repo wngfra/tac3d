@@ -1,0 +1,431 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Path Planning &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Path Planning" href="jupyter/tutorial_path_planning.html" />
+    <link rel="prev" title="Solving convolutional LASSO with LCA" href="jupyter/a_solving_convolutional_lasso_with_lca.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Nx SDK Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="characterization.html">Characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dnn.html">DNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dvs.html">DVS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epl.html">EPL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knn.html">K Nearest Neighbour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_generator.html">Input Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lca.html">LCA</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Path Planning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/tutorial_path_planning.html">Path Planning</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="slayer.html">SLAYER Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slic.html">SLIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spike_streamer.html">Spike Streamer Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_injection.html">Trace Injection Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Nx SDK Modules</a> &raquo;</li>
+        
+      <li>Path Planning</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="path-planning">
+<h1>Path Planning<a class="headerlink" href="#path-planning" title="Permalink to this headline">¶</a></h1>
+<p>Path planning model is based on the planning algorithm modeled after the operational principles of
+hippocampal place cells. The algorithm infers associations between neurons in a network from the
+asymmetric effects of STDP on a propagating sequence of spikes.</p>
+<p>Jupyter notebook illustrating resides at <strong>nxsdk_modules/path_planning/tutorials</strong></p>
+<span class="target" id="module-nxsdk_modules.path_planning.src.nxcore.path_planning"></span><p>Path planning module is based on the planning algorithm modeled after
+the operational principles of hippocampal place cells. The algorithm
+infers associations between neurons in a network from the asymmetric
+effects of STDP on a propagating sequence of spikes.</p>
+<dl class="py class">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.path_planning.src.nxcore.path_planning.</span></code><code class="sig-name descname"><span class="pre">PathPlanning</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Module : Given a graph, a source and destination finds the shortest path</p>
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.compartmentToNodeId">
+<code class="sig-name descname"><span class="pre">compartmentToNodeId</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cxLocation</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.compartmentToNodeId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a mapping from CxLocation to NodeId in the graph
+Should be overwritten by the user for their mapping
+:param cxLocation: Location of the node, which is a Cx
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.configureAxon">
+<code class="sig-name descname"><span class="pre">configureAxon</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetChipId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetcoreId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetAxonId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.configureAxon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configures the output Axon.
+:param core: Core to be configured
+:param compartmentId: Id of the Cx
+:param targetChipId: ChipId of the destination input axon
+:param targetcoreId: CoreId of the destination input axon
+:param targetAxonId: AxonId of the destination input axon</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.configureCompartment">
+<code class="sig-name descname"><span class="pre">configureCompartment</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.configureCompartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configures Cx with compartmenId for given Core
+:param core: Core to which Cx belongs
+:param compartmentId: Id of the Cx</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.configureCore">
+<code class="sig-name descname"><span class="pre">configureCore</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.configureCore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the core, configures various nodesets
+:param core: Core to be configure</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.configureNumUpdates">
+<code class="sig-name descname"><span class="pre">configureNumUpdates</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numCompartments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numSynapses</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.configureNumUpdates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configure number of active Cxs and number of learning synapses.
+:param core: Core to be configured
+:param numCompartments: Number of configured Cx for the Core
+:param numSynapses: Number of Learning Synapses
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.configureSynapse">
+<code class="sig-name descname"><span class="pre">configureSynapse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">core</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">synMapOffset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">synMapEntry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">synBase</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.configureSynapse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configures the synaptic connection</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.createConnectionsFromFile">
+<code class="sig-name descname"><span class="pre">createConnectionsFromFile</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mychipId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.createConnectionsFromFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given filename and chipId, create connections by reading from file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.getLogicalChipId">
+<code class="sig-name descname"><span class="pre">getLogicalChipId</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chipId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.getLogicalChipId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function to return LogicalChipId, given physical ChipId
+:param chipId: Physical ChipId
+:return: LogicalChipId</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.getLogicalCoreNum">
+<code class="sig-name descname"><span class="pre">getLogicalCoreNum</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coreNum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.getLogicalCoreNum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function to return logicalCoreId given coreNum
+:param coreNum: Input coreNum
+:return: LogicalCoreId</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.getNextEntry">
+<code class="sig-name descname"><span class="pre">getNextEntry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">currentAxonList</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.getNextEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Traverses the axonList and finds the next node in the path
+:param currentAxonList: List of fanning out connecttions</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.getWaveFront">
+<code class="sig-name descname"><span class="pre">getWaveFront</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.getWaveFront" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function that gets the wavefront of the search and the shortest path
+:return: Set of nodes, Set of edge pairs, src, dst, List of tuple (level, node1, node2) and shortest path</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.readAllAxonsAndSynapses">
+<code class="sig-name descname"><span class="pre">readAllAxonsAndSynapses</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chipInfo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.readAllAxonsAndSynapses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Debug functions which reads all axons and synapses
+:param chipInfo: Dictionary of ChipInfo</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.readTargets">
+<code class="sig-name descname"><span class="pre">readTargets</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graphDir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targetNum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">physicalCoreId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.readTargets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read Target From the file
+:param graphDir: Directory of the graph
+:param targetNum: Target Id</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.search">
+<code class="sig-name descname"><span class="pre">search</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chipInfo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxLength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2147483647</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run search to find shortest path between source and target at most
+maxLength long.
+:return: True if path found, False otherwise.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.searchThenTrace">
+<code class="sig-name descname"><span class="pre">searchThenTrace</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chipInfo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxLength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2147483647</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.searchThenTrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run search to find shortest path between source and target at most
+maxLength long, and return the shortest path or None.
+:return: Shortest path or None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.setTargetBias">
+<code class="sig-name descname"><span class="pre">setTargetBias</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.setTargetBias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the bias for the target</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.setupNetwork">
+<code class="sig-name descname"><span class="pre">setupNetwork</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.setupNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the board with required resource for the graph.
+:return: Dictionary of ChipInfo and Board</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.setupSnip">
+<code class="sig-name descname"><span class="pre">setupSnip</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">snipChip</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.setupSnip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the channel associated with the given chip.
+:param snipChip: ChipId of chip</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.tracePathThroughSynapseWeights">
+<code class="sig-name descname"><span class="pre">tracePathThroughSynapseWeights</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.path_planning.src.nxcore.path_planning.PathPlanning.tracePathThroughSynapseWeights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Traces the shortest path
+:param source: Source Cx
+:param target: Target Cx
+:return: Returns the shortest path</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/tutorial_path_planning.html">Path Planning</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="jupyter/tutorial_path_planning.html" class="btn btn-neutral float-right" title="Path Planning" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="jupyter/a_solving_convolutional_lasso_with_lca.html" class="btn btn-neutral float-left" title="Solving convolutional LASSO with LCA" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

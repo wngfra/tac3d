@@ -1,0 +1,24 @@
+NxNet: Soma Traces
+=======================
+
+Motivation
+----------
+Within this tutorial we can see how to utilize soma traces with a number of different examples.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_19.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxnet/tutorial_19_soma_traces.py
+
+See also
+--------
+
+* :doc:`netprobes`
+* :doc:`compartment`
+* :doc:`connection`
+* :doc:`nxnet`
+* :doc:`graph`

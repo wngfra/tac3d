@@ -1,0 +1,31 @@
+NxCore: Multiple Cores with Bias
+================================
+
+Motivation
+----------
+The motivation for this tutorial is to show you how to connect compartments across multiple cores, sending spikes from a single source compartment to compartments in 3 other cores. Using the function createDiscreteAxon greatly simplifies the wiring between the compartments.
+
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_03.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_03_multiple_cores_with_bias.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`vth_profile_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+

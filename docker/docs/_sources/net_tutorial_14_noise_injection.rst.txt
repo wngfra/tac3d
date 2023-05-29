@@ -1,0 +1,24 @@
+NxNet: Noise Injection
+=======================
+
+Motivation
+----------
+The aim of this tutorial is to show how to configure and use the noise injection capabilities for both the U (current) and V (voltage) settings within a compartment.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_14.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxnet/tutorial_14_noise_injection.py
+
+See also
+--------
+
+* :doc:`netprobes`
+* :doc:`compartment`
+* :doc:`connection`
+* :doc:`nxnet`
+* :doc:`graph`

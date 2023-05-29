@@ -1,0 +1,31 @@
+NxCore: Multiple Neuron and Multiple Spike Generation
+=====================================================
+
+Motivation
+----------
+This tutorial provides a no-frills example of using the spike generator to drive a spike train to 2 compartments with the same threshold and decay values.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_06.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_06_multneuron_multspikegen.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`vth_profile_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+* :doc:`inputgen`
+

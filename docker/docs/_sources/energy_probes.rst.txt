@@ -1,0 +1,259 @@
+Energy and Execution Time Probes
+=================================
+
+This section discusses how the execution time probes
+(:class:`ExecutionTimeProbe <nxsdk.graph.nxenergy_time.ExecutionTimeProbe>`)
+and energy probes
+(:class:`EnergyProbe <nxsdk.graph.nxenergy_time.EnergyProbe>`)
+work, how to configure probes and the API to use them.
+
+
+How Power and Execution Time are recorded
+-----------------------------------------
+
+NxSDK offers performance profiling while executing a spiking neuron network
+and /or snips on one of the embedded CPUs. This allows to measure both
+execution  time and power/energy consumption by Loihi in real-time. In order
+to support both, NxSDK provides ExecutionTime and EnergyProbes which are
+analogous to other state probes for membrane potential, spikes, etc.
+EnergyProbes allow to measure both energy and execution time while
+ExecutionTimeProbes  allow to only measure execution time.
+
+Power is measured by the host CPU while the execution time is measured by
+one of the embedded Lakemont (LMT) CPUs which drives the time step
+advancement. Both power and execution time series are acquired independently
+and asynchronously from each other. This means that the host acquires the
+power as a function of the host timestamps while the embedded LMT CPU acquires
+the  wallclock time (using a start and end timestamp) for each algorithmic
+time step using the LMT timestamps.
+Hence the time stamps for the power and execution time data points are
+different.  Only at the end of a network execution, the time axes for both
+the power and execution time data points are synchronized onto a common time
+axis. Therefore, we now have a set of power readings and start and end
+timestamps for each algorithmic timestep on a common time axis.
+
+To compute energy, using the power readings (obtained on the host), we then
+interpolate them onto the set of time points which correspond to the start
+and end timestamps (obtained on the LMT) for each algorithmic timestep. As a
+result, both power and execution time are now available as a function
+of algorithmic time steps.
+
+Phases for each algorithmic timestep
+------------------------------------
+
+During each algorithmic time step, the embedded CPUs and neuro cores go
+through a number of different sequential but optional phases listed below.
+During each algorithmic time step, one of the embedded CPUs measures the
+time at the start and end of an algorithmic time step just after the last
+optional 'management' phase.
+
+The various phases are:
+
+1. **Spiking**: During the first phase, neuro cores update their internal
+state and send and receive spike messages amongst them or the environment. No
+other message types than spike messages are allowed in the asynchronous mesh
+during this phase. In addition, the user has the possibility to execute a snip
+during the 'spiking' phase.
+
+2. **Pre-Learning Management**: If the 'learning' phase is executed during the
+current time step, the user has the option to execute an optional
+'Pre-Learning management' phase just before the 'learning' phase. During a
+'Pre-Learning management' phase, the neuro cores enter a mode during which they
+are able to process management messages via the asynchrnous mesh while the user
+has the option to execute another snip during the 'Pre-Learning management'
+phase.
+
+3. **Learning**: Every multiple of a predefined learning epoch, the neuro cores
+update their synaptic state. During this phase, no spike or management message
+will be processed by the neuro cores.
+
+4. **Management**: Independent of whether a 'learning' phase is executed during
+the current time step or not, another 'management' phase can be executed at
+the end or just after the 'learning' phase giving the user another possibility
+to execute a snip. After this 'management' phase, the embedded CPU will
+immediately proceed to the next algorithmic time step or will hand control back
+to the host CPU. In case the host takes over, it may either reconfigure the
+system or probe any of the states within the neuro cores or the spike counters
+in the embedded CPUs.
+
+5. **Host**: After the execution of each algorithmic timestep, the embedded
+CPUs (LMT) may interact with the host for additional synchronization. This
+is called the 'host' phase. The time taken for this phase for the current
+algorithm timestep can be simply computed by cacluating the difference
+between the end timestamp of the current algorithmic timestep and the start
+timestamp of the next algorithmic timestep.
+
+Both energy and execution time probes give access to the execution time 
+elapsed during each phase, and power measurements.
+
+**NOTE**: Because the sensor used to measure power consumption has a rather
+long time constant on the order of miliseconds, workloads should generally
+be repeated multiple times in order to allow the system to settle into a
+steady state for reliable energy characterizations.
+
+
+Configuring Probes
+------------------
+In order to record the energy consumed or time elapsed (i.e. execution
+time) when a spiking neural network is run, we need to know on which board
+(i.e. hardware) the network ran on. Hence, in order to configure energy and
+execution time probes, we need access to the board object.
+Therefore, we use :meth:`board.probe() <nxsdk.base.nxboard.N2Board.probe>`
+method to configure energy and execution time probes.
+Once a performance probe is configured, we get a probe object back has a
+rich userfacing API to access, process and visualize the the underlying data.
+
+Below, we show some examples to create energy and execution time probes:
+
+.. code-block:: python
+
+   # Configure an execution time probe
+   from nxsdk.graph.monitor.probes import PerformanceProbeCondition
+   from nxsdk.api.enums.api_enums import ProbeParameter
+
+   probeCond1 = PerformanceProbeCondition(tStart=1, tEnd=100,
+                                       bufferSize=100, binSize=4)
+   tprobe1 = board.probe(ProbeParameter.EXECUTION_TIME, probeCond1)
+
+   # Configure an energy probe
+   probeCond2 = PerformanceProbeCondition(tStart=1, tEnd=10000,
+                                       bufferSize=1000, binSize=4)
+   eprobe1 = board.probe(ProbeParameter.ENERGY, probeCond2)
+
+
+The :class:`PerformanceProbeCondition <nxsdk.graph.monitor.probes.PerformanceProbeCondition>`
+configues the probe and its constructor takes 4 arguments. They are:
+
+**tStart**: Time at which the probing starts.
+
+**tEnd**: Time at which the probing ends.
+
+**bufferSize**: Specifies the size of the buffer on the LMT that will be used
+to collect time stamps. Size in terms of timesteps, e.g. bufferSize = 100,
+will collect beginning and ending time stamps for 100 timesteps before
+sending data back to the host.
+
+**binSize**: Specifies the binSize of the time stamps collected on the LMT, e.g
+. a binSize of 8 indicates that the time stamps for 8 time steps will be
+summed in a single bin and will be returned as a single entry.
+
+**NOTE**:The above mentioned parameters need to be chosen carefully.
+Particularly **bufferSize**. If there is no sufficient memory on the
+Lakemont (LMT), then one can run into out of memory(OOM) erros which
+manifests as a link time error during the build phase of snips. Also, the
+duration of probing as defined by **tStart** and **tEnd** must be
+sufficiently long enough say (at least 1000 timesteps) in order to collect
+ample number of power readings which will be used for energy computation.
+
+
+Designing a Power Test 
+-----------------------
+The time constant of the power measurements is significantly longer than a 
+typical Loihi timestep or phase duration, so only the average power for a 
+workload can be measured in this way. Finer grained power measurements of 
+individual workload components requires designing a workload that 
+isolates this component. 
+
+For example, a particular algorithm may require a core to be reset. 
+Power probes can report the average power of the algorithm, but not how much 
+energy was consumed just by the reset itself. To isolate the reset power, we 
+would write a test that just resets the core, without running the other 
+algorithm steps. 
+
+However, a single reset would be too short in duration for the power to be 
+accurately measured, so for power measurement we would repeatedly reset the 
+core and measure the average power. At the scale of a single core, the power 
+consumed by reset would still be very small compared to the overall system 
+power (which in the case of Nahuku32 would include all Nahuku32 chips) and 
+could therefore be lost in the power measurement noise. The solution is to 
+replicate the workload across many cores/chips and divide the result by the 
+total number of copies.
+
+In general, more accurate measurements can be obtained by repeating the 
+workload, both by having multiple copies running simultaneously, and 
+by having each repeat its computation multiple times.
+
+
+Components of Power Consumption
+-------------------------------
+Power consumption can be broken down into "static" (transistor leakage) 
+and "dynamic" (switching) components. Power consumption can also be broken 
+down by Loihi component: Lakemonts and Neurocores.
+
+Lakemonts are always fully powered, so there is no way to reduce Lakemont 
+static power consumption. However, power probes know how many Lakemonts a 
+model uses and will report the static power for those Lakemonts.
+
+Unlike Lakemonts, unused Neurocores can be partially powered down to reduce 
+their static power consumption, and this is handled automatically by NxSDK. 
+The power probes will also automatically remove any power consumed by 
+unused/partially powered down cores from the detailed power measurement.
+
+Lakemont dynamic power consists of clock power, and additional power 
+consumed by code execution (when a Lakemont is not in a "waiting" state). 
+NxSDK will only clock the Lakemonts which are in use, and will measure the 
+percentage of time each clocked Lakemont is executing code. These 
+measurements are used to determine how much dynamic power Lakemonts are 
+consuming. Clock power can be significant, almost 1.5W in total for all 96 
+Lakemonts on a Nahuku32, and clocked Lakemonts continue to consume clock 
+power, even when not performing any computation (such as when waiting for 
+the next Loihi phase to start).
+
+Neurocore dynamic power depends entirely on computation being performed. 
+If a Neurocore has finished its computation for the current phase and is 
+waiting for the start of the next phase, it will not consume any dynamic 
+power (the Neurocores are asynchronous, there is no clock).
+
+
+Power Measurement Sequence
+--------------------------
+When energy probes are enabled, the shutdown sequency of the board is 
+modified. NxSDK will take additional power measurements after the run 
+completes, but with the Lakemonts still clocked to measure the "idle" 
+power (power when neurocore dynamic energy is 0).
+
+The neurocores are then powered down and further measurements are taken.
+By measuring the power drop when neurocores are powered down, the static 
+power consumption of the cores is inferred.
+
+When disconnecting from the board, NxSDK estimates the various 
+components (static/dynamic, Lakemont/Neurocore) of power. These values 
+are only therefore only available after disconnecting.
+
+Power Report
+------------
+The different components of power consumption are reported as a dictionary accessible through **board.energyTimeMonitor.powerProfileStats.power** 
+
+All power measurements are in units of mW.
+
+The fields are:
+ - **total**: The total power consumption of the system during the run including all used and unused components
+ - **idle**: The total power consumption of the system after Neurocore and Lakemont execution has finished, but Lakemonts are still clocked
+ - **static**: The total static power consumption of the system during the run
+ - **dynamic**: The total dynamic power consumption of the system during the run
+ - **core**: A dictionary holding breakdown of the Neurocore power consumption
+   - **logic_static**: Total leakage for logic in all used Neurocores
+   - **SRAM_static**: Total leakage for memory in all used Neurocores
+   - **static**: Total leakage of all used Neurocores
+   - **dynamic**: Total dynamic power of all used Neurocores during the run
+ - **lakemont**: A dictionary holding breakdown of the Lakemont power consumption
+   - **logic_static**: Total leakage for logic in all used Lakemonts
+   - **SRAM_static**: Total leakage for memory in all used Lakemonts
+   - **static**: Total leakage of all used Lakemonts
+   - **clock**: Total clock power for all used Lakemonts
+   - **code**: Additional power consumed by code execution across all Lakemonts
+   - **dynamic**: Total dynamic power for all used Lakemonts
+
+ExecutionTimeProbe
+------------------
+
+.. autoclass:: nxsdk.graph.nxenergy_time.ExecutionTimeProbe
+   :members:
+   :undoc-members:
+
+EnergyProbe
+------------------
+
+.. autoclass:: nxsdk.graph.nxenergy_time.EnergyProbe
+   :members:
+   :undoc-members:

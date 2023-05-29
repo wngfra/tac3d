@@ -1,0 +1,33 @@
+NxCore: Population Connectivity
+===============================
+
+Motivation
+----------
+Many neural networks have repeated connectivity structures that if created discretely would quickly consume computer resources. In an effort to better compress these structures, Loihi provides a population connectivity mode. The motivation behind this tutorial is to illustrate this mode with a simple example diagrammed in the figure below. Note that rather than specifying absolute indexes for each of the target compartments, we are specifying relative indexes for the population and using the cxBase property to configure the target populations initial compartment index.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_07.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_07_population_connectivity.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`cx_meta_state`
+* :doc:`vth_profile_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+* :doc:`inputgen`
+* :doc:`num_updates`
+

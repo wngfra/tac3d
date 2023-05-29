@@ -1,0 +1,25 @@
+NxCore: Two Compartment Neuron
+==============================
+
+Motivation
+----------
+The aim of this tutorial is to show how to configure and use the axonal delay feature.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_15.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_15_two_compartment_neuron.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`num_updates`
+
+

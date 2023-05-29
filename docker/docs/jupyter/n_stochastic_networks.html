@@ -1,0 +1,1276 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>15. Stochastic Networks &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="18. Read Lakemont Spike Count" href="o_snip_for_reading_lakemont_spike_count.html" />
+    <link rel="prev" title="14. Independent Networks in Same Run" href="m_independent_networks_in_same_run.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../nxnet_tutorials.html">NxNet Tutorials</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../nxnet_jupyter_tutorials.html">NxNet Jupyter Tutorials</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="a_compartment_setup.html">1. Compartment, CompartmentPrototype and Probes Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b_connecting_compartments.html">2. Connecting compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="c_stimulating_compartments.html">3. Stimulating compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="d_synaptic_plasticity.html">4. Synaptic plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="e_neuronal_homeostasis.html">5. Neuronal homeostasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="f_rewards_learning.html">6. Learning with Rewards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="g_snip_for_threshold_modulation.html">7. SNIPs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="h_reward_trace.html">8. Reward Trace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i_performance_profiling.html">9. Performance profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="j_soft_reset_core.html">10. Hard vs. soft membrane voltage reset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="j_soft_reset_net.html">11. Soft reset membrane voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="k_interactive_spike_sender_receiver.html">12. Interactive Spike Sender and Spike Receivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l_snip_for_compartment_setup_with_NxNet_C.html">13. Setup Compartments with NxNet C API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="m_independent_networks_in_same_run.html">14. Independent Networks in Same Run</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">15. Stochastic Networks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#A.-Winner-Takes-All-Circuits">15.1. A. Winner-Takes-All Circuits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Motif-1">15.2. Motif 1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Motif-2">15.3. Motif 2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#B.-Detector-Neurons-Through-Receptive-Fields">15.4. B. Detector Neurons Through Receptive Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#C.-Puttin-It-All-Together">16. C. Puttin It All Together</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Modify-createWtaMotif1-to-Include-Detector-Neuron">17. Modify createWtaMotif1 to Include Detector Neuron</a></li>
+<li class="toctree-l3"><a class="reference internal" href="o_snip_for_reading_lakemont_spike_count.html">18. Read Lakemont Spike Count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="p_composable_networks.html">19. Composable Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="q_connection_sharing.html">20. Connection Sharing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="r_stubs_and_netmodules.html">21. Stubs and NetModules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="r_stubs_and_netmodules.html#NetModules">22. NetModules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s_multicx_neuron_self_reward.html">23. Implementation of a multi-compartment neuron with self-reward feedback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="t_vMinExp_and_vMaxExp.html">24. vMinExp and vMaxExp Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="u_join_op_in_multi_compartment_neuron.html">25. Neurons vs Compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="u_join_op_in_multi_compartment_neuron.html#Multi-compartment-neurons">26. Multi-compartment neurons</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../nxcore_tutorials.html">NxCore Tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../tutorials.html">Tutorials</a> &raquo;</li>
+        
+          <li><a href="../nxnet_jupyter_tutorials.html">NxNet Jupyter Tutorials</a> &raquo;</li>
+        
+      <li><span class="section-number">15. </span>Stochastic Networks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># INTEL CORPORATION CONFIDENTIAL AND PROPRIETARY</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2019-2021 Intel Corporation.</span>
+<span class="c1">#</span>
+<span class="c1"># This software and the related documents are Intel copyrighted</span>
+<span class="c1"># materials, and your use of them is governed by the express</span>
+<span class="c1"># license under which they were provided to you (License). Unless</span>
+<span class="c1"># the License provides otherwise, you may not use, modify, copy,</span>
+<span class="c1"># publish, distribute, disclose or transmit  this software or the</span>
+<span class="c1"># related documents without Intel&#39;s prior written permission.</span>
+<span class="c1">#</span>
+<span class="c1"># This software and the related documents are provided as is, with</span>
+<span class="c1"># no express or implied warranties, other than those that are</span>
+<span class="c1"># expressly stated in the License.</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">config</span> IPCompleter.greedy=True
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">nxsdk.api.n2a</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">from</span> <span class="nn">nxsdk.utils.plotutils</span> <span class="kn">import</span> <span class="n">plotRaster</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">mpatches</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Stochastic-Networks">
+<h1><span class="section-number">15. </span>Stochastic Networks<a class="headerlink" href="#Stochastic-Networks" title="Permalink to this headline">¶</a></h1>
+<p>Previous tutorials have shown the use of the LFSR pseudo-random number generator on Loihi to randomize the compartment current, membrane voltage or refractory period. Another source of stochasticity was the injection of random spike trains. In this tutorial we will mix both types of stochasticity to implement a winner-takes-all network (WTA) with a detector network whose receptive field targets a particular subpopulation from the principal neurons of the WTA.</p>
+<div class="section" id="A.-Winner-Takes-All-Circuits">
+<h2><span class="section-number">15.1. </span>A. Winner-Takes-All Circuits<a class="headerlink" href="#A.-Winner-Takes-All-Circuits" title="Permalink to this headline">¶</a></h2>
+<p>The goal of this tutorial is to demonstrate the use of noise injection into the membrane current (u) of single-compartment neurons for competition between similar neurons in a population. For this, we build a network of N single compartment neurons forming a winner-takes-all circuit (WTA). In this configuration a single neuron, on average, will be firing while inhibiting the other, hence its name. The N neurons compete, and the winner takes over the activity of all other N-1 neurons.</p>
+<p>Without noise, a neuron can win because it fired first or because its firing rate is the highest. In the case of a noisy WTA, as shown here, all neurons are allowed to be statistically equivalent. This means the choice of a winner is random (pseudo-random in practice). When the WTA is part of a bigger system this means no previous knowledge about the system needs to be encoded on the parameters of the WTA. It also avoids overfitting and allows the use of the WTA as a primitive for stochastic
+computations with spiking neurons.</p>
+<p>We are going to probe the current and membrane voltage of each neuron in the network. Probes will also be used to get the spike times for each neuron.</p>
+<p>We build and compare two alternative WTA motifs:</p>
+<ol class="arabic simple">
+<li><p>A single inhibitory neuron mediating the competition between all N neurons. Here, the principal neurons connect with excitatory synapses to an auxiliary neuron. Depending on its input, the auxiliary neuron sends inhibitory feedback to the primary neurons. Size: N+1 neurons and 2N connections.</p></li>
+<li><p>All-to-all lateral inhibition between the N principal neurons. In this case, we only use primary neurons which compete through all-to-all lateral inhibition. Size: N neurons and N**2 connections.</p></li>
+</ol>
+<p>for each of these motifs a function will be defined, createWtaMotif1 and createWtaMotif2 respectively.</p>
+</div>
+<div class="section" id="Motif-1">
+<h2><span class="section-number">15.2. </span>Motif 1<a class="headerlink" href="#Motif-1" title="Permalink to this headline">¶</a></h2>
+<p>The image below shows a network of 4 neurons which connect through excitatory synapses to a 5th auxiliary neuron, this in turn provides inhibitory feedback over the principal neurons. The 4 neurons are stimulated with a bias current with biasMant=10 and biasExp=6 generating a 640 units contribution per time step to the compartment voltage. The bias current is integrated by the compartments by <span class="math notranslate nohighlight">\(v(t)=v(t−1)(2^{12}−\frac{2^{12}}{τ_u}) 2^{−12}+u(t)+biasMant∗2^{biasExp}\)</span>. We keep a
+compartmentVoltageDecay=0, hence, <span class="math notranslate nohighlight">\(v(t)=v(t−1)+u(t)+biasMant∗2^{biasExp}\)</span>. This means that at each time step, the voltage will increase/decrease by the value of the bias current plus the compartment’s internal current. We set all neurons to fire at <span class="math notranslate nohighlight">\(v_{th}=100 \cdot 2^6=6400\)</span>. The compartment current of neuron <span class="math notranslate nohighlight">\(i\)</span> is determined by <span class="math notranslate nohighlight">\(u_i(t)=u_i(t−1)(2^{12}−δ_{i}^{u} )∗2^{−12}+2^{6+wgtExp} \sum_j w_{i,j}\cdot S_j(t)\)</span>. So, it is important for the compartmentCurrentDecay
+<span class="math notranslate nohighlight">\(δ_{i}^{u}\)</span> to be greater than zero so that the network remembers previous inputs and a winner can be selected. Otherwise, due to the sparsity of the spike times the circuit will not serve its purpose. If all the neurons fired synchronously, <span class="math notranslate nohighlight">\(w_{i,j}^{exc}\ge \frac{v_{th}}{N}\)</span> would be the requirement for the inhibitory neuron to fire at each time the population fires. If the firing is irregular, and two spikes do not coincide in time, then we may even need
+<span class="math notranslate nohighlight">\(w_{i,j}^{exc}\ge v_{th}\)</span>, so that a single presynaptic spike triggers a spike on the postsynaptic neuron. We setted the weights to satisfy this latter. One also expects every spike from the inhibitory neuron to have an apreciable effect on the firing of the population, then <span class="math notranslate nohighlight">\(w_j^{inh}≥ v_{th}\)</span>.</p>
+<p><img alt="Motif 1" src="../_images/jupyter_wta_motif1.png" /></p>
+<p>Let us first define the simulation parameters</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">N</span><span class="o">=</span><span class="mi">5</span>              <span class="c1"># Number of competing neurons</span>
+<span class="n">exclude</span><span class="o">=</span><span class="mi">1</span>        <span class="c1"># Used to exclude first neuron per core as a hack for LFSR bug</span>
+<span class="n">runtime</span><span class="o">=</span><span class="mi">10000</span>    <span class="c1"># Duration of simulation in time steps</span>
+</pre></div>
+</div>
+</div>
+<p>Now we code the function createWtaMotif1 which uses NxNet to implement the winner-takes-all circuit above.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">createWtaMotif1</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a winner-takes-all circuit with an auxiliary inhibitory neuron.</span>
+
+<span class="sd">    This function creates an NxNet network, which implements a winner-takes-all</span>
+<span class="sd">    circuit. A single neuron mediates the competition between primary neurons.</span>
+<span class="sd">    The function uses N2Compiler to compile and initialize the software mappings</span>
+<span class="sd">    to hardware components and finally returns the current, voltage and spikes</span>
+<span class="sd">    probes for primary and auxiliary neurons.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        net: an NxNet object.</span>
+<span class="sd">        N: the size of the main population.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: the current, voltage and spikes probes for principal and auxiliary</span>
+<span class="sd">               neurons.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create compartment prototype with noisy current bias.</span>
+    <span class="n">prototypePrimary</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                         <span class="n">biasExp</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+                                         <span class="n">vThMant</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                                         <span class="n">logicalCoreId</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+                                         <span class="n">enableNoise</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                         <span class="n">randomizeCurrent</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                         <span class="n">noiseMantAtCompartment</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">noiseExpAtCompartment</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+                                         <span class="n">functionalState</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+    <span class="c1"># Create another prototype with no bias current and no noise injection.</span>
+    <span class="n">prototypeAuxiliary</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">biasExp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">vThMant</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                                         <span class="n">logicalCoreId</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                         <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">4095</span><span class="p">,</span>
+                                         <span class="n">functionalState</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+    <span class="c1"># Create N Compartments with noisy voltage and driven by a current bias.</span>
+    <span class="n">primaryNeurons</span>  <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">prototypePrimary</span><span class="p">)</span>
+    <span class="c1"># Create an auxiliary neuron in resting state.</span>
+    <span class="n">auxiliaryNeuron</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">prototypeAuxiliary</span><span class="p">)</span>
+
+    <span class="c1"># Create prototypes for excitatory and inhibitory synapses.</span>
+    <span class="n">prototypeExc</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">signMode</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">SYNAPSE_SIGN_MODE</span><span class="o">.</span><span class="n">EXCITATORY</span><span class="p">)</span>
+    <span class="n">prototypeInh</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">signMode</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">SYNAPSE_SIGN_MODE</span><span class="o">.</span><span class="n">INHIBITORY</span><span class="p">)</span>
+
+    <span class="c1"># Define weights for synapses.</span>
+    <span class="n">weightsExc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">exclude</span><span class="o">+</span><span class="p">[</span><span class="mi">20</span><span class="o">*</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="n">exclude</span><span class="p">))</span>
+    <span class="n">weightsInh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">]]</span><span class="o">*</span><span class="n">exclude</span><span class="o">+</span><span class="p">[[</span><span class="o">-</span><span class="mi">10</span> <span class="o">*</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="n">exclude</span><span class="p">)]]</span><span class="o">*</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="n">exclude</span><span class="p">))</span>
+
+    <span class="c1"># On-to-one connect the N neurons to excite the auxiliary neuron</span>
+    <span class="n">excitatoryConnections</span> <span class="o">=</span> <span class="n">primaryNeurons</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">auxiliaryNeuron</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">prototypeExc</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weightsExc</span><span class="p">)</span>
+
+    <span class="c1"># On-to-one connect the auxiliary neuron to exert feedback inhibition on the N neurons</span>
+    <span class="n">inhibitoryConnections</span> <span class="o">=</span> <span class="n">auxiliaryNeuron</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">primaryNeurons</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">prototypeInh</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weightsInh</span><span class="p">)</span>
+
+    <span class="c1"># Create probes to observe neuron&#39;s current, voltage and spikes.</span>
+    <span class="n">paramsToProbe</span> <span class="o">=</span> <span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                     <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                     <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">]</span>
+
+    <span class="c1"># Setup voltage, current and spikes probes for all neurons.</span>
+    <span class="n">vProbes</span><span class="p">,</span> <span class="n">uProbes</span><span class="p">,</span> <span class="n">sProbes</span> <span class="o">=</span> <span class="n">primaryNeurons</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="n">paramsToProbe</span><span class="p">)</span>
+    <span class="n">vProbesAux</span><span class="p">,</span> <span class="n">uProbesAux</span><span class="p">,</span> <span class="n">sProbesAux</span> <span class="o">=</span> <span class="n">auxiliaryNeuron</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="n">paramsToProbe</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">vProbes</span><span class="p">,</span> <span class="n">uProbes</span><span class="p">,</span> <span class="n">sProbes</span><span class="p">,</span> <span class="n">vProbesAux</span><span class="p">,</span> <span class="n">uProbesAux</span><span class="p">,</span> <span class="n">sProbesAux</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Motif-2">
+<h2><span class="section-number">15.3. </span>Motif 2<a class="headerlink" href="#Motif-2" title="Permalink to this headline">¶</a></h2>
+<p>Another possibility is to directly use all-toall latteral inhibition between the principal neurons. In this case, one less neuron is necessary, but the number of synapties increases.</p>
+<p><img alt="Motif 2" src="../_images/jupyter_wta_motif2.png" /></p>
+<p>To implement this motif we create the function createWtaMotif2.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">createWtaMotif2</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Create a winner-takes-all circuit with synaptic lateral inhibition only.</span>
+
+<span class="sd">    This function creates an NxNet network, which implements a winner-takes-all</span>
+<span class="sd">    circuit through mutual inhibition only. It uses N2Compiler to compile and</span>
+<span class="sd">    initialize the software mappings to hardware components and finally returns</span>
+<span class="sd">    the current, voltage and spikes probes for all the neurons.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        net: an NxNet object.</span>
+<span class="sd">        N: the size of the main population.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: the current, voltage and spikes probes for all neurons.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create compartment prototype with noisy current bias.</span>
+    <span class="n">prototype</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                        <span class="n">biasExp</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+                                        <span class="n">vThMant</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                                        <span class="n">logicalCoreId</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                        <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                        <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+                                        <span class="n">enableNoise</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                        <span class="n">noiseMantAtCompartment</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                        <span class="n">noiseExpAtCompartment</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+                                        <span class="n">functionalState</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+    <span class="c1"># Create N Compartments with noisy voltage and driven by a current bias.</span>
+    <span class="n">population</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">prototype</span><span class="p">)</span>
+
+    <span class="c1"># Create prototypes for inhibitory synapses</span>
+    <span class="n">connectionPrototypeInh</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">signMode</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">SYNAPSE_SIGN_MODE</span><span class="o">.</span><span class="n">INHIBITORY</span><span class="p">,</span> <span class="n">weight</span><span class="o">=-</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># All-to-all connect the N neurons to excite the auxiliary neuron</span>
+    <span class="n">inhibitoryConnections</span> <span class="o">=</span> <span class="n">population</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">connectionPrototypeInh</span><span class="p">)</span>
+
+    <span class="c1"># Create probes to observe neuron&#39;s current,  voltage and spikes.</span>
+    <span class="n">probeParameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                       <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                       <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">]</span>
+
+    <span class="c1"># Setup voltage, current and spikes probes for all neurons.</span>
+    <span class="p">(</span><span class="n">vProbes</span><span class="p">,</span> <span class="n">uProbes</span><span class="p">,</span> <span class="n">sProbes</span><span class="p">)</span> <span class="o">=</span> <span class="n">population</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="n">probeParameters</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">vProbes</span><span class="p">,</span> <span class="n">uProbes</span><span class="p">,</span> <span class="n">sProbes</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<p>We use the functions to create and run the networks, as well as to retrieve probes data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Create a network object for each motif.</span>
+<span class="n">netWta1</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+<span class="n">netWta2</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+
+<span class="c1"># Setup the wta network.</span>
+<span class="n">probesWta1</span> <span class="o">=</span> <span class="n">createWtaMotif1</span><span class="p">(</span><span class="n">netWta1</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">probesWta2</span> <span class="o">=</span> <span class="n">createWtaMotif2</span><span class="p">(</span><span class="n">netWta2</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+
+<span class="c1"># Run networks and disconnect.</span>
+<span class="n">netWta1</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">runtime</span><span class="p">)</span>
+<span class="n">netWta1</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
+<span class="n">netWta2</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">runtime</span><span class="p">)</span>
+<span class="n">netWta2</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+INFO:DRV:  SLURM is being run in background
+INFO:DRV:  Connecting to 134.134.68.73:18861
+INFO:DRV:  N2Driver: Running...
+INFO:DRV:      Compiling synapses... Done (0.00s)
+INFO:DRV:      Processing probes... Done (0.00s)
+INFO:DRV:      Writing modified registers... Done (0.01s)
+INFO:DRV:      Initializing... Done (0.01s)
+INFO:DRV:      Preparing input... Done (0.00s)
+INFO:DRV:      Executing... Done (1.50s)
+INFO:DRV:      Processing timeSeries... Done (0.92s)
+INFO:DRV:  N2Driver: Finished (2.44s)
+INFO:DRV:  SLURM is being run in background
+INFO:DRV:  Connecting to 134.134.68.73:18861
+INFO:DRV:  N2Driver: Running...
+INFO:DRV:      Compiling synapses... Done (0.00s)
+INFO:DRV:      Processing probes... Done (0.00s)
+INFO:DRV:      Writing modified registers... Done (0.01s)
+INFO:DRV:      Initializing... Done (0.01s)
+INFO:DRV:      Preparing input... Done (0.00s)
+INFO:DRV:      Executing... Done (1.37s)
+INFO:DRV:      Processing timeSeries... Done (0.74s)
+INFO:DRV:  N2Driver: Finished (2.13s)
+</pre></div></div>
+</div>
+<div class="section" id="Show-results-for-motif-1">
+<h3><span class="section-number">15.3.1. </span>Show results for motif 1<a class="headerlink" href="#Show-results-for-motif-1" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Plot current, voltage and spike probes for all compartments of netWta1.</span>
+<span class="c1"># Top row plots for principal neurons.</span>
+<span class="c1"># Bottom row plots for auxiliary neuron.titles = [&#39;Voltage&#39;,&#39;Current&#39;,&#39;Spike Times&#39;]</span>
+<span class="n">figWta1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">18</span><span class="p">,</span><span class="mi">12</span><span class="p">])</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Voltage&#39;</span><span class="p">,</span><span class="s1">&#39;Current&#39;</span><span class="p">,</span><span class="s1">&#39;Spike Times&#39;</span><span class="p">]</span>
+<span class="n">figWta1</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Inhibition with Auxiliary Neuron&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">runtime</span><span class="p">])</span>
+    <span class="c1"># The following conditional plots all but the first neuron which is fully disconnected (bypassing LFSR bug)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span>
+            <span class="n">probesWta1</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="s1">&#39;#3778bf&#39;</span><span class="p">,</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">neuron</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="n">exclude</span><span class="p">):</span>
+                <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">probesWta1</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="n">neuron</span><span class="o">+</span><span class="n">exclude</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">ticklabel_format</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;sci&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">scilimits</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">neuron</span> <span class="o">&lt;</span><span class="mi">1</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">titles</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+    <span class="c1"># plot data from inhibitory neuron</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">probesWta1</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">titles</span><span class="p">[</span><span class="n">n</span><span class="o">-</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/lib/python3.5/dist-packages/matplotlib/cbook/deprecation.py:107: MatplotlibDeprecationWarning: Adding an axes using the same arguments as a previous axes currently reuses the earlier instance.  In a future version, a new instance will always be created and returned.  Meanwhile, this warning can be suppressed, and the future behavior ensured, by passing a unique label to each axes instance.
+  warnings.warn(message, mplDeprecation, stacklevel=1)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_n_stochastic_networks_19_1.png" src="../_images/jupyter_n_stochastic_networks_19_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Show-results-for-motif-2">
+<h3><span class="section-number">15.3.2. </span>Show results for motif 2<a class="headerlink" href="#Show-results-for-motif-2" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Plot current, voltage and spike probes for all compartments of netWta2.</span>
+<span class="n">figWta2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1001</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">18</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">subplot</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">subplot</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">probesWta2</span><span class="p">[</span><span class="n">subplot</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">,</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="s1">&#39;purple&#39;</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">titles</span><span class="p">[</span><span class="n">subplot</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ticklabel_format</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;sci&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">scilimits</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_n_stochastic_networks_21_0.png" src="../_images/jupyter_n_stochastic_networks_21_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="B.-Detector-Neurons-Through-Receptive-Fields">
+<h2><span class="section-number">15.4. </span>B. Detector Neurons Through Receptive Fields<a class="headerlink" href="#B.-Detector-Neurons-Through-Receptive-Fields" title="Permalink to this headline">¶</a></h2>
+<p>The goal of this tutorial is to implement a receptive field connectivity which detects activity from a particular subset of <span class="math notranslate nohighlight">\(N_T\)</span> target neurons in a neural array of size <span class="math notranslate nohighlight">\(N\)</span>. It consists of a detector neuron which receives inhibitory synapses from the <span class="math notranslate nohighlight">\(N_s\)</span> surrounding neurons of the population to be tested. The remaining <span class="math notranslate nohighlight">\(N_T\)</span> neurons excite the detector neuron. With a sensible choice of weights, this connectivity implies that the neuron will only be active when the
+target neurons are active and the rest are inactive.</p>
+<div class="section" id="Define-simulation-parameters">
+<h3><span class="section-number">15.4.1. </span>Define simulation parameters<a class="headerlink" href="#Define-simulation-parameters" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">N</span><span class="o">=</span><span class="mi">5</span>                             <span class="c1"># Number principal neurons</span>
+<span class="n">runtime</span><span class="o">=</span><span class="mi">1000</span>                    <span class="c1"># Duration of simulation in time steps</span>
+<span class="n">width</span><span class="o">=</span><span class="mi">0</span>                         <span class="c1"># Spread of target neurons 0 picks only the central one</span>
+<span class="n">tNeurons</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="n">width</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">N</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="n">width</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>     <span class="c1"># Range of indexes for target neurons</span>
+<span class="n">template</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>        <span class="c1"># Template for prototypes of active and inactive neurons</span>
+<span class="n">template</span><span class="p">[</span><span class="n">tNeurons</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>            <span class="c1"># Set target neurons</span>
+<span class="n">w</span><span class="o">=</span><span class="mi">110</span><span class="o">//</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">width</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>              <span class="c1"># Weight for excitatory synapses</span>
+<span class="n">wInh</span><span class="o">=-</span><span class="nb">int</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>        <span class="c1"># Weight for inhibitory synapses</span>
+
+<span class="k">def</span> <span class="nf">connectionMatrix</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Matrix of weights from principal neurons to detector&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">wInh</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
+
+<span class="n">receptiveField</span><span class="o">=</span><span class="n">connectionMatrix</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">receptiveField</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">tNeurons</span><span class="p">]</span><span class="o">=</span><span class="n">w</span>                     <span class="c1"># Set excitatory weight from target neurons to detector</span>
+
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Create-a-setupNetwork-function">
+<h3><span class="section-number">15.4.2. </span>Create a setupNetwork function<a class="headerlink" href="#Create-a-setupNetwork-function" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">setupNetwork</span><span class="p">(</span><span class="n">net</span><span class="p">,</span><span class="n">N</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a detector neuron whose receptive field targets a neural population.</span>
+
+<span class="sd">    This function creates an NxNet network with two compartment groups, one</span>
+<span class="sd">    representing the observed population, and the other a single compartment</span>
+<span class="sd">    detector. The later receives inhibitory and excitatory connections from the</span>
+<span class="sd">    observed population. The connectivity defines the detector&#39;s receptive field.</span>
+
+<span class="sd">    Stochastic spike trains will stimulate each neuron from the observed</span>
+<span class="sd">    population. During the first half of the simulation time all neurons will</span>
+<span class="sd">    receive such stimuli.For the last half of the simulation time Only the target</span>
+<span class="sd">    neurons will receive stimulation. The detector neuron should then only be</span>
+<span class="sd">    active during the last half of the runtime.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Create a compartment prototype with no memory of past events.</span>
+    <span class="n">prototypeInactive</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">vThMant</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                                                <span class="n">functionalState</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">,</span>
+                                                <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">4095</span><span class="p">,</span> <span class="c1"># Set to maximum value 4095</span>
+                                                <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">4095</span><span class="p">,</span> <span class="c1"># Set to maximum value 4095</span>
+                                                <span class="p">)</span>
+
+    <span class="c1"># Create another prototype with finite current decay 256, potentially integrating past events.</span>
+    <span class="n">prototypeDetector</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">vThMant</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                                                <span class="n">functionalState</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">,</span>
+                                                <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">4095</span><span class="p">,</span>
+                                                <span class="n">compartmentCurrentDecay</span><span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
+                                                <span class="p">)</span>
+
+    <span class="c1"># Create N Compartments representing the population of principal neurons.</span>
+    <span class="n">population</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">,</span>
+                                            <span class="n">prototype</span><span class="o">=</span><span class="p">[</span><span class="n">prototypeInactive</span><span class="p">,</span> <span class="n">prototypeInactive</span><span class="p">],</span>
+                                            <span class="n">prototypeMap</span><span class="o">=</span><span class="n">template</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+    <span class="c1"># Create a compartment for the detector neuron.</span>
+    <span class="n">detector</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">prototype</span> <span class="o">=</span> <span class="n">prototypeDetector</span><span class="p">)</span>
+
+    <span class="c1"># Create spike generation process to stimulate the principal neurons with stochastic spikes.</span>
+    <span class="n">spikes</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createSpikeGenProcess</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">spikingProbability</span> <span class="o">=</span> <span class="mf">0.05</span>
+    <span class="n">inputSpikes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">runtime</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">spikingProbability</span>
+    <span class="n">spikeTimes</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">st</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">inputSpikes</span><span class="p">[</span><span class="n">i</span><span class="p">,:])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Stop spikes at half runtime for non-target neurons.</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tNeurons</span><span class="p">:</span>
+            <span class="n">st</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="n">st</span><span class="o">&lt;</span><span class="nb">int</span><span class="p">(</span><span class="n">runtime</span><span class="o">/</span><span class="mi">2</span><span class="p">)]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">st</span><span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">spikeTimes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>
+        <span class="n">spikes</span><span class="o">.</span><span class="n">addSpikes</span><span class="p">(</span><span class="n">spikeInputPortNodeIds</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">spikeTimes</span><span class="o">=</span><span class="n">st</span><span class="p">)</span>
+
+    <span class="c1"># Define a mixed connection prototype to connect population to detector.</span>
+    <span class="n">connectionPrototypeMix</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">signMode</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">SYNAPSE_SIGN_MODE</span><span class="o">.</span><span class="n">MIXED</span><span class="p">)</span>
+
+    <span class="c1"># Define an excitatory connection prototype to connect spike sources to population.</span>
+    <span class="n">connectionPrototypeExc</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">signMode</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">SYNAPSE_SIGN_MODE</span><span class="o">.</span><span class="n">EXCITATORY</span><span class="p">)</span>
+
+    <span class="c1"># Connect population to detector with the adequate weight mask.</span>
+    <span class="n">excitatoryConnections</span> <span class="o">=</span> <span class="n">population</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">detector</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">connectionPrototypeMix</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">receptiveField</span><span class="p">)</span>
+
+    <span class="c1"># Stimulate principal neurons with input spikes.</span>
+    <span class="n">stimulate</span> <span class="o">=</span> <span class="n">spikes</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">connectionPrototypeExc</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">*</span><span class="mi">110</span><span class="p">)</span>
+
+    <span class="c1"># Create probes to observe neuron&#39;s current, voltage and spikes.</span>
+    <span class="n">probeParameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                       <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                       <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">]</span>
+
+    <span class="c1"># Setup voltage, current and spikes probes for all neurons.</span>
+    <span class="n">probesPopulation</span> <span class="o">=</span> <span class="n">population</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="n">probeParameters</span><span class="p">)</span>
+    <span class="n">probesDetector</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="n">probeParameters</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">probesPopulation</span><span class="p">,</span> <span class="n">probesDetector</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Create an NxNet network object.</span>
+<span class="n">detectorNet</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+
+<span class="c1"># Setup receptive field network.</span>
+<span class="n">probesPop</span><span class="p">,</span> <span class="n">probesDetect</span> <span class="o">=</span> <span class="n">setupNetwork</span><span class="p">(</span><span class="n">detectorNet</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
+
+<span class="c1"># Run network and free resoruces.</span>
+<span class="n">detectorNet</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">runtime</span><span class="p">)</span>
+<span class="n">detectorNet</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+INFO:DRV:  SLURM is being run in background
+INFO:DRV:  Connecting to 134.134.68.73:18861
+INFO:DRV:  N2Driver: Running...
+INFO:DRV:      Compiling synapses... Done (0.00s)
+INFO:DRV:      Processing probes... Done (0.00s)
+INFO:DRV:      Writing modified registers... Done (0.01s)
+INFO:DRV:      Initializing... Done (0.01s)
+INFO:DRV:      Preparing input... Done (0.02s)
+INFO:DRV:      Executing... Done (0.20s)
+INFO:DRV:      Processing timeSeries... Done (0.16s)
+INFO:DRV:  N2Driver: Finished (0.40s)
+</pre></div></div>
+</div>
+<p><img alt="Small receptive field" src="../_images/jupyter_receptive_field1.png" /></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Plot current, voltage and spike probes for all compartments.</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Current&#39;</span><span class="p">,</span> <span class="s1">&#39;Voltage&#39;</span><span class="p">,</span> <span class="s1">&#39;Spike Times&#39;</span><span class="p">]</span>
+<span class="n">figDetector</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">18</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">probe</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="c1"># Plot probes from principal neurons.</span>
+    <span class="k">for</span> <span class="n">neuron</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="n">neuron</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="o">+</span><span class="n">probe</span><span class="p">)</span>
+        <span class="n">pl1</span><span class="o">=</span> <span class="n">probesPop</span><span class="p">[</span><span class="n">probe</span><span class="p">][</span><span class="n">neuron</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">runtime</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">([],[])</span>
+        <span class="k">if</span> <span class="n">neuron</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">titles</span><span class="p">[</span><span class="n">probe</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">probe</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">N</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([],[])</span>
+        <span class="k">if</span> <span class="n">neuron</span> <span class="ow">in</span> <span class="n">tNeurons</span><span class="p">:</span>
+            <span class="n">pl1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+    <span class="c1"># Plot probes from detector neuron.</span>
+    <span class="n">ax2</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">probe</span><span class="o">+</span><span class="mi">1</span><span class="o">+</span><span class="n">N</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">runtime</span><span class="p">])</span>
+    <span class="n">pl</span><span class="o">=</span><span class="n">probesDetect</span><span class="p">[</span><span class="n">probe</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">pl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="c1"># Setup legend.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">wspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">legP</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;principal neurons&#39;</span><span class="p">)</span>
+<span class="n">legD</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;detector neuron&#39;</span><span class="p">)</span>
+<span class="n">legT</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;target neuron&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span><span class="n">legP</span><span class="p">,</span> <span class="n">legD</span><span class="p">,</span> <span class="n">legT</span><span class="p">],</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.3</span><span class="p">,</span><span class="n">N</span><span class="o">+</span><span class="mf">1.5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.legend.Legend at 0x7fe0f9ab2eb8&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_n_stochastic_networks_30_1.png" src="../_images/jupyter_n_stochastic_networks_30_1.png" />
+</div>
+</div>
+<p>The figure below shows the same network but with a receptive field targeting 5 central neurons in a population of 20 principal neurons.</p>
+<p><img alt="Large receptive field" src="../_images/jupyter_receptive_field2.png" /></p>
+</div>
+</div>
+</div>
+<div class="section" id="C.-Puttin-It-All-Together">
+<h1><span class="section-number">16. </span>C. Puttin It All Together<a class="headerlink" href="#C.-Puttin-It-All-Together" title="Permalink to this headline">¶</a></h1>
+<p>Now we can pair a detector neuron to the WTA circuit, we chose WTA1 and receptive field that detect when neuron 3 has won. Through connecting the detector neuron to some kind of actuator, a mechanism could be triggered when the desired neuron is the only active neuron.The figure on the right shows the network for the WTA using all-to-all inhibition.</p>
+<p><img alt="Motif 1 with receptive field" src="../_images/jupyter_wtas_with_receptive_fields.png" /></p>
+</div>
+<div class="section" id="Modify-createWtaMotif1-to-Include-Detector-Neuron">
+<h1><span class="section-number">17. </span>Modify createWtaMotif1 to Include Detector Neuron<a class="headerlink" href="#Modify-createWtaMotif1-to-Include-Detector-Neuron" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">createWtaWithDetector</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a winner-takes-all circuit with an auxiliary inhibitory neuron and detector neuron.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        net: an NxNet object.</span>
+<span class="sd">        N: the size of the main population.</span>
+<span class="sd">        target: neuron preferred by the receptive field of target.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: the current, voltage and spikes probes for principal and auxiliary</span>
+<span class="sd">               neurons.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create compartment prototype with noisy current bias.</span>
+    <span class="n">prototypePrimary</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                         <span class="n">biasExp</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+                                         <span class="n">vThMant</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                                         <span class="n">logicalCoreId</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span>
+                                         <span class="n">enableNoise</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                         <span class="n">randomizeCurrent</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                         <span class="n">noiseMantAtCompartment</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">noiseExpAtCompartment</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+                                         <span class="n">functionalState</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+    <span class="c1"># Create prototype with no bias current and no noise injection.</span>
+    <span class="n">prototypeAuxiliary</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">biasExp</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">vThMant</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                                         <span class="n">logicalCoreId</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                         <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">4095</span><span class="p">,</span>
+                                         <span class="n">functionalState</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+    <span class="c1"># Create prototype with finite current decay 256, potentially integrating past events.</span>
+    <span class="n">prototypeDetector</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">vThMant</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                                                <span class="n">functionalState</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">,</span>
+                                                <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">4095</span><span class="p">,</span>
+                                                <span class="n">compartmentCurrentDecay</span><span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
+                                                <span class="n">logicalCoreId</span><span class="o">=</span><span class="mi">2</span>
+                                                <span class="p">)</span>
+    <span class="c1"># Create N Compartments with noisy voltage and driven by a current bias for WTA.</span>
+    <span class="n">primaryNeurons</span>  <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">N</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">prototypePrimary</span><span class="p">)</span>
+    <span class="c1"># Create the WTA&#39;s auxiliary neuron in resting state.</span>
+    <span class="n">auxiliaryNeuron</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">prototypeAuxiliary</span><span class="p">)</span>
+    <span class="c1"># Create a compartment for the detector neuron.</span>
+    <span class="n">detector</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">prototype</span> <span class="o">=</span> <span class="n">prototypeDetector</span><span class="p">)</span>
+
+    <span class="c1"># Create prototypes for excitatory and inhibitory synapses of WTA.</span>
+    <span class="n">prototypeExc</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">signMode</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">SYNAPSE_SIGN_MODE</span><span class="o">.</span><span class="n">EXCITATORY</span><span class="p">)</span>
+    <span class="n">prototypeInh</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">signMode</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">SYNAPSE_SIGN_MODE</span><span class="o">.</span><span class="n">INHIBITORY</span><span class="p">)</span>
+
+    <span class="c1"># Define a mixed connection prototype to connect WTA&#39;s principal population to detector.</span>
+    <span class="n">connectionPrototypeMix</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">signMode</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">SYNAPSE_SIGN_MODE</span><span class="o">.</span><span class="n">MIXED</span><span class="p">)</span>
+
+    <span class="c1"># Define weights for synapses.</span>
+    <span class="n">weightsExc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">exclude</span><span class="o">+</span><span class="p">[</span><span class="mi">20</span><span class="o">*</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="n">exclude</span><span class="p">))</span>
+    <span class="n">weightsInh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">]]</span><span class="o">*</span><span class="n">exclude</span><span class="o">+</span><span class="p">[[</span><span class="o">-</span><span class="mi">10</span> <span class="o">*</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="n">exclude</span><span class="p">)]]</span><span class="o">*</span><span class="p">(</span><span class="n">N</span><span class="o">-</span><span class="n">exclude</span><span class="p">))</span>
+
+    <span class="c1"># Ceate receptive field matrix.</span>
+    <span class="n">winh</span><span class="o">=-</span><span class="mi">100</span>
+    <span class="n">wexc</span><span class="o">=</span><span class="mi">100</span>
+    <span class="n">receptiveFieldWTA</span><span class="o">=</span><span class="n">winh</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">)</span> <span class="c1"># create inhibitory template matrix</span>
+    <span class="n">receptiveFieldWTA</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">target</span><span class="p">]</span><span class="o">=</span><span class="n">wexc</span>   <span class="c1"># Set excitatory weight from target neuron to detector</span>
+
+    <span class="c1"># On-to-one connect the N neurons to excite the auxiliary neuron</span>
+    <span class="n">excitatoryConnections</span> <span class="o">=</span> <span class="n">primaryNeurons</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">auxiliaryNeuron</span><span class="p">,</span>
+                                                   <span class="n">prototype</span><span class="o">=</span><span class="n">prototypeExc</span><span class="p">,</span>
+                                                   <span class="n">weight</span><span class="o">=</span><span class="n">weightsExc</span><span class="p">)</span>
+
+    <span class="c1"># On-to-one connect the auxiliary neuron to exert feedback inhibition on the N neurons</span>
+    <span class="n">inhibitoryConnections</span> <span class="o">=</span> <span class="n">auxiliaryNeuron</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">primaryNeurons</span><span class="p">,</span>
+                                                    <span class="n">prototype</span><span class="o">=</span><span class="n">prototypeInh</span><span class="p">,</span>
+                                                    <span class="n">weight</span><span class="o">=</span><span class="n">weightsInh</span><span class="p">)</span>
+
+    <span class="c1"># Connect population to detector with the adequate weight mask. TODO REVIEW!</span>
+    <span class="n">excitatoryConnections</span> <span class="o">=</span> <span class="n">primaryNeurons</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">detector</span><span class="p">,</span>
+                                                   <span class="n">prototype</span><span class="o">=</span><span class="n">connectionPrototypeMix</span><span class="p">,</span>
+                                                   <span class="n">weight</span><span class="o">=</span><span class="n">receptiveFieldWTA</span><span class="p">)</span>
+
+    <span class="c1"># Create probes to observe neuron&#39;s current, voltage and spikes.</span>
+    <span class="n">paramsToProbe</span> <span class="o">=</span> <span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                     <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                     <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">]</span>
+
+    <span class="c1"># Setup voltage, current and spikes probes for all neurons.</span>
+    <span class="n">probesPrincipal</span> <span class="o">=</span> <span class="n">primaryNeurons</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="n">paramsToProbe</span><span class="p">)</span>
+    <span class="n">ProbesAuxiliary</span> <span class="o">=</span> <span class="n">auxiliaryNeuron</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="n">paramsToProbe</span><span class="p">)</span>
+    <span class="n">probesDetector</span>  <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="n">paramsToProbe</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">probesPrincipal</span><span class="p">,</span> <span class="n">ProbesAuxiliary</span><span class="p">,</span> <span class="n">probesDetector</span><span class="p">]</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Create a network object.</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+
+<span class="c1"># Setup the wta network.</span>
+<span class="n">probes</span> <span class="o">=</span> <span class="n">createWtaWithDetector</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span><span class="n">target</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Run networks and disconnect.</span>
+<span class="n">runtime</span><span class="o">=</span><span class="mi">10000</span>
+<span class="n">net</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">runtime</span><span class="p">)</span>
+<span class="n">net</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+INFO:DRV:  SLURM is being run in background
+INFO:DRV:  Connecting to 134.134.68.73:18861
+INFO:DRV:  N2Driver: Running...
+INFO:DRV:      Compiling synapses... Done (0.00s)
+INFO:DRV:      Processing probes... Done (0.00s)
+INFO:DRV:      Writing modified registers... Done (0.01s)
+INFO:DRV:      Initializing... Done (0.01s)
+INFO:DRV:      Preparing input... Done (0.00s)
+INFO:DRV:      Executing... Done (1.63s)
+INFO:DRV:      Processing timeSeries... Done (1.05s)
+INFO:DRV:  N2Driver: Finished (2.70s)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Plot current, voltage and spike probes for all compartments of netWta1.</span>
+<span class="c1"># Top row plots for principal neurons.</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">18</span><span class="p">,</span><span class="mi">12</span><span class="p">])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;WTA with Interneuron Inhibition and Detector&#39;</span><span class="p">)</span>
+<span class="c1"># Plot spikes from principal neurons.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">]</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span>
+<span class="n">probes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+
+<span class="c1"># Plot spikes from detector neuron.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">probes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">right</span><span class="o">=</span><span class="n">runtime</span><span class="p">);</span>
+
+<span class="c1"># Plot spikes from detector neuron.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">probes</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">right</span><span class="o">=</span><span class="n">runtime</span><span class="p">);</span>
+
+<span class="c1"># include legend.</span>
+<span class="n">legP</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;principal neurons&#39;</span><span class="p">)</span>
+<span class="n">legD</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;inhibitory neuron&#39;</span><span class="p">)</span>
+<span class="n">legT</span> <span class="o">=</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;detector neuron&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span><span class="n">legP</span><span class="p">,</span> <span class="n">legD</span><span class="p">,</span> <span class="n">legT</span><span class="p">],</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_n_stochastic_networks_40_0.png" src="../_images/jupyter_n_stochastic_networks_40_0.png" />
+</div>
+</div>
+<p>We can see how the detector neuron in green only gets activated when only the target, neuron 3, is the winner.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="o_snip_for_reading_lakemont_spike_count.html" class="btn btn-neutral float-right" title="18. Read Lakemont Spike Count" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="m_independent_networks_in_same_run.html" class="btn btn-neutral float-left" title="14. Independent Networks in Same Run" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

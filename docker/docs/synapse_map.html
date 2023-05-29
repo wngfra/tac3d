@@ -1,0 +1,613 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Synapse Map &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Stdp Post State" href="stdp_post_state.html" />
+    <link rel="prev" title="Synapse Format" href="synapse_fmt.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxapi.html">NxAPI</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="nxapi.html#nxnet">NxNet</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="nxapi.html#nxcore">NxCore</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="nxcore.html">NxCore API</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#graph">Graph</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="nxcore.html#nodesets">NodeSets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#utilities">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#state-monitoring">State monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#n1-n2-n2a-and-so-forth">N1, N2, N2A, and so forth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#navigating-the-hierarchy">Navigating the Hierarchy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#decomposing-the-compartment">Decomposing the Compartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#decomposing-the-connection">Decomposing the Connection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxcore.html">NxCore API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#graph">Graph</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="nxcore.html#nodesets">NodeSets</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cx_profile_cfg.html">CxProfileConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cx_cfg.html">CxConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cx_meta_state.html">Compartment Metastate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dendrite_accum_cfg.html">Dendrite Accumulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dendrite_shared_cfg.html">Dendrite Shared Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dendrite_time_state.html">Dendrite Time State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vth_profile_cfg.html">VthProfileConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="axon_map.html">Axon Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="axon_cfg.html">Axon Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="synapses.html">Synapses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="synapse_fmt.html">Synapse Format</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Synapse Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stdp_post_state.html">Stdp Post State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stdp_pre_profile_cfg.html">Stdp Pre Profile Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stdp_profile_cfg.html">Stdp Profile Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="soma_state.html">Soma State Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="num_updates.html">numUpdates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_state.html">Time State</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#state-monitoring">State monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxapi.html">NxAPI</a> &raquo;</li>
+        
+          <li><a href="nxcore.html">NxCore API</a> &raquo;</li>
+        
+      <li>Synapse Map</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf">
+<span id="synapse-map"></span><h1>Synapse Map<a class="headerlink" href="#module-nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntry">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.</span></code><code class="sig-name descname"><span class="pre">DiscreteMapEntry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ptr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cxBase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntry" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntry.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntry.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntryWrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.</span></code><code class="sig-name descname"><span class="pre">DiscreteMapEntryWrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discreteMapEntry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntryWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntryWrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntryWrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntryWrapper.cxBase">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">cxBase</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntryWrapper.cxBase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntryWrapper.length">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">length</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntryWrapper.length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntryWrapper.ptr">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">ptr</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntryWrapper.ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntryWrapper.synapseLen">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">synapseLen</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntryWrapper.synapseLen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntryWrapper.synapsePtr">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">synapsePtr</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.DiscreteMapEntryWrapper.synapsePtr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntry">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.</span></code><code class="sig-name descname"><span class="pre">Population16MapEntry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ptr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cxBase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atomBits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntry" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntry.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntry.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.</span></code><code class="sig-name descname"><span class="pre">Population16MapEntryWrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population16MapEntry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.atomBits">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">atomBits</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.atomBits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.cxBase">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">cxBase</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.cxBase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.length">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">length</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.popSize">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">popSize</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.popSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.ptr">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">ptr</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.synapseLen">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">synapseLen</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.synapseLen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.synapsePtr">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">synapsePtr</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population16MapEntryWrapper.synapsePtr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntry">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.</span></code><code class="sig-name descname"><span class="pre">Population32MapEntry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ptr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cxBase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntry" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntry.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntry.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.</span></code><code class="sig-name descname"><span class="pre">Population32MapEntryWrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">population32MapEntry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper.cxBase">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">cxBase</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper.cxBase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper.length">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">length</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper.length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper.popSize">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">popSize</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper.popSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper.ptr">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">ptr</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper.ptr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper.synapseLen">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">synapseLen</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper.synapseLen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper.synapsePtr">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">synapsePtr</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.Population32MapEntryWrapper.synapsePtr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntry">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.</span></code><code class="sig-name descname"><span class="pre">SingleTraceEntry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1e0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tSpike0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tcs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1e1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tSpike1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preProfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntry" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntry.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntry.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.</span></code><code class="sig-name descname"><span class="pre">SingleTraceEntryWrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">singleTraceEntry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.preProfile">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">preProfile</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.preProfile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.reset">
+<code class="sig-name descname"><span class="pre">reset</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.reset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.tSpike0">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tSpike0</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.tSpike0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.tSpike1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tSpike1</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.tSpike1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.tcs">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tcs</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.tcs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.x1e0">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">x1e0</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.x1e0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.x1e1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">x1e1</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SingleTraceEntryWrapper.x1e1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInf">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.</span></code><code class="sig-name descname"><span class="pre">SynapseMapObjInf</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.</span></code><code class="sig-name descname"><span class="pre">SynapseMapObjInfWrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">synapseMapObjInf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.axonType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">axonType</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.axonType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.discreteMapEntry">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">discreteMapEntry</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.discreteMapEntry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.fetch">
+<code class="sig-name descname"><span class="pre">fetch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.fetch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.popSize">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">popSize</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.popSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.population16MapEntry">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">population16MapEntry</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.population16MapEntry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.population32MapEntry">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">population32MapEntry</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.population32MapEntry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.singleTraceEntry">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">singleTraceEntry</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.singleTraceEntry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.synapseLen">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">synapseLen</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.synapseLen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.synapsePtr">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">synapsePtr</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.synapsePtr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.twoTraceEntry">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">twoTraceEntry</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.SynapseMapObjInfWrapper.twoTraceEntry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntry">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.</span></code><code class="sig-name descname"><span class="pre">TwoTraceEntry</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tSpike</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tcs1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rsvd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tcs2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preProfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntry" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntry.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntry.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.</span></code><code class="sig-name descname"><span class="pre">TwoTraceEntryWrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">twoTraceEntry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.preProfile">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">preProfile</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.preProfile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.rsvd">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rsvd</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.rsvd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.tSpike">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tSpike</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.tSpike" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.tcs1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tcs1</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.tcs1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.tcs2">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tcs2</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.tcs2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.x1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">x1</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.x1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.x2">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">x2</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf.TwoTraceEntryWrapper.x2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="stdp_post_state.html" class="btn btn-neutral float-right" title="Stdp Post State" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="synapse_fmt.html" class="btn btn-neutral float-left" title="Synapse Format" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

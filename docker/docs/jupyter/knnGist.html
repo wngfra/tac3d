@@ -1,0 +1,942 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Approximate KNN search on Loihi &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Input Generator" href="../input_generator.html" />
+    <link rel="prev" title="K Nearest Neighbour" href="../knn.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Nx SDK Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../characterization.html">Characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dnn.html">DNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dvs.html">DVS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../epl.html">EPL</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../knn.html">K Nearest Neighbour</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../knn.html#tutorials">Tutorials</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Approximate KNN search on Loihi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../input_generator.html">Input Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lca.html">LCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../path_planning.html">Path Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../slayer.html">SLAYER Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../slic.html">SLIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spike_streamer.html">Spike Streamer Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../trace_injection.html">Trace Injection Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../modules.html">Nx SDK Modules</a> &raquo;</li>
+        
+          <li><a href="../knn.html">K Nearest Neighbour</a> &raquo;</li>
+        
+      <li>Approximate KNN search on Loihi</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># INTEL CORPORATION CONFIDENTIAL AND PROPRIETARY</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2020-2021 Intel Corporation.</span>
+<span class="c1">#</span>
+<span class="c1"># This software and the related documents are Intel copyrighted</span>
+<span class="c1"># materials, and your use of them is governed by the express</span>
+<span class="c1"># license under which they were provided to you (License). Unless</span>
+<span class="c1"># the License provides otherwise, you may not use, modify, copy,</span>
+<span class="c1"># publish, distribute, disclose or transmit  this software or the</span>
+<span class="c1"># related documents without Intel&#39;s prior written permission.</span>
+<span class="c1">#</span>
+<span class="c1"># This software and the related documents are provided as is, with</span>
+<span class="c1"># no express or implied warranties, other than those that are</span>
+<span class="c1"># expressly stated in the License.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Approximate-KNN-search-on-Loihi">
+<h1>Approximate KNN search on Loihi<a class="headerlink" href="#Approximate-KNN-search-on-Loihi" title="Permalink to this headline">¶</a></h1>
+<p>This notebook and module show how to implement the approximate KNN search algorithm described in the paper below:</p>
+<blockquote>
+<div><div class="line-block">
+<div class="line">E. Paxon Frady, Garrick Orchard, David Florey, Nabil Imam, Ruokun Liu, Joyesh Mishra, Jonathan Tse, Andreas Wild, Friedrich T. Sommer, and Mike Davies. 2020. Neuromorphic Nearest Neighbor Search Using Intel’s Pohoiki Springs. In Proceedings of the Neuro-inspired Computational Elements Workshop (NICE ’20). Association for Computing Machinery, New York, NY, USA, Article 23, 1–10.</div>
+<div class="line">DOI: <a class="reference external" href="https://doi.org/10.1145/3381755.3398695">https://doi.org/10.1145/3381755.3398695</a></div>
+<div class="line">PrePrint: <a class="reference external" href="https://arxiv.org/abs/2004.12691">https://arxiv.org/abs/2004.12691</a></div>
+</div>
+</div></blockquote>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">nxsdk</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">nxsdk_modules.knn.src.dimensionReduction</span> <span class="kn">import</span> <span class="n">DimensionReduction</span> <span class="k">as</span> <span class="n">DR</span>
+<span class="kn">from</span> <span class="nn">nxsdk_modules.knn.src.knn</span> <span class="kn">import</span> <span class="n">Knn</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">nxsdk.logutils.nxlogging</span> <span class="kn">import</span> <span class="n">set_verbosity</span><span class="p">,</span> <span class="n">LoggingLevel</span>
+<span class="n">set_verbosity</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span> <span class="c1">#suppress all the compilation warnings</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Specify-a-Loihi-system-to-run-on">
+<h2>Specify a Loihi system to run on<a class="headerlink" href="#Specify-a-Loihi-system-to-run-on" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># For Nahuku 32</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PARTITION&quot;</span><span class="p">]</span><span class="o">=</span> <span class="s2">&quot;nahuku32&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;BOARD&quot;</span><span class="p">]</span><span class="o">=</span> <span class="s2">&quot;ncl-ext-ghrd-01&quot;</span> <span class="c1"># for external vLab</span>
+<span class="c1">#os.environ[&quot;BOARD&quot;]= &quot;ncl-ghrd-04&quot;     # for internal</span>
+
+<span class="c1"># For Pohoiki</span>
+<span class="c1">#os.environ[&quot;PARTITION&quot;]= &quot;pohoiki&quot;</span>
+<span class="c1">#os.environ[&quot;BOARD&quot;]= &quot;ncl-ext-ps-01-dct-01&quot; # for external vLab</span>
+<span class="c1">#os.environ[&quot;BOARD&quot;]= &quot;ncl-ps-01-dct-01&quot;     # for internal</span>
+</pre></div>
+</div>
+</div>
+<p>Detect how many chips the chosen Loihi system contains. Later we will use this to truncate the dataset down to the largest size that can fit on the chosen Loihi system.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">numChips</span> <span class="o">=</span> <span class="o">!</span>srun --partition<span class="o">={</span>os.environ<span class="o">[</span><span class="s2">&quot;PARTITION&quot;</span><span class="o">]}</span> --nodelist<span class="o">={</span>os.environ<span class="o">[</span><span class="s2">&quot;BOARD&quot;</span><span class="o">]}</span> <span class="o">{</span>nxsdk.__path__<span class="o">[</span><span class="m">0</span><span class="o">]}</span>/bin/nx --detect-chips
+<span class="n">numChips</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">numChips</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">numChips</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">numNahukus</span> <span class="o">=</span> <span class="n">numChips</span><span class="o">//</span><span class="mi">32</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> Nahuku(s) detected&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">numNahukus</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1 Nahuku(s) detected
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Setup-the-dataset">
+<h2>Setup the dataset<a class="headerlink" href="#Setup-the-dataset" title="Permalink to this headline">¶</a></h2>
+<p>Specify the location of the dataset, query, and optional encoding file If the dataset folder doesn’t exist, download the dataset</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">datasetFolder</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/gist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+<span class="n">encodingFile</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/encode_matrix.npy&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datasetFolder</span><span class="p">)</span>
+<span class="n">datasetFile</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/gist_base.fvecs&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datasetFolder</span><span class="p">)</span>
+<span class="n">queryFile</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/gist_query.fvecs&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datasetFolder</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">readGistData</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function for reading dataset format. Zero centers and normalizes each element</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">//</span><span class="mi">961</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">960</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="s2">&quot;unexpected file format&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">data</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+    <span class="k">return</span> <span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="FTP-is-blocked-on-the-external-vlab,-so-you-would-need-to-download-the-dataset-yourself-and-copy-it-over!">
+<h3>FTP is blocked on the external vlab, so you would need to download the dataset yourself and copy it over!<a class="headerlink" href="#FTP-is-blocked-on-the-external-vlab,-so-you-would-need-to-download-the-dataset-yourself-and-copy-it-over!" title="Permalink to this headline">¶</a></h3>
+<p>Download the file on your own system: &gt; wget <a class="reference external" href="ftp://ftp.irisa.fr/local/texmex/corpus/gist.tar.gz">ftp://ftp.irisa.fr/local/texmex/corpus/gist.tar.gz</a></p>
+<p>Then copy to external vlab in the same folder as this notebook &gt; scp gist.tar.gz (yourname)&#64;(vlab):(thisfolder)</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">datasetFolder</span><span class="p">):</span>
+    <span class="c1"># If you are not on external vlab, you can uncomment the line below to directly download the dataset</span>
+    <span class="c1">#!wget ftp://ftp.irisa.fr/local/texmex/corpus/gist.tar.gz</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/gist.tar.gz&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datasetFolder</span><span class="p">)):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error, the dataset file is missing. See instructions above&quot;</span><span class="p">)</span>
+
+    <span class="o">!</span>tar -zxvf gist.tar.gz <span class="o">&amp;&amp;</span> rm gist.tar.gz
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Setup-KNN-parameters">
+<h2>Setup KNN parameters<a class="headerlink" href="#Setup-KNN-parameters" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 73%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Comment</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>K</p></td>
+<td><p>The number of approximate nearest neighbours to return</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>queryDuration</p></td>
+<td><p>Number of Loihi timesteps over which to encoded query as spikes</p></td>
+<td><p>Controls temporal resolution</p></td>
+</tr>
+<tr class="row-even"><td><p>spikesPerQuery</p></td>
+<td><p>Number of spikes used to encode a query</p></td>
+<td><p>Each subsequent spike encodes the next largest dimension</p></td>
+</tr>
+<tr class="row-odd"><td><p>neuronThreshold</p></td>
+<td><p>The sensitivity of the neurons</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>benchmark</p></td>
+<td><p>Tells the lakemonts whether to gather and return per-timestep timing information</p></td>
+<td><p>Useful for debug, but communicating the output slows
+things down</p></td>
+</tr>
+</tbody>
+</table>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">k</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">queryDuration</span> <span class="o">=</span> <span class="mi">120</span>
+<span class="n">spikesPerQuery</span> <span class="o">=</span> <span class="mi">240</span>
+<span class="n">neuronThreshold</span> <span class="o">=</span> <span class="mi">64000</span>
+<span class="n">benchmark</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Setup-dimensionality-reduction">
+<h2>Setup dimensionality reduction<a class="headerlink" href="#Setup-dimensionality-reduction" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line">We use a projection matrix to reduce the dimensionality of the dataset.</div>
+<div class="line">If the projection matrix has already been saved as a file (encodingFile) it will be loaded, otherwise it will be created from the dataset (can take a while)</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">knnDataset</span> <span class="o">=</span> <span class="n">readGistData</span><span class="p">(</span><span class="n">datasetFile</span><span class="p">)</span>
+<span class="n">dr</span> <span class="o">=</span> <span class="n">DR</span><span class="p">(</span><span class="n">encodingFile</span><span class="o">=</span><span class="n">encodingFile</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">knnDataset</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id1">
+<h2>Setup the dataset<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line">We can fit 2400 dataset samples per chip.</div>
+<div class="line">The code below reduces the number of samples in the dataset to the size we can fit on the system, and applies dimensionality reduction.</div>
+<div class="line">“systemNum” can be used to split the dataset across multiple systems. The n-th system would be run by setting systemNum=n. For example, running on Pohoiki columns 0/1/2 would be achieved by setting systemNum = 0/1/2</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">systemNum</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">datasetSize</span> <span class="o">=</span> <span class="mi">2400</span><span class="o">*</span><span class="n">numChips</span>
+<span class="n">knnDataset</span> <span class="o">=</span> <span class="n">knnDataset</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">systemNum</span><span class="o">*</span><span class="n">datasetSize</span><span class="p">,</span> <span class="p">(</span><span class="n">systemNum</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">datasetSize</span><span class="p">),</span> <span class="p">:]</span>
+<span class="n">reducedDataset</span> <span class="o">=</span> <span class="n">dr</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">knnDataset</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Setup-the-KNN-module">
+<h2>Setup the KNN module<a class="headerlink" href="#Setup-the-KNN-module" title="Permalink to this headline">¶</a></h2>
+<p>This sets up the board object and starts it running. This takes about 5 mins for Nahuku, and multiples of 5 mins for multiple Nahukus (Pohoiki).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">knn</span> <span class="o">=</span> <span class="n">Knn</span><span class="p">(</span><span class="n">reducedDataset</span><span class="p">,</span> <span class="n">neuronThreshold</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">queryDuration</span><span class="p">,</span> <span class="n">spikesPerQuery</span><span class="p">,</span> <span class="n">benchmark</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+    Encoding probes... sters...
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Load-the-queries-and-query-the-KNN-module">
+<h2>Load the queries and query the KNN module<a class="headerlink" href="#Load-the-queries-and-query-the-KNN-module" title="Permalink to this headline">¶</a></h2>
+<p>Although queries are passed as an ndarray, the test function processes them as if they were arriving one at a time. The steps run by “test()” for each query are: * Dimensionality reduction * Encoding as spikes * Sending to the Host * Running on the Loihi system * Receiving the results from the Host * Tie breaking on the superhost (if there is a multiway tie for K’th place)</p>
+<div class="line-block">
+<div class="line">The returned parameters are: * results: An array of results with “n” rows and “K” columns * queryEndTime: The time at which the K’th solution was found on Loihi for each query (An array of “n” times. The difference between elements gives the query duration) * numSteps: The number of Loihi timesteps before the K’th solution was found for each query (Array of “n” timestep measurements). Only populate if benchmark==True.</div>
+<div class="line">* timePerTimestep: A list of “n” arrays, with each array containing timestep durations measured in microseconds. Calculated by measuring the time at the beginning of each spiking phase and taking the differences. The first array element is the time since the start of the last timestep of the previous sample and therefore includes system reset and communication of result back to the host. This variable is only populated if benchmark==True</div>
+</div>
+<p>Programming the system takes approximately 1 minute per Nahuku board</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">queries</span> <span class="o">=</span> <span class="n">readGistData</span><span class="p">(</span><span class="n">queryFile</span><span class="p">)</span>
+<span class="n">numQueryIndices</span> <span class="o">=</span> <span class="n">queries</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">results</span><span class="p">,</span> <span class="n">queryEndTime</span><span class="p">,</span> <span class="n">numSteps</span><span class="p">,</span> <span class="n">timePerTimestep</span> <span class="o">=</span>  <span class="n">knn</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">knnDataset</span><span class="p">,</span> <span class="n">encodingFunction</span><span class="o">=</span><span class="n">dr</span><span class="o">.</span><span class="n">reduce</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+    Transferring spikes... .
+</pre></div></div>
+</div>
+<p>The call below tells the module we are done and that it can disconnect from the Loihi system</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">knn</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+    Processing timeseries...
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Compute-ground-truth-and-accuracy">
+<h2>Compute ground truth and accuracy<a class="headerlink" href="#Compute-ground-truth-and-accuracy" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line">For each query, find the closest K dataset samples using the cosine similarity distance.</div>
+<div class="line">For each query, compute what percentage of the top K dataset samples were found by Loihi.</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">groundTruth</span> <span class="o">=</span> <span class="n">knn</span><span class="o">.</span><span class="n">computeGroundTruth</span><span class="p">(</span><span class="n">knnDataset</span><span class="p">,</span> <span class="n">queries</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">intersect1d</span><span class="p">(</span><span class="n">groundTruth</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">res</span><span class="p">,</span> <span class="n">assume_unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">return_indices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">ii</span><span class="p">,</span><span class="n">res</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">results</span><span class="p">)])</span><span class="o">/</span><span class="n">k</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Print-some-statistics">
+<h2>Print some statistics<a class="headerlink" href="#Print-some-statistics" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line">The embedded x86 cores on Loihi record the time at which the k’th solution was found for each query (queryEndTime).</div>
+<div class="line">Loihi time per query is calculated by taking the difference of these times. i.e. it is measured as the time between finding the k’th solution for subsequent queries, including time required to receive a query, return the result, and reset the Loihi system in between queries.</div>
+<div class="line">The knn module on the superhost first sends (n=“knn.pipelining”) queries to the host without receiving any results.</div>
+<div class="line">Thereafter, the knn module must receive a result from the host to make space in the channel buffer before it can send another query.</div>
+<div class="line">In the inital phase (first “knn.pipelining” queries) the Loihi system runs quickly, but thereafter the speed is limited by the superhost.</div>
+</div>
+<p>The other time measurements for the superhost are:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Description</p></th>
+<th class="head"><p>Includes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Pre-processing</p></td>
+<td><p>Dimensionality reduction, normalization, sorting to find the strongest components, converting to spikes, encoding spikes as a lakemont message</p></td>
+</tr>
+<tr class="row-odd"><td><p>Send a query</p></td>
+<td><p>Communicating the lakemont message from superhost to host (network latency)</p></td>
+</tr>
+<tr class="row-even"><td><p>Receive a result</p></td>
+<td><p>Receiving a message containing results from the host (network latency)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-process result</p></td>
+<td><p>Interpreting the Lakemont message and computing ground truth distance for any tied results</p></td>
+</tr>
+<tr class="row-even"><td><p>Receive timing info</p></td>
+<td><p>Receiving precise timing information (timePerTimestep) from the host (network latency)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post-process timing</p></td>
+<td><p>Interpreting the timing message</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">The bottleneck is network latency in the superhost to host communication.</div>
+<div class="line">Pre- and Post-processing times are heavily affected by the current machine load from other users.</div>
+</div>
+<div class="line-block">
+<div class="line">“numSteps” and “timePerTimestep” are only populated if benchmark==True.</div>
+<div class="line">numSteps is an array with length equal to the number of queries, indicating how many Loihi timesteps each query took.</div>
+<div class="line">timePerTimestep is a list of arrays, one array per query, where each array element indicates the difference in time between the start of the current timestep and previous timestep. The n-th array will have length numSteps[n]. The first element in each array is the time since the beginning of the last timestep of the previous query and includes all the time taken to communicate results to the host, receive a new query, and reset the system back to its initial state.</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">timePerSample</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">queryEndTime</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;KNN results for params:</span><span class="se">\n</span><span class="s2">k</span><span class="se">\t\t</span><span class="si">{}</span><span class="se">\n</span><span class="s2">queryDuration</span><span class="se">\t</span><span class="si">{}</span><span class="se">\n</span><span class="s2">spikesPerQuery</span><span class="se">\t</span><span class="si">{}</span><span class="se">\n</span><span class="s2">neuronThreshold</span><span class="se">\t</span><span class="si">{}</span><span class="se">\n</span><span class="s2">datasetSize</span><span class="se">\t</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k</span><span class="p">,</span>
+                                                                                                                          <span class="n">queryDuration</span><span class="p">,</span>
+                                                                                                                          <span class="n">spikesPerQuery</span><span class="p">,</span>
+                                                                                                                          <span class="n">neuronThreshold</span><span class="p">,</span>
+                                                                                                                          <span class="n">datasetSize</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Accuracy: </span><span class="se">\t\t</span><span class="s2"> mean </span><span class="si">{:.2f}</span><span class="s2">%</span><span class="se">\t</span><span class="s2"> min </span><span class="si">{:.2f}</span><span class="s2">%</span><span class="se">\t</span><span class="s2"> max </span><span class="si">{:.2f}</span><span class="s2">%&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">accuracy</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span>
+                                                                              <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">accuracy</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span>
+                                                                              <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">accuracy</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loihi time per query:</span><span class="se">\t</span><span class="s2"> mean </span><span class="si">{:.2f}</span><span class="s2">ms</span><span class="se">\t</span><span class="s2"> min </span><span class="si">{:.2f}</span><span class="s2">ms</span><span class="se">\t</span><span class="s2"> max </span><span class="si">{:.2f}</span><span class="s2">ms&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timePerSample</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="p">,</span>
+                                                                                   <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">timePerSample</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="p">,</span>
+                                                                                   <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">timePerSample</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;(first </span><span class="si">{}</span><span class="s2"> queries:</span><span class="se">\t</span><span class="s2"> mean </span><span class="si">{:.2f}</span><span class="s2">ms</span><span class="se">\t</span><span class="s2"> min </span><span class="si">{:.2f}</span><span class="s2">ms</span><span class="se">\t</span><span class="s2"> max </span><span class="si">{:.2f}</span><span class="s2">ms)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">knn</span><span class="o">.</span><span class="n">pipelining</span><span class="p">,</span>
+                                                                                 <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">timePerSample</span><span class="p">[:</span><span class="n">knn</span><span class="o">.</span><span class="n">pipelining</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">,</span>
+                                                                                 <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">timePerSample</span><span class="p">[:</span><span class="n">knn</span><span class="o">.</span><span class="n">pipelining</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">,</span>
+                                                                                 <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">timePerSample</span><span class="p">[:</span><span class="n">knn</span><span class="o">.</span><span class="n">pipelining</span><span class="p">])</span><span class="o">*</span><span class="mi">1000</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Average pre-processing time per query:</span><span class="se">\t\t</span><span class="si">{:.2f}</span><span class="s2">ms&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1000</span><span class="o">*</span><span class="n">knn</span><span class="o">.</span><span class="n">queryPreProcTime</span><span class="o">/</span><span class="n">numQueryIndices</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average time to send a query to the host: </span><span class="se">\t</span><span class="si">{:.2f}</span><span class="s2">ms&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1000</span><span class="o">*</span><span class="n">knn</span><span class="o">.</span><span class="n">querySendTime</span><span class="o">/</span><span class="n">numQueryIndices</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average time to receive a result from the host:</span><span class="se">\t</span><span class="si">{:.2f}</span><span class="s2">ms&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1000</span><span class="o">*</span><span class="n">knn</span><span class="o">.</span><span class="n">resultRecTime</span><span class="o">/</span><span class="n">numQueryIndices</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average post-processing time on the superhost </span><span class="se">\t</span><span class="si">{:.2f}</span><span class="s2">ms&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1000</span><span class="o">*</span><span class="n">knn</span><span class="o">.</span><span class="n">resultProcTime</span><span class="o">/</span><span class="n">numQueryIndices</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">benchmark</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Additional Timing info:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Timesteps per query:</span><span class="se">\t</span><span class="s2"> mean </span><span class="si">{:.2f}</span><span class="se">\t</span><span class="s2"> min </span><span class="si">{:.2f}</span><span class="se">\t</span><span class="s2"> max </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">numSteps</span><span class="p">),</span>
+                                                                                <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">numSteps</span><span class="p">),</span>
+                                                                                <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">numSteps</span><span class="p">)))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Receiving per timestep timing information averaged </span><span class="se">\t\t</span><span class="si">{:.2f}</span><span class="s2">ms per query&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1000</span><span class="o">*</span><span class="n">knn</span><span class="o">.</span><span class="n">timingRecTime</span><span class="o">/</span><span class="n">numQueryIndices</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Post-processing per timestep timing information averaged </span><span class="se">\t</span><span class="si">{:.2f}</span><span class="s2">ms per query&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">knn</span><span class="o">.</span><span class="n">timingProcTime</span><span class="o">/</span><span class="n">numQueryIndices</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+KNN results for params:
+k               100
+queryDuration   120
+spikesPerQuery  240
+neuronThreshold 64000
+datasetSize     76800
+
+Accuracy:                mean 87.60%     min 1.00%       max 100.00%
+Loihi time per query:    mean 9.92ms     min 1.63ms      max 65.59ms
+(first 64 queries:       mean 2.14ms     min 1.63ms      max 9.69ms)
+
+Average pre-processing time per query:          0.34ms
+Average time to send a query to the host:       1.87ms
+Average time to receive a result from the host: 3.92ms
+Average post-processing time on the superhost   0.63ms
+
+Additional Timing info:
+Timesteps per query:     mean 135.50     min 110.00      max 170.00
+Receiving per timestep timing information averaged              3.53ms per query
+Post-processing per timestep timing information averaged        0.00ms per query
+</pre></div></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../input_generator.html" class="btn btn-neutral float-right" title="Input Generator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../knn.html" class="btn btn-neutral float-left" title="K Nearest Neighbour" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+Compartment Metastate
+=====================
+.. automodule:: nxsdk.arch.n2a.graph.nodesets.cx_meta_state_obj_inf
+   :members:
+   :undoc-members:

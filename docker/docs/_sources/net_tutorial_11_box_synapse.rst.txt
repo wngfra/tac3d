@@ -1,0 +1,20 @@
+NxNet: Box Synapse
+=========================
+
+Motivation
+----------
+This tutorial introduces a box synapse. Instead of an exponentially decaying post synaptic response after receiving a spike, we want to have a box response, i.e. a constant post synaptic current for a specified amount of time.
+
+
+Location
+--------
+nxsdk-apps/tutorials/nxnet/tutorial_11_box_synapse.py
+
+See also
+--------
+
+* :doc:`netprobes`
+* :doc:`compartment`
+* :doc:`connection`
+* :doc:`nxnet`
+* :doc:`graph`

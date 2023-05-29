@@ -1,0 +1,411 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Trace Config Gen &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Basic Spike Generator" href="inputgen.html" />
+    <link rel="prev" title="Axon Compiler" href="axon_compiler.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxapi.html">NxAPI</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="nxapi.html#nxnet">NxNet</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="nxapi.html#nxcore">NxCore</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="nxcore.html">NxCore API</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#graph">Graph</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#nodesets">NodeSets</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="nxcore.html#utilities">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#state-monitoring">State monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#n1-n2-n2a-and-so-forth">N1, N2, N2A, and so forth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#navigating-the-hierarchy">Navigating the Hierarchy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#decomposing-the-compartment">Decomposing the Compartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#decomposing-the-connection">Decomposing the Connection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxcore.html">NxCore API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#graph">Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#nodesets">NodeSets</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="nxcore.html#utilities">Utilities</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="axon_compiler.html">Axon Compiler</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Trace Config Gen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inputgen.html">Basic Spike Generator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#state-monitoring">State monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxapi.html">NxAPI</a> &raquo;</li>
+        
+          <li><a href="nxcore.html">NxCore API</a> &raquo;</li>
+        
+      <li>Trace Config Gen</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen">
+<span id="trace-config-gen"></span><h1>Trace Config Gen<a class="headerlink" href="#module-nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen" title="Permalink to this headline">¶</a></h1>
+<p>INTEL CORPORATION CONFIDENTIAL AND PROPRIETARY</p>
+<p>Copyright © 2018-2021 Intel Corporation.</p>
+<p>This software and the related documents are Intel copyrighted
+materials, and your use of them is governed by the express
+license under which they were provided to you (License). Unless
+the License provides otherwise, you may not use, modify, copy,
+publish, distribute, disclose or transmit  this software or the
+related documents without Intel's prior written permission.</p>
+<p>This software and the related documents are provided as is, with
+no express or implied warranties, other than those that are
+expressly stated in the License.</p>
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfg">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.</span></code><code class="sig-name descname"><span class="pre">TraceCfg</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spikeLevelInt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spikeLevelFrac</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rndThresh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expTimeConst</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains configuration parameters of a TraceCfg instance.</p>
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfg.writeToRegister">
+<code class="sig-name descname"><span class="pre">writeToRegister</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfg.writeToRegister" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes TraceCfg configuration to TraceCfg NodeSet.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.</span></code><code class="sig-name descname"><span class="pre">TraceCfgGen</span></code><a class="headerlink" href="#nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen" title="Permalink to this definition">¶</a></dt>
+<dd><p>A generator for TraceCfg objects. Provides convenience methods to
+generate trace decay factors, spikeLevel, randomThreshold and
+expTimeConstant from higher level input parameters.</p>
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.calcDecay">
+<code class="sig-name descname"><span class="pre">calcDecay</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.calcDecay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates trace decay factors from trace decay time constant.
+Every trace decay factor is given by:
+decay[i] = exp(-2**i/tau)*(2**W_TRACE_DECAY-1)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tau</strong> -- (int) Positive trace decay time constant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.calcExpTimeConst">
+<code class="sig-name descname"><span class="pre">calcExpTimeConst</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.calcExpTimeConst" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates exponential time constant from trace decay time constant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tau</strong> -- (int) Positive trace decay time constant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.calcOptimalSpikeLevel">
+<code class="sig-name descname"><span class="pre">calcOptimalSpikeLevel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtMin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.calcOptimalSpikeLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates optimal spikeLevelInt and spikeLevelFrac from minimum
+expected inter spike interval and trace decay time constant. The
+spikeLevel will be chosen such that the maximum trace value is
+2**W_TRACE-1 as long as the minimum inter spike interval is larger
+than dtMin otherwise the trace will saturate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dtMin</strong> -- (int) Minimum inter spike interval above which trace</p>
+</dd>
+</dl>
+<p>does not saturate.
+:param tau: (int) Positive trace decay time constant.
+:returns: (&lt;int&gt;, &lt;int&gt;) (spikeLevelInt, spikeLevelFrac)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.calcRndThresh">
+<code class="sig-name descname"><span class="pre">calcRndThresh</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.calcRndThresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates threshold below which trace is randomly rounded via
+random decrementing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tau</strong> -- (int) Positive trace decay time constant.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.calcSpikeLevel">
+<code class="sig-name descname"><span class="pre">calcSpikeLevel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relativeSpikeLevel</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.calcSpikeLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates absolute spikeLevelInt and spikeLevelFrac based on a
+relativeSpikeLevel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>relativeSpikeLevel</strong> -- (int) A value between 0 and 1 that gets</p>
+</dd>
+</dl>
+<p>scaled to 0..(2**W_TRACE-1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.calcTau">
+<code class="sig-name descname"><span class="pre">calcTau</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">decay</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.calcTau" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates trace decay time constant from trace decay factors.
+The trace decay time constant is the average of:
+tau[i] = -2**i/ln(decay[i])</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>decay</strong> -- (tuple-6) Trace decay factors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.genTraceCfg">
+<code class="sig-name descname"><span class="pre">genTraceCfg</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spikeLevelInt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spikeLevelFrac</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.genTraceCfg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a TraceCfg object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tau</strong> -- (int) Positive trace decay time constant.</p></li>
+<li><p><strong>spikeLevelInt</strong> -- (int) Integer spikeLevel by which trace</p></li>
+</ul>
+</dd>
+</dl>
+<p>increases upon spike.
+:param spikeLevelFrac: (int) Fractional spikeLevel by which trace
+increases upon spike.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.genTraceCfgHighLevel">
+<code class="sig-name descname"><span class="pre">genTraceCfgHighLevel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spikeLevel</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen.TraceCfgGen.genTraceCfgHighLevel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="inputgen.html" class="btn btn-neutral float-right" title="Basic Spike Generator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="axon_compiler.html" class="btn btn-neutral float-left" title="Axon Compiler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

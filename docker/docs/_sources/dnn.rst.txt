@@ -1,0 +1,137 @@
+DNN
+===
+
+Deep spiking neural networks on Loihi
+-------------------------------------
+
+The NxTF API enables deep spiking neural networks on Loihi by implementing a
+Loihi-backend for Keras.
+
+.. image:: _static/NxTF_Overview.png
+
+The primary components of NxTF are:
+
+1. **NxLayers**: NxTF supports a subset of Keras layers to define deep
+feedforward neural networks such as *dense* and *convolutional* layers. Once
+compiled, these layers also provide an interactive user interface to
+read/write or probe neuron state at runtime.
+
+2. **DNN Compiler**: NxTF also provides a special DNN compiler that
+partitions and maps the supported NxLayers to Loihi. The DNN compiler is
+optimized to exploit Loihi's connection sharing mechanism to distribute for
+instance convolutional layers accros the least number of neuro cores.
+
+NxTF is not a framework for training deep SNNs. To generate deep SNNs, users
+should use existing frameworks such as `SLAYER <https://github
+.com/bamsumit/slayerPytorch>`_ to directly train SNNs with back propagation or
+use conventional methods such as Tensorflow/Keras or PyTorch to train an
+artificial neural network and convert it to a rate-coded SNN with tools like
+the `SNN-Toolbox <https://snntoolbox.readthedocs.io/en/latest/>`_. To date,
+only the SNN-Toolbox is fully integrated with NxTF and Loihi.
+
+The SNN-Toolbox, is an independent tool that parses artificial deep neural
+networks (ANN) built via different frontends such as Keras, Cafe, etc. and
+converts the weight and bias parameters of the ANN into weights, biases and
+neuron spiking thresholds of a corresponding rate-coded SNN via one of many
+backends. NxSDK provides its own SNN-Toolbox backend for Loihi, that takes the
+special constraints such as limited parameter precision, neuro core
+capacity, etc. of Loihi into account and uses NxTF to compile these networks
+to Loihi.
+
+Please review the official documentation of the
+`SNN-Toolbox <https://snntoolbox.readthedocs.io/en/latest/>`_ to learn about
+its general configuration interface as well as the :ref:`Loihi-backend-specific
+configuration interface <snntoolboxconfiguration>`.
+
+
+The following list provides an overview of the NxLayers and NxModel classes
+available in NxTF:
+
+.. automodule:: nxsdk_modules.dnn.src.dnn_layers
+   :no-members:
+   :no-undoc-members:
+
+NxTF Layers
+-----------
+
+.. autosummary::
+   :toctree:
+   :nosignatures:
+
+   NxLayer
+   NxConv2D
+   NxConv1D
+   NxDepthwiseConv2D
+   NxAveragePooling2D
+   NxDense
+   NxInputLayer
+   NxFlatten
+   NxZeroPadding2D
+   NxReshape
+
+
+NxModel
+-------
+
+.. autosummary::
+   :toctree:
+   :nosignatures:
+
+   NxModel
+   loadNxModel
+
+
+SNN Toolbox Configuration
+-------------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   dnn_snntb_backend
+
+
+Composability
+-------------
+
+To make deep SNNs defined within an NxModel composable with other models in
+NxSDK such as the InputGenerator, a wrapper class called *ComposableDNN* is 
+currently required.
+
+See the example and class reference below:
+
+.. code-block:: python
+
+    from nxsdk.composable.model import Model
+    from nxsdk_modules.dnn.composable.composable_dnn import ComposableDNN
+    from nxsdk_modules.dnn.src.dnn_layers import NxInputLayer, NxConv2D, NxAveragePooling2D, NxFlatten, NxDense, NxModel
+
+    # Specify input shape of network.
+    inputShape = (16, 16, 3)
+
+    inputLayer = NxInputLayer(inputShape)
+
+    x = NxConv2D(4, (3, 3))(inputLayer.input)
+    x = NxAveragePooling2D()(x)
+    x = NxFlatten()(x)
+    x = NxDense(10)(x)
+
+    dnn = NxModel(inputLayer.input, x)
+
+    composableDNNModel = ComposableDNN(model=dnn, num_steps_per_img=100)
+
+
+.. autoclass:: nxsdk_modules.dnn.composable.composable_dnn.ComposableDNN
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+
+
+Tutorials
+---------
+
+.. toctree::
+   :maxdepth: 1
+
+   jupyter/a_image_classification_mnist
+   jupyter/b_image_classification_cifar

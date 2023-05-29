@@ -1,0 +1,26 @@
+NxNet: Learning
+=======================
+
+Motivation
+----------
+This tutorial illustrates how to setup pre and post synaptics traces as well as estdp rules to enable learning.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_18.png
+   :alt: diagram
+
+Location
+--------
+| nxsdk-apps/tutorials/nxnet/tutorial_18_learning.py
+| nxsdk-apps/tutorials/nxnet/tutorial_18b_learning.py
+| nxsdk-apps/tutorials/nxnet/tutorial_18c_learning.py
+See also
+--------
+
+* :doc:`netprobes`
+* :doc:`compartment`
+* :doc:`connection`
+* :doc:`nxnet`
+* :doc:`graph`
+* :doc:`learningrule`

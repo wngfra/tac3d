@@ -1,0 +1,25 @@
+NxCore: Runlength Encoding
+========================
+
+Motivation
+----------
+This tutorial demonstrates that using RUNLENGTH compression mode will get the same synaptic activity as with SPARSE compression mode.
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_25_runlength_encoding.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_profile_cfg`
+* :doc:`cx_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+* :doc:`tracecfggen`
+

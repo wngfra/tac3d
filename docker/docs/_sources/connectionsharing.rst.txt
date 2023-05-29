@@ -1,0 +1,55 @@
+Connection Sharing
+==================
+
+In order to reuse connections with the same configurations, NxNet supports the concept of shared connections.  If more
+than one pair of compartment groups are to be connected with identical connections, instead of independently creating
+multiple identical sets of connections, it is possible to share one set of connections to connect all pairs of the
+compartment groups.  For example, in the figure below, connGrp 0 is a shared connection group.  This will translate to
+one set of synaptic connections in the hardware to connect all the associated compartment groups, e.g. cxGrp 00 to
+dstGrp 00, cxGrp 01 to dstGrp 01, and all additional pairs up through cxGrp 0N_0 to dstGrp 0N_0. The same applies to
+other shared connection groups, e.g. connGrp M.
+
+.. figure:: _static/connection_sharing_overview.png
+   :alt: Connection Sharing Overview
+
+The default implementation of connection sharing has the following requirements:
+
+* Across all shared connection groups, all source and destination groups must be disjoint.
+* Source and destination groups must be compartment groups, e.g. spike input port groups and compartments that are part of neuron groups are not supported.
+* Sharing learning connections is not supported.
+* Sharing connections that cross networks, i.e. across different NxNet objects, is not supported.
+* Shared connections are intended for use with dense connections, i.e. all-to-all connections.
+* Only synapse sharing support is currently enabled.  Additional axon sharing will be available in upcoming releases.
+
+Many of the restrictions stem from hardware requirements for connection sharing, and some come from the complexities of
+partitioning a general, arbitrary network to meet the hardware requirements. Future NxSDK releases will continue to
+relax some of these restrictions.
+
+A shared connection can be created as follows:
+
+.. code-block:: python
+
+   # Create first source compartment group
+    cg1 = net.createCompartmentGroup(size=grpSize, prototype=prototype1)
+    # Create first destination compartment group
+    cg2 = net.createCompartmentGroup(size=grpSize, prototype=prototype2)
+
+    # Create second source compartment group
+    cg3 = net.createCompartmentGroup(size=grpSize, prototype=prototype1)
+    # create second destination compartment group
+    cg4 = net.createCompartmentGroup(size=grpSize, prototype=prototype2)
+
+    # Setup connection prototype
+    connProto = nx.ConnectionPrototype()
+
+    # Connect first pair of compartment groups
+    conn = cg1.connect(cg2,
+                       prototype=connProto,
+                       weight=200 * np.identity(grpSize, dtype=int))
+
+    # Connection second pair of compartment groups using connection sharing
+    conn = cg3.connect(cg4, sharedConnGrp=conn, synapseSharingOnly=True)
+
+An example of connection sharing can be found in the following tutorial:
+
+* **Jupyter** :doc:`Connection Sharing </jupyter/q_connection_sharing>`

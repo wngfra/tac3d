@@ -1,0 +1,5 @@
+Synapse Format
+==============
+.. automodule:: nxsdk.arch.n2a.graph.nodesets.synapse_fmt_obj_inf
+   :members:
+   :undoc-members:

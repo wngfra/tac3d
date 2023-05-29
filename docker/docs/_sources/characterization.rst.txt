@@ -1,0 +1,14 @@
+Characterization
+================
+
+The characterization module accompanies an INRC publication on power measurement "Power and Energy Performance Benchmarking on Loihi". Refer to the publication for details. The tutorials below show how to execute the code.
+
+Tutorials
+---------
+
+.. toctree::
+   :maxdepth: 1
+
+   jupyter/i_performance_profiling
+   jupyter/timeAndEnergyBarrierSync
+   jupyter/timeAndEnergyPerOp

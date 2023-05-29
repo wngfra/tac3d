@@ -1,0 +1,36 @@
+NxCore: Axonal Delay Spikes Within An Epoch
+===========================================
+
+Motivation
+----------
+The aim of this tutorial is to show how to configure and use the axonal delay feature. This tutorial builds on the simple axon delay tutorial by adding the complexity of sending spikes within an epoch.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_16.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_16_axonal_delay_within_an_epoch.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`axon_map`
+* :doc:`soma_state`
+* :doc:`cx_meta_state`
+* :doc:`axon_cfg`
+* :doc:`dendrite_shared_cfg`
+* :doc:`dendrite_time_state`
+* :doc:`vth_profile_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+* :doc:`inputgen`

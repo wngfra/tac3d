@@ -1,0 +1,714 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Axon Configuration &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Synapses" href="synapses.html" />
+    <link rel="prev" title="Axon Map" href="axon_map.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxapi.html">NxAPI</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="nxapi.html#nxnet">NxNet</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="nxapi.html#nxcore">NxCore</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="nxcore.html">NxCore API</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#graph">Graph</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="nxcore.html#nodesets">NodeSets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#utilities">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#state-monitoring">State monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#n1-n2-n2a-and-so-forth">N1, N2, N2A, and so forth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#navigating-the-hierarchy">Navigating the Hierarchy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#decomposing-the-compartment">Decomposing the Compartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#decomposing-the-connection">Decomposing the Connection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxcore.html">NxCore API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#graph">Graph</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="nxcore.html#nodesets">NodeSets</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cx_profile_cfg.html">CxProfileConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cx_cfg.html">CxConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cx_meta_state.html">Compartment Metastate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dendrite_accum_cfg.html">Dendrite Accumulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dendrite_shared_cfg.html">Dendrite Shared Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dendrite_time_state.html">Dendrite Time State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vth_profile_cfg.html">VthProfileConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="axon_map.html">Axon Map</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Axon Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="synapses.html">Synapses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="synapse_fmt.html">Synapse Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="synapse_map.html">Synapse Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stdp_post_state.html">Stdp Post State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stdp_pre_profile_cfg.html">Stdp Pre Profile Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stdp_profile_cfg.html">Stdp Profile Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="soma_state.html">Soma State Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="num_updates.html">numUpdates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_state.html">Time State</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#state-monitoring">State monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxapi.html">NxAPI</a> &raquo;</li>
+        
+          <li><a href="nxcore.html">NxCore API</a> &raquo;</li>
+        
+      <li>Axon Configuration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf">
+<span id="axon-configuration"></span><h1>Axon Configuration<a class="headerlink" href="#module-nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgDirectWord0">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">AxonCfgDirectWord0</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">synMemListLen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgDirectWord0" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgDirectWord0.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgDirectWord0.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgDirectWord1">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">AxonCfgDirectWord1</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validPayload</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgDirectWord1" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgDirectWord1.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgDirectWord1.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgDiscrete">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">AxonCfgDiscrete</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axonId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgDiscrete" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgDiscrete.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgDiscrete.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInf">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">AxonCfgObjInf</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInf" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInf.data">
+<code class="sig-name descname"><span class="pre">data</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInf.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">AxonCfgObjInfWrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axonCfgObjInf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.direct_0">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">direct_0</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.direct_0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.direct_1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">direct_1</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.direct_1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.discrete">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">discrete</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.discrete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.fetch">
+<code class="sig-name descname"><span class="pre">fetch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.fetch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.pop16">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pop16</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.pop16" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.pop32_0">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pop32_0</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.pop32_0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.pop32_1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">pop32_1</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.pop32_1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.relay_0">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">relay_0</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.relay_0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.relay_1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">relay_1</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.relay_1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.remote">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">remote</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgObjInfWrapper.remote" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgPop16">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">AxonCfgPop16</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axonId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgPop16" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgPop16.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgPop16.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgPop32Word0">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">AxonCfgPop32Word0</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axonId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgPop32Word0" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgPop32Word0.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgPop32Word0.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgPop32Word1">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">AxonCfgPop32Word1</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">payload0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">payload1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgPop32Word1" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgPop32Word1.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgPop32Word1.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgRelayWord0">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">AxonCfgRelayWord0</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coreId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axonId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgRelayWord0" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgRelayWord0.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgRelayWord0.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgRelayWord1">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">AxonCfgRelayWord1</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgRelayWord1" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgRelayWord1.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgRelayWord1.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgRemote">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">AxonCfgRemote</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remoteChipId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgRemote" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgRemote.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.AxonCfgRemote.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord0Wrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">DirectWord0Wrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">direct_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord0Wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord0Wrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord0Wrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord0Wrapper.coreId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">coreId</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord0Wrapper.coreId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord0Wrapper.spikeType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">spikeType</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord0Wrapper.spikeType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord0Wrapper.synMemListLen">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">synMemListLen</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord0Wrapper.synMemListLen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord0Wrapper.time">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">time</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord0Wrapper.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord1Wrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">DirectWord1Wrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">direct_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord1Wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord1Wrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord1Wrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord1Wrapper.payload0">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">payload0</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord1Wrapper.payload0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord1Wrapper.payload1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">payload1</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord1Wrapper.payload1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord1Wrapper.synMemListPtr">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">synMemListPtr</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord1Wrapper.synMemListPtr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord1Wrapper.validPayload">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">validPayload</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DirectWord1Wrapper.validPayload" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DiscreteWrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">DiscreteWrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discrete</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DiscreteWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DiscreteWrapper.axonId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">axonId</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DiscreteWrapper.axonId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DiscreteWrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DiscreteWrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DiscreteWrapper.coreId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">coreId</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DiscreteWrapper.coreId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DiscreteWrapper.spikeType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">spikeType</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DiscreteWrapper.spikeType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DiscreteWrapper.time">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">time</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.DiscreteWrapper.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop16Wrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">Pop16Wrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pop16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop16Wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop16Wrapper.axonId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">axonId</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop16Wrapper.axonId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop16Wrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop16Wrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop16Wrapper.coreId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">coreId</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop16Wrapper.coreId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop16Wrapper.spikeType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">spikeType</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop16Wrapper.spikeType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop16Wrapper.time">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">time</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop16Wrapper.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word0Wrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">Pop32Word0Wrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pop32_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word0Wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word0Wrapper.axonId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">axonId</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word0Wrapper.axonId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word0Wrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word0Wrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word0Wrapper.coreId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">coreId</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word0Wrapper.coreId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word0Wrapper.spikeType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">spikeType</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word0Wrapper.spikeType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word0Wrapper.time">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">time</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word0Wrapper.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word1Wrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">Pop32Word1Wrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pop32_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word1Wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word1Wrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word1Wrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word1Wrapper.payload0">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">payload0</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word1Wrapper.payload0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word1Wrapper.payload1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">payload1</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word1Wrapper.payload1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word1Wrapper.validPayload">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">validPayload</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.Pop32Word1Wrapper.validPayload" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord0Wrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">RelayWord0Wrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relay_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord0Wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord0Wrapper.axonId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">axonId</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord0Wrapper.axonId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord0Wrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord0Wrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord0Wrapper.coreId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">coreId</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord0Wrapper.coreId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord0Wrapper.spikeType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">spikeType</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord0Wrapper.spikeType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord1Wrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">RelayWord1Wrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relay_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord1Wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord1Wrapper.atom">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">atom</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord1Wrapper.atom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord1Wrapper.chipId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">chipId</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord1Wrapper.chipId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord1Wrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord1Wrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord1Wrapper.coreP">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">coreP</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord1Wrapper.coreP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord1Wrapper.coreX">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">coreX</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord1Wrapper.coreX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord1Wrapper.coreY">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">coreY</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RelayWord1Wrapper.coreY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RemoteWrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">RemoteWrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RemoteWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RemoteWrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RemoteWrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RemoteWrapper.coreId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">coreId</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RemoteWrapper.coreId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RemoteWrapper.remoteChipId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">remoteChipId</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RemoteWrapper.remoteChipId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RemoteWrapper.spikeType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">spikeType</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RemoteWrapper.spikeType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RemoteWrapper.time">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">time</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf.RemoteWrapper.time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="synapses.html" class="btn btn-neutral float-right" title="Synapses" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="axon_map.html" class="btn btn-neutral float-left" title="Axon Map" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

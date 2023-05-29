@@ -1,0 +1,1146 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>NxNet API &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Compartment and CompartmentPrototype" href="compartment.html" />
+    <link rel="prev" title="Working with Timeseries Data" href="coretimeseries.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">NxNet API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compartment.html">Compartment and CompartmentPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connection.html">Connection and ConnectionPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connectionsharing.html">Connection Sharing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron.html">Neuron and NeuronPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="groups.html">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netprobes.html">Working with Probes and Monitors in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learningrule.html">Specifying a Learning Rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multicompartment.html">Building Multi Compartment Neuron Model using Stack Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spikeinjectionandreceivers.html">Spike Injection and Spike Receivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxlogging.html">Logging in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcompiler.html">NxCompiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxnet_resource_map.html">NxNet Resource Map Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>NxNet API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-nxsdk.net.net">
+<span id="nxnet-api"></span><h1>NxNet API<a class="headerlink" href="#module-nxsdk.net.net" title="Permalink to this headline">¶</a></h1>
+<p>NxNet Module</p>
+<dl class="py class">
+<dt id="nxsdk.net.net.NxNet">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.net.</span></code><code class="sig-name descname"><span class="pre">NxNet</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">compilerType=&lt;CompilerType.DEFAULT:</span> <span class="pre">'N2'&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>NxNet represents a network of Neurons, Compartments and Connections
+forming a neural network.</p>
+<p>Following is an example to create and run a simple NxNet network connecting     two compartment groups with a connection mask:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nxsdk.api.n2a</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">np</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">net</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+
+<span class="n">compartmentPrototype</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                                               <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                               <span class="n">vThMant</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                                               <span class="n">functionalState</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                               <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+
+<span class="n">connectionPrototype</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+<span class="c1"># Create two compartment groups with the same prototype</span>
+<span class="n">compartmentGroup1</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">compartmentPrototype</span><span class="p">)</span>
+<span class="n">compartmentGroup2</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">compartmentPrototype</span><span class="p">)</span>
+
+<span class="c1"># Create a connection group to connect the two compartment groups</span>
+<span class="n">connectionGroup1</span> <span class="o">=</span> <span class="n">compartmentGroup1</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">compartmentGroup2</span><span class="p">,</span>
+                                             <span class="n">connectionPrototype</span><span class="p">,</span>
+                                             <span class="n">connectionMask</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="n">net</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">net</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.addNet">
+<code class="sig-name descname"><span class="pre">addNet</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.addNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a sub-network</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>network</strong> (<a class="reference internal" href="#nxsdk.net.net.NxNet" title="nxsdk.net.net.NxNet"><em>NxNet</em></a>) -- Sub-network to add</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.addSpikeReceiver">
+<code class="sig-name descname"><span class="pre">addSpikeReceiver</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.addSpikeReceiver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a spike receiver to the network</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.buildConnectionGroupFromNodeIds">
+<code class="sig-name descname"><span class="pre">buildConnectionGroupFromNodeIds</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcGrp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dstGrp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connNodeIds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.buildConnectionGroupFromNodeIds" title="Permalink to this definition">¶</a></dt>
+<dd><p>For use with population partitioner.  Creates a connection group
+from connections that have already been established.  Only supports
+compartment groups as source and destination and does not support
+cross network connections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>srcGrp</strong> (<a class="reference internal" href="groups.html#nxsdk.net.groups.CompartmentGroup" title="nxsdk.net.groups.CompartmentGroup"><em>CompartmentGroup</em></a>) -- Source compartment group</p></li>
+<li><p><strong>dstGrp</strong> (<a class="reference internal" href="groups.html#nxsdk.net.groups.CompartmentGroup" title="nxsdk.net.groups.CompartmentGroup"><em>CompartmentGroup</em></a>) -- Destination compartment group</p></li>
+<li><p><strong>connNodeIds</strong> (<em>list</em><em>(</em><em>int</em><em>)</em>) -- Connection node IDs</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Connection group</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.compartmentGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentGroups</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.compartmentGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return compartment groups group set gs.  Obtain ith compartment
+group as gs[i].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.compartments">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartments</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.compartments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a compartment node set ns. Obtain ith compartment as ns[
+i].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.connectionGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">connectionGroups</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.connectionGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return connection groups group set gs.  Obtain ith connection group
+as gs[i].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.connections">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">connections</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.connections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a connection node set ns. Obtain ith connection as ns[i].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.corePopulationConnectionGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">corePopulationConnectionGroups</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.corePopulationConnectionGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return core population connection groups dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createChannel">
+<code class="sig-name descname"><span class="pre">createChannel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elementType</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numElements</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">messageSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slack</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">behavior</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createChannel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a channel as a means of data communication between Superhost and Host
+:param name: Channel Name
+:param elementType: Only supports &quot;int&quot; and &quot;packed&quot; for now
+:param messageSize: Size of a single message packet, must be multiple of 4
+:param numElements: Maximum capacity of the channel
+:param slack: Maximum buffering on Embedded processor to support pre-fetching
+:param behavior: Not implemented
+:return: channel</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createCompartment">
+<code class="sig-name descname"><span class="pre">createCompartment</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prototype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">returnNode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createCompartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new Compartment node according to CompartmentPrototype.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prototype</strong> (<em>NodePrototype</em>) -- Prototype for new compartment.</p></li>
+<li><p><strong>returnNode</strong> (<em>bool</em>) -- If true, method returns compartment object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Compartment object of new compartment.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createCompartmentGroup">
+<code class="sig-name descname"><span class="pre">createCompartmentGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototypeMap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createCompartmentGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates new compartments according to prototype(s) and
+groups them in a logical group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) -- An optional name for the group. If not provided, a name        will be automatically generated.</p></li>
+<li><p><strong>size</strong> (<em>int</em>) -- Size of logical group. Default is 0 for an empty group        in which case no prototype or prototypeMap is expected.</p></li>
+<li><p><strong>prototype</strong> (<em>NodePrototype</em><em> or </em><em>list</em><em>(</em><em>NodePrototype</em><em>)</em>) -- A single NodePrototype object or a list of        NodePrototype objects. If a single NodePrototype is provided, it is        used for all new compartments and no prototypeMap is expected.</p></li>
+<li><p><strong>prototypeMap</strong> (<em>list</em><em>(</em><em>int</em><em>)</em>) -- If 'prototypes' is a list of NodePrototypes,        'prototypeMap' must be a list of integers of length 'size'. Each list        element prototypeMap[j] must be an index into 'prototypes' and        specifies the NodePrototype used for the new compartment 'j' in this        group.</p></li>
+<li><p><strong>kwargs</strong> -- Pass any of the valid key/value pairs for a        Compartment's discrete states.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createConnectionGroup">
+<code class="sig-name descname"><span class="pre">createConnectionGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototypeMap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectionMask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createConnectionGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates new connections according to prototype(s) and groups them
+in a logical group.
+<code class="docutils literal notranslate"><span class="pre">CompartmentGroup.connect</span></code> is an alias to this method and allows to
+connect CompartmentGroups more intuitively according to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conn</span> <span class="o">=</span> <span class="n">compartmentGroup1</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">compartmentGroup2</span><span class="p">,</span> <span class="n">prototype</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name=None</strong> (<em>str</em>) -- A descriptive name for the group.</p></li>
+<li><p><strong>src=None</strong> (<em>NodeGroup</em>) -- The source Compartment/NeuronGroup of the        ConnectionGroup.</p></li>
+<li><p><strong>dst=None</strong> (<em>NodeGroup</em>) -- The destination Compartment/NeuronGroup        of the ConnectionGroup.</p></li>
+<li><p><strong>prototype=None</strong> -- A single ConnectionPrototype or list of        ConnectionPrototype objects. If a single object is provided,        it is used for all connections in the group. If a list is provided        <strong>prototypeMap</strong> must be provided as well.        :type prototype: NodePrototype or list(NodePrototype)</p></li>
+<li><p><strong>prototypeMap=None</strong> -- A 0/1/2D np array where each element        must be within 0..len(prototype) which specifies the prototype to use        for each connection. A non-2D array is automatically broadcast into a        (numDstNodes x numSrcNodes) array.</p></li>
+<li><p><strong>connectionMask</strong> (<em>np.array</em>) -- A 0/1/2D np binary np.ndarray or 2D         scipy.sparse.spmatrix which        specifies which connection exists within the        (numDstNodes x numSrcNodes) space. Elements in prototypeMap,        weights, delays and tags where <strong>connectionMask</strong> == 0 will be ignored. A        non-2D array is automatically broadcast into a        (numDstNodes x numSrcNodes) array.</p></li>
+<li><p><strong>weight</strong> (<em>np.array</em>) -- A 0/1/2D np.ndarray or 2D scipy.sparse.spmatrix         weight matrix. A non-2D array is        automatically broadcast into a (numDstNodes x numSrcNodes) array.</p></li>
+<li><p><strong>delay</strong> (<em>np.array</em>) -- A 0/1/2D np.ndarray o2 2D scipy.sparse spmatrix         delay matrix. A non-2D array is        automatically broadcast into a (numDstNodes x numSrcNodes) array.</p></li>
+<li><p><strong>tag</strong> (<em>np.array</em>) -- A 0/1/2D np.ndarray or 2D scipy.sparse.spmatrix         tag matrix. A non-2D array is        automatically broadcast into a (numDstNodes x numSrcNodes) array.</p></li>
+<li><p><strong>enableLearning</strong> (<em>np.array</em>) -- A 0/1/2D np.ndarray or 2D         scipy.sparse.spmatrix enableLearning matrix. A        non-2D array is automatically broadcast into a        (numDstNodes x numSrcNodes) array.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createDVSSpikeGenProcess">
+<code class="sig-name descname"><span class="pre">createDVSSpikeGenProcess</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xPixel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yPixel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">serviceInterval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createDVSSpikeGenProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a DVS spike generator for a given image resolution size of xPixel * yPixel
+times the polarity dimension; where the polarity is the sign of the brightness
+change for that pixel. Here, the polarity parameter represents the number of
+dimensions for the polarity - either 1 or 2. The default is 2, which provides the
+distinction between brightness increasing or decreasing when the pixel value
+changes.</p>
+<p>The DVS spike generator process uses a fixed mapping from the DVS
+camera to the input axons:
+-- (x,y,pol) to an index idx=x*(180*2)+y*2+pol, range of idx is 0 to
+240x180x2-1 (86399)
+-- Map the idx sequentially to cores and input axons,
+i.e. core=idx/1024, axon=idx%1024.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function is being deprecated. Use the DVS module instead.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xPixel</strong><strong>(</strong><strong>int</strong><strong>)</strong> -- total number of pixels in the xDimension</p></li>
+<li><p><strong>yPixel</strong><strong>(</strong><strong>int</strong><strong>)</strong> -- total number of pixels in the yDimension</p></li>
+<li><p><strong>polarity</strong><strong>(</strong><strong>int</strong><strong>)</strong> -- number of dimensions of polarity, valid values are 1 or 2</p></li>
+<li><p><strong>serviceInterval</strong><strong>(</strong><strong>int</strong><strong>)</strong> -- Not Implemented</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DVS spike generator object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createInputGenerator">
+<code class="sig-name descname"><span class="pre">createInputGenerator</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputGenClass</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createInputGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factory method for creating a new inputGenerator. Returns and
+stores a new inputGenerator instance each time this method is called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>inputGenClass</strong> -- (InputGenerator) Class of inputGenerator.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createInputStub">
+<code class="sig-name descname"><span class="pre">createInputStub</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createInputStub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an input stub</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An input stub</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createInputStubGroup">
+<code class="sig-name descname"><span class="pre">createInputStubGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createInputStubGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a group of input stubs which can be used as a connection to or from
+a network or module.
+:param: str name: Optional name of group
+:param: int size: Number of spikeOutputPorts to create in group
+return InputStubGroup: The created InputStubGroup</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createInteractiveSpikeGenProcess">
+<code class="sig-name descname"><span class="pre">createInteractiveSpikeGenProcess</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numPorts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createInteractiveSpikeGenProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an interactive spike generator with a specified number of ports.
+Each port can be connected to a single compartment or one or more
+compartments within a compartment group through a connection prototype.
+All spikes along that port will be sent to the compartments specified
+by the connection.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">net</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+
+<span class="n">cp</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">vThMant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+<span class="n">cx</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">prototype</span><span class="o">=</span><span class="n">cp</span><span class="p">)</span>
+<span class="n">probes</span> <span class="o">=</span> <span class="n">cx</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+
+<span class="n">connproto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+
+<span class="n">sp</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createSpikeGenProcess</span><span class="p">(</span><span class="n">numPorts</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sp</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">connproto</span><span class="p">)</span>
+
+<span class="c1"># Add spikes to be inserted before invoking run</span>
+<span class="n">sp</span><span class="o">.</span><span class="n">addSpikes</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
+
+<span class="n">si</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createInteractiveSpikeGenProcess</span><span class="p">(</span><span class="n">numPorts</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">si</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">cx</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">connproto</span><span class="p">)</span>
+
+<span class="n">net</span><span class="o">.</span><span class="n">runAsync</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span>
+
+<span class="c1"># Now send spikes interactively</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">si</span><span class="o">.</span><span class="n">sendSpikes</span><span class="p">([</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">net</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>numPorts</strong><strong>(</strong><strong>int</strong><strong>)</strong> -- Number of input ports for spike injection</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Interactive spike generator object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createLearningRule">
+<code class="sig-name descname"><span class="pre">createLearningRule</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createLearningRule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new LearningRule.
+The configuration of a learning rule requires the equations that
+govern the dynamics of the <strong>weight (dw), delay (dd) and tag (dt)</strong> state
+variables as well as the trace parameters <strong>(impulse, timeConstant)</strong> for
+up to two preTraces <strong>(x1, x2)</strong>, up to three post traces <strong>(y1, y2,
+y3)</strong> and one reward trace <strong>(r1)</strong>. And the duration of the learning epoch
+<strong>(tEpoch)</strong>.</p>
+<p>All impulse values must be within the range <strong>0..127</strong> while all
+timeConstant must be positive integers.
+(See <a class="reference internal" href="learningrule.html"><span class="doc">Specifying a Learning Rule</span></a> class for further details.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dw</strong> (<em>string</em>) -- Unique id of LearningRule assigned by NxNet.</p></li>
+<li><p><strong>dw</strong> -- Equation that describes dynamics of synaptic weight.</p></li>
+<li><p><strong>dd</strong> (<em>string</em>) -- Equation that describes dynamics of synaptic delay.</p></li>
+<li><p><strong>dt</strong> (<em>string</em>) -- Equation that describes dynamics of synaptic tag.</p></li>
+<li><p><strong>x1Impulse</strong> (<em>int</em>) -- Impulse by which preTrace increases upon each        pre-synaptic spike.</p></li>
+<li><p><strong>x1TimeConstant</strong> (<em>int</em>) -- Time constant by which preTrace decays        exponentially over time.</p></li>
+<li><p><strong>x2Impulse</strong> (<em>int</em>) -- Impulse by which preTrace increases upon each        pre-synaptic spike.</p></li>
+<li><p><strong>x2TimeConstant</strong> (<em>int</em>) -- Time constant by which preTrace decays        exponentially over time.</p></li>
+<li><p><strong>y1Impulse</strong> (<em>int</em>) -- Impulse by which postTrace increases upon each        post-synaptic spike.</p></li>
+<li><p><strong>y1TimeConstant</strong> (<em>int</em>) -- Time constant by which postTrace decays        exponentially over time.</p></li>
+<li><p><strong>y2Impulse</strong> (<em>int</em>) -- Impulse by which postTrace increases upon each        post-synaptic spike.</p></li>
+<li><p><strong>y2TimeConstant</strong> (<em>int</em>) -- Time constant by which postTrace decays        exponentially over time.</p></li>
+<li><p><strong>y3Impulse</strong> (<em>int</em>) -- Impulse by which postTrace increases upon each        :param int y3TimeConstant: Time constant by which postTrace decays        exponentially over time.</p></li>
+<li><p><strong>r1Impulse</strong> (<em>int</em>) -- Impulse by which rewardTrace increases upon each        reward spike.</p></li>
+<li><p><strong>r1TimeConstant</strong> (<em>int</em>) -- Time constant by which rewardTrace decays        exponentially over time.</p></li>
+<li><p><strong>tEpoch</strong> (<em>int</em>) -- Duration of learning epoch. tEpoch of all learning        rules must be identical. tEpoch must be in the range 0..64. It is        recommended to use powers of 2 for efficiency.</p></li>
+<li><p><strong>combineLiterals</strong> (<em>bool</em>) -- If True, combines all literals in         equation into a single [+,-]mantissa*2^[+,-]exp representation.</p></li>
+<li><p><strong>printDebug</strong> (<em>bool</em>) -- If true, prints compilation process of         learning rule.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createNeuron">
+<code class="sig-name descname"><span class="pre">createNeuron</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">neuronProto</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createNeuron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Neuron</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>neuronProto</strong> (<a class="reference internal" href="neuron.html#nxsdk.net.nodes.neurons.NeuronPrototype" title="nxsdk.net.nodes.neurons.NeuronPrototype"><em>NeuronPrototype</em></a>) -- A neuron prototype</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A Neuron</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createNeuronGroup">
+<code class="sig-name descname"><span class="pre">createNeuronGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createNeuronGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new NeuronGroup.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>str name: Optional name of group</p>
+</dd>
+<dt class="field-even">Param</dt>
+<dd class="field-even"><p>int size: Number of neurons to create in group</p>
+</dd>
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>NeuronPrototype prototype: neuron prototype</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createOutputConsumer">
+<code class="sig-name descname"><span class="pre">createOutputConsumer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputConsumerClass</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createOutputConsumer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not Implemented</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createOutputStub">
+<code class="sig-name descname"><span class="pre">createOutputStub</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createOutputStub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an output stub</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An output stub</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createOutputStubGroup">
+<code class="sig-name descname"><span class="pre">createOutputStubGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createOutputStubGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a group of OutpuStubs which can be used as a connection to or from
+a network or module.
+:param: str name: Optional name of group
+:param: int size: Number of spikeOutputPorts to create in group
+return OutputStubGroup: The created OutputStubGroup</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createProcess">
+<code class="sig-name descname"><span class="pre">createProcess</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cFilePath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">includeDir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funcName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guardName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chipId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmtId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process class represents a snip which can be inserted in a phase.
+Phases in which snips can be inserted are : <strong>init</strong>, <strong>spiking</strong>, <strong>mgmt</strong>, <strong>preLearnMgmt</strong>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nxGraph</strong> -- Board with which snip is associated</p></li>
+<li><p><strong>name</strong> -- Name of the snip</p></li>
+<li><p><strong>cFilePath</strong> -- Path to the c file where C code for snip exists</p></li>
+<li><p><strong>includeDir</strong> -- Path to the include file associated with snip C code</p></li>
+<li><p><strong>funcName</strong> -- Function name in the C file</p></li>
+<li><p><strong>guardName</strong> -- Function name in the C file to be used as guard</p></li>
+<li><p><strong>phase</strong> -- phase in which the snips is going to be inserted</p></li>
+<li><p><strong>chipId</strong> -- Chip id on which the snip will run</p></li>
+<li><p><strong>lmtId</strong> -- id of the lakemont on which snip will run if platform is lakemont</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>process</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createRuntimeManager">
+<code class="sig-name descname"><span class="pre">createRuntimeManager</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">runtimeMgrClass</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createRuntimeManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factory method for creating a new runtimeManager. Returns and
+stores a new runtimeManager instance each time this method is called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>runtimeMgrClass</strong> -- (RuntimeManager) Class of runtimeManager.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createSnip">
+<code class="sig-name descname"><span class="pre">createSnip</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phase</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createSnip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates Host process or Embedded process depending on the phase</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phase</strong> -- Phase in which snip should execute</p></li>
+<li><p><strong>args</strong> -- Auxillary argument to be passed to the actual Snip creation api</p></li>
+<li><p><strong>kwargs</strong> -- Auxillary keyword argument to be passed to the actual Snip creation api</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Snip created</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createSpikeGenProcess">
+<code class="sig-name descname"><span class="pre">createSpikeGenProcess</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numPorts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmtId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chipId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createSpikeGenProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a basic spike generator with a specified number of ports.
+Each port can be connected to a single compartment or one or more
+compartments within a compartment group through a connection prototype.
+All spikes along that port will be sent to the compartments specified
+by the connection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>numPorts</strong><strong>(</strong><strong>int</strong><strong>)</strong> -- Number of input ports for spike injection</p></li>
+<li><p><strong>lmtId</strong><strong>(</strong><strong>int</strong><strong>)</strong> -- Optionally specify the lakemont to run on</p></li>
+<li><p><strong>chipId</strong><strong>(</strong><strong>int</strong><strong>)</strong> -- Optionally specify the chip to run on</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Basic spike generator object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createSpikeInputPort">
+<code class="sig-name descname"><span class="pre">createSpikeInputPort</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createSpikeInputPort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates SpikeInputPort</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>SpikeInputPort object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createSpikeInputPortGroup">
+<code class="sig-name descname"><span class="pre">createSpikeInputPortGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createSpikeInputPortGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a logical group of spikeInputPorts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> -- An optional name for the group. If not provided, a name         will be automatically generated.</p></li>
+<li><p><strong>size</strong> -- Size of logical group. Default is 0 for an empty group.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createSpikeOutputPort">
+<code class="sig-name descname"><span class="pre">createSpikeOutputPort</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createSpikeOutputPort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a spike output port</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a spike output port</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.createSpikeOutputPortGroup">
+<code class="sig-name descname"><span class="pre">createSpikeOutputPortGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.createSpikeOutputPortGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new SpikeOutputPortGroup.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>str name: Optional name of group</p>
+</dd>
+<dt class="field-even">Param</dt>
+<dd class="field-even"><p>int size: Number of spikeOutputPorts to create in group</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.customMapper">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">customMapper</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.customMapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the custom mapper, or None if custom mapper is
+not configured.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.customPartitioner">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">customPartitioner</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.customPartitioner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the custom partitioner, or None if custom partitioner is
+not configured.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.disconnect">
+<code class="sig-name descname"><span class="pre">disconnect</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnects the running network gracefully</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.executor">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">executor</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">nxsdk.driver.interface.execution_interface.ExecutionInterface</span><a class="headerlink" href="#nxsdk.net.net.NxNet.executor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not Implemented</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.getAddress">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">getAddress</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.getAddress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not Implemented</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.getConnectionState">
+<code class="sig-name descname"><span class="pre">getConnectionState</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stateName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.getConnectionState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gathers connection state for all connections and returns it as 2D
+np array where columns correspond to source and rows to
+destination dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>stateName</em>) -- Name of state to visualize. Default is        <strong>numConnections</strong>. Other allowed values are <strong>weight</strong>, <strong>delay</strong> or <strong>tag</strong>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>np array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.getGroup">
+<code class="sig-name descname"><span class="pre">getGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">targetName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.getGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches and returns the first compartment group with the name
+specified by targetName.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>targetName</strong> (<em>str</em>) -- The name of the compartment group to be found</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The compartment group with name specified by targetName.</p>
+</dd>
+</dl>
+<p>If no group is found, None is returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.inputStubs">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">inputStubs</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.inputStubs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an input stub node set ns. Obtain ith input stub as ns[i].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.monitor">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">monitor</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.monitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns monitor and creates new one if none exists yet.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.neurons">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">neurons</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.neurons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a neuron node set ns.  Obtain ith neuron as ns[i].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numCompartmentGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numCompartmentGroups</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numCompartmentGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of compartment groups</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numCompartments">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numCompartments</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numCompartments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of compartments</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numConnectionGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numConnectionGroups</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numConnectionGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of connection groups</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numConnections">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numConnections</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numConnections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of connections</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numCorePopulationConnectionGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numCorePopulationConnectionGroups</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numCorePopulationConnectionGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of core population connection groups</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numDvsSpikeGenProcess">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numDvsSpikeGenProcess</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numDvsSpikeGenProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of DVS spike gen processes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numInputStubGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numInputStubGroups</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numInputStubGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of input stub groups</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numInputStubs">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numInputStubs</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numInputStubs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of input stubs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numNetsInTree">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numNetsInTree</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numNetsInTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of networks in network tree</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numNeuronGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numNeuronGroups</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numNeuronGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of neuron groups</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numNeurons">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numNeurons</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numNeurons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of neurons</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numOutputStubGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numOutputStubGroups</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numOutputStubGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of output stub groups</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numOutputStubs">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numOutputStubs</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numOutputStubs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of output stubs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numReceivers">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numReceivers</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numReceivers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns how many spike receivers exist</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numSpikeGenProcesses">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numSpikeGenProcesses</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numSpikeGenProcesses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of spike gen processes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numSpikeInputPortGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numSpikeInputPortGroups</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numSpikeInputPortGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of spike input port groups</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numSpikeInputPorts">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numSpikeInputPorts</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numSpikeInputPorts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of spike input ports</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numSpikeOutputPortGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numSpikeOutputPortGroups</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numSpikeOutputPortGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of spike output port groups</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numSpikeOutputPorts">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numSpikeOutputPorts</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numSpikeOutputPorts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of spike output ports</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numSubNets">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numSubNets</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numSubNets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of children networks</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.numinteractiveSpikeGenProcess">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numinteractiveSpikeGenProcess</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.numinteractiveSpikeGenProcess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of interactive spike gen processes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.nxmonitor">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nxmonitor</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.nxmonitor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns monitor and creates new one if none exists yet.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.outputStubs">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">outputStubs</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.outputStubs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an output stub node set ns. Obtain ith output stub as ns[
+i].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.parentNetwork">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">parentNetwork</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.parentNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the parent network.  None if this network is the root.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.pause">
+<code class="sig-name descname"><span class="pre">pause</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.pause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pauses a current run.         To continue, invoke <code class="docutils literal notranslate"><span class="pre">run()</span></code> or <code class="docutils literal notranslate"><span class="pre">runAsync()</span></code> which should finish the remaining time steps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.run">
+<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numSteps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compilerOptions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executionOptions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmtOptions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the network for given number of steps and options for compilation         and execution.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">runAsync</span></code> runs the network in non-blocking mode till paused or stopped</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>run can be paused using <code class="docutils literal notranslate"><span class="pre">pause</span></code> API and resumed by invoking this method again</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>numSteps</strong> (<em>int</em>) -- Number of steps or iterations to run for. If this argument is not passed,         the application will run for a max <span class="math notranslate nohighlight">\(2^{31} - 1\)</span> time steps and could be invoked again to         run for more.</p></li>
+<li><p><strong>compilerOptions</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- Compiler Options for the Compiler</p></li>
+<li><p><strong>executionOptions</strong> (<em>dict</em>) -- Execution Options for the Runner</p></li>
+<li><p><strong>lmtOptions</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- List of strings passed to lakemont</p></li>
+</ul>
+</dd>
+</dl>
+<p>driver. The options are passed as-is to the lakemont driver. Not for
+general use, for debug only.
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.runAsync">
+<code class="sig-name descname"><span class="pre">runAsync</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numSteps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compilerOptions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executionOptions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmtOptions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.runAsync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the network for given number of steps and options for compilation         and execution in <strong>asynchronous (non-blocking)</strong> mode.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>run can be paused using <code class="docutils literal notranslate"><span class="pre">pause</span></code> API and resumed by invoking this method again</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>numSteps</strong> (<em>int</em>) -- Number of steps or iterations to run for. If this argument is not passed,         the application will run for a max <span class="math notranslate nohighlight">\(2^{31} - 1\)</span> time steps and could be invoked again to         run for more.</p></li>
+<li><p><strong>compilerOptions</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- Compiler Options for the Compiler</p></li>
+<li><p><strong>executionOptions</strong> (<em>dict</em>) -- Execution Options for the Runner</p></li>
+<li><p><strong>lmtOptions</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- List of strings passed to lakemont</p></li>
+</ul>
+</dd>
+</dl>
+<p>driver. The options are passed as-is to the lakemont driver. Not for
+general use, for debug only.
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.showConnectionState">
+<code class="sig-name descname"><span class="pre">showConnectionState</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stateName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'numConnections'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.showConnectionState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows the state of all connections between source and destination
+nodes in the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>stateName</em>) -- Name of state to visualize. Default is        <strong>numConnections</strong>. Other allowed values are <strong>weight</strong>, <strong>delay</strong> or <strong>tag</strong>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.spikeInputPorts">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">spikeInputPorts</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.spikeInputPorts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a spike input port node set ns.  Obtain ith spike input
+port as ns[i].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.spikeReceivers">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">spikeReceivers</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.spikeReceivers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns existing spike receivers associated with the network</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.stop">
+<code class="sig-name descname"><span class="pre">stop</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stops a running network immediately. For graceful shutdown, use <code class="docutils literal notranslate"><span class="pre">disconnect</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.subNetworks">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">subNetworks</span></code><a class="headerlink" href="#nxsdk.net.net.NxNet.subNetworks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of children networks</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.net.NxNet.validateNetworkTree">
+<code class="sig-name descname"><span class="pre">validateNetworkTree</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.net.NxNet.validateNetworkTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate that the network tree has no circular dependencies</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the network tree has no circular dependencies,</p>
+</dd>
+</dl>
+<p>False otherwise</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="compartment.html">Compartment and CompartmentPrototype</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connection.html">Connection and ConnectionPrototype</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connectionsharing.html">Connection Sharing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neuron.html">Neuron and NeuronPrototype</a></li>
+<li class="toctree-l1"><a class="reference internal" href="groups.html">Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="netprobes.html">Working with Probes and Monitors in NxNet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="netprobes.html#energy-and-execution-time-probes">Energy and Execution Time Probes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="learningrule.html">Specifying a Learning Rule</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="learning_reinforcements.html">Learning with Reinforcement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learning_engine_scaling.html">Learning Engine Scaling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multicompartment.html">Building Multi Compartment Neuron Model using Stack Operations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multicompartment.html#relevant-tutorials">Relevant Tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="spikeinjectionandreceivers.html">Spike Injection and Spike Receivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxlogging.html">Logging in NxNet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcompiler.html">NxCompiler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nxcompiler.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcompiler.html#partitioner">Partitioner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcompiler.html#mapper">Mapper</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet_resource_map.html">NxNet Resource Map Interface</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="compartment.html" class="btn btn-neutral float-right" title="Compartment and CompartmentPrototype" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="coretimeseries.html" class="btn btn-neutral float-left" title="Working with Timeseries Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

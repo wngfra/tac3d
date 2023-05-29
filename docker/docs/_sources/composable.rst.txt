@@ -1,0 +1,159 @@
+Composability
+=============
+
+Composable interface provides a way for different models and implementations to work together and compile down
+to the Loihi NxBoard graph. Composables are comprised of ports and processes. Ports help connect two composables
+while processes provide the ability to add snips.
+
+You can derive from AbstractComposable and override the necessary methods *partition*, *map*, *updatesPorts*
+and *completeConnectivity*. Additionally, you could also provide implementations for *start*
+(in case of async execution), *load* and *save*.
+
+.. code-block:: python
+
+    from nxsdk.composable.model import Model
+    from nxsdk_modules.dnn.composable.composable_dnn import ComposableDNN
+    from nxsdk_modules.input_generator.input_generator import InputGenerator
+
+    # Create the model
+    pipeline = Model("dnn_pipeline")
+
+    # Create an instance of composable dnn
+    dnn = ComposableDNN(model=spiking_dnn_model, num_steps_per_img=num_steps_per_img)
+
+    # Create an instance of input encoder
+    input_generator = InputGenerator(shape=input_shape, interval=num_steps_per_img)
+
+    # Add composables
+    pipeline.add(dnn)
+    pipeline.add(input_generator)
+
+    # Connect ports
+    input_generator.ports.output.connect(dnn.ports.input)
+
+    # Add dependency between execution of processes
+    input_generator.processes.inputEncoder.executeAfter(dnn.processes.reset)
+
+    # Compile the complete pipeline
+    board = pipeline.compile()
+
+    # At this point, user can  further modify the board reference
+
+    # Start the board to send any data over channels etc. before run begins
+    pipeline.start(pipeline.board)
+
+    # Invokes board.run(...) internally
+    pipeline.run(num_steps_per_img)
+
+    # Invokes board.disconnect() internally
+    pipeline.disconnect()
+
+
+.. figure:: _static/composability_code_arch.png
+   :alt: Composability Design
+
+
+.. autoclass:: nxsdk.composable.abstract_composable.AbstractComposable
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+
+.. autoclass:: nxsdk.composable.interfaces.iterable_indexed_collection.IterableNamedCollection
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+
+.. autoclass:: nxsdk.composable.collections.Ports
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+   :show-inheritance:
+
+.. autoclass:: nxsdk.composable.collections.Processes
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+   :show-inheritance:
+
+.. autoclass:: nxsdk.composable.model.Model
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+   :show-inheritance:
+
+.. autoclass:: nxsdk.composable.port_impl.SpikeInputPort
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+   :show-inheritance:
+
+.. autoclass:: nxsdk.composable.port_impl.SpikeOutputPort
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+   :show-inheritance:
+
+.. autoclass:: nxsdk.composable.port_impl.StateInputPort
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+   :show-inheritance:
+
+.. autoclass:: nxsdk.composable.port_impl.StateOutputPort
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+   :show-inheritance:
+
+.. automodule:: nxsdk.composable.resource_map
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+   :show-inheritance:
+
+.. autoclass:: nxsdk.composable.interfaces.addresses.Addresses
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+
+.. automodule:: nxsdk.composable.interfaces.addresses_storage
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+   :show-inheritance:
+
+.. automodule:: nxsdk.composable.interfaces.composable_enums
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+
+.. automodule:: nxsdk.composable.interfaces.port
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+
+.. automodule:: nxsdk.composable.interfaces.process
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+
+.. automodule:: nxsdk.composable.interfaces.process_aggregator_interface
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource

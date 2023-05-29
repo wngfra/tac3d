@@ -1,0 +1,20 @@
+Working with Monitor
+====================
+The monitor helps you to define and organize your probes. More information on probes can be found in :doc:`coreprobes`
+
+Here's a simple code snippet you will find in most of the tutorials:
+
+.. code-block:: python
+
+   uProbe = mon.probe(n2Core.cxState, [0], 'u')[0]
+   
+   fig = plt.figure(1001)
+
+   plt.subplot(1, 2, 1)
+   uProbe.plot()
+   plt.title('u')
+
+
+.. automodule:: nxsdk.graph.monitor.monitor
+   :members:
+   :undoc-members:

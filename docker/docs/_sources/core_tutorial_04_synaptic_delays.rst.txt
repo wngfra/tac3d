@@ -1,0 +1,32 @@
+NxCore: Synaptic Delays
+=======================
+
+Motivation
+----------
+The motivation behind this tutorial is to show you how to configure synaptic delays illustrated with a simple toy network. This tutorial also shows how to use the basic spike generator to send spikes to "input axons".
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_04.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_04_synaptic_delays.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`vth_profile_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+* :doc:`dendrite_accum_cfg`
+* :doc:`inputgen`
+

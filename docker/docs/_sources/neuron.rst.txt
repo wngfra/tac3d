@@ -1,0 +1,87 @@
+Neuron and NeuronPrototype
+==========================
+
+NxSDK API provides the neuron interface for creating multi-compartment neurons.  Using the neuron interface, a binary
+dendritic tree can be constructed and the multi-compartment neuron can be used as a logical neuron unit or as part of a
+logical neuron group.
+
+A neuron can support dendritic trees that are a subclass of binary trees.  Intuitively, a supported binary tree is only
+allowed to branch along at most one line of connected nodes.  More formally, a binary tree structure supported by neuron
+must satisfy the following:
+
+* Multi-compartment neurons support a class of binary trees that are entirely made up of branchable and non-branchable nodes as defined below.  A node is a compartment or compartment prototype.
+* A branchable node can have both left (dendrite A) and right (dendrite B) children. A node is branchable if:
+
+  * It is the root node (soma) OR
+  * Its parent node is branchable AND either
+  * It is the only child (an only child is always the left child) OR
+  * It is the right child (dendrite B)
+
+* A Non-branchable node may only have a left child (dendrite A). A node is non-branchable if:
+
+  * Its parent node is non-branchable OR
+  * It is the left child (dendrite A) of a parent with two children.
+
+The following is an example of a supported dendritic tree.  Branchable nodes are shaded green, non-branchable nodes are shaded red.  Nodes 3, 6, and 10 are non-branchable because they are the left child of a parent with two children.  Nodes 5, 8, and 9 are non-branchable because their parent is non-branchable.  Node 2 is branchable because it is the only child of a branchable parent.  Nodes 4, 7, and 11 are branchable because they are the right child of a branchable parent.
+
+.. figure:: _static/valid_dendritic_tree.png
+   :alt: Valid Dendritic Tree
+
+The following is an example of an unsupported dendritic tree.  Node 3 is a non-branchable node and thus is prohibited from having two children.
+
+.. figure:: _static/invalid_dendritic_tree.png
+   :alt: Invalid Dendritic Tree
+
+Neurons can be created by building a dendritic tree using compartment prototypes, creating a neuron prototype, and then creating a neuron.
+
+.. code-block:: python
+
+   somaProto = nx.CompartmentPrototype()
+   cxpA = nx.CompartmentPrototype()
+   cxpB = nx.CompartmentPrototype()
+   cxpAA = nx.CompartmentPrototype()
+   cxpAB = nx.CompartmentPrototype()
+
+   somaProto.addDendrites(cxpA, cxpB, nx.COMPARTMENT_JOIN_OPERATION.MIN)
+   cxpA.addDendrites(cxpAA, cxpAB, nx.COMPARTMENT_JOIN_OPERATION.MIN)
+   np = nx.NeuronPrototype(somaProto)
+
+   n = net.createNeuron(np)
+
+   # Dendritic compartment created with prototype cxpA
+   cgA = n.dendrites[0]
+   # Dendritic compartment created with prototype cxpBA
+   cgAB = n.dendrites[0].dendrites[1]
+.. note::
+    A compartment prototype must not be re-used in different levels of the compartment prototype tree.
+
+Neurons can also be created as neuron groups.
+
+.. code-block:: python
+
+   ng = net.createNeuronGroup(size=2, prototype=np)
+
+   # Compartment group of soma compartments
+   cgSoma = ng.soma
+   # Compartment group of dendritic compartments created with prototype cxpBB
+   cgAB = ng.dendrites[0].dendrites[1]
+
+Neuron groups are generally expected to be homogeneous.  If a neuron group is heterogeneous, then the compartment group returned for any specified set of dendritic compartments will only contain the compartments that exist.
+
+Examples of neurons can be found in the following tutorials:
+
+* **NxNet** :doc:`Neuron </jupyter/u_join_op_in_multi_compartment_neuron>`
+* **NxNet** :doc:`Neuronal homeostasis </jupyter/e_neuronal_homeostasis>`
+* **NxCore** :doc:`Soft Reset </jupyter/j_soft_reset_core>`
+* **NxNet** :doc:`Soft Reset </jupyter/j_soft_reset_net>`
+
+.. automodule:: nxsdk.net.nodes.neurons
+   :members:
+   :undoc-members:
+   :inherited-members:
+
+.. autoclass:: nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource

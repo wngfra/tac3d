@@ -1,0 +1,39 @@
+NxCore: Configuring Synaptic Pre-Traces
+=======================================
+
+Motivation
+----------
+Loihi provides a number of ways to configure pre-synaptic trace information available for your learning rules. The motivation behind this tutorial is to provide some simple examples to illustrate how this is done. Illustrated in the diagram we can see a couple of key concepts:
+1) The concept of epochs and how these are used to capture historic trace information.
+2) The concept of one and two trace entries, enabling you to trade-off between going back farther in time (SingleTraceEntry) or gathering more information from the prior epoch (TwoTraceEntry).
+3) the concept trace configurations, allowing you to define the spike impulse magnitude and decay of the trace, as well as the stochastic characteristics.  
+
+In the diagram below, we are looking at the pre-trace memory values (in red) at time t=6. At the core level, tEpoch (the learning epoch) is set to 2, meaning every 2 ticks the pre-traces will be updated. The diagram illustrates the various example configurations provided in this tutorial. For more detailed information on the various settings, read through the comments within the tutorial, using the diagram as a guide.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_05.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_05_synaptic_pre_traces.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`vth_profile_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+* :doc:`inputgen`
+* :doc:`stdp_pre_profile_cfg`
+* :doc:`tracecfggen`
+
+

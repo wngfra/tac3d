@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Stdp Pre Profile Config &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Stdp Profile Config" href="stdp_profile_cfg.html" />
+    <link rel="prev" title="Stdp Post State" href="stdp_post_state.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxapi.html">NxAPI</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="nxapi.html#nxnet">NxNet</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="nxapi.html#nxcore">NxCore</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="nxcore.html">NxCore API</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#graph">Graph</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="nxcore.html#nodesets">NodeSets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#utilities">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#state-monitoring">State monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#n1-n2-n2a-and-so-forth">N1, N2, N2A, and so forth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#navigating-the-hierarchy">Navigating the Hierarchy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#decomposing-the-compartment">Decomposing the Compartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#decomposing-the-connection">Decomposing the Connection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxcore.html">NxCore API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#graph">Graph</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="nxcore.html#nodesets">NodeSets</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cx_profile_cfg.html">CxProfileConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cx_cfg.html">CxConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cx_meta_state.html">Compartment Metastate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dendrite_accum_cfg.html">Dendrite Accumulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dendrite_shared_cfg.html">Dendrite Shared Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dendrite_time_state.html">Dendrite Time State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vth_profile_cfg.html">VthProfileConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="axon_map.html">Axon Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="axon_cfg.html">Axon Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="synapses.html">Synapses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="synapse_fmt.html">Synapse Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="synapse_map.html">Synapse Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stdp_post_state.html">Stdp Post State</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Stdp Pre Profile Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stdp_profile_cfg.html">Stdp Profile Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="soma_state.html">Soma State Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="num_updates.html">numUpdates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_state.html">Time State</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#state-monitoring">State monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxapi.html">NxAPI</a> &raquo;</li>
+        
+          <li><a href="nxcore.html">NxCore API</a> &raquo;</li>
+        
+      <li>Stdp Pre Profile Config</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf">
+<span id="stdp-pre-profile-config"></span><h1>Stdp Pre Profile Config<a class="headerlink" href="#module-nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInf">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">StdpPreProfileCfgObjInf</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">updateOnXspike</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updateOnX1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updateOnX2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updateOnRewardSpike</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updateOnReward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">updateAlways</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rewardAxon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numTraceHist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numTraces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stdpProfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents StdpPreProfileCfg NodeSet which controls how synaptic pre
+traces get updated and allows to assign learning rules to synapses by
+input axon. Each StdpPreProfileCfg entry is associated with one or more
+input axons.</p>
+<p>Size: 16</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.</span></code><code class="sig-name descname"><span class="pre">StdpPreProfileCfgObjInfWrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stdpPreProfileCfgObjInf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents StdpPreProfileCfg NodeSetInterface.</p>
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows to configure multiple register fields.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.fetch">
+<code class="sig-name descname"><span class="pre">fetch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.fetch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.numTraceHist">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numTraceHist</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.numTraceHist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.numTraces">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numTraces</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.numTraces" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.rewardAxon">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rewardAxon</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.rewardAxon" title="Permalink to this definition">¶</a></dt>
+<dd><p>(uint2) Selects the reward axon associated with all axons
+referencing this StdpPreProfileCfg enry.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.stdpProfile">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">stdpProfile</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.stdpProfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>(uint4) Additive stdpProfile pointer into StdpProfile NodeSet.
+This pointer gets added to the stdpProfile pointer stored in
+SynapseFmt and StdpPostState.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.updateAlways">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">updateAlways</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.updateAlways" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.updateOnReward">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">updateOnReward</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.updateOnReward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.updateOnRewardSpike">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">updateOnRewardSpike</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.updateOnRewardSpike" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.updateOnX1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">updateOnX1</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.updateOnX1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.updateOnX2">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">updateOnX2</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.updateOnX2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.updateOnXspike">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">updateOnXspike</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.stdp_pre_profile_cfg_obj_inf.StdpPreProfileCfgObjInfWrapper.updateOnXspike" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="stdp_profile_cfg.html" class="btn btn-neutral float-right" title="Stdp Profile Config" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="stdp_post_state.html" class="btn btn-neutral float-left" title="Stdp Post State" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

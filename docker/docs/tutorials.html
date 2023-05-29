@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Tutorials &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NxNet Tutorials" href="nxnet_tutorials.html" />
+    <link rel="prev" title="Embedded Execution Engine" href="embedded_execution_engine.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nxnet_tutorials.html">NxNet Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxnet_jupyter_tutorials.html">NxNet Jupyter Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore_tutorials.html">NxCore Tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Tutorials</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="tutorials">
+<h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h1>
+<p>The diagram below shows the journey a spike of information takes through the components and features of Intel's 'Loihi' Neuromorphic Research Test Chip (Loihi). Each tutorial below has been hand-crafted to illustrate the features of our Nx SDK and Loihi.</p>
+<div class="figure align-default">
+<img alt="diagram" src="_images/tutorialfeatures.png" />
+</div>
+<p>Starting from the left and working our way rightward, the following features are available in the Nx SDK:</p>
+<ol class="upperalpha simple">
+<li><p><strong>Spike Generation</strong> - sending spike from a programmable spike generator.</p></li>
+<li><p><strong>Dendritic Tree Parameters</strong> - configuring compartments as dendrites, joining signals through various mathematical operations (joinops), using a stack to manage the tree configuration.</p></li>
+<li><p><strong>Bias Current</strong> - Bias current is a useful feature that allows you to add intrinsic current to the operation of a compartment's leaky-integrate and fire dynamics. Combined with the activity state, you can enable some compartments to self-fire with regularity.</p></li>
+<li><p><strong>Activity State</strong> - Typically a compartment is completely quiescent (INACTIVE) unless a spike comes in. Sometimes, however, you will want the compartment to listen to its own bias current. Setting the activity state to active (IDLE) allows for this behavior.</p></li>
+<li><p><strong>Current, Decay and Noise</strong> - A compartment's primary &quot;variables&quot; are the current and voltage. With Loihi and through the Nx SDK, you have the ability to monitor the compartment's current (U), specify a decay for the current (CD in diagram), and inject noise in the compartment's current.</p></li>
+<li><p><strong>Voltage, Decay and Noise</strong> - A compartment's primary &quot;variables&quot; are the current and voltage. With Loihi and through the Nx SDK, you have the ability to monitor the compartment's voltage (V), specify a decay for the current (VD in diagram), inject noise in the compartment's voltage, and specify the compartment's threshold. When the compartment's voltage (V) exceeds Vth, a spike is generated on the compartment's axon.</p></li>
+<li><p><strong>Compartment State</strong> - As stated for E and F, Loihi and the Nx SDK allow you to probe a compartment's state - U and V, as well as the compartment's Soma Activity Trace (A).</p></li>
+<li><p><strong>Homeostasis</strong> - Loihi and the Nx SDK provide the necessary trace information and settings to enable various forms of homeostasis. The homeostasis feature allows you to adjust the voltage threshold up or down given activity levels that respectively exceed or drop below some max/min.</p></li>
+<li><p><strong>Refractory Delay and Noise</strong> - When a compartment spikes, you have the option to delay the accumulation of its membrane potential (V) for some period of time after the spike. This is often referred to as the Refractory Delay. Loihi and the Nx SDK allow you to specify both the delay and inject some noise into the delay for any desired stochastic behavior.</p></li>
+<li><p><strong>Axonal Delay</strong> - Your algorithm might also call for some delay in sending a spike to downstream compartments. As often found in biology, some axons are longer than others and signals from upstream neurons (compartments) may take longer to get to certain downstream compartments. To enable algorithms that might want to include these dynamics, Loihi and the Nx SDK provides for axonal delay.</p></li>
+<li><p><strong>Fanout Type</strong> - Fanout type provides for a convenient means of specifying a synapse as excitatory or inhibitory rather than specifying negative weights. More information on this particular feature can be found in <a class="reference internal" href="synapse_fmt.html"><span class="doc">Synapse Format</span></a>.</p></li>
+<li><p><strong>Epoch</strong> - For both homeostasis and learning rules, the Epoch feature allows you to fine tune the historical activity, pre- and post- synaptic trace settings. See the tutorials on learning and homeostasis as well as the documentation here: <a class="reference internal" href="stdp_pre_profile_cfg.html"><span class="doc">Stdp Pre Profile Config</span></a>.</p></li>
+<li><p><strong>Learning and Pre/Post Synaptic Traces</strong> - In order to learn, especially utilizing spike-timing dependent plasticity rules (STDP), it is important &quot;remember&quot; past pre and post synaptic values. These traces and the core learning rule engine are further described in the tutorials below.</p></li>
+<li><p><strong>Synaptic Delay</strong> - Similar to the reasoning behind axonal delays, synaptic delays allow for algorithms that seek to model the dynamics of delayed signaling.</p></li>
+<li><p><strong>Box Synapse</strong> - The box synapse feature allows for algorithms that wish to retain a constant post-synaptic current for a specified period of time. Enabling this feature with the synaptic delay feature, you can precisely specify the level and time-length of the post-synaptic current.</p></li>
+<li><p><strong>Synaptic Weight</strong> - Loihi and Nx SDK allow you to provide a weight for each post-synaptic connection. We also enable you to specify weight bits and precision.</p></li>
+<li><p><strong>Population Mode</strong> - Population mode allows you to construct networks with lots of repeating structures in the most compressed and efficient manner on Loihi.</p></li>
+<li><p><strong>Core to Core Spikes and Large Network Support</strong> - There are numerous ways to take advantage of the neurocore resources on Loihi. Some tutorials below provide some tips and tricks along these lines.</p></li>
+<li><p><strong>Soma Activity Traces</strong> - A key component to enable homeostasis is the soma activity traces. Though used primarily for homeostasis rules, the activity trace feature is a powerful tool for storing compartment activity history.</p></li>
+</ol>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="nxnet_tutorials.html">NxNet Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet_jupyter_tutorials.html">NxNet Jupyter Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore_tutorials.html">NxCore Tutorials</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="nxnet_tutorials.html" class="btn btn-neutral float-right" title="NxNet Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="embedded_execution_engine.html" class="btn btn-neutral float-left" title="Embedded Execution Engine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

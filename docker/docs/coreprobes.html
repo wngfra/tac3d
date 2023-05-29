@@ -1,0 +1,446 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Working with Probes &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Working with Timeseries Data" href="coretimeseries.html" />
+    <link rel="prev" title="Working with Monitor" href="coremonitor.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxapi.html">NxAPI</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="nxapi.html#nxnet">NxNet</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="nxapi.html#nxcore">NxCore</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="nxcore.html">NxCore API</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#graph">Graph</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#nodesets">NodeSets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#utilities">Utilities</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="nxcore.html#state-monitoring">State monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#n1-n2-n2a-and-so-forth">N1, N2, N2A, and so forth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#navigating-the-hierarchy">Navigating the Hierarchy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#decomposing-the-compartment">Decomposing the Compartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#decomposing-the-connection">Decomposing the Connection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxcore.html">NxCore API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#graph">Graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#nodesets">NodeSets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#utilities">Utilities</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="nxcore.html#state-monitoring">State monitoring</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="coremonitor.html">Working with Monitor</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Working with Probes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="coretimeseries.html">Working with Timeseries Data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxapi.html">NxAPI</a> &raquo;</li>
+        
+          <li><a href="nxcore.html">NxCore API</a> &raquo;</li>
+        
+      <li>Working with Probes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="working-with-probes">
+<h1>Working with Probes<a class="headerlink" href="#working-with-probes" title="Permalink to this headline">¶</a></h1>
+<p>Probes enable you to see how the network changes over time. To create a probe, you first create a monitor (see <a class="reference internal" href="coremonitor.html"><span class="doc">Working with Monitor</span></a>) and then establish either a u probe, a v probe or a spike probe on the compartment(s) you wish to monitor. Here's a simple code snippet (which you will find in most tutorials) to get you started:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">uProbe</span> <span class="o">=</span> <span class="n">mon</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="n">n2Core</span><span class="o">.</span><span class="n">cxState</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;u&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1001</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">uProbe</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<span class="target" id="module-nxsdk.graph.monitor.probes"></span><dl class="py class">
+<dt id="nxsdk.graph.monitor.probes.IntervalProbeCondition">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.graph.monitor.probes.</span></code><code class="sig-name descname"><span class="pre">IntervalProbeCondition</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tStart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.IntervalProbeCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a ProbeCondition that leads to state being recorded at
+fixed intervals.</p>
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.IntervalProbeCondition.genTime">
+<code class="sig-name descname"><span class="pre">genTime</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startTime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endTime</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.IntervalProbeCondition.genTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a time vector containing all time steps between
+startTime and endTime with an interval of dt including the initial
+tStart.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.IntervalProbeCondition.getTStart">
+<code class="sig-name descname"><span class="pre">getTStart</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.IntervalProbeCondition.getTStart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.IntervalProbeCondition.isSpikeProbeCondition">
+<code class="sig-name descname"><span class="pre">isSpikeProbeCondition</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.IntervalProbeCondition.isSpikeProbeCondition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.graph.monitor.probes.PerformanceProbeCondition">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.graph.monitor.probes.</span></code><code class="sig-name descname"><span class="pre">PerformanceProbeCondition</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tStart</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tEnd</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bufferSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.PerformanceProbeCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a ProbeCondition that leads to performance state     execution time or energy consumed per algorithmic timestep being     recorded at fixed intervals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tStart</strong> (<em>int</em>) -- Time tStart at which the probing starts</p></li>
+<li><p><strong>tEnd</strong> (<em>int</em>) -- Time tEnd at which the probing ends.</p></li>
+<li><p><strong>bufferSize</strong> (<em>int</em>) -- Specifies the size of the buffer on the LMT that     will be used to collect time stamps. Size in terms of timesteps,     e.g. bufferSize = 100, will collect beginning and ending time stamps     for 100 timesteps before sending data back to the host.</p></li>
+<li><p><strong>binSize</strong> (<em>int</em>) -- Specifies the binSize of the     time stamps collected on the LMT, e.g. a binSize of 8 indicates that     the time stamps for 8 time steps will be summed in a single bin and will be     returned as a single entry.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.PerformanceProbeCondition.genTime">
+<code class="sig-name descname"><span class="pre">genTime</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startTime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endTime</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.PerformanceProbeCondition.genTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a time vector containing all time steps between
+startTime and endTime with an interval of dt including the initial
+tStart.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.PerformanceProbeCondition.isSpikeProbeCondition">
+<code class="sig-name descname"><span class="pre">isSpikeProbeCondition</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.PerformanceProbeCondition.isSpikeProbeCondition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.graph.monitor.probes.Probe">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.graph.monitor.probes.</span></code><code class="sig-name descname"><span class="pre">Probe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probeCondition</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.Probe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Probes define which states to monitor in a NodeSet. After probes have
+been generated by the user they are eventually post processed by the
+compiler.
+During compilation, a new set of probes is generated based on the
+addresses of the original probes (e.g. high level probes may map to
+multiple low-level probes). In addition a map from original to new
+probes is created.
+The new probes are then used by the N2Driver during simulation to produce
+TimeSeries data.
+After simulation, the TimeSeries data of the new probes is converted
+into TimeSeries data of the original probes.</p>
+<p>Subclasses of Probe must store the address of the probe and implement
+the getAddress(..) method.</p>
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.Probe.data">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">data</span></code><a class="headerlink" href="#nxsdk.graph.monitor.probes.Probe.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.Probe.getAddress">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">getAddress</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.Probe.getAddress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the address of Probe as a tuple.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.Probe.plot">
+<code class="sig-name descname"><span class="pre">plot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.Probe.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls plot method of associated timeSeries.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.Probe.timeVector">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">timeVector</span></code><a class="headerlink" href="#nxsdk.graph.monitor.probes.Probe.timeVector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.Probe.toTimeSeries">
+<code class="sig-name descname"><span class="pre">toTimeSeries</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.Probe.toTimeSeries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates and returns a TimeSeries object that is associated with
+Probe.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.graph.monitor.probes.ProbeCondition">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.graph.monitor.probes.</span></code><code class="sig-name descname"><span class="pre">ProbeCondition</span></code><a class="headerlink" href="#nxsdk.graph.monitor.probes.ProbeCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Describes the condition when to probe state.</p>
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.ProbeCondition.genTime">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">genTime</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startTime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endTime</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.ProbeCondition.genTime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.ProbeCondition.isSpikeProbeCondition">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">isSpikeProbeCondition</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.ProbeCondition.isSpikeProbeCondition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.graph.monitor.probes.SpikeProbeCondition">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.graph.monitor.probes.</span></code><code class="sig-name descname"><span class="pre">SpikeProbeCondition</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tStart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.SpikeProbeCondition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a ProbeCondition that specifies when to start recording spikes
+(i.e. the time step to start monitoring), and the time interval of which the
+spikes are accumulated. For example, a probe condition with <strong>tStart=1</strong> and
+<strong>dt=1</strong> starts recording spikes at time step 1 and will count the number of
+spikes at each time step. Where as, a probe condition with <strong>tStart=1</strong> and
+<strong>dt=10</strong>, will start recording the spikes at time step 1, but will accumulate
+the spike count over 10 time steps before resetting the count. A value of
+<strong>dt=0</strong> indicates to accumulate the spikes over the course of the entire run.</p>
+<p>Note: In case of Payload Probes (GradeSpike, ProbeAxon), we enforce <strong>dt == 0</strong>
+or <strong>dt == 1</strong> and <strong>tStart = 1</strong></p>
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.SpikeProbeCondition.genTime">
+<code class="sig-name descname"><span class="pre">genTime</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">startTime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endTime</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.SpikeProbeCondition.genTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a time vector containing all time steps between
+startTime and endTime with an interval of dt. Includes the initial
+start time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>startTime</strong> (<em>int</em>) -- Initial time step to include in time vector</p></li>
+<li><p><strong>endTime</strong> (<em>int</em>) -- Last time step included in time vector</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.SpikeProbeCondition.getResetTimeInterval">
+<code class="sig-name descname"><span class="pre">getResetTimeInterval</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.SpikeProbeCondition.getResetTimeInterval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.probes.SpikeProbeCondition.isSpikeProbeCondition">
+<code class="sig-name descname"><span class="pre">isSpikeProbeCondition</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.probes.SpikeProbeCondition.isSpikeProbeCondition" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="coretimeseries.html" class="btn btn-neutral float-right" title="Working with Timeseries Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="coremonitor.html" class="btn btn-neutral float-left" title="Working with Monitor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

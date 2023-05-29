@@ -1,0 +1,723 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>13. Setup Compartments with NxNet C API &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="14. Independent Networks in Same Run" href="m_independent_networks_in_same_run.html" />
+    <link rel="prev" title="12. Interactive Spike Sender and Spike Receivers" href="k_interactive_spike_sender_receiver.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../nxnet_tutorials.html">NxNet Tutorials</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../nxnet_jupyter_tutorials.html">NxNet Jupyter Tutorials</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="a_compartment_setup.html">1. Compartment, CompartmentPrototype and Probes Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b_connecting_compartments.html">2. Connecting compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="c_stimulating_compartments.html">3. Stimulating compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="d_synaptic_plasticity.html">4. Synaptic plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="e_neuronal_homeostasis.html">5. Neuronal homeostasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="f_rewards_learning.html">6. Learning with Rewards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="g_snip_for_threshold_modulation.html">7. SNIPs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="h_reward_trace.html">8. Reward Trace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i_performance_profiling.html">9. Performance profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="j_soft_reset_core.html">10. Hard vs. soft membrane voltage reset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="j_soft_reset_net.html">11. Soft reset membrane voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="k_interactive_spike_sender_receiver.html">12. Interactive Spike Sender and Spike Receivers</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">13. Setup Compartments with NxNet C API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Configure-voltage-and-spike-probes">13.1. Configure voltage and spike probes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Compile-network">13.2. Compile network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Configure-SNIP-and-channels">13.3. Configure SNIP and channels</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Execute-network-and-send-refractoryDelay-value">13.4. Execute network and send refractoryDelay value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Visualize-results">13.5. Visualize results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="m_independent_networks_in_same_run.html">14. Independent Networks in Same Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="n_stochastic_networks.html">15. Stochastic Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="n_stochastic_networks.html#C.-Puttin-It-All-Together">16. C. Puttin It All Together</a></li>
+<li class="toctree-l3"><a class="reference internal" href="n_stochastic_networks.html#Modify-createWtaMotif1-to-Include-Detector-Neuron">17. Modify createWtaMotif1 to Include Detector Neuron</a></li>
+<li class="toctree-l3"><a class="reference internal" href="o_snip_for_reading_lakemont_spike_count.html">18. Read Lakemont Spike Count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="p_composable_networks.html">19. Composable Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="q_connection_sharing.html">20. Connection Sharing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="r_stubs_and_netmodules.html">21. Stubs and NetModules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="r_stubs_and_netmodules.html#NetModules">22. NetModules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s_multicx_neuron_self_reward.html">23. Implementation of a multi-compartment neuron with self-reward feedback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="t_vMinExp_and_vMaxExp.html">24. vMinExp and vMaxExp Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="u_join_op_in_multi_compartment_neuron.html">25. Neurons vs Compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="u_join_op_in_multi_compartment_neuron.html#Multi-compartment-neurons">26. Multi-compartment neurons</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../nxcore_tutorials.html">NxCore Tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../tutorials.html">Tutorials</a> &raquo;</li>
+        
+          <li><a href="../nxnet_jupyter_tutorials.html">NxNet Jupyter Tutorials</a> &raquo;</li>
+        
+      <li><span class="section-number">13. </span>Setup Compartments with NxNet C API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># INTEL CORPORATION CONFIDENTIAL AND PROPRIETARY</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2018-2021 Intel Corporation.</span>
+<span class="c1">#</span>
+<span class="c1"># This software and the related documents are Intel copyrighted</span>
+<span class="c1"># materials, and your use of them is governed by the express</span>
+<span class="c1"># license under which they were provided to you (License). Unless</span>
+<span class="c1"># the License provides otherwise, you may not use, modify, copy,</span>
+<span class="c1"># publish, distribute, disclose or transmit  this software or the</span>
+<span class="c1"># related documents without Intel&#39;s prior written permission.</span>
+<span class="c1">#</span>
+<span class="c1"># This software and the related documents are provided as is, with</span>
+<span class="c1"># no express or implied warranties, other than those that are</span>
+<span class="c1"># expressly stated in the License.</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">nxsdk.api.n2a</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">os</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Setup-Compartments-with-NxNet-C-API">
+<h1><span class="section-number">13. </span>Setup Compartments with NxNet C API<a class="headerlink" href="#Setup-Compartments-with-NxNet-C-API" title="Permalink to this headline">¶</a></h1>
+<p>NxNet C API provides a way to access compartments and compartment groups through SNIP C-code. In this tutorial, we demonstrate how to use NxNet C API to setup compartments. For more details about NxNet C API, please refer to the documentation.</p>
+<p><img alt="cf3fe26ed15247379809e56c57fe644b" src="figures/jupyter_tutorial_nxnet_c_api.png" /></p>
+<p>In the below code, two compartment prototypes are created on different logicalCoreId. This is just for illustrative purpose, and it is not required that two compartments need to be on seperate cores.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">net</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+
+<span class="c1"># create a compartment prototype for cx0 whose parameter values are to be set in initsnip</span>
+<span class="n">cxp0</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">,</span>
+                               <span class="n">refractoryDelay</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                               <span class="n">logicalCoreId</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># create a compartment prototype for cx1</span>
+<span class="n">cxp1</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                               <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                               <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                               <span class="n">refractoryDelay</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                               <span class="n">vThMant</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                               <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">,</span>
+                               <span class="n">logicalCoreId</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Create compartmentGroup from the two different prototypes</span>
+<span class="n">cxGrp</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="p">[</span><span class="n">cxp0</span><span class="p">,</span> <span class="n">cxp1</span><span class="p">],</span> <span class="n">prototypeMap</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Configure-voltage-and-spike-probes">
+<h2><span class="section-number">13.1. </span>Configure voltage and spike probes<a class="headerlink" href="#Configure-voltage-and-spike-probes" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="p">(</span><span class="n">vProbes</span><span class="p">,</span> <span class="n">sProbes</span><span class="p">)</span> <span class="o">=</span> <span class="n">cxGrp</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Compile-network">
+<h2><span class="section-number">13.2. </span>Compile network<a class="headerlink" href="#Compile-network" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">compiler</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">N2Compiler</span><span class="p">()</span>
+<span class="n">board</span> <span class="o">=</span> <span class="n">compiler</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Configure-SNIP-and-channels">
+<h2><span class="section-number">13.3. </span>Configure SNIP and channels<a class="headerlink" href="#Configure-SNIP-and-channels" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Define directory where SNIP C-code is located</span>
+<span class="n">includeDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+
+<span class="c1"># create a SNIP to initialize cx0. This SNIP will execute initsnip.c in init phase of the NxRuntime execution cycle</span>
+<span class="n">initProcess</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">createProcess</span><span class="p">(</span><span class="s2">&quot;initProcess&quot;</span><span class="p">,</span>
+                                  <span class="n">includeDir</span><span class="o">=</span><span class="n">includeDir</span><span class="p">,</span>
+                                  <span class="n">cFilePath</span><span class="o">=</span><span class="n">includeDir</span> <span class="o">+</span> <span class="s2">&quot;/initsnip.c&quot;</span><span class="p">,</span>
+                                  <span class="n">funcName</span><span class="o">=</span><span class="s2">&quot;initParams&quot;</span><span class="p">,</span>
+                                  <span class="n">guardName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                  <span class="n">phase</span> <span class="o">=</span> <span class="s2">&quot;init&quot;</span><span class="p">)</span>
+<span class="n">initChannel</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">createChannel</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;nxinit&#39;</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">initChannel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">initProcess</span><span class="p">)</span>
+
+<span class="c1"># create a SNIP to set parameters for the whole cxGrp, and to set refractoryDelay that is specific to cx1</span>
+<span class="c1"># This SNIP will execute setParams.c in mgmt phase and only when guard (doSetting) is on</span>
+<span class="n">settingSnip</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">createProcess</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;setting&quot;</span><span class="p">,</span>
+                                 <span class="n">includeDir</span><span class="o">=</span><span class="n">includeDir</span><span class="p">,</span>
+                                 <span class="n">cFilePath</span><span class="o">=</span><span class="n">includeDir</span> <span class="o">+</span> <span class="s2">&quot;/setParams.c&quot;</span><span class="p">,</span>
+                                 <span class="n">funcName</span><span class="o">=</span><span class="s2">&quot;setParams&quot;</span><span class="p">,</span>
+                                 <span class="n">guardName</span><span class="o">=</span><span class="s2">&quot;doSetting&quot;</span><span class="p">,</span>
+                                 <span class="n">phase</span><span class="o">=</span><span class="s2">&quot;mgmt&quot;</span><span class="p">)</span>
+<span class="n">settingChannel</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">createChannel</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;settingChannel&#39;</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">settingChannel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">settingSnip</span><span class="p">)</span>
+
+<span class="n">board</span><span class="o">.</span><span class="n">startDriver</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+INFO:DRV:  SLURM is being run in background
+INFO:DRV:  Connecting to 134.134.68.80:18861
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Execute-network-and-send-refractoryDelay-value">
+<h2><span class="section-number">13.4. </span>Execute network and send refractoryDelay value<a class="headerlink" href="#Execute-network-and-send-refractoryDelay-value" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># set new refractoryDelay value for cx1, which will take effect at time step 180, which is controlled by settingSnip.</span>
+<span class="c1"># Please refer to setParams.c for more details.</span>
+<span class="n">refractoryDelay</span> <span class="o">=</span> <span class="p">[</span><span class="mi">15</span><span class="p">]</span>
+<span class="n">settingChannel</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">refractoryDelay</span><span class="p">)</span>
+
+<span class="n">board</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="n">aSync</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">board</span><span class="o">.</span><span class="n">finishRun</span><span class="p">()</span>
+<span class="n">board</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Visualize-results">
+<h2><span class="section-number">13.5. </span>Visualize results<a class="headerlink" href="#Visualize-results" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="c1"># Plot compartment voltage</span>
+<span class="n">ax0</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">vh</span> <span class="o">=</span> <span class="n">vProbes</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="c1"># Plot compartment spikes</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sh</span> <span class="o">=</span> <span class="n">sProbes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="n">vh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_color</span><span class="p">(),</span> <span class="n">vh</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_color</span><span class="p">()])</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">ax0</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">())</span>
+<span class="n">ax0</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">vh</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;cx0&#39;</span><span class="p">,</span> <span class="s1">&#39;cx1&#39;</span><span class="p">])</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">vh</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;cx0&#39;</span><span class="p">,</span> <span class="s1">&#39;cx1&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># cx0 and cx1 are initialized with the same parameter values, except for logicalCoreId. As can be seen below, the</span>
+<span class="c1"># compartment_voltage and spike for both cx0 and cx1 are the same from time 0. At time step 60, a new compartmentVoltageDecay</span>
+<span class="c1"># value is set (via settingSnip) for the whole cxGrp, the firing rate for both cx0 and cx1 gets decreased. At time step 150,</span>
+<span class="c1"># a new vThMant value is set (via settingSnip) for cxGrp, the firing rate for cx0 and cx1 changes again. At time step 180,</span>
+<span class="c1"># a new refractoryDelay value is set (via settingSnip) for cx1 only. As shown in the figure below, only cx1 changes the firing</span>
+<span class="c1"># pattern, while there is no more change for cx0.</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_l_snip_for_compartment_setup_with_NxNet_C_13_0.png" src="../_images/jupyter_l_snip_for_compartment_setup_with_NxNet_C_13_0.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="m_independent_networks_in_same_run.html" class="btn btn-neutral float-right" title="14. Independent Networks in Same Run" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="k_interactive_spike_sender_receiver.html" class="btn btn-neutral float-left" title="12. Interactive Spike Sender and Spike Receivers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

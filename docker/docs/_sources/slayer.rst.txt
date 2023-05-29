@@ -1,0 +1,65 @@
+##############
+SLAYER Module 
+##############
+
+The SLAYER module provides NxSDK helper functions for running a SLAYER-trained
+model on Loihi. The SLAYER training code for Loihi is separate and can be obtained 
+from https://github.com/bamsumit/slayerPytorch, but the training code is not 
+required in order to run SLAYER models on Loihi. Pre-trained SLAYER models can 
+be found at https://github.com/bamsumit/slayerLoihiModelZoo and are automatically
+downloaded by the tutorials.
+
+
+The module contains functions to implement pooling, convolution, and fully 
+connected layers. At the moment, model partitioning is a manual process where
+the user must specify layerwise how many compartments to put on each core.
+
+The module also contains snips and functions to help with efficiently injecting 
+spikes into the model and for observing the output spike rates for each sample.
+
+The NMNIST and DVS Gesture tutorials show how to run and test SLAYER models.
+
+
+Spike Injection
+###############
+
+Spike injection is done with custom snips. An assumption is made that all input
+compartment lie on the first chip, which removes the need to communicate to lakemonts
+which chip each spike must be routed to, thus saving on communication time.
+
+Spike injection can optionally be split across up to 3 lakemonts to share the load.
+
+The current form of the model precomputes all input spikes before the run starts, 
+but a user could also specify their own spikes on-the-fly.
+
+
+Spike Output
+############
+
+A lakemont snip is used to count spikes from the output layer and only return the 
+aggregate result at the end of each sample. This saves channel communication and 
+helps to accelerate testing. 
+
+If precise spike times are desired, the user can replace the dummy probes and 
+counter reading with spike probes attached to the output layer.
+
+
+SLAYER Python Module Documentation
+##################################
+
+When you ``import nxsdk_modules.slayer.src as nxSlayer``, this module will be 
+accessible as ``nxSlayer.s2l``.
+
+.. automodule:: nxsdk_modules.slayer.src.slayer2loihi
+   :members: 
+   :undoc-members:
+
+SLAYER Auto Module Documentation
+################################
+
+When you ``import nxsdk_modules.slayer.src as nxSlayer``, this module will be
+accessible as ``nxSlayer.auto``.
+
+.. automodule:: nxsdk_modules.slayer.src.s2lWrapper
+   :members:
+   :undoc-members:

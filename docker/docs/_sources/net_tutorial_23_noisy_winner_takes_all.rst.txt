@@ -1,0 +1,21 @@
+NxNet: Noisy Winner Take All
+=======================
+
+Motivation
+----------
+This tutorial is to demonstrate the use of noise injection into the membrane current (u) of single-compartment neurons for competition
+between similar neurons in a population.
+
+Location
+--------
+nxsdk-apps/tutorials/nxnet/tutorial_23_noisy_winner_takes_all.py
+
+See also
+--------
+
+* :doc:`netprobes`
+* :doc:`compartment`
+* :doc:`connection`
+* :doc:`nxnet`
+* :doc:`graph`
+

@@ -1,0 +1,39 @@
+#####################
+Introductory Material
+#####################
+
+Neuromorphic Computing is inspired by the brain, its operation, structure and dynamical nature. To that end, Intel has developed a Neuromorphic Research Chip (Loihi) similarly inspired. To make this chip accessible to those both expert in Neuromorphic Computing as well as those less familiar to it, we've developed the Neuromorphic Software Development Kit (Nx SDK).
+
+Within this introductory material, we will describe the basic design of Loihi from a practical, programmatic perspective; we will discuss, in particular, hierarchical addressing of the hardware components (from board to chip to core to register to field) as well as the hetrogeneous capabilities of Loihi (providing 3 traditional x86 cores alongside 128 specially designed neurocores).
+
+.. figure:: _static/boardhierarchy.png
+   :alt: figure 1 - cannonical hierarchy
+
+In figure 1, we see a typical board hierarchy - here depicted with 2 boards, each with 2 chips. Though Loihi will come in numerous form factors for research purposes, programmatically, you can presume that a typical Loihi will have N boards, each with X chips. Each chip will have 128 neurocores and 3 x86 cores. To access a neurocore programmatically, we exploit this natural hierarchy. Within python for example, utilizing the lowest level API, it is not uncommon to see this sort of code.
+
+.. code-block:: python
+
+   n2Core = board.n2Chips[0].n2Cores[0]
+
+More information on this can be found in :doc:`nxapi`. 
+
+*****************************************************
+Creating and Running Spiking Neural Networks on Loihi
+*****************************************************
+As you will see in the subsequent documentation, programming Loihi with the Nx SDK is fairly straight forward. There are five primary components:
+
+1. Creating and running network of connected compartments. See :doc:`nxapi`
+2. Establishing an input generator (spike generator). See :doc:`inputgen`
+3. Establishing probes (to monitor the behavior of the running network). See :doc:`coreprobes` for using probes with the NxCore API and :doc:`netprobes` for documentation on the NxNet API probes.
+4. Developing Sequential Neural Interacting Processes (SNIPs) to modify the network behavior during execution. See :doc:`snips`
+5. Initializing and maintaining a learning strategy using Spike Timing Dependend Placticity (STDP). See :doc:`learning`
+
+We believe the best way to learn about the Nx SDK is by starting with the :doc:`tutorials`. Other auxillary information can be found below:
+
+.. toctree::
+   :maxdepth: 1
+
+   learning
+   snips
+   channels
+   host_snips

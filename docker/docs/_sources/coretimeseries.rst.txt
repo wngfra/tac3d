@@ -1,0 +1,18 @@
+Working with Timeseries Data
+============================
+The best way to work with the time series data is to plot it. Here's a simple example many of the tutorials provide.
+
+.. code-block:: python
+
+   uProbe = mon.probe(n2Core.cxState, [0], 'u')[0]
+   
+   fig = plt.figure(1001)
+
+   plt.subplot(1, 2, 1)
+   uProbe.plot()
+   plt.title('u')
+
+
+.. automodule:: nxsdk.graph.monitor.timeseries
+   :members:
+   :undoc-members:

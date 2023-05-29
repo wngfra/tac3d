@@ -1,0 +1,5 @@
+numUpdates
+==========
+.. automodule:: nxsdk.arch.n2a.graph.nodesets.num_updates_obj_inf
+   :members:
+   :undoc-members:

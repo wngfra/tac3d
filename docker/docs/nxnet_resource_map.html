@@ -1,0 +1,378 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>NxNet Resource Map Interface &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Composability" href="composable.html" />
+    <link rel="prev" title="NxCompiler" href="nxcompiler.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxnet.html">NxNet API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compartment.html">Compartment and CompartmentPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connection.html">Connection and ConnectionPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connectionsharing.html">Connection Sharing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron.html">Neuron and NeuronPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="groups.html">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netprobes.html">Working with Probes and Monitors in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learningrule.html">Specifying a Learning Rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multicompartment.html">Building Multi Compartment Neuron Model using Stack Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spikeinjectionandreceivers.html">Spike Injection and Spike Receivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxlogging.html">Logging in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcompiler.html">NxCompiler</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">NxNet Resource Map Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxnet.html">NxNet API</a> &raquo;</li>
+        
+      <li>NxNet Resource Map Interface</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="nxnet-resource-map-interface">
+<h1>NxNet Resource Map Interface<a class="headerlink" href="#nxnet-resource-map-interface" title="Permalink to this headline">¶</a></h1>
+<p>Use the NxNet resource map api to get addresses of entities post compilation given their logical node ids (pre-compilation)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using the compiler explicitly</span>
+<span class="n">compartment</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">compiler</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">N2Compiler</span><span class="p">()</span>
+<span class="n">board</span> <span class="o">=</span> <span class="n">compiler</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">net</span><span class="p">)</span> <span class="c1"># Compiles the network and populates the resourceMaps</span>
+<span class="n">boardId</span><span class="p">,</span> <span class="n">chipId</span><span class="p">,</span> <span class="n">coreId</span><span class="p">,</span> <span class="n">compartmentId</span><span class="p">,</span> <span class="n">cxProfileCfgId</span><span class="p">,</span> <span class="n">vthProfileCfgId</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">resourceMap</span><span class="o">.</span><span class="n">compartment</span><span class="p">(</span><span class="n">compartment</span><span class="o">.</span><span class="n">nodeId</span><span class="p">)</span>
+<span class="n">board</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">board</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
+<span class="c1"># Or Using the implicit compiler associated with the NxNet object</span>
+<span class="n">compartment</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="n">net</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">net</span><span class="p">)</span> <span class="c1"># Compiles the network and populates the resourceMaps</span>
+<span class="n">boardId</span><span class="p">,</span> <span class="n">chipId</span><span class="p">,</span> <span class="n">coreId</span><span class="p">,</span> <span class="n">compartmentId</span><span class="p">,</span> <span class="n">cxProfileCfgId</span><span class="p">,</span> <span class="n">vthProfileCfgId</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">resourceMap</span><span class="o">.</span><span class="n">compartment</span><span class="p">(</span><span class="n">compartment</span><span class="o">.</span><span class="n">nodeId</span><span class="p">)</span>
+<span class="n">net</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">net</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of using InputAxon resource map</span>
+<span class="n">spikeInputPorts</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createSpikeInputPortGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">NUM_COMPARTMENTS</span><span class="p">)</span>
+<span class="n">connProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">127</span><span class="p">)</span>
+<span class="n">spikeInputPorts</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="n">dstGrp</span><span class="o">=</span><span class="n">cg</span><span class="p">,</span>
+    <span class="n">prototype</span><span class="o">=</span><span class="n">connProto</span><span class="p">,</span>
+    <span class="n">connectionMask</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">NUM_COMPARTMENTS</span><span class="p">))</span>
+
+<span class="n">logicalAxonIds</span> <span class="o">=</span> <span class="n">spikeInputPorts</span><span class="o">.</span><span class="n">nodeIds</span>
+
+<span class="n">net</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">net</span><span class="p">)</span> <span class="c1"># Compiles the network and populates the resourceMaps</span>
+
+<span class="n">physicalAxonIds</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">logicalAxonId</span> <span class="ow">in</span> <span class="n">logicalAxonIds</span><span class="p">:</span>
+    <span class="c1"># The call to inputAxon returns a list of physical input axons as the logical axon might be split post compilation</span>
+    <span class="c1"># depending on where the compartments ended up</span>
+    <span class="n">physicalAxonIds</span><span class="p">[</span><span class="n">logicalAxonId</span><span class="p">]</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">resourceMap</span><span class="o">.</span><span class="n">inputAxon</span><span class="p">(</span><span class="n">logicalAxonId</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="nxsdk.compiler.resource_map.resource_map.NxNetResourceMap">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.compiler.resource_map.resource_map.</span></code><code class="sig-name descname"><span class="pre">NxNetResourceMap</span></code><a class="headerlink" href="#nxsdk.compiler.resource_map.resource_map.NxNetResourceMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collection of resource maps and apis to get physical location given logical node ids</p>
+<dl class="py method">
+<dt id="nxsdk.compiler.resource_map.resource_map.NxNetResourceMap.compartment">
+<code class="sig-name descname"><span class="pre">compartment</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logicalId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.compiler.resource_map.resource_map.NxNetResourceMap.compartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a logical compartment ID returns a tuple of the hardware
+board id, chip id, core id, cxId, cxProfileCfgId and vthProfileCfgId
+for that compartment. The network must be compiled first since that
+is when the resource map is populated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>logicalId</strong> (<em>int</em>) -- The logical id of the compartment</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of the hardware board id, chip id, core id, cxId,
+cxProfileCfgId, and vthProfileCfgId
+associated with the logical compartment</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.compiler.resource_map.resource_map.NxNetResourceMap.synapse">
+<code class="sig-name descname"><span class="pre">synapse</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logicalId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preTraceInfo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.compiler.resource_map.resource_map.NxNetResourceMap.synapse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a logical synapse ID returns a tuple of the hardware
+board id, chip id, core id, and synapseId
+for that synapse. The network must be compiled first since that
+is when the resource map is populated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>logicalId</strong> (<em>int</em>) -- The logical id of the synapse</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of the hardware board id, chip id, core id, and
+synapse id associated with the logical synapse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.compiler.resource_map.resource_map.NxNetResourceMap.inputAxon">
+<code class="sig-name descname"><span class="pre">inputAxon</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logicalId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.compiler.resource_map.resource_map.NxNetResourceMap.inputAxon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a logical inputAxon ID returns a list of tuples containing
+the hardware board id, chip id, core id, and inputAxonId
+for that inputAxon. The network must be compiled first since that
+is when the resource map is populated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>logicalId</strong> (<em>int</em>) -- The logical id of the inputAxon</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of tuples containing the hardware board id, chip id,
+core id, and inputAxonId associated with the logical inputAxon</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.compiler.resource_map.resource_map.NxNetResourceMap.reinforcementChannel">
+<code class="sig-name descname"><span class="pre">reinforcementChannel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logicalId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.compiler.resource_map.resource_map.NxNetResourceMap.reinforcementChannel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a logical reinforcementChannel ID returns a list of tuples containing
+the hardware board id, chip id, core id, and reinforcementChannelId
+for that reinforcementChannel. The network must be compiled first since that
+is when the resource map is populated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>logicalId</strong> (<em>int</em>) -- The logical id of the inputAxon</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of tuples containing the hardware board id, chip id,
+core id, and reinforcementChannelId associated with the logical
+reinforcementChannel</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="composable.html" class="btn btn-neutral float-right" title="Composability" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="nxcompiler.html" class="btn btn-neutral float-left" title="NxCompiler" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

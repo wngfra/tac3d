@@ -1,0 +1,18 @@
+Basic Spike Generator
+=====================
+Within the Nx SDK, we provide you with a basic spike generator. The code snippet below provides some guidance on how to use it.
+
+.. code-block:: python
+
+   # Generate an input spike at timestep 5 to chip 0, core 4 and axon 0
+   bs       = BasicSpikeGenerator(board)
+   timestep = 5
+   chipId   = 0
+   coreId   = 4
+   axonId   = 0
+   bs.addSpike(timestep, chipId, coreId, axonId)
+
+
+.. automodule:: nxsdk.graph.nxinputgen.nxinputgen
+   :members:
+   :undoc-members:

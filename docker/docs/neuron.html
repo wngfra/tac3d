@@ -1,0 +1,512 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Neuron and NeuronPrototype &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Groups" href="groups.html" />
+    <link rel="prev" title="Connection Sharing" href="connectionsharing.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxnet.html">NxNet API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compartment.html">Compartment and CompartmentPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connection.html">Connection and ConnectionPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connectionsharing.html">Connection Sharing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Neuron and NeuronPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="groups.html">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netprobes.html">Working with Probes and Monitors in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learningrule.html">Specifying a Learning Rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multicompartment.html">Building Multi Compartment Neuron Model using Stack Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spikeinjectionandreceivers.html">Spike Injection and Spike Receivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxlogging.html">Logging in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcompiler.html">NxCompiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxnet_resource_map.html">NxNet Resource Map Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxnet.html">NxNet API</a> &raquo;</li>
+        
+      <li>Neuron and NeuronPrototype</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="neuron-and-neuronprototype">
+<h1>Neuron and NeuronPrototype<a class="headerlink" href="#neuron-and-neuronprototype" title="Permalink to this headline">¶</a></h1>
+<p>NxSDK API provides the neuron interface for creating multi-compartment neurons.  Using the neuron interface, a binary
+dendritic tree can be constructed and the multi-compartment neuron can be used as a logical neuron unit or as part of a
+logical neuron group.</p>
+<p>A neuron can support dendritic trees that are a subclass of binary trees.  Intuitively, a supported binary tree is only
+allowed to branch along at most one line of connected nodes.  More formally, a binary tree structure supported by neuron
+must satisfy the following:</p>
+<ul class="simple">
+<li><p>Multi-compartment neurons support a class of binary trees that are entirely made up of branchable and non-branchable nodes as defined below.  A node is a compartment or compartment prototype.</p></li>
+<li><p>A branchable node can have both left (dendrite A) and right (dendrite B) children. A node is branchable if:</p>
+<ul>
+<li><p>It is the root node (soma) OR</p></li>
+<li><p>Its parent node is branchable AND either</p></li>
+<li><p>It is the only child (an only child is always the left child) OR</p></li>
+<li><p>It is the right child (dendrite B)</p></li>
+</ul>
+</li>
+<li><p>A Non-branchable node may only have a left child (dendrite A). A node is non-branchable if:</p>
+<ul>
+<li><p>Its parent node is non-branchable OR</p></li>
+<li><p>It is the left child (dendrite A) of a parent with two children.</p></li>
+</ul>
+</li>
+</ul>
+<p>The following is an example of a supported dendritic tree.  Branchable nodes are shaded green, non-branchable nodes are shaded red.  Nodes 3, 6, and 10 are non-branchable because they are the left child of a parent with two children.  Nodes 5, 8, and 9 are non-branchable because their parent is non-branchable.  Node 2 is branchable because it is the only child of a branchable parent.  Nodes 4, 7, and 11 are branchable because they are the right child of a branchable parent.</p>
+<div class="figure align-default">
+<img alt="Valid Dendritic Tree" src="_images/valid_dendritic_tree.png" />
+</div>
+<p>The following is an example of an unsupported dendritic tree.  Node 3 is a non-branchable node and thus is prohibited from having two children.</p>
+<div class="figure align-default">
+<img alt="Invalid Dendritic Tree" src="_images/invalid_dendritic_tree.png" />
+</div>
+<p>Neurons can be created by building a dendritic tree using compartment prototypes, creating a neuron prototype, and then creating a neuron.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">somaProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">()</span>
+<span class="n">cxpA</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">()</span>
+<span class="n">cxpB</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">()</span>
+<span class="n">cxpAA</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">()</span>
+<span class="n">cxpAB</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">()</span>
+
+<span class="n">somaProto</span><span class="o">.</span><span class="n">addDendrites</span><span class="p">(</span><span class="n">cxpA</span><span class="p">,</span> <span class="n">cxpB</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">MIN</span><span class="p">)</span>
+<span class="n">cxpA</span><span class="o">.</span><span class="n">addDendrites</span><span class="p">(</span><span class="n">cxpAA</span><span class="p">,</span> <span class="n">cxpAB</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">MIN</span><span class="p">)</span>
+<span class="n">np</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NeuronPrototype</span><span class="p">(</span><span class="n">somaProto</span><span class="p">)</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createNeuron</span><span class="p">(</span><span class="n">np</span><span class="p">)</span>
+
+<span class="c1"># Dendritic compartment created with prototype cxpA</span>
+<span class="n">cgA</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># Dendritic compartment created with prototype cxpBA</span>
+<span class="n">cgAB</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A compartment prototype must not be re-used in different levels of the compartment prototype tree.</p>
+</div>
+<p>Neurons can also be created as neuron groups.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ng</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createNeuronGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">np</span><span class="p">)</span>
+
+<span class="c1"># Compartment group of soma compartments</span>
+<span class="n">cgSoma</span> <span class="o">=</span> <span class="n">ng</span><span class="o">.</span><span class="n">soma</span>
+<span class="c1"># Compartment group of dendritic compartments created with prototype cxpBB</span>
+<span class="n">cgAB</span> <span class="o">=</span> <span class="n">ng</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Neuron groups are generally expected to be homogeneous.  If a neuron group is heterogeneous, then the compartment group returned for any specified set of dendritic compartments will only contain the compartments that exist.</p>
+<p>Examples of neurons can be found in the following tutorials:</p>
+<ul class="simple">
+<li><p><strong>NxNet</strong> <a class="reference internal" href="jupyter/u_join_op_in_multi_compartment_neuron.html"><span class="doc">Neuron</span></a></p></li>
+<li><p><strong>NxNet</strong> <a class="reference internal" href="jupyter/e_neuronal_homeostasis.html"><span class="doc">Neuronal homeostasis</span></a></p></li>
+<li><p><strong>NxCore</strong> <a class="reference internal" href="jupyter/j_soft_reset_core.html"><span class="doc">Soft Reset</span></a></p></li>
+<li><p><strong>NxNet</strong> <a class="reference internal" href="jupyter/j_soft_reset_net.html"><span class="doc">Soft Reset</span></a></p></li>
+</ul>
+<span class="target" id="module-nxsdk.net.nodes.neurons"></span><p>NxSDK neuron API</p>
+<dl class="py class">
+<dt id="nxsdk.net.nodes.neurons.Neuron">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.nodes.neurons.</span></code><code class="sig-name descname"><span class="pre">Neuron</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodeSet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neuronProto</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.neurons.Neuron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Neuron object</p>
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.Neuron.compartments">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartments</span></code><a class="headerlink" href="#nxsdk.net.nodes.neurons.Neuron.compartments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the compartments belonging to the neuron</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.Neuron.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dstCompartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">returnNode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.neurons.Neuron.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect neuron soma to destination compartment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dstCompartment</strong> (<a class="reference internal" href="compartment.html#nxsdk.net.nodes.compartments.Compartment" title="nxsdk.net.nodes.compartments.Compartment"><em>Compartment</em></a>) -- Destination compartment</p></li>
+<li><p><strong>prototype</strong> (<a class="reference internal" href="connection.html#nxsdk.net.nodes.connections.ConnectionPrototype" title="nxsdk.net.nodes.connections.ConnectionPrototype"><em>ConnectionPrototype</em></a>) -- Connection prototype to use</p></li>
+<li><p><strong>returnNode</strong> -- True if a connection object is to be returned</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ConnectionCC object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.Neuron.dendrites">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dendrites</span></code><a class="headerlink" href="#nxsdk.net.nodes.neurons.Neuron.dendrites" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns dendritic compartments of the soma</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.Neuron.net">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">net</span></code><a class="headerlink" href="#nxsdk.net.nodes.neurons.Neuron.net" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.Neuron.nodeIds">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nodeIds</span></code><a class="headerlink" href="#nxsdk.net.nodes.neurons.Neuron.nodeIds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.Neuron.nodeSet">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nodeSet</span></code><a class="headerlink" href="#nxsdk.net.nodes.neurons.Neuron.nodeSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.Neuron.nodeType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nodeType</span></code><a class="headerlink" href="#nxsdk.net.nodes.neurons.Neuron.nodeType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.Neuron.numNodes">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numNodes</span></code><a class="headerlink" href="#nxsdk.net.nodes.neurons.Neuron.numNodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.Neuron.soma">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">soma</span></code><a class="headerlink" href="#nxsdk.net.nodes.neurons.Neuron.soma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns soma compartment</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.Neuron.traverse">
+<code class="sig-name descname"><span class="pre">traverse</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.neurons.Neuron.traverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Traverses the dendritic tree in pre-order and returns a list of
+compartment IDs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of compartment IDs in pre-order</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.net.nodes.neurons.NeuronInterface">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.nodes.neurons.</span></code><code class="sig-name descname"><span class="pre">NeuronInterface</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodeSet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.neurons.NeuronInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Neuron Interface</p>
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.NeuronInterface.net">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">net</span></code><a class="headerlink" href="#nxsdk.net.nodes.neurons.NeuronInterface.net" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.NeuronInterface.nodeIds">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nodeIds</span></code><a class="headerlink" href="#nxsdk.net.nodes.neurons.NeuronInterface.nodeIds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.NeuronInterface.nodeSet">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nodeSet</span></code><a class="headerlink" href="#nxsdk.net.nodes.neurons.NeuronInterface.nodeSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.NeuronInterface.nodeType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nodeType</span></code><a class="headerlink" href="#nxsdk.net.nodes.neurons.NeuronInterface.nodeType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.neurons.NeuronInterface.numNodes">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numNodes</span></code><a class="headerlink" href="#nxsdk.net.nodes.neurons.NeuronInterface.numNodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.net.nodes.neurons.NeuronPrototype">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.nodes.neurons.</span></code><code class="sig-name descname"><span class="pre">NeuronPrototype</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cxProto</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.neurons.NeuronPrototype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Neuron prototype</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.net.nodes.neurons.NeuronPrototypeInterface">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.nodes.neurons.</span></code><code class="sig-name descname"><span class="pre">NeuronPrototypeInterface</span></code><a class="headerlink" href="#nxsdk.net.nodes.neurons.NeuronPrototypeInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Neuron Prototype Interface</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.api.enums.api_enums.</span></code><code class="sig-name descname"><span class="pre">COMPARTMENT_JOIN_OPERATION</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION" title="Permalink to this definition">¶</a></dt>
+<dd><p>Join operation for multi-compartment</p>
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.SKIP">
+<code class="sig-name descname"><span class="pre">SKIP</span></code><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.SKIP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do not integrate input from input compartment</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.ADD">
+<code class="sig-name descname"><span class="pre">ADD</span></code><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.ADD" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math notranslate nohighlight">\(C.dV[t] = C.U'[t] + A[t] + B[t]\)</span></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.MAX">
+<code class="sig-name descname"><span class="pre">MAX</span></code><em class="property"> <span class="pre">=</span> <span class="pre">2</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.MAX" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math notranslate nohighlight">\(C.dV[t] = max(C.U'[t], A[t], B[t])\)</span></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.MIN">
+<code class="sig-name descname"><span class="pre">MIN</span></code><em class="property"> <span class="pre">=</span> <span class="pre">3</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.MIN" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math notranslate nohighlight">\(C.dV[t] = min(C.U'[t], A[t], B[t])\)</span></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.PASS">
+<code class="sig-name descname"><span class="pre">PASS</span></code><em class="property"> <span class="pre">=</span> <span class="pre">4</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.PASS" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math notranslate nohighlight">\(C.dV[t] = A.S[t] ? C.U'[t] + A[t] : 0\)</span> (Condition C.U'[t] + B[t] integration     by dendritic spike of A)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.BLOCK">
+<code class="sig-name descname"><span class="pre">BLOCK</span></code><em class="property"> <span class="pre">=</span> <span class="pre">5</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.BLOCK" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math notranslate nohighlight">\(C.dV[t] = A.S[t] ? 0: C.U'[t] + B[t]\)</span> (Condition C.U'[t] + B[t] integration     by A not providing a dendritic spike)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.OR">
+<code class="sig-name descname"><span class="pre">OR</span></code><em class="property"> <span class="pre">=</span> <span class="pre">6</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.OR" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math notranslate nohighlight">\(C.S'[t] = (A.S[t] | B.S[t] | C.S[t])\)</span></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.AND">
+<code class="sig-name descname"><span class="pre">AND</span></code><em class="property"> <span class="pre">=</span> <span class="pre">7</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION.AND" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math notranslate nohighlight">\(C.dS[t] = A.S[t] \&amp; B.S[t] \&amp; C.S[t]\)</span> (B.S=1 if <code class="docutils literal notranslate"><span class="pre">stackIn==POP</span></code>)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="groups.html" class="btn btn-neutral float-right" title="Groups" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="connectionsharing.html" class="btn btn-neutral float-left" title="Connection Sharing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

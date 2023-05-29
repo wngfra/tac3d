@@ -1,0 +1,33 @@
+NxCore: Simple EI Network Tutorial
+==================================
+
+Motivation
+----------
+The motivation for this tutorial is to provide you an introduction to configuring a single compartment neuron, driven with bias only and connected to two other neurons - one via an inhibitory synapse and one via an excitatory synapse.
+
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_02.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_02_single_compartment_with_bias_connecting_to_two_others.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`vth_profile_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`axon_map`
+* :doc:`axon_cfg`
+* :doc:`synapses`
+* :doc:`synapse_map`
+* :doc:`synapse_fmt`
+

@@ -1,0 +1,28 @@
+NxCore: Membrane Potential Threshold
+====================================
+
+Motivation
+----------
+Within this tutorial, you will learn 2 different ways to set the v threshold. To use the built-in homeostasis feature, you need to use the v threshold setting directly within the soma state. This allows you to set a discrete voltage threshold (Vth) per compartment. Additionally, if you need a large variety of Vth per compartment, the soma state's Vth parameter is a great option. Otherwise, we recommend (for ease of use and performance) to just use the vthProfileCfg's setting.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_10.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_10_membrane_potential_threshold.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`cx_meta_state`
+* :doc:`vth_profile_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+

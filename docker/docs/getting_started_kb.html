@@ -1,0 +1,417 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Installing and Running NxSDK on KapohoBay &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DVS" href="dvs.html" />
+    <link rel="prev" title="Getting Started" href="getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="getting_started.html">Getting Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#installation-guide">Installation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#execution-configuration-options-and-utilities">Execution Configuration Options and Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#setup-for-non-slurm-or-non-nfs-deployments">Setup for Non-Slurm or Non-NFS deployments</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="getting_started.html#getting-started-with-kapohobay">Getting Started with KapohoBay</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Installing and Running NxSDK on KapohoBay</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#recommended-setup">Recommended Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#installation-guide">Installation Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#daily-use">Daily Use</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python-tutorials">Python Tutorials</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jupyter-ipython-tutorials">Jupyter/IPython Tutorials</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#documentation">Documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#software-updates">Software Updates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#questions-suggestions">Questions/Suggestions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#frequently-asked-questions-faq">Frequently Asked Questions (FAQ)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#setting-up-dvs-with-kapohobay">Setting up DVS with KapohoBay</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="getting_started.html">Getting Started</a> &raquo;</li>
+        
+      <li>Installing and Running NxSDK on KapohoBay</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="installing-and-running-nxsdk-on-kapohobay">
+<h1>Installing and Running NxSDK on KapohoBay<a class="headerlink" href="#installing-and-running-nxsdk-on-kapohobay" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="recommended-setup">
+<h2>Recommended Setup<a class="headerlink" href="#recommended-setup" title="Permalink to this headline">¶</a></h2>
+<p>The following recommendation are based on our test configuration. Additional steps might be necessary on other alternatives.</p>
+<ol class="arabic simple">
+<li><p>OS: Ubuntu 16.04 LTS (x86_64)</p></li>
+<li><p>Python 3.5.2</p></li>
+<li><p>pip (latest)</p></li>
+</ol>
+</div>
+<div class="section" id="installation-guide">
+<h2>Installation Guide<a class="headerlink" href="#installation-guide" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p>Plugin Kapoho Bay to your Linux Machine</p></li>
+<li><p>Verify USB devices is properly recognized</p>
+<p>2.1 Run <code class="docutils literal notranslate"><span class="pre">lsusb</span></code> or <code class="docutils literal notranslate"><span class="pre">lsusb</span> <span class="pre">-t</span></code> to see if the USB was plugged in and recognized by your machine</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user@machine:~$ lsusb
+...
+Bus 001 Device 107: ID 0403:6010 Future Technology Devices International, Ltd FT2232C Dual USB-UART/FIFO IC
+Bus 001 Device 106: ID 0403:6010 Future Technology Devices International, Ltd FT2232C Dual USB-UART/FIFO IC
+Bus 001 Device 105: ID 0403:6010 Future Technology Devices International, Ltd FT2232C Dual USB-UART/FIFO IC
+
+user@machine:~$ lsusb -t
+...
+/: Bus 01.Port 1: Dev 1, class=&quot;root_hub&quot;, Driver=ehci-pci/2p, 480M
+|__ Port 1: Dev 2, If 0, class=&quot;Hub&quot;, Driver=hub/6p, 480M
+|__ Port 2: Dev 39, If 0, class=&quot;Human&quot; Interface Device, Driver=usbhid, 1.5M
+|__ Port 6: Dev 104, If 0, class=&quot;Hub&quot;, Driver=hub/4p, 480M
+|__ Port 1: Dev 105, If 0, class=&quot;Vendor&quot; Specific Class, Driver=, 480M
+|__ Port 1: Dev 105, If 1, class=&quot;Vendor&quot; Specific Class, Driver=, 480M
+|__ Port 2: Dev 106, If 0, class=&quot;Vendor&quot; Specific Class, Driver=, 480M
+|__ Port 2: Dev 106, If 1, class=&quot;Vendor&quot; Specific Class, Driver=, 480M
+|__ Port 3: Dev 107, If 0, class=&quot;Vendor&quot; Specific Class, Driver=, 480M
+|__ Port 3: Dev 107, If 1, class=&quot;Vendor&quot; Specific Class, Driver=, 480M
+</pre></div>
+</div>
+<p>2.2 Remove &quot;ftdi_sio&quot; kernel modules</p>
+<blockquote>
+<div><p>2.2.1 Run <code class="docutils literal notranslate"><span class="pre">lsusb</span> <span class="pre">-t</span></code> and check if your see the FTDI interfaces. If the driver says ftdi_sio, you may remove these kernel modules using <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">rmmod</span> <span class="pre">ftdi_sio</span></code>
+2.2.2 Run <code class="docutils literal notranslate"><span class="pre">lsusb</span> <span class="pre">-t</span></code> to ensure that <strong>ftdi_sio</strong> is no longer there</p>
+</div></blockquote>
+</li>
+<li><p>The installation bits are located at <strong>/nfs/ncl/releases</strong>. SSH into the INRC Cloud and check the contents of this directory to identify the latest version (no need to copy at this point):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">user</span><span class="nd">@YOURVM</span><span class="o">.</span><span class="n">research</span><span class="o">.</span><span class="n">intel</span><span class="o">-</span><span class="n">research</span><span class="o">.</span><span class="n">net</span>
+<span class="n">ls</span> <span class="o">-</span><span class="n">l</span> <span class="o">/</span><span class="n">nfs</span><span class="o">/</span><span class="n">ncl</span><span class="o">/</span><span class="n">releases</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Logout</strong> from INRC Cloud and continue on your linux machine</p></li>
+<li><p>Create a virtual environment in your home directory</p>
+<p>5.1 <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">~</span></code></p>
+<p>5.2 <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">venv</span> <span class="pre">python3_venv</span></code></p>
+<p>5.3 <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">python3_venv/bin/activate</span></code></p>
+<p>5.4 <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">pip</span></code></p>
+<p>5.5 Do all following steps within the virtual environment</p>
+</li>
+<li><p>Download the latest tarballs onto your linux machine. There should be 2 packages within the sub-directory</p>
+<p>6.1 <em>nxsdk-&lt;latest_version&gt;.tar.gz</em> - A pip installable tarball to install NxSDK</p>
+<p>6.2 <em>nxsdk-apps-&lt;latest_version&gt;.tar.gz</em> - Tarball for Jupyter/Python based tutorials and complete NxSDK documentation</p>
+<p>6.3 You may use linux utilities like scp to copy these files onto your linux machine</p>
+<blockquote>
+<div><p>6.3.1 <strong>scp user&#64;YOURVM.research.intel-research.net:/nfs/ncl/releases/&lt;latest_version&gt;/nxsdk-&lt;latest_version&gt;.tar.gz .</strong></p>
+<p>6.3.2 <strong>scp user&#64;YOURVM.research.intel-research.net/nfs/ncl/releases/&lt;latest_version&gt;/nxsdk-apps-&lt;latest_version&gt;.tar.gz .</strong></p>
+</div></blockquote>
+<p>6.4 Substitute above your username, VM and version information. scp copies the artifacts from INRC Cloud into your current directory on your linux machine</p>
+</li>
+<li><p>Install NxSDK: <strong>python -m pip install nxsdk-&lt;latest_version&gt;.tar.gz</strong></p>
+<p>7.1 Ignore the &quot;Failed building wheel for nxsdk&quot; and the associated &quot;Failed to build nxsdk&quot;. This is a known error and pip will retry with setup.py.</p>
+</li>
+<li><p>Verify NxSDK installation: <strong>python -c &quot;import nxsdk; print(nxsdk.__version__)&quot;</strong></p></li>
+<li><p>Find NxSDK installation directory (nxsdk_install_dir): <strong>python -c &quot;import nxsdk; print(nxsdk.__path__)&quot;</strong></p></li>
+<li><p>Unzip Tutorials, Docs and Modules in your home directory: <strong>mkdir nxsdk-apps &amp;&amp; tar xzf nxsdk-apps-&lt;latest_version&gt;.tar.gz -C nxsdk-apps --strip-components 1</strong></p>
+<p>10.1 (Optional) Some modules need additional dependencies. To install these, run: <strong>pip install -r nxsdk-apps/nxsdk_modules/requirements.txt</strong></p>
+</li>
+<li><p>Copy <em>99-kapoho_bay.rules</em> from <em>nxsdk-apps/utils</em> to <em>/etc/udev/rules.d</em> and run <strong>sudo udevadm control --reload</strong></p></li>
+<li><p>Install g++ multilib, libgflags-dev, libgoogle-glog-dev and libprotobuf</p>
+<p>12.1 sudo apt-get install g++-multilib</p>
+<p>12.2 sudo apt-get install libgflags-dev</p>
+<p>12.3 sudo apt install libgoogle-glog-dev</p>
+<p>12.4 You may compile libprotobuf17 from source or install libprotobuf17 from debian packages. Latter is shown below.</p>
+<blockquote>
+<div><p>12.4.1 wget <a class="reference external" href="http://ftp.debian.org/debian/pool/main/p/protobuf/libprotobuf17_3.6.1-4~bpo9+1_amd64.deb">http://ftp.debian.org/debian/pool/main/p/protobuf/libprotobuf17_3.6.1-4~bpo9+1_amd64.deb</a></p>
+<p>12.4.2 sudo dpkg -i libprotobuf-lite17_3.6.1-4~bpo9+1_amd64.deb</p>
+</div></blockquote>
+</li>
+<li><p><strong>Test FPIO</strong> /bin/x86/nx_driver --test-fpio. If you see the following, Kapoho Bay is detected. Sample output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ `python3 -c &quot;import nxsdk; print(nxsdk.__path__[0])&quot;`/bin/x86/nx --test-fpio
+
+Using Kapoho Bay serial number 998
+
+test_fpio_loopback: chips=1 num=10000 len=16 time=238266us =&gt; 0.671518Mb/s
+</pre></div>
+</div>
+</li>
+<li><p>export KAPOHOBAY=1</p></li>
+<li><p>Run tutorials per instructions in the following sections</p></li>
+<li><p>When complete, deactivate virtual environment</p>
+<p>16.1 <code class="docutils literal notranslate"><span class="pre">deactivate</span></code></p>
+</li>
+</ol>
+</div>
+<div class="section" id="daily-use">
+<h2>Daily Use<a class="headerlink" href="#daily-use" title="Permalink to this headline">¶</a></h2>
+<p>After initial installation, only the following steps need to be done to use Kapoho Bay:</p>
+<ol class="arabic simple">
+<li><p>After plugging in the device, verify the USB devices are properly recognized. The ftdi_sio kernel modules may need to be removed.</p></li>
+<li><p>export KAPOHOBAY=1</p></li>
+<li><p>Test FPIO to ensure Kapoho Bay is property detected</p></li>
+<li><p>Use the virtual environment</p></li>
+</ol>
+</div>
+<div class="section" id="python-tutorials">
+<h2>Python Tutorials<a class="headerlink" href="#python-tutorials" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>cd nxsdk-apps</p></li>
+<li><p>To run: python tutorials/nxnet/tutorial_01_single_compartment_with_bias.py</p></li>
+</ol>
+</div>
+<div class="section" id="jupyter-ipython-tutorials">
+<h2>Jupyter/IPython Tutorials<a class="headerlink" href="#jupyter-ipython-tutorials" title="Permalink to this headline">¶</a></h2>
+<p>Prerequisites: Install jupyter (pip3 install jupyter)</p>
+<ol class="arabic simple">
+<li><p>Start Jupyter session (jupyter notebook) and navigate to the directory you unzipped the tutorials</p></li>
+<li><p>Open one of the Jupyter notebooks and run: tutorials/ipython/a_compartment_setup.ipynb</p></li>
+</ol>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>To view documentation, open index.html from the docs folder unzipped from nxsdk-apps-&lt;latest_version&gt;.tar.gz</p>
+</div>
+<div class="section" id="software-updates">
+<h2>Software Updates<a class="headerlink" href="#software-updates" title="Permalink to this headline">¶</a></h2>
+<p>We will be releasing new versions of NxSDK at /nfs/ncl/releases. Announcements will be made on INRC Channels when a new release is available.</p>
+<ol class="arabic simple">
+<li><p>To install a new release, just remove the previous NxSDK installation: <em>pip3 uninstall nxsdk</em> and install the new tarball using: <em>pip3 install nxsdk-&lt;latest_version&gt;.tar.gz</em></p></li>
+<li><p>Please check the Release Notes within README for new SDK features, optimizations and changes</p></li>
+</ol>
+</div>
+<div class="section" id="questions-suggestions">
+<h2>Questions/Suggestions<a class="headerlink" href="#questions-suggestions" title="Permalink to this headline">¶</a></h2>
+<p>Please reach out to the NCL Team if you have any questions about the SDK, device or installation process. Please use INRC Zendesk system to raise a ticket</p>
+</div>
+<div class="section" id="frequently-asked-questions-faq">
+<h2>Frequently Asked Questions (FAQ)<a class="headerlink" href="#frequently-asked-questions-faq" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><strong>Q</strong>. How do I know where NxSDK was installed?</div>
+<div class="line"><strong>A</strong>. For your version of python3, run <strong>python3 -c &quot;import nxsdk; print(nxsdk.__path__)&quot;</strong></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="dvs.html" class="btn btn-neutral float-right" title="DVS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

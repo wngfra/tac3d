@@ -1,0 +1,712 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>NxCompiler &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NxNet Resource Map Interface" href="nxnet_resource_map.html" />
+    <link rel="prev" title="Logging in NxNet" href="nxlogging.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxnet.html">NxNet API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compartment.html">Compartment and CompartmentPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connection.html">Connection and ConnectionPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connectionsharing.html">Connection Sharing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron.html">Neuron and NeuronPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="groups.html">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netprobes.html">Working with Probes and Monitors in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learningrule.html">Specifying a Learning Rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multicompartment.html">Building Multi Compartment Neuron Model using Stack Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spikeinjectionandreceivers.html">Spike Injection and Spike Receivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxlogging.html">Logging in NxNet</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">NxCompiler</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#partitioner">Partitioner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mapper">Mapper</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nxnet_resource_map.html">NxNet Resource Map Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxnet.html">NxNet API</a> &raquo;</li>
+        
+      <li>NxCompiler</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="nxcompiler">
+<h1>NxCompiler<a class="headerlink" href="#nxcompiler" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The NxSDK compiler maps an NxNet network or network tree into the appropriate backend, e.g. Loihi hardware.  The compiler
+is run as part of net.run(), where net is an NxNet object. The compiler is composed of two main components, the partitioner
+and the mapper.</p>
+<p>The partitioner takes the NxNet network or network tree and assigns logical core IDs to all compartments in the network
+or network tree.  The mapper then consumes the output of the partitioner (i.e. an NxNet network or network tree enhanced
+with logical core ID assignments) and maps it down to the NxCore interface.</p>
+<div class="figure align-default">
+<img alt="NxCompiler Overview" src="_images/nxcompiler_overview.png" />
+</div>
+</div>
+<div class="section" id="partitioner">
+<h2>Partitioner<a class="headerlink" href="#partitioner" title="Permalink to this headline">¶</a></h2>
+<p>The partitioner runs a partitioning algorithm on each network in a network tree.  For a given network in a network tree,
+if a custom partitioner is specified, then the partitioner will use the custom partitioner module for that network.
+Otherwise, the partitioner will utilize a default partitioner module.</p>
+<p>The requirement on any partition of a network tree is that each network in a network tree must use a set of logical
+core IDs that is disjoint from the set of logical core IDs used by any other network in the tree.</p>
+<p>A custom partitioner is specified for a given network as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">net</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+<span class="n">customPartitionerModule</span> <span class="o">=</span> <span class="n">YourPartitionerModule</span><span class="p">()</span>
+<span class="n">net</span><span class="o">.</span><span class="n">customPartitioner</span> <span class="o">=</span> <span class="n">customPartitionerModule</span>
+</pre></div>
+</div>
+<p>The custom partitioner module must be a subclass of AbstractPartitionerModule.</p>
+<dl class="py class">
+<dt id="nxsdk.compiler.nxsdkcompiler.partitioner_module_abstract_class.AbstractPartitionerModule">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.compiler.nxsdkcompiler.partitioner_module_abstract_class.</span></code><code class="sig-name descname"><span class="pre">AbstractPartitionerModule</span></code><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.partitioner_module_abstract_class.AbstractPartitionerModule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract class for a partitioner module for network partitioning. The
+partitioner module will partition a single network, not a network tree.
+It will be used with the network to which the module is attached.</p>
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.partitioner_module_abstract_class.AbstractPartitionerModule.partition">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">partition</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">availableCoreIds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.partitioner_module_abstract_class.AbstractPartitionerModule.partition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Partitions the NxNet network by assigning logical core IDs to all
+compartments.</p>
+<p>The partition method is responsible for utilizing logical core IDs from
+the availableCoreIds and removing those logical core IDs from the
+set. A logical core ID should be removed from availableCoreIds as
+soon as any compartment is assigned the logical core ID, i.e. the
+logical core IDs in availableCoreIds contain only unassigned logical
+core IDs.</p>
+<p>Depending on the network features being used, different restrictions
+need to be considered.  For example:</p>
+<p>-- Compartments: Absent configurations such as delay, the basic
+restriction is that a logical core can generally have no more than
+1024 compartments.</p>
+<p>-- Neurons: All compartments associated with a given neuron need to
+be on the same logical core.</p>
+<p>-- Shared connections (advanced): Compartment groups involved in
+shared connections must be partitioned to conform with HW requirements.</p>
+<p>If network features such as neurons or shared connections are not
+supported, please utilize the validateNetwork method to check for
+unsupported features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network</strong> (<a class="reference internal" href="nxnet.html#nxsdk.net.net.NxNet" title="nxsdk.net.net.NxNet"><em>NxNet</em></a>) -- An NxNet object</p></li>
+<li><p><strong>availableCoreIds</strong> (<em>set</em><em>(</em><em>int</em><em>)</em>) -- The set of unused logical core IDs</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The updated set of unused logical core IDs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.partitioner_module_abstract_class.AbstractPartitionerModule.validateNetwork">
+<code class="sig-name descname"><span class="pre">validateNetwork</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.partitioner_module_abstract_class.AbstractPartitionerModule.validateNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method will be used to validate the provided network before
+running partition on the network.  Please check for unsupported
+network features, such as neurons or shared connections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>network</strong> (<a class="reference internal" href="nxnet.html#nxsdk.net.net.NxNet" title="nxsdk.net.net.NxNet"><em>NxNet</em></a>) -- The NxNet object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if network passes validation, False otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="mapper">
+<h2>Mapper<a class="headerlink" href="#mapper" title="Permalink to this headline">¶</a></h2>
+<p>The mapper runs a mapping algorithm on each network in a network tree.  For a given network in a network tree, if a
+custom mapper is specified, then the mapper will use the custom mapper module for that network.  Otherwise, the mapper
+will utilize a default mapper module.</p>
+<p>A custom mapper is specified for a given network as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">net</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+<span class="n">mapperModule</span> <span class="o">=</span> <span class="n">YourMapperModule</span><span class="p">()</span>
+<span class="n">net</span><span class="o">.</span><span class="n">customMapper</span> <span class="o">=</span> <span class="n">mapperModule</span>
+</pre></div>
+</div>
+<p>The custom mapper module must be a subclass of AbstractMapperModule.</p>
+<dl class="py class">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_module_abstract_class.AbstractMapperModule">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.compiler.nxsdkcompiler.mapper_module_abstract_class.</span></code><code class="sig-name descname"><span class="pre">AbstractMapperModule</span></code><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_module_abstract_class.AbstractMapperModule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract class for a mapper module for network mapping. The mapper
+module takes an NxNet object where all compartments have been assigned
+logical cores by the partitioner module and maps it into the NxCore
+interface.  The mapper module will map a single network, not a network
+tree. It will be used with the network to which the module is attached.</p>
+<p>The module interface provides for a two step mapping process.  First,
+each network in a network tree will be be mapped using its associated
+mapper module's &quot;map&quot; method.  Second, all networks will be processed
+using its associated mapper module's &quot;updateMap&quot; method.  At the
+conclusion of the second step, the expectation is that the board is
+ready to be run.</p>
+<p>In order to support the composition of multiple NxNet objects,
+the mapper must support mapping of OutputStubs and InputStubs to
+OutputMapperStubs and InputMapperStubs, respectively.</p>
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_module_abstract_class.AbstractMapperModule.map">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">map</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputNetwork</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">board</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_module_abstract_class.AbstractMapperModule.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first mapping step.</p>
+<p>An example of the first mapping step is to create a logical mapping
+of the network in an intermediate representation and request the
+necessary board resources.  Build cross network connections in the
+intermediate representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputNetwork</strong> (<a class="reference internal" href="nxnet.html#nxsdk.net.net.NxNet" title="nxsdk.net.net.NxNet"><em>NxNet</em></a>) -- The input NxNet object</p></li>
+<li><p><strong>board</strong> (<em>N2Board</em>) -- An initialized board</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_module_abstract_class.AbstractMapperModule.updateMap">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">updateMap</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_module_abstract_class.AbstractMapperModule.updateMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second mapping step.</p>
+<p>An example of the second mapping step is to write the intermediate
+representation into the NxCore interface.  At the end of the second
+mapping step, the network should be ready to run on the board.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>board</strong> (<em>N2Board</em>) -- An initialized board</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_module_abstract_class.AbstractMapperModule.validateNetwork">
+<code class="sig-name descname"><span class="pre">validateNetwork</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_module_abstract_class.AbstractMapperModule.validateNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method will be used to validate the provided network before
+running map and updateMap on the network.  Please check for unsupported
+network features, such as neurons or shared connections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>network</strong> (<a class="reference internal" href="nxnet.html#nxsdk.net.net.NxNet" title="nxsdk.net.net.NxNet"><em>NxNet</em></a>) -- The NxNet object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if network passes validation, False otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p>In order to connect an NxNet network that has a custom mapper module with another NxNet network, each custom mapper
+module must be able to support the following:</p>
+<ul class="simple">
+<li><p>Implement YourOutputMapperStub that inherits from OutputMapperStubInterface.</p></li>
+<li><p>Map NxNet InputStub objects to corresponding InputMapperStub objects.  When an InputMapperStub object is created, call its attemptConnection method.</p></li>
+<li><p>Map NxNet OutputStub objects to corresponding YourOutputMapperStub objects.  When a YourOutputMapperStub is created, call its attemptConnection method.</p></li>
+</ul>
+<dl class="py class">
+<dt id="nxsdk.net.nodes.connection_stubs.OutputStub">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.nodes.connection_stubs.</span></code><code class="sig-name descname"><span class="pre">OutputStub</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodeSet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.connection_stubs.OutputStub" title="Permalink to this definition">¶</a></dt>
+<dd><p>An OutputStub holds references to the destination InputStub object.
+It supports a connection that crosses network boundaries.  Specifically,</p>
+<p>... -&gt; OutputAxon -&gt; OutputStub -&gt; InputStub -&gt; InputAxons -&gt; ...</p>
+<p>The network boundary occurs between the input and output stubs.</p>
+<dl class="py method">
+<dt id="nxsdk.net.nodes.connection_stubs.OutputStub.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dst</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.connection_stubs.OutputStub.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects the output stub to a destination node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dst</strong> (<em>Node</em>) -- The Node to connect to</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To connect to a compartment, a prototype must be passed.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.connection_stubs.OutputStub.destinationStubs">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">destinationStubs</span></code><a class="headerlink" href="#nxsdk.net.nodes.connection_stubs.OutputStub.destinationStubs" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of InputStubs to which this OutputStub is connected.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.connection_stubs.OutputStub.outputMapperStub">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">outputMapperStub</span></code><a class="headerlink" href="#nxsdk.net.nodes.connection_stubs.OutputStub.outputMapperStub" title="Permalink to this definition">¶</a></dt>
+<dd><p>The OutputMapperStub associated with this OutputStub</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.connection_stubs.OutputStub.setConnectionReference">
+<code class="sig-name descname"><span class="pre">setConnectionReference</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.connection_stubs.OutputStub.setConnectionReference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set connection ID of connection to which this output stub belongs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>connId</strong> (<em>int</em>) -- Connection ID</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.connection_stubs.OutputStub.setSourceAxon">
+<code class="sig-name descname"><span class="pre">setSourceAxon</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axon</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.connection_stubs.OutputStub.setSourceAxon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set reference to output axon that points to this output stub</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>axon</strong> (<a class="reference internal" href="connection.html#nxsdk.net.nodes.connections.OutputAxon" title="nxsdk.net.nodes.connections.OutputAxon"><em>OutputAxon</em></a>) -- Output axon</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.net.nodes.connection_stubs.InputStub">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.nodes.connection_stubs.</span></code><code class="sig-name descname"><span class="pre">InputStub</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodeSet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.connection_stubs.InputStub" title="Permalink to this definition">¶</a></dt>
+<dd><p>An InputStub holds references to input axons. It supports a
+connection that crosses network boundaries.  Specifically,</p>
+<p>... -&gt; OutputAxon -&gt; OutputStub -&gt; InputStub -&gt; InputAxons -&gt; ...</p>
+<p>The network boundary occurs between the input and output stubs.</p>
+<dl class="py method">
+<dt id="nxsdk.net.nodes.connection_stubs.InputStub.addConnectionReference">
+<code class="sig-name descname"><span class="pre">addConnectionReference</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.connection_stubs.InputStub.addConnectionReference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add connection ID of connection to which this output stub belongs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>connId</strong> (<em>int</em>) -- Connection ID</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.connection_stubs.InputStub.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dstCompartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">returnNode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.connection_stubs.InputStub.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect the input stub to the destination compartment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dstCompartment</strong> (<a class="reference internal" href="compartment.html#nxsdk.net.nodes.compartments.Compartment" title="nxsdk.net.nodes.compartments.Compartment"><em>Compartment</em></a>) -- The destination compartment</p></li>
+<li><p><strong>prototype</strong> (<a class="reference internal" href="connection.html#nxsdk.net.nodes.connections.ConnectionPrototype" title="nxsdk.net.nodes.connections.ConnectionPrototype"><em>ConnectionPrototype</em></a>) -- The connection prototype</p></li>
+<li><p><strong>returnNode</strong> (<em>bool</em>) -- True to return a connection object, otherwise nothing is returned</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The established connection</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.connection_stubs.InputStub.inputMapperStub">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">inputMapperStub</span></code><a class="headerlink" href="#nxsdk.net.nodes.connection_stubs.InputStub.inputMapperStub" title="Permalink to this definition">¶</a></dt>
+<dd><p>The InputMapperStub associated with this InputStub</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.connection_stubs.InputStub.setDestination">
+<code class="sig-name descname"><span class="pre">setDestination</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dst</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.connection_stubs.InputStub.setDestination" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the destination InputAxon of this InputStub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dst</strong> (<a class="reference internal" href="connection.html#nxsdk.net.nodes.connections.InputAxon" title="nxsdk.net.nodes.connections.InputAxon"><em>InputAxon</em></a>) -- Destination input axon</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.connection_stubs.InputStub.setSource">
+<code class="sig-name descname"><span class="pre">setSource</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputStub</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.connection_stubs.InputStub.setSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Records which outputStub is connected to this input stub.
+Raises an error if an outputStub is already assigned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>outputStub</strong> (<a class="reference internal" href="#nxsdk.net.nodes.connection_stubs.OutputStub" title="nxsdk.net.nodes.connection_stubs.OutputStub"><em>OutputStub</em></a>) -- the output stub to connect</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.connection_stubs.InputStub.srcStub">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">srcStub</span></code><a class="headerlink" href="#nxsdk.net.nodes.connection_stubs.InputStub.srcStub" title="Permalink to this definition">¶</a></dt>
+<dd><p>The OutputStub connecting to this InputStub</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_stubs.OutputMapperStubInterface">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.compiler.nxsdkcompiler.mapper_stubs.</span></code><code class="sig-name descname"><span class="pre">OutputMapperStubInterface</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refOutputStub</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.net.nodes.connection_stubs.OutputStub" title="nxsdk.net.nodes.connection_stubs.OutputStub"><span class="pre">nxsdk.net.nodes.connection_stubs.OutputStub</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_stubs.OutputMapperStubInterface" title="Permalink to this definition">¶</a></dt>
+<dd><p>The abstract base class for output mapper stub objects needed by the
+mapper to create cross network connections.</p>
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_stubs.OutputMapperStubInterface.attemptConnection">
+<code class="sig-name descname"><span class="pre">attemptConnection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_stubs.OutputMapperStubInterface.attemptConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the following traversal to determine if the InputMapperStubs
+on the other end of the connection exists:</p>
+<p>self --&gt; OutputStub --&gt; [InputStubs] --&gt; [InputMapperStubs]</p>
+<p>If [InputMapperStubs] exists, use the parameters in that object to
+configure the output axon by calling self.createConnection()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if all destination stub connections are established, False otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_stubs.OutputMapperStubInterface.connEstablished">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">connEstablished</span></code><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_stubs.OutputMapperStubInterface.connEstablished" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if connections to input axons associated with all input
+mapper stubs pointed to by this output mapper stub have been
+established, else False.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_stubs.OutputMapperStubInterface.createConnection">
+<em class="property"><span class="pre">abstract</span> </em><code class="sig-name descname"><span class="pre">createConnection</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputMapStubLst</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub" title="nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub"><span class="pre">nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">None</span><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_stubs.OutputMapperStubInterface.createConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>If possible, create the output axons pointing to the destination input
+axons specified in each InputMapperStub in the list inputMapStubLst.
+Note that at the NxNet level, each InputStub corresponds to a different
+NxNet object. There is then a one-to-one correspondence from an
+InputStub to an InputMapperStub.</p>
+<p>Requirements:
+-- Set inputMapStub.connEstablished = True when an output axon to the
+input axons specified by a inputMapStub object in inputMapStubLst is
+configured.
+-- Set self.connEstablished = True when connections to ALL input
+axons specified by inputMapStubs in inputMapStubLst are established.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>inputMapStubLst</strong> (<em>list</em>) -- The the list of InputMapperStub objects with destination input axon information.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_stubs.OutputMapperStubInterface.nxNetRefOutputStub">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nxNetRefOutputStub</span></code><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_stubs.OutputMapperStubInterface.nxNetRefOutputStub" title="Permalink to this definition">¶</a></dt>
+<dd><p>The associated NxNet OutputStub</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.compiler.nxsdkcompiler.mapper_stubs.</span></code><code class="sig-name descname"><span class="pre">InputMapperStub</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refInputStub</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.net.nodes.connection_stubs.InputStub" title="nxsdk.net.nodes.connection_stubs.InputStub"><span class="pre">nxsdk.net.nodes.connection_stubs.InputStub</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mapper level class associated with an NxNet InputStub.  A mapper
+must map an InputStub into an InputMapperStub.</p>
+<p>A custom mapper must map an InputStub to an InputMapperStub.</p>
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub.attemptConnection">
+<code class="sig-name descname"><span class="pre">attemptConnection</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub.attemptConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the following traversal to determine if the OutputMapperStub
+on the other end of the connection exists:</p>
+<p>self --&gt; InputStub --&gt; OutputStub --&gt; OutputMapperStub</p>
+<p>If the OutputMapperStub exists, ask that object to
+configure the source HW core output axon. The OutputMapperStub will
+set the connection state for the InputMapperStub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if connection established, False otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub.connEstablished">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">connEstablished</span></code><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub.connEstablished" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if connection established or if the associated
+NxNet InputStub is not connected to an NxNet OutputStub,
+False otherwise</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub.dstChipId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dstChipId</span></code><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub.dstChipId" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of destination N2Board chip indices, one element per
+destination core</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub.dstCoreId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dstCoreId</span></code><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub.dstCoreId" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of destination N2Board core indices, one element per
+destination core</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub.dstSynMapId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dstSynMapId</span></code><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub.dstSynMapId" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of synapseMap register indices list, i.e. list of lists,
+one list per destination core</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub.nxNetRefInputStub">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nxNetRefInputStub</span></code><a class="headerlink" href="#nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub.nxNetRefInputStub" title="Permalink to this definition">¶</a></dt>
+<dd><p>The associated NxNet InputStub</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="nxnet_resource_map.html" class="btn btn-neutral float-right" title="NxNet Resource Map Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="nxlogging.html" class="btn btn-neutral float-left" title="Logging in NxNet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

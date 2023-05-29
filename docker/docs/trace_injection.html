@@ -1,0 +1,450 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Trace Injection Module &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NxSDK Performance Test Suite" href="performance-suite.html" />
+    <link rel="prev" title="Spike Streamer Module" href="spike_streamer.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Nx SDK Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="characterization.html">Characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dnn.html">DNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dvs.html">DVS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epl.html">EPL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knn.html">K Nearest Neighbour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_generator.html">Input Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lca.html">LCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="path_planning.html">Path Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slayer.html">SLAYER Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slic.html">SLIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spike_streamer.html">Spike Streamer Module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Trace Injection Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#direct-hardware-interface">Direct Hardware Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#aedat-interface">AEDAT Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#manual-spike-interface">Manual Spike Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-nxsdk_modules.trace_injection.src.direct_trace_injection">Direct Trace Injection Module Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-nxsdk_modules.trace_injection.src.spike_trace_injection">Spike Trace Injection Module Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Nx SDK Modules</a> &raquo;</li>
+        
+      <li>Trace Injection Module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="trace-injection-module">
+<h1>Trace Injection Module<a class="headerlink" href="#trace-injection-module" title="Permalink to this headline">¶</a></h1>
+<p>The DVS module provides an Nx SDK interface to Dynamic Vision Sensors.
+This interface can take 3 main forms:</p>
+<ul class="simple">
+<li><p>A direct hardware interface from DAVIS240C to Kapoho Bay or Nahuku32</p></li>
+<li><p>A software interface from a pre-recorded .AEDAT file</p></li>
+<li><p>A software interface from manually specified x, y, p values</p></li>
+</ul>
+<p>All three of the above interfaces are shown in <strong>nxsdk_modules/dvs/tutorials</strong></p>
+<p>Whether using a hardware or software interface, the spikes are delivered to a
+SNIP which handles the spike injection.
+The default snip can be found at <strong>nxsdk_modules/dvs/src/snips</strong>.
+Custom snip examples are covered by the tutorial and can be
+found at <strong>nxsdk_modules/dvs/tutorials/snips</strong>.</p>
+<p>The DVS module also provides an example of live spike visualization.
+This feature uses spikeOutputPorts which are currently only supported on Kapoho Bay.
+The visualizer code is found at <strong>nxsdk_modules/dvs/tutorials/visualizer</strong> and use
+of the visualizer is covered by the dvs_live tutorial.</p>
+<div class="section" id="direct-hardware-interface">
+<h2>Direct Hardware Interface<a class="headerlink" href="#direct-hardware-interface" title="Permalink to this headline">¶</a></h2>
+<p>The direct hardware interface currently only supports DAVIS240C,
+and only works on Kapoho Bay or Nahuku32 (with DVS adapter card).</p>
+<p>The cable used for the connection is <strong>SAMTEC FFSD-20-D-X-01-N</strong>
+(where <strong>X</strong> is cable length).</p>
+<p>The image below shows the correct cable configuration.</p>
+<div class="figure align-default">
+<img alt="Kapoho Bay with DVS attached" src="_images/KBdvs.png" />
+</div>
+<p>The top PCB on Kapoho Bay will pull events off the DAVIS sensor and deliver them to the SNIP.</p>
+<p>A FIFO for buffering events sits between the DAVIS240C chip and the KapohoBay Lakemont.
+If this FIFO fills up, the buffered spikes will be dropped.
+The default SNIP runs fast enough to inject DAVIS240C spikes without dropping any, but more
+complex custom SNIPs could result in the loss of spikes.</p>
+<p>Instructions for running with a live interface:</p>
+<ul class="simple">
+<li><p>Connect cable between Kapoho Bay (or Nahuku) and DAVIS240C as shown above</p></li>
+<li><p>Power both devices</p></li>
+<li><p>Configure DAVIS240C to allow access to the AER interface. This can be done either with jAER or cAER.</p>
+<ul>
+<li><p>jAER instructions (version 1.6.3):</p>
+<ul>
+<li><p>launch jAERviewer and confirm that the DAVIS240C is detected</p></li>
+<li><p>click the &quot;HW configuration&quot; button in the lower left</p></li>
+<li><p>go to the &quot;Multiplexer Config&quot; tab and select &quot;Mux.ForceChipBiasEnable&quot;</p></li>
+<li><p>go to the &quot;DVS config&quot; tab and select &quot;DVS.ExternalAERControl&quot;</p></li>
+<li><p>also on the &quot;DVS config&quot; tab, deselect &quot;DVS.Run&quot;</p></li>
+</ul>
+</li>
+<li><p>cAER instructions:</p>
+<ul>
+<li><p>cAER is available from <a class="reference external" href="https://gitlab.com/inivation/libcaer">https://gitlab.com/inivation/libcaer</a></p></li>
+<li><p>Follow the instructions to build and run <strong>examples/davis_enable_aer.cpp</strong></p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>You should now be able to run the tutorial at <strong>nxsdk_modules.dvs.tutorials.dvs_live</strong></p>
+</div>
+<div class="section" id="aedat-interface">
+<h2>AEDAT Interface<a class="headerlink" href="#aedat-interface" title="Permalink to this headline">¶</a></h2>
+<p>The AEDAT interface allows the user to inject spikes from a pre-recorded DVS file created with jAER.
+This functionality is useful for repeatedly testing a model with the exact same input data.</p>
+<p>The spikes are delivered to the same SNIP as the direct hardware interface, so transitioning from
+AEDAT file to the direct hardware interface should be seamless.</p>
+</div>
+<div class="section" id="manual-spike-interface">
+<h2>Manual Spike Interface<a class="headerlink" href="#manual-spike-interface" title="Permalink to this headline">¶</a></h2>
+<p>The manual spike interface allows the user to explicitly state the x, y, p, t event values.
+This is useful for running simple tests on synthetic data to verify a network is operating
+correctly.</p>
+<p>The manual spike interface uses the same SNIP as the AEDAT and Hardware interfaces so
+transitioning between interfaces should be seamless.
+A spikeGen could be used in place of the Manual Spike Interface, but it would not make use
+of the DVS SNIPs.</p>
+</div>
+<div class="section" id="module-nxsdk_modules.trace_injection.src.direct_trace_injection">
+<span id="direct-trace-injection-module-documentation"></span><h2>Direct Trace Injection Module Documentation<a class="headerlink" href="#module-nxsdk_modules.trace_injection.src.direct_trace_injection" title="Permalink to this headline">¶</a></h2>
+<p>Direct Trace Injection Module</p>
+<dl class="py class">
+<dt id="nxsdk_modules.trace_injection.src.direct_trace_injection.DirectTraceInjection">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.trace_injection.src.direct_trace_injection.</span></code><code class="sig-name descname"><span class="pre">DirectTraceInjection</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentGroup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enableY1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enableY2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enableY3</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.trace_injection.src.direct_trace_injection.DirectTraceInjection" title="Permalink to this definition">¶</a></dt>
+<dd><p>DirectTraceInjection allows overwriting of postsynaptic traces for a compartmentGroup.
+For now use of only 1 compartmentGroup is supported. If a user wants to write the traces of multiple compartmentGroups
+they must first be combined into a single compartmentGroup.</p>
+<dl class="py method">
+<dt id="nxsdk_modules.trace_injection.src.direct_trace_injection.DirectTraceInjection.sendSnipInitialization">
+<code class="sig-name descname"><span class="pre">sendSnipInitialization</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.trace_injection.src.direct_trace_injection.DirectTraceInjection.sendSnipInitialization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends precomputed initialization data to the initialization snip</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.trace_injection.src.direct_trace_injection.DirectTraceInjection.setupSnips">
+<code class="sig-name descname"><span class="pre">setupSnips</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.trace_injection.src.direct_trace_injection.DirectTraceInjection.setupSnips" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare the snips</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>board</strong> (<em>N2Board</em>) -- The compiled board to modify</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.trace_injection.src.direct_trace_injection.DirectTraceInjection.writeY">
+<code class="sig-name descname"><span class="pre">writeY</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y1Values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2Values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y3Values</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.trace_injection.src.direct_trace_injection.DirectTraceInjection.writeY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends the new trace values to the pre-learning management snip</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y1Values</strong> (<em>list</em><em>(</em><em>int</em><em>)</em>) -- The Y1 trace values to be written</p></li>
+<li><p><strong>y2Values</strong> (<em>list</em><em>(</em><em>int</em><em>)</em>) -- The Y2 trace values to be written</p></li>
+<li><p><strong>y3Values</strong> (<em>list</em><em>(</em><em>int</em><em>)</em>) -- The Y3 trace values to be written</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-nxsdk_modules.trace_injection.src.spike_trace_injection">
+<span id="spike-trace-injection-module-documentation"></span><h2>Spike Trace Injection Module Documentation<a class="headerlink" href="#module-nxsdk_modules.trace_injection.src.spike_trace_injection" title="Permalink to this headline">¶</a></h2>
+<p>Spike Trace Injection Module</p>
+<dl class="py class">
+<dt id="nxsdk_modules.trace_injection.src.spike_trace_injection.SpikeTraceInjection">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.trace_injection.src.spike_trace_injection.</span></code><code class="sig-name descname"><span class="pre">SpikeTraceInjection</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.trace_injection.src.spike_trace_injection.SpikeTraceInjection" title="Permalink to this definition">¶</a></dt>
+<dd><p>SpikeTraceInjection provides means of supplying non-local information
+to learning rules throught postynaptic traces, either by directly overwriting
+a compartmentGroup's traces, or by rewiring learning synapses to auxiliary
+compartments during the learning phase.</p>
+<dl class="py method">
+<dt id="nxsdk_modules.trace_injection.src.spike_trace_injection.SpikeTraceInjection.addRewiringCore">
+<code class="sig-name descname"><span class="pre">addRewiringCore</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compartmentProtoList</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentsPerGroup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectionOrderList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enableLearningList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dwList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtList</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.trace_injection.src.spike_trace_injection.SpikeTraceInjection.addRewiringCore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fills a new core with compartmentGroups for which rewiring can be performed by snips.
+Returns the compartmentGroups and corresponding connectionPrototypes to use when making connections to them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>compartmentProtoList</strong> (<em>list</em><em>(</em><a class="reference internal" href="compartment.html#nxsdk.net.nodes.compartments.CompartmentPrototype" title="nxsdk.net.nodes.compartments.CompartmentPrototype"><em>CompartmentPrototype</em></a><em>)</em>) -- The compartmentPrototypes to use for each compartmentGroup (one per group)</p></li>
+<li><p><strong>compartmentsPerGroup</strong> (<em>int</em>) -- The number of compartments to put in each compartmentGroup. Defaults to 1</p></li>
+<li><p><strong>connectionOrderList</strong> (<em>list</em><em>(</em><em>int</em><em>)</em>) -- The connection offsets and order in which to apply them to learning synapses for this core</p></li>
+<li><p><strong>enableLearningList</strong> (<em>list</em><em>(</em><em>int</em><em>)</em>) -- Boolean list specifying which connectionPrototypes will have learning enabled.</p></li>
+<li><p><strong>dwList</strong> (<em>list</em><em>(</em><em>string</em><em>)</em>) -- List of 'dw' learning rules for each compartmentGroup</p></li>
+<li><p><strong>ddList</strong> (<em>list</em><em>(</em><em>string</em><em>)</em>) -- List of 'dd' learning rules for each compartmentGroup</p></li>
+<li><p><strong>dtList</strong> (<em>list</em><em>(</em><em>string</em><em>)</em>) -- List of 'dt' learning rules for each compartmentGroup</p></li>
+<li><p><strong>**kwargs</strong> -- <p>optional core parameters to pass to learning rules (trace parameters, tEpoch, etc)</p>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p>cxList: Compartment groups of size 'compartmentPerGroup' with prototypes corresponding to 'compartmentProtoList'</p></li>
+<li><p>connProtoList: Connection prototypes to be used when connecting to corresponding compartmentGroups</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list(compartmentGroup), list(connectionPrototype)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.trace_injection.src.spike_trace_injection.SpikeTraceInjection.sendSnipInitialization">
+<code class="sig-name descname"><span class="pre">sendSnipInitialization</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.trace_injection.src.spike_trace_injection.SpikeTraceInjection.sendSnipInitialization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends initialization information over the snip channels</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.trace_injection.src.spike_trace_injection.SpikeTraceInjection.setupSnips">
+<code class="sig-name descname"><span class="pre">setupSnips</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.trace_injection.src.spike_trace_injection.SpikeTraceInjection.setupSnips" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup the initialization, pre-learning, and post-learning snips for rewiring synapses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params N2Board board</dt>
+<dd class="field-odd"><p>the compiled board to setup snips for</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="performance-suite.html" class="btn btn-neutral float-right" title="NxSDK Performance Test Suite" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="spike_streamer.html" class="btn btn-neutral float-left" title="Spike Streamer Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

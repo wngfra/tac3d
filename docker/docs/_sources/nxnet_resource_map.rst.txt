@@ -1,0 +1,46 @@
+NxNet Resource Map Interface
+============================
+
+Use the NxNet resource map api to get addresses of entities post compilation given their logical node ids (pre-compilation)
+
+.. code-block:: python
+
+    # Using the compiler explicitly
+    compartment = net.createCompartment(p)
+    compiler = nx.N2Compiler()
+    board = compiler.compile(net) # Compiles the network and populates the resourceMaps
+    boardId, chipId, coreId, compartmentId, cxProfileCfgId, vthProfileCfgId = net.resourceMap.compartment(compartment.nodeId)
+    board.run(100)
+    board.disconnect()
+
+    # Or Using the implicit compiler associated with the NxNet object
+    compartment = net.createCompartment(p)
+    net.compiler.compile(net) # Compiles the network and populates the resourceMaps
+    boardId, chipId, coreId, compartmentId, cxProfileCfgId, vthProfileCfgId = net.resourceMap.compartment(compartment.nodeId)
+    net.run(100)
+    net.disconnect()
+
+.. code-block:: python
+
+    # Example of using InputAxon resource map
+    spikeInputPorts = net.createSpikeInputPortGroup(size=NUM_COMPARTMENTS)
+    connProto = nx.ConnectionPrototype(weight=127)
+    spikeInputPorts.connect(
+        dstGrp=cg,
+        prototype=connProto,
+        connectionMask=np.eye(NUM_COMPARTMENTS))
+
+    logicalAxonIds = spikeInputPorts.nodeIds
+
+    net.compiler.compile(net) # Compiles the network and populates the resourceMaps
+
+    physicalAxonIds = {}
+    for logicalAxonId in logicalAxonIds:
+        # The call to inputAxon returns a list of physical input axons as the logical axon might be split post compilation
+        # depending on where the compartments ended up
+        physicalAxonIds[logicalAxonId] = net.resourceMap.inputAxon(logicalAxonId)
+
+.. autoclass:: nxsdk.compiler.resource_map.resource_map.NxNetResourceMap
+   :members:
+   :undoc-members:
+   :member-order: bysource

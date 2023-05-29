@@ -1,0 +1,5 @@
+Synapses
+==============
+.. automodule:: nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf
+   :members:
+   :undoc-members:

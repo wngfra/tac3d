@@ -1,0 +1,35 @@
+Tutorials
+=========
+The diagram below shows the journey a spike of information takes through the components and features of Intel's 'Loihi' Neuromorphic Research Test Chip (Loihi). Each tutorial below has been hand-crafted to illustrate the features of our Nx SDK and Loihi. 
+
+.. figure:: _static/tutorialfeatures.png
+   :alt: diagram 
+
+Starting from the left and working our way rightward, the following features are available in the Nx SDK:
+
+A. **Spike Generation** - sending spike from a programmable spike generator. 
+B. **Dendritic Tree Parameters** - configuring compartments as dendrites, joining signals through various mathematical operations (joinops), using a stack to manage the tree configuration.
+C. **Bias Current** - Bias current is a useful feature that allows you to add intrinsic current to the operation of a compartment's leaky-integrate and fire dynamics. Combined with the activity state, you can enable some compartments to self-fire with regularity.
+D. **Activity State** - Typically a compartment is completely quiescent (INACTIVE) unless a spike comes in. Sometimes, however, you will want the compartment to listen to its own bias current. Setting the activity state to active (IDLE) allows for this behavior.
+E. **Current, Decay and Noise** - A compartment's primary "variables" are the current and voltage. With Loihi and through the Nx SDK, you have the ability to monitor the compartment's current (U), specify a decay for the current (CD in diagram), and inject noise in the compartment's current.
+F. **Voltage, Decay and Noise** - A compartment's primary "variables" are the current and voltage. With Loihi and through the Nx SDK, you have the ability to monitor the compartment's voltage (V), specify a decay for the current (VD in diagram), inject noise in the compartment's voltage, and specify the compartment's threshold. When the compartment's voltage (V) exceeds Vth, a spike is generated on the compartment's axon.
+G. **Compartment State** - As stated for E and F, Loihi and the Nx SDK allow you to probe a compartment's state - U and V, as well as the compartment's Soma Activity Trace (A). 
+H. **Homeostasis** - Loihi and the Nx SDK provide the necessary trace information and settings to enable various forms of homeostasis. The homeostasis feature allows you to adjust the voltage threshold up or down given activity levels that respectively exceed or drop below some max/min. 
+I. **Refractory Delay and Noise** - When a compartment spikes, you have the option to delay the accumulation of its membrane potential (V) for some period of time after the spike. This is often referred to as the Refractory Delay. Loihi and the Nx SDK allow you to specify both the delay and inject some noise into the delay for any desired stochastic behavior.
+J. **Axonal Delay** - Your algorithm might also call for some delay in sending a spike to downstream compartments. As often found in biology, some axons are longer than others and signals from upstream neurons (compartments) may take longer to get to certain downstream compartments. To enable algorithms that might want to include these dynamics, Loihi and the Nx SDK provides for axonal delay.
+K. **Fanout Type** - Fanout type provides for a convenient means of specifying a synapse as excitatory or inhibitory rather than specifying negative weights. More information on this particular feature can be found in :doc:`synapse_fmt`.
+L. **Epoch** - For both homeostasis and learning rules, the Epoch feature allows you to fine tune the historical activity, pre- and post- synaptic trace settings. See the tutorials on learning and homeostasis as well as the documentation here: :doc:`stdp_pre_profile_cfg`.
+M. **Learning and Pre/Post Synaptic Traces** - In order to learn, especially utilizing spike-timing dependent plasticity rules (STDP), it is important "remember" past pre and post synaptic values. These traces and the core learning rule engine are further described in the tutorials below.
+N. **Synaptic Delay** - Similar to the reasoning behind axonal delays, synaptic delays allow for algorithms that seek to model the dynamics of delayed signaling.
+O. **Box Synapse** - The box synapse feature allows for algorithms that wish to retain a constant post-synaptic current for a specified period of time. Enabling this feature with the synaptic delay feature, you can precisely specify the level and time-length of the post-synaptic current.
+P. **Synaptic Weight** - Loihi and Nx SDK allow you to provide a weight for each post-synaptic connection. We also enable you to specify weight bits and precision. 
+Q. **Population Mode** - Population mode allows you to construct networks with lots of repeating structures in the most compressed and efficient manner on Loihi.
+R. **Core to Core Spikes and Large Network Support** - There are numerous ways to take advantage of the neurocore resources on Loihi. Some tutorials below provide some tips and tricks along these lines.
+S. **Soma Activity Traces** - A key component to enable homeostasis is the soma activity traces. Though used primarily for homeostasis rules, the activity trace feature is a powerful tool for storing compartment activity history.
+
+.. toctree::
+   :maxdepth: 1
+   
+   nxnet_tutorials
+   nxnet_jupyter_tutorials
+   nxcore_tutorials

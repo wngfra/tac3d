@@ -1,0 +1,18 @@
+Working with Probes
+===================
+Probes enable you to see how the network changes over time. To create a probe, you first create a monitor (see :doc:`coremonitor`) and then establish either a u probe, a v probe or a spike probe on the compartment(s) you wish to monitor. Here's a simple code snippet (which you will find in most tutorials) to get you started:
+
+.. code-block:: python
+
+   uProbe = mon.probe(n2Core.cxState, [0], 'u')[0]
+   
+   fig = plt.figure(1001)
+
+   plt.subplot(1, 2, 1)
+   uProbe.plot()
+   plt.title('u')
+
+
+.. automodule:: nxsdk.graph.monitor.probes
+   :members:
+   :undoc-members:

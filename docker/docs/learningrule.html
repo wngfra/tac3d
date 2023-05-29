@@ -1,0 +1,566 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Specifying a Learning Rule &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Learning with Reinforcement" href="learning_reinforcements.html" />
+    <link rel="prev" title="Performing Energy Measurements in Pohoiki Spring and Kapoho Bay Using Telemetry Server" href="telemetry.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxnet.html">NxNet API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compartment.html">Compartment and CompartmentPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connection.html">Connection and ConnectionPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connectionsharing.html">Connection Sharing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron.html">Neuron and NeuronPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="groups.html">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netprobes.html">Working with Probes and Monitors in NxNet</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Specifying a Learning Rule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="learning_reinforcements.html">Learning with Reinforcement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="learning_engine_scaling.html">Learning Engine Scaling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multicompartment.html">Building Multi Compartment Neuron Model using Stack Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spikeinjectionandreceivers.html">Spike Injection and Spike Receivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxlogging.html">Logging in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcompiler.html">NxCompiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxnet_resource_map.html">NxNet Resource Map Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxnet.html">NxNet API</a> &raquo;</li>
+        
+      <li>Specifying a Learning Rule</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-nxsdk.net.nodes.learning_rule">
+<span id="specifying-a-learning-rule"></span><h1>Specifying a Learning Rule<a class="headerlink" href="#module-nxsdk.net.nodes.learning_rule" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.nodes.learning_rule.</span></code><code class="sig-name descname"><span class="pre">LearningRule</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1Impulse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1TimeConstant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2Impulse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2TimeConstant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1Impulse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1TimeConstant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2Impulse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y2TimeConstant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y3Impulse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y3TimeConstant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r1Impulse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r1TimeConstant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tEpoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">combineLiterals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">printDebug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule" title="Permalink to this definition">¶</a></dt>
+<dd><p>A LearningRule can be assigned to a Synapse and describes how its
+three dynamic state variables (<strong>weight</strong>, <strong>delay</strong> and <strong>tag</strong>) evolve when
+learning is enabled.</p>
+<p>A LearningRule is applied to a synapse at the end of a learning epoch.
+Each learning epoch is of duration <strong>tEpoch</strong>.</p>
+<p>A LearningRule consists of up to three equations that specify the
+dynamics of the <strong>weight</strong>, <strong>delay</strong> and <strong>tag</strong> state as a function of <strong>synaptic
+pre-, post- and reward-traces</strong> as well as other <strong>synaptic state
+variables</strong>. These equations must be provided as a <code class="docutils literal notranslate"><span class="pre">string</span></code> and must follow a
+<em>specific syntax</em> such that it can be interpreted and compiled.  When
+reward-traces are utilized in a learning rule, each connection
+associated with that learning rule will have an additional reinforcement channel
+associated with it.  That reinforcement channel will be used for
+injecting reward spikes.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Each dynamics equation for the <strong>weight (dw), delay (dd) and tag (dt)</strong>     must be provided as a <strong>sum of products</strong>. Each product is separated by a     <code class="docutils literal notranslate"><span class="pre">+</span></code>, or <code class="docutils literal notranslate"><span class="pre">-</span></code> operator while factors of a product are separated by <code class="docutils literal notranslate"><span class="pre">*</span></code>.     A product consists of four possible types of factors: <strong>dependencies, variables,     expressions and literals</strong>. Of these factors only the <strong>dependency</strong> factor is     mandatory and it determines whether a product needs to be evaluated or not.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Due to a bug in the HW implementation, pre- and reward-traces     may sometimes register a spike sent to them with a one time step delay.</p>
+</div>
+<p>The following is a list of valid symbols permitted in a dynamics equation:</p>
+<dl>
+<dt><strong>Operators:</strong> <code class="docutils literal notranslate"><span class="pre">+</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code></dt><dd><ul class="simple">
+<li><p>Operators <code class="docutils literal notranslate"><span class="pre">+</span></code> and <code class="docutils literal notranslate"><span class="pre">-</span></code> separate products. To negate the first product         in a series of products preceed it by <code class="docutils literal notranslate"><span class="pre">-</span></code>. A <code class="docutils literal notranslate"><span class="pre">+</span></code> in front of the         first product is optional and will be ignored.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*</span></code> separates factors in a product.</p></li>
+</ul>
+</dd>
+<dt><strong>Factors:</strong></dt><dd><ul>
+<li><dl class="simple">
+<dt>Dependencies: <code class="docutils literal notranslate"><span class="pre">x0</span></code>, <code class="docutils literal notranslate"><span class="pre">y0</span></code>, <code class="docutils literal notranslate"><span class="pre">r0</span></code>, <code class="docutils literal notranslate"><span class="pre">uk</span></code></dt><dd><ul class="simple">
+<li><p>To avoid unnecessary evaluations of products, products must               contain at least one dependency factor which conditions the               evaluation of the product on that factor. <code class="docutils literal notranslate"><span class="pre">x0</span></code>, <code class="docutils literal notranslate"><span class="pre">y0</span></code>, and <code class="docutils literal notranslate"><span class="pre">r0</span></code>               make the evaluation of a product dependent on the presence of a               pre-, post- or reward spike during the past learning epoch while <code class="docutils literal notranslate"><span class="pre">uk</span></code>               declares a product to be evaluated unconditionally every 2**k               learning epochs regardless of pre-, post- or reward spikes.</p></li>
+<li><p>Any subsequent dependency factor (from left to right) will be               interpreted as a multiplicative variable without affecting product               evaluation.</p></li>
+<li><p>r0 is not currently supported in a learning rule.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Variables: <code class="docutils literal notranslate"><span class="pre">x[0,1,2]</span></code>, <code class="docutils literal notranslate"><span class="pre">y[0,1,2,3]</span></code>, <code class="docutils literal notranslate"><span class="pre">r[0,1]</span></code>, <code class="docutils literal notranslate"><span class="pre">w</span></code>, <code class="docutils literal notranslate"><span class="pre">d</span></code>, <code class="docutils literal notranslate"><span class="pre">t</span></code></dt><dd><ul class="simple">
+<li><p>All <code class="docutils literal notranslate"><span class="pre">x[i]</span></code>, <code class="docutils literal notranslate"><span class="pre">y[i]</span></code> and <code class="docutils literal notranslate"><span class="pre">r[q]</span></code> are pre-, post- or reward spike               trace variables for <code class="docutils literal notranslate"><span class="pre">i&gt;0</span></code> or spike indicator variables for               <code class="docutils literal notranslate"><span class="pre">i==0</span></code>. <code class="docutils literal notranslate"><span class="pre">w</span></code>, <code class="docutils literal notranslate"><span class="pre">d</span></code> and <code class="docutils literal notranslate"><span class="pre">t</span></code> represent three a synapse's               weight, delay or tag state variables.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Expressions:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>BracketExpression: <code class="docutils literal notranslate"><span class="pre">(v+C)</span></code></dt><dd><p>v can be any variable from above and C is a signed constant 8                 bit literal constant. For v=w and v=t, there is currently a                 limitation on C.  w and t can be in the range [-256, 256) while                 C must be in the range [-128, 128).  To use a C value outside                 [-128, 128) but within [-256, 256), please avoid bracket                 expressions and expand out the terms.  For example,                 K*(w + 200)*y0 could be written as K*w*y0 + K*200*y0, where K                 is some constant. This expansion of the bracket expression                 should be functionally identical, but will execute slightly                 slower on Loihi.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>FunctionExpression: <code class="docutils literal notranslate"><span class="pre">sgn(v+C)</span></code></dt><dd><p>Similar to BracketExpression, just with sgn(..) function applied to it.                 v can only be variable from <code class="docutils literal notranslate"><span class="pre">w</span></code>, <code class="docutils literal notranslate"><span class="pre">d</span></code> and <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>Literal:</dt><dd><p>Literal numeric values (i.e. scaling constants) can be specified             either as a simple integer values or in a mantissa exponent             representation:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[+,-]mantissa*2^[+,-]exp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[+,-]2^[+,-]exp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[+.-]mantissa</span></code></p></li>
+</ul>
+</div></blockquote>
+<p>The first literal in an equation is special in that only it can             be interpreted explicitly in the mantissa/exponent             representation. All subsequent literals will be converted into a             single 7+1 bit integer.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p>For additional details on configuring a learning rule see:
+NxNet.createLearningRule()</p>
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.dd">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dd</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.dd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equation that describes dynamics of synaptic delay.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.dt">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dt</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.dt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equation that describes dynamics of synaptic tag.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.dw">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dw</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.dw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equation that describes dynamics of synaptic weight.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.getPostTraces">
+<code class="sig-name descname"><span class="pre">getPostTraces</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.getPostTraces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of unique postTrace symbols used by the learning
+rule.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.getPreTraces">
+<code class="sig-name descname"><span class="pre">getPreTraces</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.getPreTraces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the set of unique preTrace symbols used by the learning
+rule.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.getRewardTraces">
+<code class="sig-name descname"><span class="pre">getRewardTraces</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.getRewardTraces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of unique reward trace symbols used by the learning
+rule.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.getTraceParams">
+<code class="sig-name descname"><span class="pre">getTraceParams</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.getTraceParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple (impulse, timeConstant) for requested trace.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>trace</strong> (<em>str</em>) -- Name of trace (x1, x2, y1, y2, y3, r1).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple of (impulse, timeConstant)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.r1Impulse">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">r1Impulse</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.r1Impulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Impulse by which rewardTrace increases upon each reward spike.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.r1TimeConstant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">r1TimeConstant</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.r1TimeConstant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time constant by which rewardTrace decays exponentially over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.reinforcementChannel">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">reinforcementChannel</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.reinforcementChannel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reward spikes will be sent to the reinforcement channel.
+Connections can be made to the reinforcement channel.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.tEpoch">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tEpoch</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.tEpoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Duration of learning epoch. tEpoch of all learning rules must be
+identical. tEpoch must be in the range 0..64. It is recommended to
+use powers of 2 for efficiency.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.x1Impulse">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">x1Impulse</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.x1Impulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Impulse by which preTrace increases upon each pre-synaptic spike.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.x1TimeConstant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">x1TimeConstant</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.x1TimeConstant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time constant by which preTrace decays exponentially over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.x2Impulse">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">x2Impulse</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.x2Impulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Impulse by which preTrace increases upon each pre-synaptic spike.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.x2TimeConstant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">x2TimeConstant</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.x2TimeConstant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time constant by which preTrace decays exponentially over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.y1Impulse">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">y1Impulse</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.y1Impulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Impulse by which postTrace increases upon each post-synaptic
+spike.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.y1TimeConstant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">y1TimeConstant</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.y1TimeConstant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time constant by which postTrace decays exponentially over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.y2Impulse">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">y2Impulse</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.y2Impulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Impulse by which postTrace increases upon each post-synaptic
+spike.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.y2TimeConstant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">y2TimeConstant</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.y2TimeConstant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time constant by which postTrace decays exponentially over time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.y3Impulse">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">y3Impulse</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.y3Impulse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Impulse by which postTrace increases upon each post-synaptic
+spike.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.learning_rule.LearningRule.y3TimeConstant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">y3TimeConstant</span></code><a class="headerlink" href="#nxsdk.net.nodes.learning_rule.LearningRule.y3TimeConstant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time constant by which postTrace decays exponentially over time.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>Additional details on rewards can be found at the link below:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="learning_reinforcements.html">Learning with Reinforcement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="learning_engine_scaling.html">Learning Engine Scaling</a></li>
+</ul>
+</div>
+<p>Learning rule examples with pre-synaptic and post-synaptic traces:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lr</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createLearningRule</span><span class="p">(</span><span class="n">dw</span><span class="o">=</span><span class="s1">&#39;2*x1*y0-2*y1*x0&#39;</span><span class="p">,</span>
+                            <span class="n">x1Impulse</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                            <span class="n">x1TimeConstant</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                            <span class="n">y1Impulse</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                            <span class="n">y1TimeConstant</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                            <span class="n">tEpoch</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">connProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">enableLearning</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                   <span class="n">learningRule</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Learning rule with pre-synaptic, post-synaptic, and reward traces:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lr</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createLearningRule</span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="s1">&#39;2*x1*y0-2*y1*x0&#39;</span><span class="p">,</span>
+                            <span class="n">dw</span><span class="o">=</span><span class="s1">&#39;u0*r1*t&#39;</span><span class="p">,</span>
+                            <span class="n">x1Impulse</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                            <span class="n">x1TimeConstant</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                            <span class="n">y1Impulse</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                            <span class="n">y1TimeConstant</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                            <span class="n">r1Impulse</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                            <span class="n">r1TimeConstant</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                            <span class="n">tEpoch</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">connProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">enableLearning</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                   <span class="n">learningRule</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Probes for pre-synaptic traces:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">c1</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">prototype</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">prototype</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
+
+<span class="n">conn1</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createConnection</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span>
+                             <span class="bp">self</span><span class="o">.</span><span class="n">conn_proto_with_learning_rule</span><span class="p">(</span>
+                             <span class="n">net</span><span class="p">,</span>
+                             <span class="s1">&#39;2*x1*x2*y0&#39;</span><span class="p">))</span>
+<span class="n">conn2</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createConnection</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span>
+                             <span class="bp">self</span><span class="o">.</span><span class="n">conn_proto_with_learning_rule</span><span class="p">(</span>
+                             <span class="n">net</span><span class="p">,</span> <span class="s1">&#39;x1*y0&#39;</span><span class="p">,</span>
+                             <span class="n">x1Impulse</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+                             <span class="n">x1TimeConst</span><span class="o">=</span><span class="mi">32</span><span class="p">))</span>
+<span class="n">PP</span> <span class="o">=</span> <span class="n">ProbeParameter</span>
+<span class="n">preTraceProbes1</span> <span class="o">=</span> <span class="n">conn1</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">PP</span><span class="o">.</span><span class="n">PRE_TRACE_X1</span><span class="p">,</span> <span class="n">PP</span><span class="o">.</span><span class="n">PRE_TRACE_X2</span><span class="p">])</span>
+<span class="n">preTraceProbes2</span> <span class="o">=</span> <span class="n">conn2</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">PP</span><span class="o">.</span><span class="n">PRE_TRACE_X1</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">preTraceProbes1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Syn1: X1&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">preTraceProbes1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Syn1: X2&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">preTraceProbes2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Syn2: X1&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">conn_proto_with_learning_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">,</span> <span class="n">learning_rule</span><span class="p">,</span>
+              <span class="n">x1Impulse</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">x1TimeConst</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">x2Impulse</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">x2TimeConst</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
+   <span class="n">lr</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createLearningRule</span><span class="p">(</span>
+                              <span class="n">dw</span><span class="o">=</span><span class="n">learning_rule</span><span class="p">,</span>
+                              <span class="n">x1Impulse</span><span class="o">=</span><span class="n">x1Impulse</span><span class="p">,</span>
+                              <span class="n">x1TimeConstant</span><span class="o">=</span><span class="n">x1TimeConst</span><span class="p">,</span>
+                              <span class="n">x2Impulse</span><span class="o">=</span><span class="n">x2Impulse</span><span class="p">,</span>
+                              <span class="n">x2TimeConstant</span><span class="o">=</span><span class="n">x2TimeConst</span><span class="p">,</span>
+                              <span class="n">y1Impulse</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                              <span class="n">y1TimeConstant</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                              <span class="n">tEpoch</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+   <span class="n">connProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span>
+                              <span class="n">weight</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                              <span class="n">enableLearning</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                              <span class="n">learningRule</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+
+   <span class="k">return</span> <span class="n">connProto</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="learning_reinforcements.html" class="btn btn-neutral float-right" title="Learning with Reinforcement" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="telemetry.html" class="btn btn-neutral float-left" title="Performing Energy Measurements in Pohoiki Spring and Kapoho Bay Using Telemetry Server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

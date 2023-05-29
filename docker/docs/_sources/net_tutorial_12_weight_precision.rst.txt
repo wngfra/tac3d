@@ -1,0 +1,24 @@
+NxNet: Weight Precision
+========================
+
+Motivation
+----------
+The aim of this tutorial is to show you the effect of weight precision on the synaptic weights you choose. 
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_12.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxnet/tutorial_12_weight_precision.py
+
+See also
+--------
+
+* :doc:`netprobes`
+* :doc:`compartment`
+* :doc:`connection`
+* :doc:`nxnet`
+* :doc:`graph`

@@ -1,0 +1,1260 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Compartment and CompartmentPrototype &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Connection and ConnectionPrototype" href="connection.html" />
+    <link rel="prev" title="NxNet API" href="nxnet.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxnet.html">NxNet API</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Compartment and CompartmentPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connection.html">Connection and ConnectionPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connectionsharing.html">Connection Sharing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron.html">Neuron and NeuronPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="groups.html">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netprobes.html">Working with Probes and Monitors in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learningrule.html">Specifying a Learning Rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multicompartment.html">Building Multi Compartment Neuron Model using Stack Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spikeinjectionandreceivers.html">Spike Injection and Spike Receivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxlogging.html">Logging in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcompiler.html">NxCompiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxnet_resource_map.html">NxNet Resource Map Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxnet.html">NxNet API</a> &raquo;</li>
+        
+      <li>Compartment and CompartmentPrototype</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-nxsdk.net.nodes.compartments">
+<span id="compartment-and-compartmentprototype"></span><h1>Compartment and CompartmentPrototype<a class="headerlink" href="#module-nxsdk.net.nodes.compartments" title="Permalink to this headline">¶</a></h1>
+<p>Compartment Interface</p>
+<dl class="py class">
+<dt id="nxsdk.net.nodes.compartments.Compartment">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.nodes.compartments.</span></code><code class="sig-name descname"><span class="pre">Compartment</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodeSet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compartment Class</p>
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.activity">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">activity</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.activity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <cite>activity</cite> corresponds to an exponential filter of a         compartment's spiking history. For every compartment's spike,         <cite>activity</cite> increases by <code class="docutils literal notranslate"><span class="pre">activityImpulse</span></code> and decays exponentially         otherwise with a time constant <code class="docutils literal notranslate"><span class="pre">activityTimeConstant</span></code>. <cite>activity</cite> is         only updated at intervals set by <code class="docutils literal notranslate"><span class="pre">tEpoch</span></code> within which only a single         spike should be produced by the compartment otherwise the accuracy of         <code class="docutils literal notranslate"><span class="pre">activity</span></code> with respect to an exact exponential filter degrades         gracefully. The exponential decay itself is only approximated         stochastically due to the limited bit precision. <code class="docutils literal notranslate"><span class="pre">activity</span></code> is used         for threshold homeostasis but can also be used to approximate an         instantaneous firing rate of a compartment for readout.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.activityImpulse">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">activityImpulse</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.activityImpulse" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>activitiyImpulse</cite> specifies the amount by which <code class="docutils literal notranslate"><span class="pre">activity</span></code>         increases for each compartment spike.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.activityTimeConstant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">activityTimeConstant</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.activityTimeConstant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decay time constant by which <code class="docutils literal notranslate"><span class="pre">activity</span></code> decays approximately         exponentially over time.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.addPostTrace">
+<code class="sig-name descname"><span class="pre">addPostTrace</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">postTrace</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.addPostTrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a new post trace to compartment. Cannot add more than 3 post
+traces per compartment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.axonDelay">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">axonDelay</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.axonDelay" title="Permalink to this definition">¶</a></dt>
+<dd><p>The compartment should only spike once per <code class="docutils literal notranslate"><span class="pre">tEpoch</span></code> if         <code class="docutils literal notranslate"><span class="pre">axonDelay</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>, otherwise additional delayed spikes will be lost and         not get distributed.Axon delay has to satisfy the relationship         <code class="docutils literal notranslate"><span class="pre">2*tEpoch</span> <span class="pre">&gt;=</span> <span class="pre">axonDelay</span></code>.``tEpoch`` can be up to 63. Therefore,         <code class="docutils literal notranslate"><span class="pre">axonDelay</span></code> can have a maximum value of 189.
+(Default=0)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>There are two spike delay mechanism - discrete axonal and discrete         synaptic delays. After a compartment spikes, the outgoing spike will be         delayed by <code class="docutils literal notranslate"><span class="pre">axonDelay</span></code> before distribution to its outgoing synapses.         Note</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.axonId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">axonId</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.axonId" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>axonId</cite> is the id of a compartment's output axon.
+(Default=-1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.bias">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">bias</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the bias current using the following computation         <span class="math notranslate nohighlight">\(bias = biasMant * 2^{biasExp}\)</span>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.biasExp">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">biasExp</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.biasExp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> integrates a compartment's bias current         which is represented by a mantissa and exponent according to         <span class="math notranslate nohighlight">\(bias = biasMant * 2^{biasExp}\)</span>
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.biasMant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">biasMant</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.biasMant" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> integrates a compartment's bias current         which is represented by a mantissa and exponent according to         <span class="math notranslate nohighlight">\(bias = biasMant * 2^{biasExp}\)</span>
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.compartmentCurrent">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentCurrent</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.compartmentCurrent" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <cite>compartmentCurrent</cite> integrates incoming weighted spikes from         the dendritic accumulator and possibly inputs from other compartments         but decays exponentially otherwise according to:
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u_i</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">=</span> <span class="n">u_i</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> \<span class="n">cdot</span> <span class="p">(</span><span class="mi">2</span><span class="o">^</span><span class="p">{</span><span class="mi">12</span><span class="p">}</span> <span class="o">-</span> \<span class="n">delta_i</span><span class="o">^</span><span class="p">{(</span><span class="n">u</span><span class="p">)})</span>   \<span class="n">cdot2</span><span class="o">^</span><span class="p">{</span><span class="o">-</span><span class="mi">12</span><span class="p">}</span> <span class="o">+</span>         <span class="mi">2</span><span class="o">^</span><span class="p">{</span><span class="mi">6</span><span class="o">+</span><span class="n">wgtExp</span><span class="p">}</span>\<span class="n">sum_jw_</span><span class="p">{</span><span class="n">ij</span><span class="p">}</span>\<span class="n">cdot</span> <span class="n">s_j</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(\delta_i^{(u)}\)</span> represents the decay and <span class="math notranslate nohighlight">\(u_i(t)\)</span>         reprsents the compartment current at timestep <cite>t</cite>. For details see the         Loihi Computational Model whitepaper.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.compartmentCurrentDecay">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentCurrentDecay</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.compartmentCurrentDecay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decay constant by which the <code class="docutils literal notranslate"><span class="pre">compartmentCurrent</span></code> decays per time         step. If <strong>tau</strong> is the decay time constant for the approximated         exponential decay exp(-t/tau) time constant in time steps, then         <span class="math notranslate nohighlight">\(compartmentCurrentDecay = (1/tau)*2^{12}\)</span>.
+(Default=4096)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.compartmentCurrentTimeConstant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentCurrentTimeConstant</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.compartmentCurrentTimeConstant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets compartmentCurrentTimeConstant (tau) which is the decay time         constant for the approximated exponential current decay         exp(-t/tau) in time steps. It is internally represented as         <span class="math notranslate nohighlight">\(compartmentCurrentDecay = (1/tau)*2^{12}\)</span>.
+(Default=1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.compartmentJoinOperation">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentJoinOperation</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.compartmentJoinOperation" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>compartmentJoinOperation</cite> controls how the <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code>         (V) or dendritic spikes (S) from input compartments get integrated with         <code class="docutils literal notranslate"><span class="pre">compartmentCurrent</span></code> (U) into <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> (V) of the         current compartment:
+* <strong>SKIP (0)</strong> :  Do not integrate input from input compartment.
+* <strong>ADD (1)</strong> :   <span class="math notranslate nohighlight">\(C.dV = C.U + A.V + B.V\)</span>
+* <strong>MAX (2)</strong> :   <span class="math notranslate nohighlight">\(C.dV = max(C.U, A.V, B.V)\)</span>
+* <strong>MIN (3)</strong> :   <span class="math notranslate nohighlight">\(C.dV = min(C.U, A.V, B.V)\)</span>
+* <strong>PASS (4)</strong> :  <span class="math notranslate nohighlight">\(C.dV = A.S ? C.U + B.V : 0\)</span> (Condition C.U +         B.V integration by dendritic spike of A)
+* <strong>BLOCK (5)</strong> : <span class="math notranslate nohighlight">\(C.dV = A.S ? 0: C.U + B.V\)</span> (Condition C.U +         B.V integration by A not providing a dendritic spike)
+* <strong>OR (6)</strong> :    <span class="math notranslate nohighlight">\(C.dS = A.S | B.S | C.S\)</span>
+* <strong>AND (7)</strong> :   <span class="math notranslate nohighlight">\(C.dS = A.S \&amp; B.S \&amp; C.S\)</span> (B.S=1 if         <code class="docutils literal notranslate"><span class="pre">stackIn==POP</span></code>)</p>
+<p>(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.compartmentThreshold">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentThreshold</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.compartmentThreshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the voltage threshold. When a compartment reaches its voltage         threshold, spikes are sent across all its connections.
+compartmentThreshold is internally represented as         <span class="math notranslate nohighlight">\(compartmentThreshold = vthMant * 2^{6}\)</span>.
+(Default=6400)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.compartmentVoltage">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentVoltage</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.compartmentVoltage" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <cite>compartmentVoltage</cite> integrates <code class="docutils literal notranslate"><span class="pre">compartmentCurrent</span></code>, the         compartment bias and possibly inputs from other compartments according         to:
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">compartmentVoltage</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">=</span> <span class="n">compartmentVoltage</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span>
+
+<span class="p">(</span> <span class="mi">2</span><span class="o">^</span><span class="p">{</span><span class="mi">12</span><span class="p">}</span> <span class="o">-</span> <span class="n">compartmentVoltageDecay</span> <span class="p">)</span><span class="o">*</span> <span class="mi">2</span><span class="o">^</span><span class="p">{</span><span class="o">-</span><span class="mi">12</span><span class="p">}</span> <span class="o">+</span>
+
+<span class="n">compartmentCurrent</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">biasMant</span> <span class="o">*</span> <span class="mi">2</span><span class="o">^</span><span class="p">{</span><span class="n">biasExp</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>For details see the Loihi Computational Model whitepaper. Note: When         <cite>compartmentVoltage</cite> exceeds <span class="math notranslate nohighlight">\(vthMant * 2^{6}\)</span>, the compartment         produces a spike and <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> resets.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.compartmentVoltageDecay">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentVoltageDecay</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.compartmentVoltageDecay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decay constant by which the <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> decays per time         step. If <strong>tau</strong> is the decay time constant for the approximated         exponential decay exp(-t/tau) time constant in time steps, then         <span class="math notranslate nohighlight">\(compartmentVoltageDecay = (1/tau)*2^{12}\)</span>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.compartmentVoltageTimeConstant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentVoltageTimeConstant</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.compartmentVoltageTimeConstant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets compartmentVoltageTimeConstant (tau) which is the decay time         constant for the approximated exponential voltage decay         exp(-t/tau) in time steps. It is internally represented as         <span class="math notranslate nohighlight">\(compartmentVoltageDecay = (1/tau)*2^{12}\)</span>.
+(Default=inf)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dstCompartment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">returnNode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for NxNet._createConnection(..)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.dendrites">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dendrites</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.dendrites" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the left and right children dendritic compartments</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>tuple of (left child, right child)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.discreteFields">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">discreteFields</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.discreteFields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.enableHomeostasis">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableHomeostasis</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.enableHomeostasis" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>enableHomeostasis</cite> determines whether <code class="docutils literal notranslate"><span class="pre">vThMant</span></code> gets updated via         <code class="docutils literal notranslate"><span class="pre">activity</span></code> driven threhold homeostasis. When enabled <code class="docutils literal notranslate"><span class="pre">vThMant</span></code> is         modified in the following two cases:
+* <strong>activity &gt; maxActivity</strong> : <span class="math notranslate nohighlight">\(vThMant = homeostasisGain *         (activity - maxActivity)\)</span>
+* <strong>activity &lt; minActivity</strong> : <span class="math notranslate nohighlight">\(vThMant = homeostasisGain *         (activity - minActivity)\)</span></p>
+<p>(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.enableInhibition">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableInhibition</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.enableInhibition" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>enableInhibition</cite> determined whether a compartment can enter the         INHIBITED state when <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> crosses         <span class="math notranslate nohighlight">\(-2^{vMinExp}\)</span>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.enableNoise">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableNoise</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.enableNoise" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>enableNoise</cite> allows for randomization of either         <code class="docutils literal notranslate"><span class="pre">compartmentCurrent</span></code> or <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> depending on whether         <code class="docutils literal notranslate"><span class="pre">randomizeCurrent</span></code> or <code class="docutils literal notranslate"><span class="pre">randomizeVoltage</span></code> is set. Both variables can         be randomized by adding
+<span class="math notranslate nohighlight">\((LFSR() − 2^{7} + noiseMantAtCompartment * 2^{6}) *         2^{noiseExpAtCompartment − 7})\)</span>
+where LFSR() returns an 8-bit random integer in the range 0..255.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.enableRefractoryInhibition">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableRefractoryInhibition</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.enableRefractoryInhibition" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>enableRefractoryInhibition</cite> determined whether a compartment can         enter the INHIBITED_REFRACTORY state when <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code>         crosses <span class="math notranslate nohighlight">\(-2^{vMinExp}\)</span>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.enableSpikeBackprop">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableSpikeBackprop</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.enableSpikeBackprop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables spike backpropagation mechanism. This will propagate spikes         from a compartment back to its input synapses and/or other input         compartments if the compartment is part of a dendritic tree. When spike         back backpropagation is enabled, <code class="docutils literal notranslate"><span class="pre">enableSpikeBackpropFrom</span></code> selects         the source that can give rise to a back propagating spike.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.enableSpikeBackpropFromCompartment0">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableSpikeBackpropFromCompartment0</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.enableSpikeBackpropFromCompartment0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables spike backpropagation when compartment receives dendritic         spike from inputCompartment0
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.enableSpikeBackpropFromCompartment1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableSpikeBackpropFromCompartment1</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.enableSpikeBackpropFromCompartment1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables spike backpropagation when compartment receives dendritic         spike from inputCompartment1
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.enableSpikeBackpropFromSelf">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableSpikeBackpropFromSelf</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.enableSpikeBackpropFromSelf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables spike backpropagation when compartment spikes itself.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.functionalState">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">functionalState</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.functionalState" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>functionalState</cite> represents the current functional state of the         compartment state machine. The possible states are:
+* <strong>INACTIVE (0)</strong> - Compartment does not get serviced
+* <strong>INHIBITED (1)</strong> - Compartment crossed <span class="math notranslate nohighlight">\(-2^{vMinExp}\)</span> and         <code class="docutils literal notranslate"><span class="pre">enableInhibition</span> <span class="pre">==</span> <span class="pre">True</span></code>. Compartment is effectively INACTIVE until         it receives excitatory stimulus again
+* <strong>IDLE (2)</strong> - Compartment gets serviced
+* <strong>FIRED_LAST_TIME_STEP (3)</strong> - Compartment has fired in the last         time step
+* <strong>REFRACTORY (4)</strong> - The compartment has fired         <span class="math notranslate nohighlight">\(refractoryDelay &gt; 1\)</span> and the compartment has entered the         refractory state in which it will not update <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code>
+* <strong>INHIBITED_REFRACTORY (5)</strong> - Mixture of INHIBITED and REFRACTORY.         Compartment crossed <span class="math notranslate nohighlight">\(-2^{vMinExp}\)</span> but is not inhibited         indefinitely but for duration of <code class="docutils literal notranslate"><span class="pre">refractoryDelay</span></code></p>
+<p>(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.getAllParams">
+<code class="sig-name descname"><span class="pre">getAllParams</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.getAllParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the numpy arrays containing all shared and discrete values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>tuple of shared values numpy array and discrete values</p>
+</dd>
+</dl>
+<p>numpy array</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.getDiscreteParamIndices">
+<code class="sig-name descname"><span class="pre">getDiscreteParamIndices</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">discreteParams</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.getDiscreteParamIndices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of parameter indices associated with the discrete
+parameter names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>discreteParams</strong> (<em>list</em><em>(</em><em>string</em><em>)</em>) -- Discrete parameters</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of parameter indices</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.getPostTrace">
+<code class="sig-name descname"><span class="pre">getPostTrace</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traceParams</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.getPostTrace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.getSharedParamIndices">
+<code class="sig-name descname"><span class="pre">getSharedParamIndices</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sharedParams</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.getSharedParamIndices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of parameter indices associated with the shared
+parameter names.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sharedParams</strong> (<em>list</em><em>(</em><em>string</em><em>)</em>) -- Shared parameters</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of parameter indices</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.homeostasisGain">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">homeostasisGain</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.homeostasisGain" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>homeostasisGain</cite> controls how strongly <code class="docutils literal notranslate"><span class="pre">vThMant</span></code> gets modified by         <code class="docutils literal notranslate"><span class="pre">activity</span></code> leaving the range defined by <code class="docutils literal notranslate"><span class="pre">minActivity</span></code> ..         <code class="docutils literal notranslate"><span class="pre">maxActivity</span></code>. See <code class="docutils literal notranslate"><span class="pre">enahbleHomeostasis</span></code> for details.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.inputCompartmentId0">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">inputCompartmentId0</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.inputCompartmentId0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compartments can be organized into a binary tree structure to form         multi-compartment neurons. In this tree, each compartment can have two         other input compartments. <cite>inputCompartmentId0</cite> is the id of the first         input compartment.
+(Default=-1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.inputCompartmentId1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">inputCompartmentId1</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.inputCompartmentId1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compartments can be organized into a binary tree structure to form         multi-compartment neurons. In this tree, each compartment can have two         other input compartments. <cite>inputCompartmentId1</cite> is the id of the second         input compartment.
+(Default=-1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.logicalCoreId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">logicalCoreId</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.logicalCoreId" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>logicalCoreId</cite> specifies to which logical core a compartment gets         assigned during compilation. By default, this configuration will be         handled by the compiler.
+(Default=-1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.maxActivity">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">maxActivity</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.maxActivity" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>maxActivity</cite> is the upper threshold above which <code class="docutils literal notranslate"><span class="pre">vThMant</span></code> gets         increased to reduce the compartment <code class="docutils literal notranslate"><span class="pre">activity</span></code>. See         <code class="docutils literal notranslate"><span class="pre">enableHomeostasis</span></code> for details.
+(Default=127)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.minActivity">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">minActivity</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.minActivity" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>minActivity</cite> is the lower threshold below which <code class="docutils literal notranslate"><span class="pre">vThMant</span></code> gets         decreased to increase the compartment <code class="docutils literal notranslate"><span class="pre">activity</span></code>. See         <code class="docutils literal notranslate"><span class="pre">enableHomeostasis</span></code> for details.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.net">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">net</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.net" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.nodeIds">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nodeIds</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.nodeIds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.nodeSet">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nodeSet</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.nodeSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.nodeType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nodeType</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.nodeType" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.noiseExpAtCompartment">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">noiseExpAtCompartment</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.noiseExpAtCompartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exponent to scale range of uniform noise distribution. See         <code class="docutils literal notranslate"><span class="pre">enableNoise</span></code>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.noiseExpAtRefractoryDelay">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">noiseExpAtRefractoryDelay</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.noiseExpAtRefractoryDelay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exponent to scale range of uniform noise distribution. See         <code class="docutils literal notranslate"><span class="pre">enableRefractoryDelay</span></code>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.noiseMantAtCompartment">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">noiseMantAtCompartment</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.noiseMantAtCompartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mantissa to shift center of uniform noise distribution. See         <code class="docutils literal notranslate"><span class="pre">enableNoise</span></code>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.noiseMantAtRefractoryDelay">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">noiseMantAtRefractoryDelay</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.noiseMantAtRefractoryDelay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mantissa to shift center of uniform noise distribution. See         <code class="docutils literal notranslate"><span class="pre">enableRefractoryDelay</span></code>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.numDendriticAccumulators">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numDendriticAccumulators</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.numDendriticAccumulators" title="Permalink to this definition">¶</a></dt>
+<dd><p>There are two spike delay mechanism - <strong>shared axonal</strong> and         <strong>discrete synaptic delays</strong>. After a spike gets generated and the         axonal delay has passed, spikes get immediately distributed to the         receiving synapses even with non-zero <code class="docutils literal notranslate"><span class="pre">delay</span></code> where the <code class="docutils literal notranslate"><span class="pre">weight</span></code>         gets subsequently accumulated in the dendritic accumulator of a         compartment. A compartment has either 8, 16, 32 or 64 dendritic         accumulators which act as temporal buffers for a spike's <code class="docutils literal notranslate"><span class="pre">weight</span></code>         scheduled to arrive at a future time step after a certain <code class="docutils literal notranslate"><span class="pre">delay</span></code>.         <code class="docutils literal notranslate"><span class="pre">numDendriticAccumulators</span></code> must be larger than the maximum <code class="docutils literal notranslate"><span class="pre">delay</span></code>         of all synapses connecting to a compartment. Specifically, the maximum         synaptic <code class="docutils literal notranslate"><span class="pre">delay</span></code> &lt; <code class="docutils literal notranslate"><span class="pre">numDendriticAccumulators</span></code>-1. It is recommended         to select a small number and few different numbers to ease compilation         of the network.  The relationship between <code class="docutils literal notranslate"><span class="pre">delay</span></code> and         <code class="docutils literal notranslate"><span class="pre">numDendriticAccumulators</span></code> is because one of these accumulators is         associated with the current time step from which we read the current         synaptic activation. No spike message should write to this current         accumulator because that would lead to non-determinism of the readout         depending on whether the asynchronous write or read happens first. This         leaves <code class="docutils literal notranslate"><span class="pre">numDendriticAccumulators</span></code>-1 dendritic accumulators in which         synaptic activations for future time steps can be accumulated. Any         spike message has an implicit delay of 1 because a spike generated in         the current time step can only be accumulated at the destination in the         next time step. Thus, the synaptic delay must be         &lt;<code class="docutils literal notranslate"><span class="pre">numDendriticAccumulators</span></code>-1 or vice versa can be at most         <code class="docutils literal notranslate"><span class="pre">numDendriticAccumulators</span></code>-2.
+(Default=8)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.numNodes">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numNodes</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.numNodes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.postTraces">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">postTraces</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.postTraces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of post traces associated with compartment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.powerGatingState">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">powerGatingState</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.powerGatingState" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>powerGatingState</cite> is a low level state that should normally not be         touched by the user.
+(Default=3)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.probe">
+<code class="sig-name descname"><span class="pre">probe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cxParametersToProbe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probeConditions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.probe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a probe for the various compartment states (ex: compartment voltage, current, spikes, etc)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cxParametersToProbe</strong> -- The list of node parameters (in this case,         a compartment) to probe.</p></li>
+<li><p><strong>probeConditions</strong> -- A list of probeConditions. Each probeCondition         will be applied to the corresponding probe specified in the cxParametersToProbe list.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of NxProbe objects. NxProbe has properties and utility         methods to read and plot a particular node state</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- If there is mismatch between the probe parameters         and probe conditions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.profileId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">profileId</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.profileId" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.randomizeCurrent">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">randomizeCurrent</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.randomizeCurrent" title="Permalink to this definition">¶</a></dt>
+<dd><p>When True, randomizes <code class="docutils literal notranslate"><span class="pre">compartmentCurrent</span></code>. See <code class="docutils literal notranslate"><span class="pre">enableNoise</span></code>         for details. <cite>randomizeCurrent</cite> and <code class="docutils literal notranslate"><span class="pre">randomizeVoltage</span></code> cannot be True         at the same time.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.randomizeVoltage">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">randomizeVoltage</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.randomizeVoltage" title="Permalink to this definition">¶</a></dt>
+<dd><p>When True, randomizes <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code>. See <code class="docutils literal notranslate"><span class="pre">enableNoise</span></code>         for details. <code class="docutils literal notranslate"><span class="pre">randomizeCurrent</span></code> and <cite>randomizeVoltage</cite> cannot be True         at the same time.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.refractoryDelay">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">refractoryDelay</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.refractoryDelay" title="Permalink to this definition">¶</a></dt>
+<dd><p>After a compartment spikes it enters a refractory state of duration         <cite>refractoryDelay</cite> during which <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> does not         accumulate new inputs. The <cite>refractoryDelay</cite> can be randomized         <code class="docutils literal notranslate"><span class="pre">randomizeRefractoryDelay</span> <span class="pre">==</span> <span class="pre">True</span></code> in which case         <code class="docutils literal notranslate"><span class="pre">noiseMantAtRefractoryDelay</span></code> and <code class="docutils literal notranslate"><span class="pre">noiseExpAtRefractoryDelay</span></code> can be         used to share the distribution of the noise.
+(Default=1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.sharedFields">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">sharedFields</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.sharedFields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.stackIn">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">stackIn</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.stackIn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multi-compartment neurons are implemented via a stack by which         sending compartments can push the fields in <code class="docutils literal notranslate"><span class="pre">stackOut</span></code> to the stack         and receiving compartments can pop or peek information from the stack         according to <cite>stackIn</cite> setting. See <code class="docutils literal notranslate"><span class="pre">compartmentJoinOperation</span></code> on how         the information from the sending compartment is integrated into the         receiving compartment. The stack has a max depth of <strong>2</strong> so only         binary trees can be built.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To use stack operations, the functional state must be
+initialized as <strong>IDLE</strong></p>
+</div>
+<p>Valid Enum values from <strong>nx.COMPARTMENT_INPUT_MODE</strong> are:</p>
+<ul class="simple">
+<li><p><strong>NOT PROVIDED (-1)</strong> - Auto Populated by Compiler</p></li>
+<li><p><strong>SKIP (0)</strong> - Don't read from the Compartment Stack</p></li>
+<li><p><strong>PEEK_A (1)</strong> - Peek from the Compartment Stack</p></li>
+<li><p><strong>POP_A (2)</strong> - Pop from the Compartment Stack</p></li>
+<li><p><strong>POP_A_AND_B (3)</strong> - Pop two from the Compartment Stack</p></li>
+</ul>
+<p>(Default=-1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.stackOut">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">stackOut</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.stackOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multi-compartment neurons are implemented via a stack by which         sending compartments can push the fields in <cite>stackOut</cite> to the stack and         receiving compartments can pop or peek information from the stack         according to <code class="docutils literal notranslate"><span class="pre">stackIn</span></code> setting. See <code class="docutils literal notranslate"><span class="pre">compartmentJoinOperation</span></code> on         how the information from the sending compartment is integrated into the         receiving compartment. The stack has a max depth of <strong>2</strong> so only         binary trees can be built.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To use stack operations, the functional state must be
+initialized as <strong>IDLE</strong></p>
+</div>
+<p>Valid Enum values from <strong>nx.COMPARTMENT_OUTPUT_MODE</strong> are:</p>
+<ul class="simple">
+<li><p><strong>NOT PROVIDED (-1)</strong> - Auto Populated by Compiler</p></li>
+<li><p><strong>SKIP (0)</strong> - Don't push to the Compartment Stack</p></li>
+<li><p><strong>PUSH (1)</strong> - Push (V,S) to the Compartment Stack. V denotes the         membrane potential while S is the event when <span class="math notranslate nohighlight">\(v &gt; vth\)</span></p></li>
+</ul>
+<p>(Default=-1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.tEpoch">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tEpoch</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.tEpoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>It is         recommended to set <code class="docutils literal notranslate"><span class="pre">refractoryDelay</span> <span class="pre">&gt;=</span> <span class="pre">tEpoch</span></code> if <code class="docutils literal notranslate"><span class="pre">axonDelay</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>         to avoid loss of output spikes. Also it is recommended to use powers of         2 for efficiency.
+(Default=0)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><cite>tEpoch</cite> controls the interval at which <code class="docutils literal notranslate"><span class="pre">activity</span></code> and <code class="docutils literal notranslate"><span class="pre">vThMant</span></code>         (if <code class="docutils literal notranslate"><span class="pre">enableHomeostasis</span> <span class="pre">==</span> <span class="pre">True</span></code>) gets updated. Note</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.thresholdBehavior">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">thresholdBehavior</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.thresholdBehavior" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>thresholdBehavior</cite> indicates what to do when <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code>         exceeds <span class="math notranslate nohighlight">\(vthMant * 2^{6}\)</span>:
+* <strong>SPIKE_AND_RESET</strong> (0)
+* <strong>SPIKE_AND_RANDOMIZE_REFRACTORY_DELAY</strong> (1)
+* <strong>NO_SPIKE_AND_PASS_V_LG_VTH_TO_PARENT</strong> (2)
+* <strong>NO_SPIKE_AND_PASS_V_LG_VTH_TO_PARENT_AND_SATURATE_V</strong> (3)</p>
+<p>(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.useDiscreteVTh">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">useDiscreteVTh</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.useDiscreteVTh" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>useDiscreteVTh</cite> determines whether the compartment threshold is         stored as a shared parameter or discrete parameter.  If may different         compartment thresholds need to be configured, then enable         <cite>useDiscreteVTh</cite>.  Enabling <cite>useDiscreteVTh</cite> comes with a power and         performance impact.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.vMaxExp">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">vMaxExp</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.vMaxExp" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>vMaxExp</cite> determines the maximum voltage vMax at which         <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> saturates <span class="math notranslate nohighlight">\(vMax = 2^{vMaxExp}-1\)</span>. This can         be used in non-spiking multi-compartment-neuron compartments to         determine the maximum value of <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> that gets passed         on to the parent compartment in a dendritic tree. <cite>vMaxExp</cite> can only         take value from (9,11,13,15,17,19,21,23).
+(Default=23)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.vMinExp">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">vMinExp</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.vMinExp" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>vMinExp</cite> determines the minimum voltage vMin at which         <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> saturates <span class="math notranslate nohighlight">\(vMin = -2^{vMinExp}+1\)</span>. This         can be used to limit how strongly a compartment can be inhibited or         where it enters the INHIBITORY_REFRACTORY state. <cite>vMinExp</cite> can be any         integer between 0 and 23.
+(Default=23)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.Compartment.vThMant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">vThMant</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.Compartment.vThMant" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a compartment's <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> exceeds a voltage         threshold, a spike is produced and distributed by the compartment and         distributed to other connected destinations while the         <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> resets. The threshold voltage is represented by         a mantissa and a fixed exponent according to <span class="math notranslate nohighlight">\(vth = vthMant *         2^{6}\)</span>
+(Default=100)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.nodes.compartments.</span></code><code class="sig-name descname"><span class="pre">CompartmentPrototype</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logicalCoreId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentCurrent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentVoltage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">biasMant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">biasExp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vThMant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">useDiscreteVTh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">functionalState</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">powerGatingState</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputCompartmentId0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputCompartmentId1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axonDelay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numDendriticAccumulators</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentCurrentDecay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4096</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentVoltageDecay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activityTimeConstant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activityImpulse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refractoryDelay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enableNoise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">randomizeCurrent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">randomizeVoltage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noiseMantAtCompartment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noiseMantAtRefractoryDelay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noiseExpAtCompartment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noiseExpAtRefractoryDelay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholdBehavior</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vMinExp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">23</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vMaxExp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">23</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enableInhibition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enableRefractoryInhibition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enableHomeostasis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">homeostasisGain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxActivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">127</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minActivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enableSpikeBackprop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enableSpikeBackpropFromSelf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enableSpikeBackpropFromCompartment0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enableSpikeBackpropFromCompartment1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentJoinOperation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stackIn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stackOut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tEpoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base CompartmentPrototype Interface</p>
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.activity">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">activity</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.activity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <cite>activity</cite> corresponds to an exponential filter of a         compartment's spiking history. For every compartment's spike,         <cite>activity</cite> increases by <code class="docutils literal notranslate"><span class="pre">activityImpulse</span></code> and decays exponentially         otherwise with a time constant <code class="docutils literal notranslate"><span class="pre">activityTimeConstant</span></code>. <cite>activity</cite> is         only updated at intervals set by <code class="docutils literal notranslate"><span class="pre">tEpoch</span></code> within which only a single         spike should be produced by the compartment otherwise the accuracy of         <code class="docutils literal notranslate"><span class="pre">activity</span></code> with respect to an exact exponential filter degrades         gracefully. The exponential decay itself is only approximated         stochastically due to the limited bit precision. <code class="docutils literal notranslate"><span class="pre">activity</span></code> is used         for threshold homeostasis but can also be used to approximate an         instantaneous firing rate of a compartment for readout.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.activityImpulse">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">activityImpulse</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.activityImpulse" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>activitiyImpulse</cite> specifies the amount by which <code class="docutils literal notranslate"><span class="pre">activity</span></code>         increases for each compartment spike.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.activityTimeConstant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">activityTimeConstant</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.activityTimeConstant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decay time constant by which <code class="docutils literal notranslate"><span class="pre">activity</span></code> decays approximately         exponentially over time.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.addDendrite">
+<code class="sig-name descname"><span class="pre">addDendrite</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prototype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joinOp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.addDendrite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds single child compartment prototype to the compartment prototype.
+Appropriately sets the input and output modes as well as the join
+operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>prototype</strong> (<a class="reference internal" href="#nxsdk.net.nodes.compartments.CompartmentPrototype" title="nxsdk.net.nodes.compartments.CompartmentPrototype"><em>CompartmentPrototype</em></a>) -- Single object, list or tuple</p>
+</dd>
+</dl>
+<p>of compartment prototypes
+:param enum joinOp: The compartment join operation to be used
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.addDendrites">
+<code class="sig-name descname"><span class="pre">addDendrites</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prototypeA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototypeB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joinOp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.addDendrites" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds two child compartment prototypes to the compartment prototype.
+Appropriately sets the input and output modes as well as the join
+operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>prototype</strong> (<a class="reference internal" href="#nxsdk.net.nodes.compartments.CompartmentPrototype" title="nxsdk.net.nodes.compartments.CompartmentPrototype"><em>CompartmentPrototype</em></a>) -- Single object, list or tuple</p>
+</dd>
+</dl>
+<p>of compartment prototypes
+:param enum joinOp: The compartment join operation to be used
+:return: None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.axonDelay">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">axonDelay</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.axonDelay" title="Permalink to this definition">¶</a></dt>
+<dd><p>The compartment should only spike once per <code class="docutils literal notranslate"><span class="pre">tEpoch</span></code> if         <code class="docutils literal notranslate"><span class="pre">axonDelay</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>, otherwise additional delayed spikes will be lost and         not get distributed.Axon delay has to satisfy the relationship         <code class="docutils literal notranslate"><span class="pre">2*tEpoch</span> <span class="pre">&gt;=</span> <span class="pre">axonDelay</span></code>.``tEpoch`` can be up to 63. Therefore,         <code class="docutils literal notranslate"><span class="pre">axonDelay</span></code> can have a maximum value of 189.
+(Default=0)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>There are two spike delay mechanism - discrete axonal and discrete         synaptic delays. After a compartment spikes, the outgoing spike will be         delayed by <code class="docutils literal notranslate"><span class="pre">axonDelay</span></code> before distribution to its outgoing synapses.         Note</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.axonId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">axonId</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.axonId" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>axonId</cite> is the id of a compartment's output axon.
+(Default=-1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.bias">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">bias</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the bias current using the following computation         <span class="math notranslate nohighlight">\(bias = biasMant * 2^{biasExp}\)</span>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.biasExp">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">biasExp</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.biasExp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> integrates a compartment's bias current         which is represented by a mantissa and exponent according to         <span class="math notranslate nohighlight">\(bias = biasMant * 2^{biasExp}\)</span>
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.biasMant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">biasMant</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.biasMant" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> integrates a compartment's bias current         which is represented by a mantissa and exponent according to         <span class="math notranslate nohighlight">\(bias = biasMant * 2^{biasExp}\)</span>
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentCurrent">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentCurrent</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentCurrent" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <cite>compartmentCurrent</cite> integrates incoming weighted spikes from         the dendritic accumulator and possibly inputs from other compartments         but decays exponentially otherwise according to:
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u_i</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">=</span> <span class="n">u_i</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> \<span class="n">cdot</span> <span class="p">(</span><span class="mi">2</span><span class="o">^</span><span class="p">{</span><span class="mi">12</span><span class="p">}</span> <span class="o">-</span> \<span class="n">delta_i</span><span class="o">^</span><span class="p">{(</span><span class="n">u</span><span class="p">)})</span>   \<span class="n">cdot2</span><span class="o">^</span><span class="p">{</span><span class="o">-</span><span class="mi">12</span><span class="p">}</span> <span class="o">+</span>         <span class="mi">2</span><span class="o">^</span><span class="p">{</span><span class="mi">6</span><span class="o">+</span><span class="n">wgtExp</span><span class="p">}</span>\<span class="n">sum_jw_</span><span class="p">{</span><span class="n">ij</span><span class="p">}</span>\<span class="n">cdot</span> <span class="n">s_j</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(\delta_i^{(u)}\)</span> represents the decay and <span class="math notranslate nohighlight">\(u_i(t)\)</span>         reprsents the compartment current at timestep <cite>t</cite>. For details see the         Loihi Computational Model whitepaper.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentCurrentDecay">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentCurrentDecay</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentCurrentDecay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decay constant by which the <code class="docutils literal notranslate"><span class="pre">compartmentCurrent</span></code> decays per time         step. If <strong>tau</strong> is the decay time constant for the approximated         exponential decay exp(-t/tau) time constant in time steps, then         <span class="math notranslate nohighlight">\(compartmentCurrentDecay = (1/tau)*2^{12}\)</span>.
+(Default=4096)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentCurrentTimeConstant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentCurrentTimeConstant</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentCurrentTimeConstant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets compartmentCurrentTimeConstant (tau) which is the decay time         constant for the approximated exponential current decay         exp(-t/tau) in time steps. It is internally represented as         <span class="math notranslate nohighlight">\(compartmentCurrentDecay = (1/tau)*2^{12}\)</span>.
+(Default=1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentJoinOperation">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentJoinOperation</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentJoinOperation" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>compartmentJoinOperation</cite> controls how the <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code>         (V) or dendritic spikes (S) from input compartments get integrated with         <code class="docutils literal notranslate"><span class="pre">compartmentCurrent</span></code> (U) into <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> (V) of the         current compartment:
+* <strong>SKIP (0)</strong> :  Do not integrate input from input compartment.
+* <strong>ADD (1)</strong> :   <span class="math notranslate nohighlight">\(C.dV = C.U + A.V + B.V\)</span>
+* <strong>MAX (2)</strong> :   <span class="math notranslate nohighlight">\(C.dV = max(C.U, A.V, B.V)\)</span>
+* <strong>MIN (3)</strong> :   <span class="math notranslate nohighlight">\(C.dV = min(C.U, A.V, B.V)\)</span>
+* <strong>PASS (4)</strong> :  <span class="math notranslate nohighlight">\(C.dV = A.S ? C.U + B.V : 0\)</span> (Condition C.U +         B.V integration by dendritic spike of A)
+* <strong>BLOCK (5)</strong> : <span class="math notranslate nohighlight">\(C.dV = A.S ? 0: C.U + B.V\)</span> (Condition C.U +         B.V integration by A not providing a dendritic spike)
+* <strong>OR (6)</strong> :    <span class="math notranslate nohighlight">\(C.dS = A.S | B.S | C.S\)</span>
+* <strong>AND (7)</strong> :   <span class="math notranslate nohighlight">\(C.dS = A.S \&amp; B.S \&amp; C.S\)</span> (B.S=1 if         <code class="docutils literal notranslate"><span class="pre">stackIn==POP</span></code>)</p>
+<p>(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentThreshold">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentThreshold</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentThreshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the voltage threshold. When a compartment reaches its voltage         threshold, spikes are sent across all its connections.
+compartmentThreshold is internally represented as         <span class="math notranslate nohighlight">\(compartmentThreshold = vthMant * 2^{6}\)</span>.
+(Default=6400)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentVoltage">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentVoltage</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentVoltage" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <cite>compartmentVoltage</cite> integrates <code class="docutils literal notranslate"><span class="pre">compartmentCurrent</span></code>, the         compartment bias and possibly inputs from other compartments according         to:
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">compartmentVoltage</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">=</span> <span class="n">compartmentVoltage</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span>
+
+<span class="p">(</span> <span class="mi">2</span><span class="o">^</span><span class="p">{</span><span class="mi">12</span><span class="p">}</span> <span class="o">-</span> <span class="n">compartmentVoltageDecay</span> <span class="p">)</span><span class="o">*</span> <span class="mi">2</span><span class="o">^</span><span class="p">{</span><span class="o">-</span><span class="mi">12</span><span class="p">}</span> <span class="o">+</span>
+
+<span class="n">compartmentCurrent</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="n">biasMant</span> <span class="o">*</span> <span class="mi">2</span><span class="o">^</span><span class="p">{</span><span class="n">biasExp</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>For details see the Loihi Computational Model whitepaper. Note: When         <cite>compartmentVoltage</cite> exceeds <span class="math notranslate nohighlight">\(vthMant * 2^{6}\)</span>, the compartment         produces a spike and <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> resets.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentVoltageDecay">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentVoltageDecay</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentVoltageDecay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decay constant by which the <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> decays per time         step. If <strong>tau</strong> is the decay time constant for the approximated         exponential decay exp(-t/tau) time constant in time steps, then         <span class="math notranslate nohighlight">\(compartmentVoltageDecay = (1/tau)*2^{12}\)</span>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentVoltageTimeConstant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">compartmentVoltageTimeConstant</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.compartmentVoltageTimeConstant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets compartmentVoltageTimeConstant (tau) which is the decay time         constant for the approximated exponential voltage decay         exp(-t/tau) in time steps. It is internally represented as         <span class="math notranslate nohighlight">\(compartmentVoltageDecay = (1/tau)*2^{12}\)</span>.
+(Default=inf)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.enableHomeostasis">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableHomeostasis</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.enableHomeostasis" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>enableHomeostasis</cite> determines whether <code class="docutils literal notranslate"><span class="pre">vThMant</span></code> gets updated via         <code class="docutils literal notranslate"><span class="pre">activity</span></code> driven threhold homeostasis. When enabled <code class="docutils literal notranslate"><span class="pre">vThMant</span></code> is         modified in the following two cases:
+* <strong>activity &gt; maxActivity</strong> : <span class="math notranslate nohighlight">\(vThMant = homeostasisGain *         (activity - maxActivity)\)</span>
+* <strong>activity &lt; minActivity</strong> : <span class="math notranslate nohighlight">\(vThMant = homeostasisGain *         (activity - minActivity)\)</span></p>
+<p>(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.enableInhibition">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableInhibition</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.enableInhibition" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>enableInhibition</cite> determined whether a compartment can enter the         INHIBITED state when <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> crosses         <span class="math notranslate nohighlight">\(-2^{vMinExp}\)</span>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.enableNoise">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableNoise</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.enableNoise" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>enableNoise</cite> allows for randomization of either         <code class="docutils literal notranslate"><span class="pre">compartmentCurrent</span></code> or <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> depending on whether         <code class="docutils literal notranslate"><span class="pre">randomizeCurrent</span></code> or <code class="docutils literal notranslate"><span class="pre">randomizeVoltage</span></code> is set. Both variables can         be randomized by adding
+<span class="math notranslate nohighlight">\((LFSR() − 2^{7} + noiseMantAtCompartment * 2^{6}) *         2^{noiseExpAtCompartment − 7})\)</span>
+where LFSR() returns an 8-bit random integer in the range 0..255.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.enableRefractoryInhibition">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableRefractoryInhibition</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.enableRefractoryInhibition" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>enableRefractoryInhibition</cite> determined whether a compartment can         enter the INHIBITED_REFRACTORY state when <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code>         crosses <span class="math notranslate nohighlight">\(-2^{vMinExp}\)</span>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.enableSpikeBackprop">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableSpikeBackprop</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.enableSpikeBackprop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables spike backpropagation mechanism. This will propagate spikes         from a compartment back to its input synapses and/or other input         compartments if the compartment is part of a dendritic tree. When spike         back backpropagation is enabled, <code class="docutils literal notranslate"><span class="pre">enableSpikeBackpropFrom</span></code> selects         the source that can give rise to a back propagating spike.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.enableSpikeBackpropFromCompartment0">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableSpikeBackpropFromCompartment0</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.enableSpikeBackpropFromCompartment0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables spike backpropagation when compartment receives dendritic         spike from inputCompartment0
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.enableSpikeBackpropFromCompartment1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableSpikeBackpropFromCompartment1</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.enableSpikeBackpropFromCompartment1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables spike backpropagation when compartment receives dendritic         spike from inputCompartment1
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.enableSpikeBackpropFromSelf">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableSpikeBackpropFromSelf</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.enableSpikeBackpropFromSelf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables spike backpropagation when compartment spikes itself.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.functionalState">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">functionalState</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.functionalState" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>functionalState</cite> represents the current functional state of the         compartment state machine. The possible states are:
+* <strong>INACTIVE (0)</strong> - Compartment does not get serviced
+* <strong>INHIBITED (1)</strong> - Compartment crossed <span class="math notranslate nohighlight">\(-2^{vMinExp}\)</span> and         <code class="docutils literal notranslate"><span class="pre">enableInhibition</span> <span class="pre">==</span> <span class="pre">True</span></code>. Compartment is effectively INACTIVE until         it receives excitatory stimulus again
+* <strong>IDLE (2)</strong> - Compartment gets serviced
+* <strong>FIRED_LAST_TIME_STEP (3)</strong> - Compartment has fired in the last         time step
+* <strong>REFRACTORY (4)</strong> - The compartment has fired         <span class="math notranslate nohighlight">\(refractoryDelay &gt; 1\)</span> and the compartment has entered the         refractory state in which it will not update <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code>
+* <strong>INHIBITED_REFRACTORY (5)</strong> - Mixture of INHIBITED and REFRACTORY.         Compartment crossed <span class="math notranslate nohighlight">\(-2^{vMinExp}\)</span> but is not inhibited         indefinitely but for duration of <code class="docutils literal notranslate"><span class="pre">refractoryDelay</span></code></p>
+<p>(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.homeostasisGain">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">homeostasisGain</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.homeostasisGain" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>homeostasisGain</cite> controls how strongly <code class="docutils literal notranslate"><span class="pre">vThMant</span></code> gets modified by         <code class="docutils literal notranslate"><span class="pre">activity</span></code> leaving the range defined by <code class="docutils literal notranslate"><span class="pre">minActivity</span></code> ..         <code class="docutils literal notranslate"><span class="pre">maxActivity</span></code>. See <code class="docutils literal notranslate"><span class="pre">enahbleHomeostasis</span></code> for details.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.inputCompartmentId0">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">inputCompartmentId0</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.inputCompartmentId0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compartments can be organized into a binary tree structure to form         multi-compartment neurons. In this tree, each compartment can have two         other input compartments. <cite>inputCompartmentId0</cite> is the id of the first         input compartment.
+(Default=-1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.inputCompartmentId1">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">inputCompartmentId1</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.inputCompartmentId1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compartments can be organized into a binary tree structure to form         multi-compartment neurons. In this tree, each compartment can have two         other input compartments. <cite>inputCompartmentId1</cite> is the id of the second         input compartment.
+(Default=-1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.logicalCoreId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">logicalCoreId</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.logicalCoreId" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>logicalCoreId</cite> specifies to which logical core a compartment gets         assigned during compilation. By default, this configuration will be         handled by the compiler.
+(Default=-1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.maxActivity">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">maxActivity</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.maxActivity" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>maxActivity</cite> is the upper threshold above which <code class="docutils literal notranslate"><span class="pre">vThMant</span></code> gets         increased to reduce the compartment <code class="docutils literal notranslate"><span class="pre">activity</span></code>. See         <code class="docutils literal notranslate"><span class="pre">enableHomeostasis</span></code> for details.
+(Default=127)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.minActivity">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">minActivity</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.minActivity" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>minActivity</cite> is the lower threshold below which <code class="docutils literal notranslate"><span class="pre">vThMant</span></code> gets         decreased to increase the compartment <code class="docutils literal notranslate"><span class="pre">activity</span></code>. See         <code class="docutils literal notranslate"><span class="pre">enableHomeostasis</span></code> for details.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.noiseExpAtCompartment">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">noiseExpAtCompartment</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.noiseExpAtCompartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exponent to scale range of uniform noise distribution. See         <code class="docutils literal notranslate"><span class="pre">enableNoise</span></code>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.noiseExpAtRefractoryDelay">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">noiseExpAtRefractoryDelay</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.noiseExpAtRefractoryDelay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exponent to scale range of uniform noise distribution. See         <code class="docutils literal notranslate"><span class="pre">enableRefractoryDelay</span></code>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.noiseMantAtCompartment">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">noiseMantAtCompartment</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.noiseMantAtCompartment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mantissa to shift center of uniform noise distribution. See         <code class="docutils literal notranslate"><span class="pre">enableNoise</span></code>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.noiseMantAtRefractoryDelay">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">noiseMantAtRefractoryDelay</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.noiseMantAtRefractoryDelay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mantissa to shift center of uniform noise distribution. See         <code class="docutils literal notranslate"><span class="pre">enableRefractoryDelay</span></code>.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.numDendriticAccumulators">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numDendriticAccumulators</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.numDendriticAccumulators" title="Permalink to this definition">¶</a></dt>
+<dd><p>There are two spike delay mechanism - <strong>shared axonal</strong> and         <strong>discrete synaptic delays</strong>. After a spike gets generated and the         axonal delay has passed, spikes get immediately distributed to the         receiving synapses even with non-zero <code class="docutils literal notranslate"><span class="pre">delay</span></code> where the <code class="docutils literal notranslate"><span class="pre">weight</span></code>         gets subsequently accumulated in the dendritic accumulator of a         compartment. A compartment has either 8, 16, 32 or 64 dendritic         accumulators which act as temporal buffers for a spike's <code class="docutils literal notranslate"><span class="pre">weight</span></code>         scheduled to arrive at a future time step after a certain <code class="docutils literal notranslate"><span class="pre">delay</span></code>.         <code class="docutils literal notranslate"><span class="pre">numDendriticAccumulators</span></code> must be larger than the maximum <code class="docutils literal notranslate"><span class="pre">delay</span></code>         of all synapses connecting to a compartment. Specifically, the maximum         synaptic <code class="docutils literal notranslate"><span class="pre">delay</span></code> &lt; <code class="docutils literal notranslate"><span class="pre">numDendriticAccumulators</span></code>-1. It is recommended         to select a small number and few different numbers to ease compilation         of the network.  The relationship between <code class="docutils literal notranslate"><span class="pre">delay</span></code> and         <code class="docutils literal notranslate"><span class="pre">numDendriticAccumulators</span></code> is because one of these accumulators is         associated with the current time step from which we read the current         synaptic activation. No spike message should write to this current         accumulator because that would lead to non-determinism of the readout         depending on whether the asynchronous write or read happens first. This         leaves <code class="docutils literal notranslate"><span class="pre">numDendriticAccumulators</span></code>-1 dendritic accumulators in which         synaptic activations for future time steps can be accumulated. Any         spike message has an implicit delay of 1 because a spike generated in         the current time step can only be accumulated at the destination in the         next time step. Thus, the synaptic delay must be         &lt;<code class="docutils literal notranslate"><span class="pre">numDendriticAccumulators</span></code>-1 or vice versa can be at most         <code class="docutils literal notranslate"><span class="pre">numDendriticAccumulators</span></code>-2.
+(Default=8)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.powerGatingState">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">powerGatingState</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.powerGatingState" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>powerGatingState</cite> is a low level state that should normally not be         touched by the user.
+(Default=3)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.randomizeCurrent">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">randomizeCurrent</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.randomizeCurrent" title="Permalink to this definition">¶</a></dt>
+<dd><p>When True, randomizes <code class="docutils literal notranslate"><span class="pre">compartmentCurrent</span></code>. See <code class="docutils literal notranslate"><span class="pre">enableNoise</span></code>         for details. <cite>randomizeCurrent</cite> and <code class="docutils literal notranslate"><span class="pre">randomizeVoltage</span></code> cannot be True         at the same time.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.randomizeVoltage">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">randomizeVoltage</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.randomizeVoltage" title="Permalink to this definition">¶</a></dt>
+<dd><p>When True, randomizes <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code>. See <code class="docutils literal notranslate"><span class="pre">enableNoise</span></code>         for details. <code class="docutils literal notranslate"><span class="pre">randomizeCurrent</span></code> and <cite>randomizeVoltage</cite> cannot be True         at the same time.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.refractoryDelay">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">refractoryDelay</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.refractoryDelay" title="Permalink to this definition">¶</a></dt>
+<dd><p>After a compartment spikes it enters a refractory state of duration         <cite>refractoryDelay</cite> during which <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> does not         accumulate new inputs. The <cite>refractoryDelay</cite> can be randomized         <code class="docutils literal notranslate"><span class="pre">randomizeRefractoryDelay</span> <span class="pre">==</span> <span class="pre">True</span></code> in which case         <code class="docutils literal notranslate"><span class="pre">noiseMantAtRefractoryDelay</span></code> and <code class="docutils literal notranslate"><span class="pre">noiseExpAtRefractoryDelay</span></code> can be         used to share the distribution of the noise.
+(Default=1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.stackIn">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">stackIn</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.stackIn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multi-compartment neurons are implemented via a stack by which         sending compartments can push the fields in <code class="docutils literal notranslate"><span class="pre">stackOut</span></code> to the stack         and receiving compartments can pop or peek information from the stack         according to <cite>stackIn</cite> setting. See <code class="docutils literal notranslate"><span class="pre">compartmentJoinOperation</span></code> on how         the information from the sending compartment is integrated into the         receiving compartment. The stack has a max depth of <strong>2</strong> so only         binary trees can be built.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To use stack operations, the functional state must be
+initialized as <strong>IDLE</strong></p>
+</div>
+<p>Valid Enum values from <strong>nx.COMPARTMENT_INPUT_MODE</strong> are:</p>
+<ul class="simple">
+<li><p><strong>NOT PROVIDED (-1)</strong> - Auto Populated by Compiler</p></li>
+<li><p><strong>SKIP (0)</strong> - Don't read from the Compartment Stack</p></li>
+<li><p><strong>PEEK_A (1)</strong> - Peek from the Compartment Stack</p></li>
+<li><p><strong>POP_A (2)</strong> - Pop from the Compartment Stack</p></li>
+<li><p><strong>POP_A_AND_B (3)</strong> - Pop two from the Compartment Stack</p></li>
+</ul>
+<p>(Default=-1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.stackOut">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">stackOut</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.stackOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multi-compartment neurons are implemented via a stack by which         sending compartments can push the fields in <cite>stackOut</cite> to the stack and         receiving compartments can pop or peek information from the stack         according to <code class="docutils literal notranslate"><span class="pre">stackIn</span></code> setting. See <code class="docutils literal notranslate"><span class="pre">compartmentJoinOperation</span></code> on         how the information from the sending compartment is integrated into the         receiving compartment. The stack has a max depth of <strong>2</strong> so only         binary trees can be built.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To use stack operations, the functional state must be
+initialized as <strong>IDLE</strong></p>
+</div>
+<p>Valid Enum values from <strong>nx.COMPARTMENT_OUTPUT_MODE</strong> are:</p>
+<ul class="simple">
+<li><p><strong>NOT PROVIDED (-1)</strong> - Auto Populated by Compiler</p></li>
+<li><p><strong>SKIP (0)</strong> - Don't push to the Compartment Stack</p></li>
+<li><p><strong>PUSH (1)</strong> - Push (V,S) to the Compartment Stack. V denotes the         membrane potential while S is the event when <span class="math notranslate nohighlight">\(v &gt; vth\)</span></p></li>
+</ul>
+<p>(Default=-1)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.tEpoch">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tEpoch</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.tEpoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>It is         recommended to set <code class="docutils literal notranslate"><span class="pre">refractoryDelay</span> <span class="pre">&gt;=</span> <span class="pre">tEpoch</span></code> if <code class="docutils literal notranslate"><span class="pre">axonDelay</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>         to avoid loss of output spikes. Also it is recommended to use powers of         2 for efficiency.
+(Default=0)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><cite>tEpoch</cite> controls the interval at which <code class="docutils literal notranslate"><span class="pre">activity</span></code> and <code class="docutils literal notranslate"><span class="pre">vThMant</span></code>         (if <code class="docutils literal notranslate"><span class="pre">enableHomeostasis</span> <span class="pre">==</span> <span class="pre">True</span></code>) gets updated. Note</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.thresholdBehavior">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">thresholdBehavior</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.thresholdBehavior" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>thresholdBehavior</cite> indicates what to do when <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code>         exceeds <span class="math notranslate nohighlight">\(vthMant * 2^{6}\)</span>:
+* <strong>SPIKE_AND_RESET</strong> (0)
+* <strong>SPIKE_AND_RANDOMIZE_REFRACTORY_DELAY</strong> (1)
+* <strong>NO_SPIKE_AND_PASS_V_LG_VTH_TO_PARENT</strong> (2)
+* <strong>NO_SPIKE_AND_PASS_V_LG_VTH_TO_PARENT_AND_SATURATE_V</strong> (3)</p>
+<p>(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.useDiscreteVTh">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">useDiscreteVTh</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.useDiscreteVTh" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>useDiscreteVTh</cite> determines whether the compartment threshold is         stored as a shared parameter or discrete parameter.  If may different         compartment thresholds need to be configured, then enable         <cite>useDiscreteVTh</cite>.  Enabling <cite>useDiscreteVTh</cite> comes with a power and         performance impact.
+(Default=0)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.vMaxExp">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">vMaxExp</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.vMaxExp" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>vMaxExp</cite> determines the maximum voltage vMax at which         <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> saturates <span class="math notranslate nohighlight">\(vMax = 2^{vMaxExp}-1\)</span>. This can         be used in non-spiking multi-compartment-neuron compartments to         determine the maximum value of <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> that gets passed         on to the parent compartment in a dendritic tree. <cite>vMaxExp</cite> can only         take value from (9,11,13,15,17,19,21,23).
+(Default=23)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.vMinExp">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">vMinExp</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.vMinExp" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>vMinExp</cite> determines the minimum voltage vMin at which         <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> saturates <span class="math notranslate nohighlight">\(vMin = -2^{vMinExp}+1\)</span>. This         can be used to limit how strongly a compartment can be inhibited or         where it enters the INHIBITORY_REFRACTORY state. <cite>vMinExp</cite> can be any         integer between 0 and 23.
+(Default=23)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.nodes.compartments.CompartmentPrototype.vThMant">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">vThMant</span></code><a class="headerlink" href="#nxsdk.net.nodes.compartments.CompartmentPrototype.vThMant" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a compartment's <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> exceeds a voltage         threshold, a spike is produced and distributed by the compartment and         distributed to other connected destinations while the         <code class="docutils literal notranslate"><span class="pre">compartmentVoltage</span></code> resets. The threshold voltage is represented by         a mantissa and a fixed exponent according to <span class="math notranslate nohighlight">\(vth = vthMant *         2^{6}\)</span>
+(Default=100)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="connection.html" class="btn btn-neutral float-right" title="Connection and ConnectionPrototype" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="nxnet.html" class="btn btn-neutral float-left" title="NxNet API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+Programming SNIPs
+=================
+.. figure:: _static/nxsdk_overview.png
+   :alt: SNIPs
+
+Revisiting our overview picture above, we can see that most of a spiking neural network (SNN) can be created using the :doc:`nxnet` or :doc:`nxcore`. With these APIs we can define the network of compartments and connections, configure the compartment dynamics, modify the weights and delays of the synapses and axons,  create multi-compartment neurons and dendritic trees, and monitor network activity with u, v, a and spike probes. Additionally with these high level APIs we have the ability to define learning rules, choosing the learning epoch and finding the right balance of pre- and post- synaptic traces to enable STDP learning. Finally, we have the ability to define and use basic spike generators that can send spikes into the network.
+
+What we have, with the above framework, is the ability to:
+
+1. Define a network of connected compartments (including dynamics, learning rules, epoch settings, weights, etc)
+2. Define the probes we would like to use to monitor network activity.
+3. Define the spike generator we will use
+4. Run the network for N time steps
+5. Review the timeseries data back from the probes
+
+Note the very linear nature of the above flow: define, run, analyze. 
+
+In creating these APIs our core focus has been on the ease of development and definition of a spiking neural network. We recognized early on, however, that it isn't enough to just define the network, run it for a few time steps and then analyze it. We want to be able to do things like add new neurons, or prune synapses, or update learning rules. To that end, we developed an architecture we call symmetric neural interfacing processes or SNIPs. As catchy as this name is, as our framework has evolved, we are likely to shorten the name to just process. 
+
+At the heart of this architecture is what we call the SNN Application Framework. This framework is a simple C program running on one of the x86 cores of Loihi. The sequence diagram below describes its operation.
+
+.. figure:: _static/statemachine.png
+   :alt:
+
+There are four primary components to the application framework:
+
+1. The **Network Control Loop** - this loops runs for N timesteps, where N== the number of time steps you specify in board.run(N) in your python script. 
+2. **Spiking** - the spiking component first checks to see if there are any spikes on the receiving channel (see below). If there are, it checks the time stamp on the spike and if the timestamp on the spike is less than or equal to NOW, then the spike is sent to the target input axon. You control spikes and spike times being sent into this framework by using a Spike Generator. During this phase, custom SNIPs can also be executed.
+3. **Learning** - the learning component first checks to see if the current timestep coincides with a learning epoch. If it does, then any custom pre-learning management SNIP you want to run will be executed. The sort of SNIPs you would run in here would include modifying learning rules or pre-trace configuration.
+4. **Management** - the management component will execute every time step, first checking to see if there's a reason to run any custom SNIP you provide, and then running it.
+
+In our current architecture, each chip has 3 x86 cores. Snips can be configured to run on any of the x86 core of any chip, provided chipId is less than number of chips allocated to the network. Following information must be kept in mind, while using snips :
+
+1. Snips located on chip x can read the state of neurocore registers located on any chip.
+2. Snips located on chip x can only write neurocore registers located on chip x.
+3. Snips can be used to send remote spike to any other chip.
+
+Keep these components in mind as we learn more about SNIPs. Also, note that this application framework runs each and everytime you call board.run(N), regardless of whether or not you are using SNIPs.
+
+.. figure:: _static/sniparch.png
+   :alt:
+
+Using the SNIP architecture is quite simple:
+
+1. You setup your network as before.
+2. You then setup your SNIPs. You will need always set one up for the init phases of the application framework. This will allow you to setup communication channels. You can then optionally configure one or more SNIPs for the pre-learning, spiking or management phases. See the code snippet below for an example. For each of these, you have to write the C code for the accompanying snip method. You can see an example of this in the examples/snips directory.
+3. Next, set up any send/recieve channels you'd like to have for communication with the SNIP (code snippet below).
+4. Lastly, call board.run(N).
+
+Code to create SNIPs for the init and management phases. A "guard" is a chunk of code that is executed first (returning a boolean) that determines if the run code should actually be executed. chipId and lmtID determines on which x86 core will this snip run. chipId can take any value less than number of chips allocated to the network, while lmtId takes value 0,1,2. Default value of both chipId and lmtId is 0.
+
+.. code-block:: python
+
+    # Defining a process which will run during init phase
+    # This snip will run on chip 0 lmt 1
+    initProcess = board.createProcess(
+                                      name="initprocess",
+                                      cFilePath=os.path.dirname(os.path.realpath(__file__))+ "/initsnip.c",
+                                      includeDir=os.path.dirname(os.path.realpath(__file__)),
+                                      funcName="initsnip",
+                                      guardName=None,
+                                      phase="init",
+                                      lmtId=1
+                                     )
+
+    # Defining a process which will run during spiking phase
+    # This snip will run on chip 1 lmt 0
+    spikingProcess = board.createProcess(
+                                         name="spikingProcess",
+                                         cFilePath=os.path.dirname(os.path.realpath(__file__))+ "/spiking.c",
+                                         includeDir=os.path.dirname(os.path.realpath(__file__)),
+                                         funcName="run_spiking",
+                                         guardName="do_spiking",
+                                         phase="spiking",
+                                         chipId=1,
+                                         lmtId=0
+                                        )
+
+    # Defining a process which will during run mgmt phase
+    # This snip will run on chip 0 lmt 0
+    runMgmtProcess = board.createProcess(
+                                         name="runMgmt",
+                                         cFilePath=os.path.dirname(os.path.realpath(__file__))+ "/runmgmt.c",
+                                         includeDir=os.path.dirname(os.path.realpath(__file__)),
+                                         funcName="run_mgmt",
+                                         guardName="do_run_mgmt",
+                                         phase="mgmt",
+                                        )
+
+
+Code to create communication channels. This will allow your python code running on your computer (the superhost) to communicate with the C-based SNIP code running on the x86.
+
+.. code-block:: python
+
+   # Create channel named imageChannel for sending data
+   imageChannel = board.createChannel(b'imageChannel', "int", 15)
+   # Create channel named recvChannel for receiving data back from lakemont
+   recvChannel = board.createChannel(b'recvChannel', "int", 15)
+
+   # Connecting imageChannel from Superhost to initProcess making it send channel
+   imageChannel.connect(None, initProcess)
+   # Connecting recvChannel from initProcess to Superhost making it recv channel
+   recvChannel.connect(initProcess, None)
+
+NxNet C API
+-----------   
+Within your SNIP using the NxNet C API you can directly access the compartments and compartment groups you create at the NxNet level. The keywords, **nxCompartment** and **nxCompartmentGroup** are reserved to allow you to refer to the NxNet compartments and compartment groups, respectively. The compartments and similarly the compartment groups can be indexed in the order in which they were created at the NxNet level, where the index starts at 0. These indices can be retrieved from the compartments and compartment groups by accessing the compartment.nodeId and compartmentGroup.id, respectively.
+
+Consider the following NxNet code that creates three compartments and a single compartment group containing two compartments.
+
+.. code-block:: python
+
+   # Create a prototype for the compartments
+   proto = nx.CompartmentPrototype(biasMant=100,
+                                   biasExp=6,
+                                   vThMant=1000,
+                                   functionalState=2,
+                                   compartmentVoltageDecay=256,
+                                   compartmentCurrentDecay=409)
+
+   # Create compartments using the prototype
+   compartment0 = net.createCompartment(proto)
+   compartment1 = net.createCompartment(proto)             
+   compartment2 = net.createCompartment(proto)
+
+   # Create a compartment group of size zero and add compartments
+   compGrp = net.createCompartmentGroup(size=0,prototype=proto)                
+   compGrp.addCompartments(compartment1)
+   compGrp.addCompartments(compartment2)
+                
+   # Verify the compartment index for compartment2
+   print("Compartment index for compartment2 is ", compartment2.nodeId)
+
+   # Verify the compartment group index for compGrp
+   print("Compartment group index for compGrp is ", compGrp.id)
+                
+We can refer to the third compartment created in the above NxNet code (i.e. compartment2) within the SNIP by specifying the compartment index, i.e. index 2 or by specifying its index within the compartment group, i.e. index 1.
+
+.. code-block:: c
+
+   // Access the bias for the third compartment created in NxNet
+   int bias = nxCompartment[2].Bias;
+
+   // Access the bias for the same compartment through the compartment group
+   bias = nxCompartmentGroup[0][1].Bias;
+
+You can **access** and **set** the following fields in the compartments (either directly or through the compartment group):
+
+* **Bias**          (equivalent to NxNet *biasMant*)
+* **BiasExp**       (equivalent to NxNet *biasExp*)
+* **Decay_u**       (equivalent to NxNet *compartmentCurrentDecay*)
+* **Decay_v**       (equivalent to NxNet *compartmentVoltageDecay*)
+* **RefractDelay**  (equivalent to NxNet *refractoryDelay*)
+* **Vth**           (equivalent to NxNet *vThMant*)
+
+You can also **set** these same values for all of the compartments in a compartment group. Accessing the values from a compartment group is not valid syntax and is not allowed.
+
+.. code-block:: c
+
+   // Set the compartment voltage decay for all of the compartments in nxCompartmentGroup[0]
+   nxCompartmentGroup[0].Decay_v = 50;
+
+   // Invalid syntax! Cannot access the compartment group fields
+   // int decayV = nxCompartmentGroup[0].Decay_v;
+
+Besides using literal values to index the compartments and compartment groups it is also valid to use variable indices. **Indices with side effects are NOT allowed, e.g. nxCompartmentGroup[i++]**.
+nxCompartment[m+n] or nxCompartment[m+1] is OK.
+
+.. code-block:: c
+
+   // Use a variable index to refer to a compartment
+   nxCompartment[n].Bias = m;
+
+   // Use two variable indices to refer to a compartment within a compartment group
+   nxCompartmentGroup[j][k].BiasExp = 5;
+
+   // Use a variable to index the compartment within a compartment group
+   nxCompartmentGroup[0][k].Decay_u = 40;
+
+The following are NxNet C API reserved keywords and **cannot** be used as variable names within your SNIP.
+
+* **nxNC**
+* **nxCore**
+* **nxPtr**
+* **nxVthPrfStaticCfg**
+* **nxCxCfg**
+* **nxCxPrfCfg**
+
+When using conditional statements with a single expression to be executed, braces are mandatory.
+
+.. code-block:: c
+
+   // if conditional statement with braces
+   if (s->time_step == 100) {
+     nxCompartment[15].Bias = 50;
+   } 
+
+Within a single statement only one keyword, i.e. nxCompartment/nxCompartmentGroup, should appear.
+
+.. code-block:: c
+
+   // Invalid code! Multiple keywords in same statement
+   // nxCompartment[0].Bias = nxCompartment[1].Bias;
+
+   // The above code can be accomplished with the following
+   int bias = nxCompartment[0].Bias;
+   nxCompartment[1].Bias = bias;
+
+For any given core, compartments with the same voltage decay, current decay, and refractory delay values may share configuration registers. If multiple compartments are sharing a single configuration register, when a single compartment's decay_u/decay_v/refractory delay values are updated it will also update these values for all of the other compartments sharing this configuration register. If you want to be able to update these values for a certain compartment or compartments you can provide a unique tuple (composed of decay_u, decay_v and refractory values) in the compartment prototype.
+
+Similarly, it is possible that compartments with the same Vth will share the same configuration register. In order to distinguish compartments you can specify different Vth values in the compartment prototype.
+
+If the useDiscreteVth setting is enabled in the compartment prototype, then setting the compartment's Vth through the NxNet C API will not take effect.
+
+.. note:: Floating point operations are not supported on embedded snips due to lack of architecture support. Please consider quantization/discretization before processing values within embedded snips.
+   
+See Also
+--------
+:doc:`graph`
+
+:doc:`host_snips`
+

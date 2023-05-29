@@ -1,0 +1,101 @@
+#######################
+Trace Injection Module 
+#######################
+
+The DVS module provides an Nx SDK interface to Dynamic Vision Sensors.
+This interface can take 3 main forms:
+
+- A direct hardware interface from DAVIS240C to Kapoho Bay or Nahuku32
+- A software interface from a pre-recorded .AEDAT file
+- A software interface from manually specified x, y, p values
+
+All three of the above interfaces are shown in **nxsdk_modules/dvs/tutorials**
+
+Whether using a hardware or software interface, the spikes are delivered to a 
+SNIP which handles the spike injection.
+The default snip can be found at **nxsdk_modules/dvs/src/snips**. 
+Custom snip examples are covered by the tutorial and can be 
+found at **nxsdk_modules/dvs/tutorials/snips**.
+
+The DVS module also provides an example of live spike visualization.
+This feature uses spikeOutputPorts which are currently only supported on Kapoho Bay.
+The visualizer code is found at **nxsdk_modules/dvs/tutorials/visualizer** and use
+of the visualizer is covered by the dvs_live tutorial.
+
+Direct Hardware Interface
+#########################
+
+The direct hardware interface currently only supports DAVIS240C, 
+and only works on Kapoho Bay or Nahuku32 (with DVS adapter card).
+
+The cable used for the connection is **SAMTEC FFSD-20-D-X-01-N** 
+(where **X** is cable length).
+
+The image below shows the correct cable configuration.
+
+.. figure:: _static/KBdvs.png
+   :alt: Kapoho Bay with DVS attached
+   
+The top PCB on Kapoho Bay will pull events off the DAVIS sensor and deliver them to the SNIP.
+
+A FIFO for buffering events sits between the DAVIS240C chip and the KapohoBay Lakemont. 
+If this FIFO fills up, the buffered spikes will be dropped.
+The default SNIP runs fast enough to inject DAVIS240C spikes without dropping any, but more
+complex custom SNIPs could result in the loss of spikes.
+
+Instructions for running with a live interface:
+
+- Connect cable between Kapoho Bay (or Nahuku) and DAVIS240C as shown above
+- Power both devices
+- Configure DAVIS240C to allow access to the AER interface. This can be done either with jAER or cAER.
+
+  - jAER instructions (version 1.6.3):
+    
+    - launch jAERviewer and confirm that the DAVIS240C is detected
+    - click the "HW configuration" button in the lower left
+    - go to the "Multiplexer Config" tab and select "Mux.ForceChipBiasEnable"
+    - go to the "DVS config" tab and select "DVS.ExternalAERControl"
+    - also on the "DVS config" tab, deselect "DVS.Run"
+  
+  - cAER instructions:
+    
+    - cAER is available from https://gitlab.com/inivation/libcaer
+    - Follow the instructions to build and run **examples/davis_enable_aer.cpp**
+
+You should now be able to run the tutorial at **nxsdk_modules.dvs.tutorials.dvs_live**
+
+AEDAT Interface
+###############
+
+The AEDAT interface allows the user to inject spikes from a pre-recorded DVS file created with jAER.
+This functionality is useful for repeatedly testing a model with the exact same input data.
+
+The spikes are delivered to the same SNIP as the direct hardware interface, so transitioning from
+AEDAT file to the direct hardware interface should be seamless.
+
+Manual Spike Interface
+######################
+
+The manual spike interface allows the user to explicitly state the x, y, p, t event values. 
+This is useful for running simple tests on synthetic data to verify a network is operating 
+correctly.
+
+The manual spike interface uses the same SNIP as the AEDAT and Hardware interfaces so 
+transitioning between interfaces should be seamless.
+A spikeGen could be used in place of the Manual Spike Interface, but it would not make use 
+of the DVS SNIPs.
+
+Direct Trace Injection Module Documentation
+#############################################
+
+.. automodule:: nxsdk_modules.trace_injection.src.direct_trace_injection
+   :members: 
+   :undoc-members:
+
+
+Spike Trace Injection Module Documentation
+#############################################
+
+.. automodule:: nxsdk_modules.trace_injection.src.spike_trace_injection
+   :members: 
+   :undoc-members:

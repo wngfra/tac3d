@@ -1,0 +1,35 @@
+NxCore: Soma Homeostatis
+========================
+
+Motivation
+----------
+Within this tutorial we learn how to use the Soma Homeostatis.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_20.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_20_soma_homeostatis.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_meta_state`
+* :doc:`cx_profile_cfg`
+* :doc:`cx_cfg`
+* :doc:`num_updates`
+* :doc:`dendrite_accum_cfg`
+* :doc:`axon_map`
+* :doc:`axon_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+* :doc:`tracecfggen`
+* :doc:`inputgen`

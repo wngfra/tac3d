@@ -1,0 +1,6 @@
+Trace Config Gen
+================
+.. automodule:: nxsdk.arch.n2a.compiler.tracecfggen.tracecfggen
+   :members:
+   :undoc-members:
+   

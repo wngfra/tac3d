@@ -1,0 +1,24 @@
+NxCore: synapse format compression invariance
+=========================
+
+Motivation
+----------
+This tutorial shows that the use of dense or sparse compression does not affect the behavior.
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_09_synapse_format_compression_invariance.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`axonMap`
+* :doc:`vth_profile_cfg`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+
+

@@ -1,0 +1,34 @@
+NxCore: Learning
+================
+
+Motivation
+----------
+This tutorial illustrates how to setup pre and post traces as well as STDP and I-STDP rules to enable learning. Building atop of the previous learning tutorial, we add the complexity of delay.
+
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_18.png
+   :alt: diagram
+
+Location
+--------
+| nxsdk-apps/tutorials/nxcore/tutorial_18_learning.py
+| nxsdk-apps/tutorials/nxcore/tutorial_18b_delay_learning.py
+| nxsdk-apps/tutorials/nxcore/tutorial_18c_ISTDP.py
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`stdp_pre_profile_cfg`
+* :doc:`stdp_profile_cfg`
+* :doc:`stdp_post_state`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+* :doc:`time_state`
+* :doc:`tracecfggen`
+* :doc:`inputgen`
+* :doc:`num_updates`

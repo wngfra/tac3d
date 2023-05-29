@@ -1,0 +1,531 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Working with Probes and Monitors in NxNet &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Energy and Execution Time Probes" href="energy_probes.html" />
+    <link rel="prev" title="Groups" href="groups.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxnet.html">NxNet API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compartment.html">Compartment and CompartmentPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connection.html">Connection and ConnectionPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connectionsharing.html">Connection Sharing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron.html">Neuron and NeuronPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="groups.html">Groups</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Working with Probes and Monitors in NxNet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#energy-and-execution-time-probes">Energy and Execution Time Probes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="energy_probes.html">Energy and Execution Time Probes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="telemetry.html">Performing Energy Measurements in Pohoiki Spring and Kapoho Bay Using Telemetry Server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="learningrule.html">Specifying a Learning Rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multicompartment.html">Building Multi Compartment Neuron Model using Stack Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spikeinjectionandreceivers.html">Spike Injection and Spike Receivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxlogging.html">Logging in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcompiler.html">NxCompiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxnet_resource_map.html">NxNet Resource Map Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxnet.html">NxNet API</a> &raquo;</li>
+        
+      <li>Working with Probes and Monitors in NxNet</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="working-with-probes-and-monitors-in-nxnet">
+<h1>Working with Probes and Monitors in NxNet<a class="headerlink" href="#working-with-probes-and-monitors-in-nxnet" title="Permalink to this headline">¶</a></h1>
+<p>Probes enable you to see how the network changes over time. Below you should find examples on how to create probes
+and helper utilities to plot probes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This example shows how to configure probes for a single compartment</span>
+<span class="n">compartment</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="c1"># Create a compartment probe to probe the compartment states:</span>
+<span class="c1"># compartment current(U) and compartment voltage(V)</span>
+<span class="c1"># probeConditions=None implies default probe conditions</span>
+<span class="c1"># will be used for each probe</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span> <span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">]</span>
+<span class="n">probes</span> <span class="o">=</span> <span class="n">compartment</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">probeConditions</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This example shows how to configure probes for a compartment group</span>
+<span class="n">compartmentGrp</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
+
+<span class="c1"># Create a compartment group probe to probe the compartment states:</span>
+<span class="c1"># compartment current(U) and compartment voltage(V)</span>
+<span class="c1"># Since no ProbeCondition is specified, a default probe condition</span>
+<span class="c1"># will be used.</span>
+<span class="n">probes</span> <span class="o">=</span> <span class="n">compartmentGrp</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                   <span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Various <strong>ProbeParameters</strong> are enlisted below.</p>
+<dl class="py class">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.api.enums.api_enums.</span></code><code class="sig-name descname"><span class="pre">ProbeParameter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Various state parameters that can be probed</p>
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.COMPARTMENT_CURRENT">
+<code class="sig-name descname"><span class="pre">COMPARTMENT_CURRENT</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'compartmentCurrent'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.COMPARTMENT_CURRENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.COMPARTMENT_VOLTAGE">
+<code class="sig-name descname"><span class="pre">COMPARTMENT_VOLTAGE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'compartmentVoltage'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.COMPARTMENT_VOLTAGE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.ENERGY">
+<code class="sig-name descname"><span class="pre">ENERGY</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'energy'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.ENERGY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.EXECUTION_TIME">
+<code class="sig-name descname"><span class="pre">EXECUTION_TIME</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'executionTime'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.EXECUTION_TIME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.POST_TRACE_Y1">
+<code class="sig-name descname"><span class="pre">POST_TRACE_Y1</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'postTrace</span> <span class="pre">y1'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.POST_TRACE_Y1" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST_TRACE_Y1 is unsupported due to a hardware restriction</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.POST_TRACE_Y2">
+<code class="sig-name descname"><span class="pre">POST_TRACE_Y2</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'postTrace</span> <span class="pre">y2'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.POST_TRACE_Y2" title="Permalink to this definition">¶</a></dt>
+<dd><p>POST_TRACE_Y2 is unsupported due to a hardware restriction</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.PRE_TRACE_X1">
+<code class="sig-name descname"><span class="pre">PRE_TRACE_X1</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'preTrace</span> <span class="pre">x1'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.PRE_TRACE_X1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.PRE_TRACE_X2">
+<code class="sig-name descname"><span class="pre">PRE_TRACE_X2</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'preTrace</span> <span class="pre">x2'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.PRE_TRACE_X2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.REWARD_TRACE">
+<code class="sig-name descname"><span class="pre">REWARD_TRACE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'rewardTrace'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.REWARD_TRACE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.SOMA_STATE_ACTIVITY">
+<code class="sig-name descname"><span class="pre">SOMA_STATE_ACTIVITY</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'activity'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.SOMA_STATE_ACTIVITY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.SOMA_THRESHOLD_VOLTAGE">
+<code class="sig-name descname"><span class="pre">SOMA_THRESHOLD_VOLTAGE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'vThMant'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.SOMA_THRESHOLD_VOLTAGE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.SPIKE">
+<code class="sig-name descname"><span class="pre">SPIKE</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'spike'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.SPIKE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.SYNAPSE_DELAY">
+<code class="sig-name descname"><span class="pre">SYNAPSE_DELAY</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'delay'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.SYNAPSE_DELAY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.SYNAPSE_TAG">
+<code class="sig-name descname"><span class="pre">SYNAPSE_TAG</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'tag'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.SYNAPSE_TAG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.api.enums.api_enums.ProbeParameter.SYNAPSE_WEIGHT">
+<code class="sig-name descname"><span class="pre">SYNAPSE_WEIGHT</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'weight'</span></em><a class="headerlink" href="#nxsdk.api.enums.api_enums.ProbeParameter.SYNAPSE_WEIGHT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<p>You may use any plotting libraries to plot probes. NxSDK uses <em>matplotlib</em> to plot probes.
+See <a class="reference internal" href="nxnet_jupyter_tutorials.html"><span class="doc">tutorials</span></a> for examples.</p>
+<p>To quickly plot a list of probes, use <strong>plotProbes</strong> mentioned below.</p>
+<dl class="py method">
+<dt id="nxsdk.utils.plotutils.plotProbes">
+<code class="sig-prename descclassname"><span class="pre">plotutils.</span></code><code class="sig-name descname"><span class="pre">plotProbes</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.utils.plotutils.plotProbes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a list of probes.</p>
+<p>Valid arguments are either a single list of NxProbes/ProbeSets or a     nested sequence of NxProbes/ProbeSets with uniform dimensions like (4*3) signifying four compartments (groups)     and three kinds of probes.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To customize the axes and other features, you may modify the figure object returned from this method.</p>
+</div>
+<p><strong>Usage</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">Plot</span> <span class="pre">list</span> <span class="pre">of</span> <span class="pre">NxProbes</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">probes</span> <span class="o">=</span> <span class="n">compartment</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                             <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">],</span> <span class="n">probeConditions</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+<span class="c1"># ... net.run() ...</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">plotProbes</span><span class="p">(</span><span class="n">probes</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Plot</span> <span class="pre">a</span> <span class="pre">nested</span> <span class="pre">list</span> <span class="pre">of</span> <span class="pre">NxProbes</span> <span class="pre">(typically</span> <span class="pre">from</span> <span class="pre">many</span> <span class="pre">components)</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">probes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+    <span class="n">probeList</span> <span class="o">=</span> <span class="n">compartment</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                    <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                    <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">],</span> <span class="n">probeConditions</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">probes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">probeList</span><span class="p">)</span>
+
+<span class="c1"># ... net.run() ...</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">plotProbes</span><span class="p">(</span><span class="n">probes</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Plot</span> <span class="pre">a</span> <span class="pre">nested</span> <span class="pre">list</span> <span class="pre">of</span> <span class="pre">ProbeSets</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cg1</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">prototype1</span><span class="p">)</span>
+<span class="n">cg2</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">prototype1</span><span class="p">)</span>
+
+<span class="n">probeParameters</span> <span class="o">=</span> <span class="p">[</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                    <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                    <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">]</span>
+<span class="n">probeConditions</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">probes1</span> <span class="o">=</span> <span class="n">cg1</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="n">probeParameters</span><span class="p">,</span> <span class="n">probeConditions</span><span class="p">)</span>
+<span class="n">probes2</span> <span class="o">=</span> <span class="n">cg2</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="n">probeParameters</span><span class="p">,</span> <span class="n">probeConditions</span><span class="p">)</span>
+
+<span class="c1"># ... net.run() ...</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">plotProbes</span><span class="p">(</span><span class="n">probes</span> <span class="o">=</span> <span class="p">[</span><span class="n">probes1</span><span class="p">,</span> <span class="n">probes2</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>probes</strong> -- list or list[list] of NxProbes/ProbeSets</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-nxsdk.graph.monitor.nx_probes"></span><dl class="py class">
+<dt id="nxsdk.graph.monitor.nx_probes.NxProbe">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.graph.monitor.nx_probes.</span></code><code class="sig-name descname"><span class="pre">NxProbe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">probeTypeEnum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameterToProbe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probeCondition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.nx_probes.NxProbe" title="Permalink to this definition">¶</a></dt>
+<dd><p>NxProbe provides the user the ability to probe the dynamic state variables
+of the various nodeset elements - compartments, connections, etc. - defined
+in an NxNet. Thus a &quot;node&quot; could either be a compartment or a connection, etc.</p>
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.nx_probes.NxProbe.data">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">data</span></code><a class="headerlink" href="#nxsdk.graph.monitor.nx_probes.NxProbe.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the actual values of the node state that was probed in a
+list. Thus, for example, data[5] gives the value measured by the
+probe at timestep=5.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.nx_probes.NxProbe.plot">
+<code class="sig-name descname"><span class="pre">plot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.nx_probes.NxProbe.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a plot of the values of nodestate probed vs. the time steps at which the probe data was collected.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.monitor.nx_probes.NxProbe.timeVector">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">timeVector</span></code><a class="headerlink" href="#nxsdk.graph.monitor.nx_probes.NxProbe.timeVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the time series vector for the corresponding probe - i.e.
+the vector of time steps at which the node state was probed. For
+example, if a compartment state was measured after every 3 timsteps,
+starting at timestep =5, then timeVector = [5, 8, 11, 14,...]</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.graph.monitor.nx_probes.NxProbeType">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.graph.monitor.nx_probes.</span></code><code class="sig-name descname"><span class="pre">NxProbeType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.monitor.nx_probes.NxProbeType" title="Permalink to this definition">¶</a></dt>
+<dd><p>An enumeration.</p>
+<dl class="py attribute">
+<dt id="nxsdk.graph.monitor.nx_probes.NxProbeType.COMPARTMENT">
+<code class="sig-name descname"><span class="pre">COMPARTMENT</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Compartment</span> <span class="pre">Probe'</span></em><a class="headerlink" href="#nxsdk.graph.monitor.nx_probes.NxProbeType.COMPARTMENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.graph.monitor.nx_probes.NxProbeType.COMPARTMENT_GROUP">
+<code class="sig-name descname"><span class="pre">COMPARTMENT_GROUP</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Compartment</span> <span class="pre">Group</span> <span class="pre">Probe'</span></em><a class="headerlink" href="#nxsdk.graph.monitor.nx_probes.NxProbeType.COMPARTMENT_GROUP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.graph.monitor.nx_probes.NxProbeType.CONNECTION">
+<code class="sig-name descname"><span class="pre">CONNECTION</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Connection</span> <span class="pre">Probe'</span></em><a class="headerlink" href="#nxsdk.graph.monitor.nx_probes.NxProbeType.CONNECTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.graph.monitor.nx_probes.NxProbeType.CONNECTION_GROUP">
+<code class="sig-name descname"><span class="pre">CONNECTION_GROUP</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Connection</span> <span class="pre">Group</span> <span class="pre">Probe'</span></em><a class="headerlink" href="#nxsdk.graph.monitor.nx_probes.NxProbeType.CONNECTION_GROUP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.graph.monitor.nx_probes.NxProbeType.CONN_PRE_TRACE_DOUBLE_ENTRY">
+<code class="sig-name descname"><span class="pre">CONN_PRE_TRACE_DOUBLE_ENTRY</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Double</span> <span class="pre">pre-trace</span> <span class="pre">entry'</span></em><a class="headerlink" href="#nxsdk.graph.monitor.nx_probes.NxProbeType.CONN_PRE_TRACE_DOUBLE_ENTRY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.graph.monitor.nx_probes.NxProbeType.CONN_PRE_TRACE_SINGLE_ENTRY">
+<code class="sig-name descname"><span class="pre">CONN_PRE_TRACE_SINGLE_ENTRY</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Single</span> <span class="pre">pre-trace</span> <span class="pre">entry'</span></em><a class="headerlink" href="#nxsdk.graph.monitor.nx_probes.NxProbeType.CONN_PRE_TRACE_SINGLE_ENTRY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<div class="section" id="energy-and-execution-time-probes">
+<h2>Energy and Execution Time Probes<a class="headerlink" href="#energy-and-execution-time-probes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="energy_probes.html"><span class="doc">Energy and Execution Time Probes</span></a></p></li>
+</ul>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="energy_probes.html">Energy and Execution Time Probes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="energy_probes.html#how-power-and-execution-time-are-recorded">How Power and Execution Time are recorded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy_probes.html#phases-for-each-algorithmic-timestep">Phases for each algorithmic timestep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy_probes.html#configuring-probes">Configuring Probes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy_probes.html#designing-a-power-test">Designing a Power Test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy_probes.html#components-of-power-consumption">Components of Power Consumption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy_probes.html#power-measurement-sequence">Power Measurement Sequence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy_probes.html#power-report">Power Report</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy_probes.html#executiontimeprobe">ExecutionTimeProbe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="energy_probes.html#energyprobe">EnergyProbe</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="telemetry.html">Performing Energy Measurements in Pohoiki Spring and Kapoho Bay Using Telemetry Server</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="energy_probes.html" class="btn btn-neutral float-right" title="Energy and Execution Time Probes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="groups.html" class="btn btn-neutral float-left" title="Groups" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

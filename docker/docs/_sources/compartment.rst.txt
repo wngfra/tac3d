@@ -1,0 +1,7 @@
+Compartment and CompartmentPrototype
+====================================
+.. automodule:: nxsdk.net.nodes.compartments
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :exclude-members: CompartmentInterface

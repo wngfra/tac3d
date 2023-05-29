@@ -1,0 +1,1577 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>25. Neurons vs Compartments &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="NxCore Tutorials" href="../nxcore_tutorials.html" />
+    <link rel="prev" title="24. vMinExp and vMaxExp Setup" href="t_vMinExp_and_vMaxExp.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../nxnet_tutorials.html">NxNet Tutorials</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../nxnet_jupyter_tutorials.html">NxNet Jupyter Tutorials</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="a_compartment_setup.html">1. Compartment, CompartmentPrototype and Probes Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b_connecting_compartments.html">2. Connecting compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="c_stimulating_compartments.html">3. Stimulating compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="d_synaptic_plasticity.html">4. Synaptic plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="e_neuronal_homeostasis.html">5. Neuronal homeostasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="f_rewards_learning.html">6. Learning with Rewards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="g_snip_for_threshold_modulation.html">7. SNIPs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="h_reward_trace.html">8. Reward Trace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i_performance_profiling.html">9. Performance profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="j_soft_reset_core.html">10. Hard vs. soft membrane voltage reset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="j_soft_reset_net.html">11. Soft reset membrane voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="k_interactive_spike_sender_receiver.html">12. Interactive Spike Sender and Spike Receivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l_snip_for_compartment_setup_with_NxNet_C.html">13. Setup Compartments with NxNet C API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="m_independent_networks_in_same_run.html">14. Independent Networks in Same Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="n_stochastic_networks.html">15. Stochastic Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="n_stochastic_networks.html#C.-Puttin-It-All-Together">16. C. Puttin It All Together</a></li>
+<li class="toctree-l3"><a class="reference internal" href="n_stochastic_networks.html#Modify-createWtaMotif1-to-Include-Detector-Neuron">17. Modify createWtaMotif1 to Include Detector Neuron</a></li>
+<li class="toctree-l3"><a class="reference internal" href="o_snip_for_reading_lakemont_spike_count.html">18. Read Lakemont Spike Count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="p_composable_networks.html">19. Composable Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="q_connection_sharing.html">20. Connection Sharing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="r_stubs_and_netmodules.html">21. Stubs and NetModules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="r_stubs_and_netmodules.html#NetModules">22. NetModules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s_multicx_neuron_self_reward.html">23. Implementation of a multi-compartment neuron with self-reward feedback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="t_vMinExp_and_vMaxExp.html">24. vMinExp and vMaxExp Setup</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">25. Neurons vs Compartments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#How-to-create-a-neuron">25.1. How to create a neuron</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Multi-compartment-neurons">26. Multi-compartment neurons</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Push-operations">26.1. Push operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Join-operations">26.2. Join operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Helper-function-for-creating-a-multi-compartment-neuron-with-a-single-dendrite">26.3. Helper function for creating a multi-compartment neuron with a single dendrite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#SKIP-operation">26.4. SKIP operation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Join-operation-with-two-dendritic-compartments">26.5. Join operation with two dendritic compartments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Building-a-deeper-dendritic-tree">26.6. Building a deeper dendritic tree</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../nxcore_tutorials.html">NxCore Tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../tutorials.html">Tutorials</a> &raquo;</li>
+        
+          <li><a href="../nxnet_jupyter_tutorials.html">NxNet Jupyter Tutorials</a> &raquo;</li>
+        
+      <li><span class="section-number">25. </span>Neurons vs Compartments</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># INTEL CORPORATION CONFIDENTIAL AND PROPRIETARY</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2019-2021 Intel Corporation.</span>
+<span class="c1">#</span>
+<span class="c1"># This software and the related documents are Intel copyrighted</span>
+<span class="c1"># materials, and your use of them is governed by the express</span>
+<span class="c1"># license under which they were provided to you (License). Unless</span>
+<span class="c1"># the License provides otherwise, you may not use, modify, copy,</span>
+<span class="c1"># publish, distribute, disclose or transmit  this software or the</span>
+<span class="c1"># related documents without Intel&#39;s prior written permission.</span>
+<span class="c1">#</span>
+<span class="c1"># This software and the related documents are provided as is, with</span>
+<span class="c1"># no express or implied warranties, other than those that are</span>
+<span class="c1"># expressly stated in the License.</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">nxsdk.api.n2a</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Neurons-vs-Compartments">
+<h1><span class="section-number">25. </span>Neurons vs Compartments<a class="headerlink" href="#Neurons-vs-Compartments" title="Permalink to this headline">¶</a></h1>
+<p>In the NxSDK, a neuron consists of a soma, and optionally, a binary dendritic tree. A neuron with no dendritic tree is just a single-compartment neuron (just the soma) and is the same as the compartment used in most other tutorials. A compartment is therefore just a special case of a neuron, but a neuron can also consist of many compartments (a multi-compartment neuron).</p>
+<p><img alt="Neuron vs compartment" src="../_images/jupyter_multicompartment_neuron_vs_compartment.png" /></p>
+<p>Just like interface for individual compartments, neurons are defined by first creating a neuron prototype. Thereafter, a single neuron, or group of neurons can be created from the neuron prototype in the same way that individual compartments are created from compartment prototypes.</p>
+<div class="section" id="How-to-create-a-neuron">
+<h2><span class="section-number">25.1. </span>How to create a neuron<a class="headerlink" href="#How-to-create-a-neuron" title="Permalink to this headline">¶</a></h2>
+<p>Below we show how to create a single-compartment neuron and that it behaves the same as a compartment.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">net</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+
+<span class="c1"># create a compartment prototype</span>
+<span class="n">compartmentProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                                           <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                           <span class="n">vThMant</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                                           <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                           <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+<span class="c1"># create a compartment</span>
+<span class="n">compartment</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">compartmentProto</span><span class="p">)</span>
+
+
+<span class="c1"># create a neuron prototype from the compartment prototype</span>
+<span class="n">neuronProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NeuronPrototype</span><span class="p">(</span><span class="n">compartmentProto</span><span class="p">)</span>
+
+<span class="c1"># create a neuron</span>
+<span class="n">neuron</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createNeuron</span><span class="p">(</span><span class="n">neuronProto</span><span class="p">)</span>
+
+<span class="c1"># probe the compartment and the neuron</span>
+<span class="p">(</span><span class="n">uProbes_c</span><span class="p">,</span> <span class="n">vProbes_c</span><span class="p">,</span> <span class="n">sProbes_c</span><span class="p">)</span> <span class="o">=</span> <span class="n">compartment</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                       <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                       <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+
+<span class="c1"># note that we probe the neuron soma because the neuron can also optionally have dendrites</span>
+<span class="p">(</span><span class="n">uProbes_n</span><span class="p">,</span> <span class="n">vProbes_n</span><span class="p">,</span> <span class="n">sProbes_n</span><span class="p">)</span> <span class="o">=</span> <span class="n">neuron</span><span class="o">.</span><span class="n">soma</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                       <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                       <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+
+<span class="n">net</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">net</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
+<span class="c1"># soma ignores d.V from dendrite and fires with its own bias</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Compartments and single-compartment neurons are the same thing&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;compartment current&#39;</span><span class="p">)</span>
+<span class="n">uProbes_c</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;compartment voltage&#39;</span><span class="p">)</span>
+<span class="n">vProbes_c</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;compartment spike&#39;</span><span class="p">)</span>
+<span class="n">sProbes_c</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;neuron current&#39;</span><span class="p">)</span>
+<span class="n">uProbes_n</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;neuron voltage&#39;</span><span class="p">)</span>
+<span class="n">vProbes_n</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;neuron spike&#39;</span><span class="p">)</span>
+<span class="n">sProbes_n</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Connecting to 134.134.68.36:36159
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 0.32s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding axons/synapses.....Done 1.18ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Args chip=0 cpu=0 /home/gorchard/nxsdk-nxsdk/nxsdk/driver/../bin/arm/simple_snn.bin --chips=1 --remote-relay=0 --epoch=0
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Lakemont_driver...
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Booting up..................Done 10.04s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding probes.............Done 0.72ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 3.84ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 4.07ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.44ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Executing...................Done 5.64ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Processing timeseries.......Done 6.36ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Executor: 50 timesteps..........Done 10.41s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  chip=0 cpu=0 halted, status=0x0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_u_join_op_in_multi_compartment_neuron_4_1.png" src="../_images/jupyter_u_join_op_in_multi_compartment_neuron_4_1.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Multi-compartment-neurons">
+<h1><span class="section-number">26. </span>Multi-compartment neurons<a class="headerlink" href="#Multi-compartment-neurons" title="Permalink to this headline">¶</a></h1>
+<p>A multi-compartment neuron is a binary tree of compartments. Each node (compartment) in the tree can have up to two child nodes (also compartments), A and B. The root node is the soma compartment, and the child nodes are the dendritic compartments. When a compartment has two children, child A and its children cannot branch.</p>
+<p><img alt="branching" src="../_images/jupyter_multicompartment_tree.png" /></p>
+<div class="section" id="Push-operations">
+<h2><span class="section-number">26.1. </span>Push operations<a class="headerlink" href="#Push-operations" title="Permalink to this headline">¶</a></h2>
+<p>The “Push” operation for a dendrite defines the output of that dendrite (the value it communicates to other compartments). A dendrite can push either its voltage (PUSH) or its current (PUSH_U). The default push operation for dendrites is PUSH_V.</p>
+</div>
+<div class="section" id="Join-operations">
+<h2><span class="section-number">26.2. </span>Join operations<a class="headerlink" href="#Join-operations" title="Permalink to this headline">¶</a></h2>
+<p>The “Join” operation defines how a node (soma or dendrite) incorporates the input from its dendrites. This tutorial will walk through the different join operations and their behaviour.</p>
+<div class="section" id="nomenclature">
+<h3><span class="section-number">26.2.1. </span>nomenclature<a class="headerlink" href="#nomenclature" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>symbol</p></th>
+<th class="head"><p>meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>C</p></td>
+<td><p>The parent node</p></td>
+</tr>
+<tr class="row-odd"><td><p>A, B</p></td>
+<td><p>The child nodes (dendrites)</p></td>
+</tr>
+<tr class="row-even"><td><p>C.S[t]</p></td>
+<td><p>whether C would produce a spike before the join op is considered (the join op can block the spike)</p></td>
+</tr>
+<tr class="row-odd"><td><p>C.S’[t]</p></td>
+<td><p>whether C actually spikes at time t</p></td>
+</tr>
+<tr class="row-even"><td><p>X.V[t]</p></td>
+<td><p>voltage of compartment X, where X is either A, B, or C. If X spiked, X.V is the value before the reset (i.e. it will be greater than threshold)</p></td>
+</tr>
+<tr class="row-odd"><td><p>X.U[t]</p></td>
+<td><p>current of compartment X, where X is either A, B, or C</p></td>
+</tr>
+<tr class="row-even"><td><p>X.U’[t]</p></td>
+<td><p>current of compartment X incorporating bias, ie. X.U’[t] = X.U[t] + X.bias</p></td>
+</tr>
+<tr class="row-odd"><td><p>A[t]</p></td>
+<td><p>The output of dendrite A at time t, which is either A.V[t] or A.U’[t] depending on the PUSH operation. A[t]=0 if there are no dendrites</p></td>
+</tr>
+<tr class="row-even"><td><p>B[t]</p></td>
+<td><p>The output of dendrite B at time t, which is either B.V[t] or B.U’[t] depending on the PUSH operation. B[t]=0 if there are less than 2 dendrites</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="join-operation-summary">
+<h3><span class="section-number">26.2.2. </span>join operation summary<a class="headerlink" href="#join-operation-summary" title="Permalink to this headline">¶</a></h3>
+<p>A compartment “C” updates as:</p>
+<p>C.V[t] = C.V[t-1] * (1-decay) + C.dV[t]</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 48%" />
+<col style="width: 19%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>join op</p></th>
+<th class="head"><p>effect on C</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SKIP</p></td>
+<td><p>C.dV[t] = C.U’[t]</p></td>
+<td><p>no effect</p></td>
+</tr>
+<tr class="row-odd"><td><p>ADD</p></td>
+<td><p>C.dV[t] = C.dV[t] = C.U’[t] + A[t] + B[t]</p></td>
+<td><p>C.dV includes the outputs from A and B</p></td>
+</tr>
+<tr class="row-even"><td><p>MAX</p></td>
+<td><p>C.dV[t] = max(C.U’[t], A[t], B[t])</p></td>
+<td><p>C.dV takes on the largest value</p></td>
+</tr>
+<tr class="row-odd"><td><p>MIN</p></td>
+<td><p>C.dV[t] = min(C.U’[t], A[t], B[t])</p></td>
+<td><p>C.dV takes on the smallest value</p></td>
+</tr>
+<tr class="row-even"><td><p>PASS</p></td>
+<td><p>C.dV[t] = A.S[t] ? C.U’[t] + B : 0</p></td>
+<td><p>C.dV can only be non-zero when A spikes</p></td>
+</tr>
+<tr class="row-odd"><td><p>BLOCK</p></td>
+<td><p>C.dV[t] = A.S[t] ? 0 : C.U’[t] + B</p></td>
+<td><p>C.dV can only be non-zero when A doesn’t spike</p></td>
+</tr>
+<tr class="row-even"><td><p>OR</p></td>
+<td><p>C.S’[t] = A.S[t] | B.S[t] | C.S[t]</p></td>
+<td><p>C spikes when ever any of A, B, and C would have spiked</p></td>
+</tr>
+<tr class="row-odd"><td><p>AND</p></td>
+<td><p>C.S’[t] = A.S[t] &amp; B.S[t] &amp; C.S[t]</p></td>
+<td><p>C spikes only if A, B, and C all would have spiked</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="Helper-function-for-creating-a-multi-compartment-neuron-with-a-single-dendrite">
+<h2><span class="section-number">26.3. </span>Helper function for creating a multi-compartment neuron with a single dendrite<a class="headerlink" href="#Helper-function-for-creating-a-multi-compartment-neuron-with-a-single-dendrite" title="Permalink to this headline">¶</a></h2>
+<p>Below we create a multi-compartment neuron by adding a dendrite and show how to probe the soma and dendrite individually. We’ll call this function with different join operations to investigate their behaviour.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">testJoinOpSingleDendrite</span><span class="p">(</span><span class="n">joinOp</span><span class="p">,</span> <span class="n">stackout</span><span class="p">,</span> <span class="n">figName</span><span class="p">):</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+
+    <span class="c1"># dendriteAProto is the single input (dendrite) to the soma (root node)</span>
+    <span class="n">dendriteProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                                            <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                            <span class="n">vThMant</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                                            <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                            <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">,</span>
+                                            <span class="n">stackOut</span><span class="o">=</span><span class="n">stackout</span><span class="p">)</span>
+
+    <span class="c1"># define soma prototype</span>
+    <span class="n">somaProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+                                        <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                        <span class="n">vThMant</span><span class="o">=</span><span class="mi">130000</span><span class="p">,</span>
+                                        <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                        <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+    <span class="c1"># create a multi-compartment neuron with single dendritic input</span>
+    <span class="c1"># The single dendrite is always child A</span>
+    <span class="n">somaProto</span><span class="o">.</span><span class="n">addDendrite</span><span class="p">(</span><span class="n">dendriteProto</span><span class="p">,</span> <span class="n">joinOp</span><span class="p">)</span>
+    <span class="n">neuronProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NeuronPrototype</span><span class="p">(</span><span class="n">somaProto</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createNeuron</span><span class="p">(</span><span class="n">neuronProto</span><span class="p">)</span>
+
+    <span class="c1"># here n.soma indexes the soma</span>
+    <span class="p">(</span><span class="n">uProbes_soma</span><span class="p">,</span> <span class="n">vProbes_soma</span><span class="p">,</span> <span class="n">sProbes_soma</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">soma</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                               <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                               <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">dendrites</span><span class="p">)</span>
+    <span class="c1"># here n.dendrites[0] indexes the dendrite</span>
+    <span class="p">(</span><span class="n">uProbes_dendrite</span><span class="p">,</span> <span class="n">vProbes_dendrite</span><span class="p">,</span> <span class="n">sProbes_dendrite</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                                                   <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                                                   <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+
+    <span class="n">net</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
+    <span class="c1"># soma ignores d.V from dendrite and fires with its own bias</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">figName</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite current&#39;</span><span class="p">)</span>
+    <span class="n">uProbes_dendrite</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite voltage&#39;</span><span class="p">)</span>
+    <span class="n">vProbes_dendrite</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite spike&#39;</span><span class="p">)</span>
+    <span class="n">sProbes_dendrite</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;soma current&#39;</span><span class="p">)</span>
+    <span class="n">uProbes_soma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;soma voltage&#39;</span><span class="p">)</span>
+    <span class="n">vProbes_soma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;soma spike&#39;</span><span class="p">)</span>
+    <span class="n">sProbes_soma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="SKIP-operation">
+<h2><span class="section-number">26.4. </span>SKIP operation<a class="headerlink" href="#SKIP-operation" title="Permalink to this headline">¶</a></h2>
+<p>In this case, the soma uses the SKIP join operation, which means that the soma does not use the dendrite output. i.e. C.dV[t] = C.U[t] + C.bias, which is the same as a single compartment neuron.</p>
+<p>This example therefore shows the baseline behaviour of the dendrite and soma as if they were not connected. Later examples will show how the behaviour changes for different join operations.</p>
+<p>In the baseline example, the voltage of both compartments increases linearly.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">testJoinOpSingleDendrite</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">SKIP</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_OUTPUT_MODE</span><span class="o">.</span><span class="n">SKIP</span><span class="p">,</span> <span class="s2">&quot;SKIP: Soma and dendrite behave as if they were not connected&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;nxsdk.net.nodes.compartments.Compartment object at 0x7f6a14f7e7f0&gt;,)
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Connecting to 134.134.68.36:41543
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 0.18s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding axons/synapses.....Done 1.10ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Args chip=0 cpu=0 /home/gorchard/nxsdk-nxsdk/nxsdk/driver/../bin/arm/simple_snn.bin --chips=1 --remote-relay=0 --epoch=0
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Lakemont_driver...
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Booting up..................Done 10.04s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding probes.............Done 0.66ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.52ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 4.89ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 3.60ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Executing...................Done 6.92ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Processing timeseries.......Done 6.12ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Executor: 50 timesteps..........Done 10.26s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  chip=0 cpu=0 halted, status=0x0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_u_join_op_in_multi_compartment_neuron_9_1.png" src="../_images/jupyter_u_join_op_in_multi_compartment_neuron_9_1.png" />
+</div>
+</div>
+<div class="section" id="MAX-join-operation-with-single-dendritic-compartment">
+<h3><span class="section-number">26.4.1. </span>MAX join operation with single dendritic compartment<a class="headerlink" href="#MAX-join-operation-with-single-dendritic-compartment" title="Permalink to this headline">¶</a></h3>
+<div class="line-block">
+<div class="line">For MAX operation: C.dV[t] = max(C.U’[t], A[t], B[t]) In the cell below: - There is only one input, A, so B[t]=0 - A uses the default PUSH_V operation, therefore A[t]=A.V[t] - C.U[t] = 0, so C.U’[t] = C.bias - therefore C.dV[t] = max(C.bias, A.V[t], 0)</div>
+<div class="line">- A.V[t] is always bigger than C.bias - therefore C.dV[t] = A.V[t]</div>
+</div>
+<p>The soma voltage now increases faster than the baseline case, and the rate increases as the dendrite voltage increases.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">testJoinOpSingleDendrite</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">MAX</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_OUTPUT_MODE</span><span class="o">.</span><span class="n">PUSH</span><span class="p">,</span> <span class="s2">&quot;MAX: C.dV[t] = A.V[t] because A.V[t] &gt; C.bias&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;nxsdk.net.nodes.compartments.Compartment object at 0x7f6a140564e0&gt;,)
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Connecting to 134.134.68.36:36473
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 0.19s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding axons/synapses.....Done 2.10ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding probes.............Done 0.92ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Args chip=0 cpu=0 /home/gorchard/nxsdk-nxsdk/nxsdk/driver/../bin/arm/simple_snn.bin --chips=1 --remote-relay=0 --epoch=0
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Booting up..................Done 10.04s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 4.00ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 5.22ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.61ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Lakemont_driver...
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Executing...................Done 6.91ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Processing timeseries.......Done 5.60ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Executor: 50 timesteps..........Done 10.28s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  chip=0 cpu=0 halted, status=0x0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_u_join_op_in_multi_compartment_neuron_11_1.png" src="../_images/jupyter_u_join_op_in_multi_compartment_neuron_11_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Dendrite-outputting-current-instead-of-voltage">
+<h3><span class="section-number">26.4.2. </span>Dendrite outputting current instead of voltage<a class="headerlink" href="#Dendrite-outputting-current-instead-of-voltage" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="Still-using-MAX-join-operation-with-single-dendritic-compartment">
+<h4><span class="section-number">26.4.2.1. </span>Still using MAX join operation with single dendritic compartment<a class="headerlink" href="#Still-using-MAX-join-operation-with-single-dendritic-compartment" title="Permalink to this headline">¶</a></h4>
+<div class="line-block">
+<div class="line">For MAX operation: C.dV[t] = max(C.U’[t], A[t], B[t]) In the cell below: - There is only one input, A, so B[t]=0 - A uses the PUSH_U operation, therefore A[t]=A.U’[t] - A.U[t] = 0, so A.U’[t] = A.bias - C.U[t] = 0, so C.U’[t] = C.bias - therefore C.dV[t] = max(C.bias, A.bias, 0)</div>
+<div class="line">- A.bias is bigger than C.bias - therefore C.dV[t] = A.bias</div>
+</div>
+<p>The soma voltage increases faster than the baseline case (notice the scale on the y-axis), but it increases linearly</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">testJoinOpSingleDendrite</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">MAX</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_OUTPUT_MODE</span><span class="o">.</span><span class="n">PUSH_U</span><span class="p">,</span> <span class="s2">&quot;MAX with PUSH_Y: C.dV[t] = A.bias&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;nxsdk.net.nodes.compartments.Compartment object at 0x7f6a14c981d0&gt;,)
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Connecting to 134.134.68.36:32919
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 0.25s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding axons/synapses.....Done 0.98ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding probes.............Done 0.85ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Args chip=0 cpu=0 /home/gorchard/nxsdk-nxsdk/nxsdk/driver/../bin/arm/simple_snn.bin --chips=1 --remote-relay=0 --epoch=0
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Lakemont_driver...
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Booting up..................Done 10.05s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 4.16ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 3.62ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.54ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Executing...................Done 7.19ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Processing timeseries.......Done 5.88ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Executor: 50 timesteps..........Done 10.34s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  chip=0 cpu=0 halted, status=0x0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_u_join_op_in_multi_compartment_neuron_13_1.png" src="../_images/jupyter_u_join_op_in_multi_compartment_neuron_13_1.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="ADD-operation-with-single-dendritic-compartment">
+<h3><span class="section-number">26.4.3. </span>ADD operation with single dendritic compartment<a class="headerlink" href="#ADD-operation-with-single-dendritic-compartment" title="Permalink to this headline">¶</a></h3>
+<p>For ADD operation: C.dV[t] = C.U’[t] + A[t] + B[t] In the cell below: - There is only one input, A, so B[t]=0 - A uses the default PUSH operation, therefore A[t]=A.V[t] - C.U[t] = 0, so C.U’[t] = C.bias - therefore C.dV[t] = A.V[t] + C.bias Thus the only difference from the previous case is the inclusion of the C.bias term, which makes a small but noticeable difference below.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">testJoinOpSingleDendrite</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">ADD</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_OUTPUT_MODE</span><span class="o">.</span><span class="n">PUSH</span><span class="p">,</span> <span class="s2">&quot;ADD: C.dV[t] = A.V[t] + C.bias&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(&lt;nxsdk.net.nodes.compartments.Compartment object at 0x7f6a14da4550&gt;,)
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Connecting to 134.134.68.36:33985
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 0.18s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding axons/synapses.....Done 1.52ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding probes.............Done 0.64ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Args chip=0 cpu=0 /home/gorchard/nxsdk-nxsdk/nxsdk/driver/../bin/arm/simple_snn.bin --chips=1 --remote-relay=0 --epoch=0
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Booting up..................Done 10.04s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 3.72ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.54ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 4.12ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Lakemont_driver...
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Executing...................Done 6.94ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Processing timeseries.......Done 6.08ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Executor: 50 timesteps..........Done 10.27s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  chip=0 cpu=0 halted, status=0x0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_u_join_op_in_multi_compartment_neuron_15_1.png" src="../_images/jupyter_u_join_op_in_multi_compartment_neuron_15_1.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="Join-operation-with-two-dendritic-compartments">
+<h2><span class="section-number">26.5. </span>Join operation with two dendritic compartments<a class="headerlink" href="#Join-operation-with-two-dendritic-compartments" title="Permalink to this headline">¶</a></h2>
+<p>In this section, we demonstrate the join operations for a compartment with two dendrites. The addDendrites() function is used to define the join operation with the two child inputs.</p>
+<p>We first define a similar helping function</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">testJoinOpTwoDendrites</span><span class="p">(</span><span class="n">joinOp</span><span class="p">,</span> <span class="n">figName</span><span class="p">):</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+
+    <span class="n">dendriteAProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                                             <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                             <span class="n">vThMant</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                                             <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                             <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+    <span class="n">dendriteBProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
+                                             <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                             <span class="n">vThMant</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                                             <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                             <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+    <span class="c1"># define soma prototype</span>
+    <span class="n">somaProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">125</span><span class="p">,</span>
+                                        <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                        <span class="n">vThMant</span><span class="o">=</span><span class="mi">100000</span><span class="p">,</span>
+                                        <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                        <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+    <span class="c1"># create a multi-compartment neuron with single dendritic input</span>
+    <span class="c1"># The first prototype is child A, the second is child B</span>
+    <span class="n">somaProto</span><span class="o">.</span><span class="n">addDendrites</span><span class="p">(</span><span class="n">dendriteAProto</span><span class="p">,</span> <span class="n">dendriteBProto</span><span class="p">,</span> <span class="n">joinOp</span><span class="p">)</span>
+    <span class="n">neuronProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NeuronPrototype</span><span class="p">(</span><span class="n">somaProto</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createNeuron</span><span class="p">(</span><span class="n">neuronProto</span><span class="p">)</span>
+
+    <span class="c1"># here n.soma indexes the soma</span>
+    <span class="p">(</span><span class="n">uProbes_soma</span><span class="p">,</span> <span class="n">vProbes_soma</span><span class="p">,</span> <span class="n">sProbes_soma</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">soma</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                               <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                               <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+
+    <span class="c1"># here n.dendrites[0] indexes the dendriteA</span>
+    <span class="p">(</span><span class="n">uProbes_dendriteA</span><span class="p">,</span> <span class="n">vProbes_dendriteA</span><span class="p">,</span> <span class="n">sProbes_dendriteA</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                                                   <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                                                   <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+    <span class="c1"># here n.dendrites[1] indexes the dendriteB</span>
+    <span class="p">(</span><span class="n">uProbes_dendriteB</span><span class="p">,</span> <span class="n">vProbes_dendriteB</span><span class="p">,</span> <span class="n">sProbes_dendriteB</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                                                   <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                                                   <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+
+    <span class="n">net</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
+    <span class="c1"># soma ignores d.V from dendrite and fires with its own bias</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">figName</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite A current&#39;</span><span class="p">)</span>
+    <span class="n">uProbes_dendriteA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite A voltage&#39;</span><span class="p">)</span>
+    <span class="n">vProbes_dendriteA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite A spike&#39;</span><span class="p">)</span>
+    <span class="n">sProbes_dendriteA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite B current&#39;</span><span class="p">)</span>
+    <span class="n">uProbes_dendriteB</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite B voltage&#39;</span><span class="p">)</span>
+    <span class="n">vProbes_dendriteB</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite B spike&#39;</span><span class="p">)</span>
+    <span class="n">sProbes_dendriteB</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;soma current&#39;</span><span class="p">)</span>
+    <span class="n">uProbes_soma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;soma voltage&#39;</span><span class="p">)</span>
+    <span class="n">vProbes_soma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">9</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;soma spike&#39;</span><span class="p">)</span>
+    <span class="n">sProbes_soma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Add-operation-with-two-dendritic-compartments">
+<h3><span class="section-number">26.5.1. </span>Add operation with two dendritic compartments<a class="headerlink" href="#Add-operation-with-two-dendritic-compartments" title="Permalink to this headline">¶</a></h3>
+<p>For ADD operation: C.dV[t] = C.U’[t] + A[t] + B.V[t] In the cell below: - A and B use the default PUSH_V operation, therefore A[t]=A.V[t] and B[t]=B.V[t] - C.U[t] = 0, so C.U’[t] = C.bias - therefore C.dV[t] = A.V[t] + B.V[t] + C.bias Note that the threshold for compartment C is much higher than for A and B</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">testJoinOpTwoDendrites</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">ADD</span><span class="p">,</span> <span class="s2">&quot;ADD with 2 dendrites&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Connecting to 134.134.68.36:33907
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 0.18s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding axons/synapses.....Done 1.57ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Args chip=0 cpu=0 /home/gorchard/nxsdk-nxsdk/nxsdk/driver/../bin/arm/simple_snn.bin --chips=1 --remote-relay=0 --epoch=0
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Lakemont_driver...
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Booting up..................Done 10.04s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding probes.............Done 0.93ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 3.71ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 3.88ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.67ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Executing...................Done 6.13ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Processing timeseries.......Done 7.37ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Executor: 50 timesteps..........Done 10.27s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  chip=0 cpu=0 halted, status=0x0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_u_join_op_in_multi_compartment_neuron_19_1.png" src="../_images/jupyter_u_join_op_in_multi_compartment_neuron_19_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="MAX-operation-with-two-dendritic-compartments">
+<h3><span class="section-number">26.5.2. </span>MAX operation with two dendritic compartments<a class="headerlink" href="#MAX-operation-with-two-dendritic-compartments" title="Permalink to this headline">¶</a></h3>
+<p>For MAX operation: C.dV[t] = max(C.U’[t], A[t], B[t])</p>
+<p>In the cell below: - A and B use the default PUSH_V operation, therefore A[t]=A.V[t] and B[t]=B.V[t] - C.U[t] = 0, so C.U’[t] = C.bias - A.V and B.V are always greater than C.bias - therefore C.dV[t] = max(A.V[t] + B.V[t])</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">testJoinOpTwoDendrites</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">MAX</span><span class="p">,</span> <span class="s2">&quot;MAX with 2 dendrites&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Connecting to 134.134.68.36:45831
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 0.18s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding axons/synapses.....Done 1.11ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Args chip=0 cpu=0 /home/gorchard/nxsdk-nxsdk/nxsdk/driver/../bin/arm/simple_snn.bin --chips=1 --remote-relay=0 --epoch=0
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Lakemont_driver...
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Booting up..................Done 10.04s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding probes.............Done 0.59ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 4.03ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.52ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 4.05ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Executing...................Done 6.34ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Processing timeseries.......Done 7.67ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Executor: 50 timesteps..........Done 10.27s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  chip=0 cpu=0 halted, status=0x0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_u_join_op_in_multi_compartment_neuron_21_1.png" src="../_images/jupyter_u_join_op_in_multi_compartment_neuron_21_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="PASS-operation-with-two-dendritic-compartments">
+<h3><span class="section-number">26.5.3. </span>PASS operation with two dendritic compartments<a class="headerlink" href="#PASS-operation-with-two-dendritic-compartments" title="Permalink to this headline">¶</a></h3>
+<p>For PASS operation: C.dV[t] = A.S[t]? C.U’[t] + B[t] : 0 In the cell below: - B uses the default PUSH_V, so B[t] = B.V[t] - C.U = 0, so C.U’[t] = C.bias - When A spikes, C.dV[t] = C.bias + B.V[t] - When A doesn’t spike, C.dV[t] = 0</p>
+<p>The first time A spikes, B.V[t] is large, so C.dV[t] is large, causing a large increase in C.V The second time A spikes, B.V[t] is small, so C.dV[t] is small, causing a only a small increase in C.V The rest of the time, C.dV[t] is zero, so C.V[t]=C.V[t-1]</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">testJoinOpTwoDendrites</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">PASS</span><span class="p">,</span> <span class="s2">&quot;PASS with 2 dendrites&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Connecting to 134.134.68.36:44481
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 0.18s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding axons/synapses.....Done 1.55ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Args chip=0 cpu=0 /home/gorchard/nxsdk-nxsdk/nxsdk/driver/../bin/arm/simple_snn.bin --chips=1 --remote-relay=0 --epoch=0
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Lakemont_driver...
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Booting up..................Done 10.05s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding probes.............Done 0.80ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.71ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 3.68ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 4.72ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Executing...................Done 7.51ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Processing timeseries.......Done 6.43ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Executor: 50 timesteps..........Done 10.27s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  chip=0 cpu=0 halted, status=0x0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_u_join_op_in_multi_compartment_neuron_23_1.png" src="../_images/jupyter_u_join_op_in_multi_compartment_neuron_23_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="OR-operation-with-two-dendritic-compartments">
+<h3><span class="section-number">26.5.4. </span>OR operation with two dendritic compartments<a class="headerlink" href="#OR-operation-with-two-dendritic-compartments" title="Permalink to this headline">¶</a></h3>
+<p>For OR operation: C.S’[t] = A.S[t] | B.S [t] | C.S[t] C spikes whenever any of A, B, or C produces a spike</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">testJoinOpTwoDendrites</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">OR</span><span class="p">,</span> <span class="s2">&quot;OR with 2 dendrites&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Connecting to 134.134.68.36:34249
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 0.19s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding axons/synapses.....Done 1.27ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding probes.............Done 0.67ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Args chip=0 cpu=0 /home/gorchard/nxsdk-nxsdk/nxsdk/driver/../bin/arm/simple_snn.bin --chips=1 --remote-relay=0 --epoch=0
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Lakemont_driver...
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Booting up..................Done 10.05s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 1.02ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 3.84ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 3.67ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Executing...................Done 7.38ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Processing timeseries.......Done 6.62ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Executor: 50 timesteps..........Done 10.28s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  chip=0 cpu=0 halted, status=0x0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_u_join_op_in_multi_compartment_neuron_25_1.png" src="../_images/jupyter_u_join_op_in_multi_compartment_neuron_25_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="AND-operation-with-two-dendritic-compartments">
+<h3><span class="section-number">26.5.5. </span>AND operation with two dendritic compartments<a class="headerlink" href="#AND-operation-with-two-dendritic-compartments" title="Permalink to this headline">¶</a></h3>
+<p>For AND operation: C.S’[t] = A.S[t] | B.S [t] | C.S[t] C spikes only when A, B, and C would all spike together. Testing this requires careful configuration, so we do it in a custom manner below</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">net</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+
+
+<span class="n">dendriteAProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+                                         <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                         <span class="n">vThMant</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                                         <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+<span class="n">dendriteBProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+                                         <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                         <span class="n">vThMant</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                                         <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+<span class="c1"># define soma prototype</span>
+<span class="n">somaProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+                                    <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                    <span class="n">vThMant</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                                    <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                    <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+<span class="c1"># create a multi-compartment neuron with single dendritic input</span>
+<span class="n">somaProto</span><span class="o">.</span><span class="n">addDendrites</span><span class="p">(</span><span class="n">dendriteAProto</span><span class="p">,</span> <span class="n">dendriteBProto</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">AND</span><span class="p">)</span>
+<span class="n">neuronProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NeuronPrototype</span><span class="p">(</span><span class="n">somaProto</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createNeuron</span><span class="p">(</span><span class="n">neuronProto</span><span class="p">)</span>
+
+<span class="c1"># here n.soma indexes the soma</span>
+<span class="p">(</span><span class="n">uProbes_soma</span><span class="p">,</span> <span class="n">vProbes_soma</span><span class="p">,</span> <span class="n">sProbes_soma</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">soma</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                           <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                           <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+
+<span class="c1"># here n.dendrites[0] indexes the dendriteA</span>
+<span class="p">(</span><span class="n">uProbes_dendriteA</span><span class="p">,</span> <span class="n">vProbes_dendriteA</span><span class="p">,</span> <span class="n">sProbes_dendriteA</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                                               <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                                               <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+<span class="c1"># here n.dendrites[1] indexes the dendriteB</span>
+<span class="p">(</span><span class="n">uProbes_dendriteB</span><span class="p">,</span> <span class="n">vProbes_dendriteB</span><span class="p">,</span> <span class="n">sProbes_dendriteB</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                                               <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                                               <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+
+<span class="n">net</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">net</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;AND with 2 dendrites&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite A current&#39;</span><span class="p">)</span>
+<span class="n">uProbes_dendriteA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite A voltage&#39;</span><span class="p">)</span>
+<span class="n">vProbes_dendriteA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite A spike&#39;</span><span class="p">)</span>
+<span class="n">sProbes_dendriteA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite B current&#39;</span><span class="p">)</span>
+<span class="n">uProbes_dendriteB</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite B voltage&#39;</span><span class="p">)</span>
+<span class="n">vProbes_dendriteB</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite B spike&#39;</span><span class="p">)</span>
+<span class="n">sProbes_dendriteB</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;soma current&#39;</span><span class="p">)</span>
+<span class="n">uProbes_soma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;soma voltage&#39;</span><span class="p">)</span>
+<span class="n">vProbes_soma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;soma spike&#39;</span><span class="p">)</span>
+<span class="n">sProbes_soma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Connecting to 134.134.68.36:38879
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 0.15s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding axons/synapses.....Done 1.15ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Args chip=0 cpu=0 /home/gorchard/nxsdk-nxsdk/nxsdk/driver/../bin/arm/simple_snn.bin --chips=1 --remote-relay=0 --epoch=0
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Lakemont_driver...
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Booting up..................Done 10.05s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding probes.............Done 0.66ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 4.35ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.63ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 3.64ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Executing...................Done 6.17ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Processing timeseries.......Done 7.32ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Executor: 50 timesteps..........Done 10.24s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  chip=0 cpu=0 halted, status=0x0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_u_join_op_in_multi_compartment_neuron_27_1.png" src="../_images/jupyter_u_join_op_in_multi_compartment_neuron_27_1.png" />
+</div>
+</div>
+<p>Notice that C exceeds threshold at the same time as B, but C doesn’t spike and reset because it requires A to also spike at the same time. C’s voltage continues increasing above threshold until A and B both spike simultaneously. This satisfies the condition that A and B spiked, and C would have spiked (is above threshold) if not prevented from doing so by the join op.</p>
+</div>
+</div>
+<div class="section" id="Building-a-deeper-dendritic-tree">
+<h2><span class="section-number">26.6. </span>Building a deeper dendritic tree<a class="headerlink" href="#Building-a-deeper-dendritic-tree" title="Permalink to this headline">¶</a></h2>
+<p>Building a deeper dendritic tree just requires adding dendrites to dendrites. The example below shows how this can be done, and how to index dendrites deeper in the tree.</p>
+<p>Each compartment integrates its input, and passes it onto the next compartment, so we see each compartment’s voltage increase faster than the previous compartment.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">net</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+
+<span class="n">dendriteAProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                         <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                         <span class="n">vThMant</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                                         <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                         <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+<span class="n">dendriteAAProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                          <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                          <span class="n">vThMant</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                                          <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                          <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+<span class="n">dendriteAAAProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                           <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                           <span class="n">vThMant</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                                           <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                           <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+
+<span class="c1"># define soma prototype</span>
+<span class="n">somaProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                    <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                    <span class="n">vThMant</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                                    <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                    <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">)</span>
+
+
+<span class="c1"># create a multi-compartment neuron with single dendritic input</span>
+<span class="n">somaProto</span><span class="o">.</span><span class="n">addDendrite</span><span class="p">(</span><span class="n">dendriteAProto</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">ADD</span><span class="p">)</span>
+<span class="n">dendriteAProto</span><span class="o">.</span><span class="n">addDendrite</span><span class="p">(</span><span class="n">dendriteAAProto</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">ADD</span><span class="p">)</span>
+<span class="n">dendriteAAProto</span><span class="o">.</span><span class="n">addDendrite</span><span class="p">(</span><span class="n">dendriteAAAProto</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">ADD</span><span class="p">)</span>
+
+<span class="n">neuronProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NeuronPrototype</span><span class="p">(</span><span class="n">somaProto</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createNeuron</span><span class="p">(</span><span class="n">neuronProto</span><span class="p">)</span>
+
+<span class="c1"># here n.soma indexes the soma</span>
+<span class="p">(</span><span class="n">uProbes_soma</span><span class="p">,</span> <span class="n">vProbes_soma</span><span class="p">,</span> <span class="n">sProbes_soma</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">soma</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                           <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                           <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+
+<span class="c1"># n.dendrites[0] indexes the dendriteA</span>
+<span class="p">(</span><span class="n">uProbes_dendriteA</span><span class="p">,</span> <span class="n">vProbes_dendriteA</span><span class="p">,</span> <span class="n">sProbes_dendriteA</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                                                  <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                                                  <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+<span class="c1"># n.dendrites[0].dendrites[0] is dendriteAA</span>
+<span class="p">(</span><span class="n">uProbes_dendriteAA</span><span class="p">,</span> <span class="n">vProbes_dendriteAA</span><span class="p">,</span> <span class="n">sProbes_dendriteAA</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                                                                  <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                                                                  <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+<span class="c1"># n.dendrites[0].dendrites[0].dendrites[0] is dendriteAAA</span>
+<span class="p">(</span><span class="n">uProbes_dendriteAAA</span><span class="p">,</span> <span class="n">vProbes_dendriteAAA</span><span class="p">,</span> <span class="n">sProbes_dendriteAAA</span><span class="p">)</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                                                                                  <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                                                                                  <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+
+<span class="n">net</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">net</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">16</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;ADD operation, multilayer&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite AAA current&#39;</span><span class="p">)</span>
+<span class="n">uProbes_dendriteAAA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite AAA voltage&#39;</span><span class="p">)</span>
+<span class="n">vProbes_dendriteAAA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite AAA spike&#39;</span><span class="p">)</span>
+<span class="n">sProbes_dendriteAAA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite AA current&#39;</span><span class="p">)</span>
+<span class="n">uProbes_dendriteAA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite AA voltage&#39;</span><span class="p">)</span>
+<span class="n">vProbes_dendriteAA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite AA spike&#39;</span><span class="p">)</span>
+<span class="n">sProbes_dendriteAA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite A current&#39;</span><span class="p">)</span>
+<span class="n">uProbes_dendriteA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite A voltage&#39;</span><span class="p">)</span>
+<span class="n">vProbes_dendriteA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;dendrite A spike&#39;</span><span class="p">)</span>
+<span class="n">sProbes_dendriteA</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;soma current&#39;</span><span class="p">)</span>
+<span class="n">uProbes_soma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;soma voltage&#39;</span><span class="p">)</span>
+<span class="n">vProbes_soma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;soma spike&#39;</span><span class="p">)</span>
+<span class="n">sProbes_soma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Connecting to 134.134.68.36:46857
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 0.18s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding axons/synapses.....Done 1.14ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding probes.............Done 0.83ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Args chip=0 cpu=0 /home/gorchard/nxsdk-nxsdk/nxsdk/driver/../bin/arm/simple_snn.bin --chips=1 --remote-relay=0 --epoch=0
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  Lakemont_driver...
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Booting up..................Done 10.05s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 3.89ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 3.75ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.60ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Executing...................Done 8.27ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Processing timeseries.......Done 7.11ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Executor: 50 timesteps..........Done 10.27s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  chip=0 cpu=0 halted, status=0x0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_u_join_op_in_multi_compartment_neuron_30_1.png" src="../_images/jupyter_u_join_op_in_multi_compartment_neuron_30_1.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../nxcore_tutorials.html" class="btn btn-neutral float-right" title="NxCore Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="t_vMinExp_and_vMaxExp.html" class="btn btn-neutral float-left" title="24. vMinExp and vMaxExp Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

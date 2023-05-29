@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Embedded Execution Engine &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorials" href="tutorials.html" />
+    <link rel="prev" title="Composability" href="composable.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Embedded Execution Engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-embedded-execution-engine">What is Embedded Execution Engine?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-by-step-guide-on-how-to-use-embedded-execution-engine">Step by step guide on how to use Embedded Execution Engine:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gotchas-regarding-using-eee">Gotchas regarding using EEE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#description-of-json-fields">Description of Json Fields</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Embedded Execution Engine</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="embedded-execution-engine">
+<h1>Embedded Execution Engine<a class="headerlink" href="#embedded-execution-engine" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-embedded-execution-engine">
+<h2>What is Embedded Execution Engine?<a class="headerlink" href="#what-is-embedded-execution-engine" title="Permalink to this headline">¶</a></h2>
+<p>Embedded Execution Engine(EEE) is a standalone binary which can be used to restore the execution state of the board from previosuly saved state.
+As the name suggests, it is designed to work in embedded environment with minimal memory requirements. The Engine takes a json file and time-steps to be run as an input. It restores the execution state to one provided in the json file and runs the execution for
+given time-steps. The json file captures the execution context and is generated by running generateEEEArtifact on the board. The artifacts generated on a particular platform is guaranteed to run only on the same platform.</p>
+</div>
+<div class="section" id="step-by-step-guide-on-how-to-use-embedded-execution-engine">
+<h2>Step by step guide on how to use Embedded Execution Engine:<a class="headerlink" href="#step-by-step-guide-on-how-to-use-embedded-execution-engine" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-default">
+<img alt="EmbeddedExecutionEngine" src="_images/eee.png" />
+</div>
+<ol class="arabic simple">
+<li><p>Configure the network</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setupNetwork</span><span class="p">():</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                                <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                <span class="n">vThMant</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                                <span class="n">functionalState</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">256</span><span class="p">)</span>
+
+    <span class="c1"># Create a compartment in the network using the prototype</span>
+    <span class="n">compartment</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">net</span>
+</pre></div>
+</div>
+<ol class="arabic" start="2">
+<li><dl>
+<dt>Compile the network</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">net</span> <span class="o">=</span> <span class="n">setupNetwork</span><span class="p">()</span>
+<span class="n">compiler</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">N2Compiler</span><span class="p">()</span>
+<span class="n">board</span> <span class="o">=</span> <span class="n">compiler</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</li>
+<li><p>Generate the EEE Artifact by calling generateEEEArtifacts on the board with the path
+of directory where artifacts should be generated.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generates the EEE Artifacts</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># Generates artifacts in artifacts folder located in file directory</span>
+    <span class="n">board</span><span class="o">.</span><span class="n">generateEEEArtifacts</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span><span class="s2">&quot;artifacts&quot;</span><span class="p">))</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">board</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Json generated will look like this :</p></li>
+</ol>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;chipsRequired&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">&quot;lmtOptions&quot;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="nt">&quot;datFile&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/yashward/Workspace/nxsdk-nxsdk/scratch/eee_tutorial/artifacts/boardDump.dat&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;library&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;epoch=0&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;dvsMode&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;snipTuples&quot;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="nt">&quot;channels&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="arabic" start="5">
+<li><p>Copy the artifact folder to the desired board or superhost in case of KB.</p></li>
+<li><p>Change the path of binary, library and datFile in the json File.</p></li>
+<li><p>Run embedded_execution_engine by passing jsonFile and timesteps as argument :</p>
+<blockquote>
+<div><p>./embedded_execution_engine -c /path/to/json/file -t num_timesteps</p>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="gotchas-regarding-using-eee">
+<h2>Gotchas regarding using EEE<a class="headerlink" href="#gotchas-regarding-using-eee" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Probing is ignored while generation of the EEE Artifcats and is not supported on EEE.</p></li>
+<li><p>EEE doesn't have a superhost component. It runs purely on host.</p></li>
+<li><p>Channels created for use in EEE should be between Host and Embedded. Channels are not
+supported between SuperHost and Embedded.</p></li>
+<li><p>The artifacts generated on a particular platform is guaranteed to run only on the same platform.
+For e.g. : Host snips generated for x86(in case of KB) won't work on nahuku(arm host).</p></li>
+</ol>
+</div>
+<div class="section" id="description-of-json-fields">
+<h2>Description of Json Fields<a class="headerlink" href="#description-of-json-fields" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p><strong>dvsMode</strong> : DvsMode indicates the mode of operation of dvs and can be one of the following:</p>
+<blockquote>
+<div><p>DVS_DISABLE_MODE = 0</p>
+<p>DVS_DEFAULT_MODE = 1</p>
+<p>DVS_TEST_MODE = 2</p>
+</div></blockquote>
+</li>
+<li><p><strong>channels</strong> : Channels consists of list of defined channel. Each channel structure has following fields:</p>
+<blockquote>
+<div><p>Name of the Channel : channelName
+Maximum number of elements : capacity
+Size of each element when being written/read : messageSize
+Direction of the channel : direction - 0 For Send 1 for Receive
+ChipId associated with this channel : chipId
+LmtId associated with this channel : coreId
+Slack associated with the channel : slack</p>
+</div></blockquote>
+</li>
+<li><p><strong>chipsRequired</strong> : Chips required by the network</p></li>
+<li><p><strong>datFile</strong> : Location of the dat file</p></li>
+<li><p><strong>library</strong> : Location of the host snip library (<a href="#id1"><span class="problematic" id="id2">*</span></a>.so) file</p></li>
+<li><p><strong>options</strong> : List of options to be passed to the embedded Driver (for e.g. learning epoch)</p></li>
+<li><p><strong>lmtOptions</strong> : List of lmtOptions to be passed to the embedded Driver</p></li>
+<li><p><strong>snipTuples</strong> : List of snipTuple, consisting of chipId, lmtId and the location of the binary</p></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="tutorials.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="composable.html" class="btn btn-neutral float-left" title="Composability" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

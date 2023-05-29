@@ -1,0 +1,40 @@
+.. NxSDK documentation master file, created by
+   sphinx-quickstart on Thu Mar  1 16:52:36 2018.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Intel Nx SDK for Intel Loihi Neuromorphic Research Chip
+=======================================================
+The Intel Nx SDK is a software development kit for Intel's Neuromorphic Research Chip. It provides for programming the chip at various levels of abstraction:
+
+1. Neuron Groups, Connections and Learning (core-agnostic development), see :doc:`nxnet`
+2. Dendritic compartments, somas, axons, and synapses (per-core development), see :doc:`nxcore`
+
+The :doc:`introduction` articulates the decisions made in designing the programming interface(s) to Loihi. The :doc:`nxapi` further expounds on the class hierarchy, detailing each class, method by method. Finally, the :doc:`tutorials` section provides instruction on each component of the NxAPI. Each tutorial builds on the previous to produce a complete picture of the NxAPI.
+
+.. figure:: _static/nxsdk_overview.png
+   :alt: The NxSDK Topology
+
+The above image shows the plans for the Nx SDK over the course of 2018. There are three key bits to take away from the diagram:
+
+1. The Nx SDK provides multiple levels of abstraction (core agnostic network definitions at the highest level to core/register-specific implementation at the lowest) 
+2. The Nx SDK is a python-native API, but allows you to define meta-network/program control flow through SNIPs (Sequential Neural Interfacing Processes)
+3. Done right, we should all be able to treat the hardware as a black box that provides for the efficient implementation of spiking neural networks.
+
+Note that while we will support the lowest level of abstraction for some time, this level will change considerably as we evolve the capabilities of the chip. We encourage you to work at the highest levels of abstraction (using SNIPs to control meta-network dynamics) unless you need to specifically program each neurocore by hand.
+
+.. toctree::
+   :maxdepth: 2
+   
+   introduction
+   getting_started
+   nxapi
+   nxnet
+   nxcore
+   composable
+   embedded_execution_engine
+   tutorials
+   modules
+   performance-suite
+   README
+

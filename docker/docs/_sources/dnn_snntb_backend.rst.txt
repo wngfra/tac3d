@@ -1,0 +1,101 @@
+.. _snntoolboxconfiguration:
+
+Loihi backend for SNN-Toolbox
+=============================
+
+The SNN-Toolbox uses a standard config file `interface <https://snntoolbox
+.readthedocs.io/en/latest/guide/configuration.html>`_ to control the ANN to
+SNN conversion process.
+
+For configuring the special Loihi-backend of the SNN-Toolbox a separate
+category of configuration parameters in the [Loihi] section is available.
+
+
+[Loihi]
+-------
+connection_kwargs: dict
+    Dictionary containing connection kwargs passed to __init__ method of
+    all NxLayers.
+
+compartment_kwargs: dict
+    Dictionary containing compartment_kwargs passed to __init__ method of
+    all NxLayers.
+
+desired_threshold_to_input_ratio: int
+    Adjusts voltage threshold to maintain a desired ratio between the voltage threshold
+    and the maximum increase in voltage per time step. Recommend 1 for subtractive reset
+    and > 8 for reset to zero.
+
+layer_to_probe: str, optional
+    Limit probing to specified layer in network. E.g., 'layer_to_probe': '00Conv2D_16x16x32'.
+
+param_percentile: float, optional
+    Specifies the maximum percentile with respect to the cumulative weight or
+    bias distribution above which all values are clipped to map the ANN
+    parameters to the maximum dynamic range of the SNN. Note: a fat-tailed
+    parameter distribution will likely suffer from quantization loss in one
+    of two ways: If the percentile is chosen too small, the largest and most
+    important parameters get clipped to the maximum percentile. If the
+    percentile is chosen too large, the bulk of the parameter distribution
+    towards 0 get mapped to the same integer values 0, 1, 2, etc.
+    Default 99.999.
+
+activation_percentile: float, optional
+    Specifies the maximum percentile with respect to the cumulative
+    activation distribution above which all values are clipped to map the ANN
+    activation to the maximum SNN firing rate of 1. Default 99.999.
+
+normalize_thresholds: bool, optional
+    Perform normalization algorithm during ANN to SNN conversion. Adjusts parameter
+    scales and voltage threshold based on expected network activity. Default True.
+
+saturation: int, optional
+    Apply saturating activation to ANN and limit max spikerate in SNN. Required when
+    ANN contains saturating ReLU activations. Set saturation to maximum value of ReLU
+    activation, e.g., 6. Default 0.
+
+plot_histograms: bool, optional
+    Plot weight and bias histograms for each layer in the ANN and SNN. Default False.
+
+save_output: bool, optional
+    Save output from NxModel partition optimizer. Reports partition cost and core
+    utilization. Default False.
+
+do_overflow_estimate: bool, optional
+    Perform overflow/underflow estimate of dendritic accumlators based on expected
+    activity. Default False.
+
+use_reset_snip: bool, optional
+    Use reset snip during execution. Speeds up inference. Default True.
+
+reset_mode: str, optional
+    Specifies mode by which the membrane potential is reset upon crossing the
+    spiking threshold.
+    * Select 'hard' to reset-to-zero. Consumes fewest HW resources but leads
+    to noticable information loss if membrane potential exceeds threshold
+    significantly.
+    * Select 'soft' to reset-by-subtraction. Avoids information loss but
+    comes at the cost of twice the number of compartments to implement
+    subtractive reset via a two-compartment neuron.
+    Default 'hard'.
+
+partition: str, optional
+    Selects a specific SLURM partition.
+
+num_cores_per_chip: int, optional
+    Restrict number of cores per chip. Used for debug. Default 128.
+
+validate_partitions: bool, optional
+    Set validatePartitions in NxLayers. Default False.
+
+signed_input: bool, optional
+    Specifies whether input layer uses signed (pos/neg inputs) or unsigned
+    inputs. To represent signed inputs with spiking neurons, the number of
+    input channels is doubled (for positive and sign-inverted negative inputs).
+    Default False
+
+softmax_decay: int, optional
+    Specifies compartmentVoltageDecay value for output layer when using
+    softmax activation. This prevents saturation of membrane voltage of
+    output layer.
+    Default 256.

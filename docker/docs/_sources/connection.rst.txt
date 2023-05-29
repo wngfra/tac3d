@@ -1,0 +1,7 @@
+Connection and ConnectionPrototype
+==================================
+.. automodule:: nxsdk.net.nodes.connections
+   :members:
+   :undoc-members:
+   :inherited-members:
+

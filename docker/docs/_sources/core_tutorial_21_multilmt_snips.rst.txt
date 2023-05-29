@@ -1,0 +1,29 @@
+NxCore: Multilmt SNIPs
+========================
+
+Motivation
+----------
+This tutorial introduces the snip creation api along with channel api and demonstrates how can a user assign a snip to particular chip and lakemon (x86 processor).
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_21_multilmt_snips
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_meta_state`
+* :doc:`cx_profile_cfg`
+* :doc:`cx_cfg`
+* :doc:`num_updates`
+* :doc:`dendrite_accum_cfg`
+* :doc:`axon_map`
+* :doc:`axon_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+* :doc:`tracecfggen`
+* :doc:`inputgen`

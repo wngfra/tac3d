@@ -1,0 +1,5 @@
+Synapse Map
+===========
+.. automodule:: nxsdk.arch.n2a.graph.nodesets.synapse_map_obj_inf
+   :members:
+   :undoc-members:

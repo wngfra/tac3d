@@ -1,0 +1,5 @@
+Stdp Profile Config
+===================
+.. automodule:: nxsdk.arch.n2a.graph.nodesets.stdp_profile_cfg_obj_inf
+   :members:
+   :undoc-members:

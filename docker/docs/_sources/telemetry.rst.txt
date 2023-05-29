@@ -1,0 +1,18 @@
+Performing Energy Measurements in Pohoiki Spring and Kapoho Bay Using Telemetry Server
+======================================================================================
+    
+NxSDK comes with a telemetry server which can measure the energy utilization on Pohoiki Spring and Kapoho Bay. The server resides within nxsdk/telemetry. The telemetry server needs **python3.6**. 
+
+.. note::
+    The telemetry server uses **pyftdi** library. Please install the same using **pip install pyftdi** to your python36 environment.
+
+1. Find NxSDK installation directory (nxsdk_install_dir): `python -c "import nxsdk; print(nxsdk.__path__)"`
+
+2. `cd <nxsdk_install_dir>/telemetry`
+
+3. To run the Telemetry server:
+
+   3.1 On Pohoiki Spring: `sudo python telemetry_server.py`
+
+   3.2 On Kapoho Bay: `sudo python kapoho_server.py`
+

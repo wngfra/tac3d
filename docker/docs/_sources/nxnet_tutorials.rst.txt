@@ -1,0 +1,19 @@
+NxNet Tutorials
+===============
+.. figure:: _static/nettutorialmap.png
+   :alt: diagram 
+
+.. toctree::
+   :maxdepth: 1
+   :numbered:
+
+   net_tutorial_01_single_compartment_with_bias
+   net_tutorial_02_single_compartment_with_bias_connecting_to_two_others
+   net_tutorial_03_multiple_cores_with_bias
+   net_tutorial_04_synaptic_delays
+   net_tutorial_08_refractory_delays
+   net_tutorial_12_weight_precision
+   net_tutorial_14_noise_injection
+   net_tutorial_18_learning
+   net_tutorial_19_soma_traces
+   net_tutorial_20_soma_homeostasis

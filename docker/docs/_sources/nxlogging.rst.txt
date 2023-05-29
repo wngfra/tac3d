@@ -1,0 +1,87 @@
+Logging in NxNet
+================
+
+.. note::
+   If you are using python logging or external logging framework and
+   have configured the handler for root logger, nxsdk loggers will
+   use the same handler.
+
+Logging is set to INFO by default. To set to a different log level:
+
+.. code-block:: python
+
+    from nxsdk.logutils.nxlogging import set_verbosity, LoggingLevel
+
+    # Change the logging level of the global logger to DEBUG
+    set_verbosity(LoggingLevel.DEBUG)
+
+To create loggers for nxsdk modules or components, you may use get_logger API:
+
+.. code-block:: python
+
+    from nxsdk.logutils.nxlogging import get_logger
+
+    # Create the module logger
+    moduleLogger = get_logger("NET.XYZ")
+
+    # Now use the logger
+    moduleLogger.info("Some info")
+    moduleLogger.debug("Some debug info")
+
+.. note::
+   * You should name your module loggers with a starting prefix "NET." so that they inherit
+     from the NXNET root logger and have an associated handler in case there is no handler
+     associated with the built-in python root logger
+   * If you intend to use the logger in multiple places, consider defining it as a enum
+     value within NxSDKLogger to avoid using strings
+   * If you do not use the NET. convention with the get_logger API, consider defining a root handler or
+     use python built-in logging to create your user logger/handler (example below)
+
+You can use the python built-in logging to create your user loggers too.
+
+.. code-block:: python
+
+    import sys
+    import logging
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+
+    logger = logging.getLogger("USER")
+    logger.info("User message")
+
+Loggers are created with StreamHandler which stream to stdout/stderr. If you wish to set a different handler:
+
+.. code-block:: python
+
+    import logging
+    # In this example, we will create a simple file based logger
+    fh = logging.FileHandler("log.out")
+    # Adding it to the root logger
+    logging.basicConfig(level=logging.DEBUG, handlers=[fh])
+
+    # Ensure to import nxsdk always after adding any custom handlers
+    # so that NxSDK loggers will not create their own handlers
+
+To filter logs from certain Logger, you may use ``logging.Filter``:
+
+.. code-block:: python
+
+   import logging
+   from logging import Filter, StreamHandler
+
+   # Filter all compiler specific logs
+   f = Filter("CMP")
+   handler = StreamHandler()
+   handler.addFilter(f)
+
+   logging.basicConfig(level=logging.DEBUG, handlers=[handler])
+
+   # Ensure to import nxsdk always after adding any custom handlers
+   # so that NxSDK loggers will not create their own handlers
+
+.. figure:: _static/nxsdklogginghierarchy.png
+   :alt: NxSDK Logging Hierarchy
+
+.. automodule:: nxsdk.logutils.nxlogging
+   :members:
+   :undoc-members:
+   :member-order: bysource

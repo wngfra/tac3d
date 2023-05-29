@@ -1,0 +1,291 @@
+<style>
+ div.tweak {font-family: Arial;font-size:10pt;}
+ div.large {font-family: Arial;font-size:22pt;}
+</style>
+<html>
+    <div style="margin:0 auto;width:600">
+        <canvas id='prime' width='600' height='150' style="border:1px solid #d3d3d3;" onclick="spike()">
+        </canvas>
+        <div id="hz" class="large"></div>
+        <table width='600'>
+        <tr>
+        <td><div style='text-align: right;margin-right: 10px;' class="tweak">Bias Mant</div></td>
+        <td><input  size="30" type="number" id="VbiasMant"/></td>
+        </tr>
+        <tr>
+        <td><div style='text-align: right;margin-right: 10px;' class="tweak">Bias Exp</div></td>
+        <td><input size="30" type="number" id="VbiasExp"/></td>
+        <td><div class="tweak" id="biasFormula"></div></td>
+        </tr>
+        <tr>
+        <td><div style='text-align: right;margin-right: 10px;' class="tweak">vThMant</div></td>
+        <td><input size="30" type="number" id="VvThMant"/></td>
+        <td><div class="tweak" id="actualThreshFormula"></div></td>
+        </tr>
+        <tr>
+        <td><div style='text-align: right;margin-right: 10px;' class="tweak">Current Time Constant</div></td>
+        <td><input size="30" type="number" id="VcurrentTimeConstant"/></td>
+        <td><div class="tweak" id="currentFormula"></div></td>
+        </tr>
+        <tr>
+        <td><div style='text-align: right;margin-right: 10px;' class="tweak">Voltage Time Constant</div></td>
+        <td><input size="30" type="number" id="VvoltageTimeConstant"/></td>
+        <td><div class="tweak" id="voltageFormula"></div></td>
+        </tr>
+        <tr>
+        <td><div style='text-align: right;margin-right: 10px;' class="tweak">Click Spike Weight</div></td>
+        <td><input size="30" type="number" id="clickSpikeWeight"/></td>
+        <td><input id="spikeButton" type="button" value="Send Spike" onclick="spike();"/></td>
+        </tr>
+        <tr>
+        <td><div style='text-align: right;margin-right: 10px;' class="tweak">Send Spikes</div></td>
+        <td><input size="30" type="number" id="modulus"/></td>
+        <td><div class="tweak" id="spiker">modulo</div></td>
+        </tr>
+
+        </table>
+    </div>
+<script language='javascript'>
+var c = document.getElementById('prime');
+var ctx = c.getContext("2d");
+var i = 0;
+
+var biasMant = 10;
+var biasExp = 6;
+var currentTimeConstant = 10;
+var voltageTimeConstant = 16;
+var currentDecay = 0;
+var voltageDecay = 0;
+var current = 0;
+var voltage = 0;
+var vThresh = 1000;
+var actualThresh = 0;
+var count = 500;
+var currentBuckets = Array(500);
+var voltageBuckets = Array(500);
+var timeStep = 0;
+var max = 0;
+var spikeVal = 0;
+var spikeWeight = 6400;
+var spikeSend = 18;
+var opacity = 0;
+var currentTime = new Date();
+var spikesSoFar = 0;
+
+function spike()
+{
+  spikeVal++;
+}
+
+function initialize()
+{
+  var element = document.getElementById('VbiasMant');
+  element.value = biasMant;
+  element = document.getElementById('VbiasExp');
+  element.value = biasExp;
+  element = document.getElementById('VcurrentTimeConstant');
+  element.value = currentTimeConstant;
+  element = document.getElementById('VvoltageTimeConstant');
+  element.value = voltageTimeConstant;
+  element = document.getElementById('VvThMant');
+  element.value = vThresh;
+  element = document.getElementById('clickSpikeWeight');
+  element.value = spikeWeight;
+  element = document.getElementById('modulus');
+  element.value = spikeSend;
+
+  currentDecay = Math.pow(2, 12) - Math.round((1 / currentTimeConstant) * Math.pow(2, 12), 0);
+  voltageDecay = Math.pow(2, 12) - Math.round((1 / voltageTimeConstant) * Math.pow(2, 12), 0);
+  actualThresh = vThresh * Math.pow(2, 6);
+  setMax();
+  timeStep = 0;
+}
+
+function setMax()
+{
+    max = actualThresh + (.5 * actualThresh);
+    var max2 = spikeWeight*5;
+    if(max2 > max)
+        max = max2;
+}
+
+function stepGraph(time, currentValue, voltageValue)
+{
+    if (time >= count)
+        time = time % count;
+    
+    currentBuckets[time] = currentValue;
+    voltageBuckets[time] = voltageValue;
+
+    ctx.clearRect(0, 0, c.width, c.height);
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(0,0,c.width, c.height);
+
+    ctx.beginPath();
+    var s = "rgba(255,0,0,"+opacity.toString()+")";
+    ctx.fillStyle = s;
+    var radius = 10;
+    ctx.ellipse(c.width-radius,radius,radius,radius,Math.PI/4, 0, Math.PI*2);
+    ctx.fill();
+
+    drawScale();
+
+    updateCurrent(time);
+    updateVoltage(time);
+
+    var element = document.getElementById('VbiasMant');
+    biasMant = element.value;
+    element = document.getElementById('VbiasExp');
+    biasExp = element.value;
+    element = document.getElementById('VcurrentTimeConstant');
+    currentTimeConstant = element.value;
+    element = document.getElementById('VvoltageTimeConstant');
+    voltageTimeConstant = element.value;
+    element = document.getElementById('VvThMant');
+    vThresh = element.value;
+    element = document.getElementById('clickSpikeWeight');
+    spikeWeight = element.value;
+    element = document.getElementById('modulus');
+    spikeSend = element.value;
+
+    currentDecay = Math.pow(2, 12) - Math.round((1 / currentTimeConstant) * Math.pow(2, 12), 0);
+    voltageDecay = Math.pow(2, 12) - Math.round((1 / voltageTimeConstant) * Math.pow(2, 12), 0);
+    actualThresh = vThresh * Math.pow(2, 6);
+    setMax();
+
+    var actualB = (biasMant * Math.pow(2, biasExp));
+    var actualCD = Math.round((1 / currentTimeConstant) * Math.pow(2, 12), 0);
+    var actualVD = Math.round((1 / voltageTimeConstant) * Math.pow(2, 12), 0);
+    
+    document.getElementById("biasFormula").innerText = biasMant.toString()+" * 2^"+biasExp.toString()+"="+actualB.toString();
+    document.getElementById("currentFormula").innerText = "(1/"+currentTimeConstant.toString()+" * 2^12) >> 12 = "+actualCD.toString();
+    document.getElementById("voltageFormula").innerText = "(1/"+voltageTimeConstant.toString()+" * 2^12) >> 12 = "+actualVD.toString();
+    document.getElementById("actualThreshFormula").innerText = vThresh.toString() +" * 2^6 = "+ actualThresh.toString();
+    document.getElementById("spiker").innerText = "random modulo "+spikeSend.toString();
+}
+
+function step()
+{
+     opacity -= .01;
+     if(opacity <=0) opacity = 0;
+
+    var test = Math.round(Math.random()*1000, 3);
+    if(spikeSend != 0 && test%spikeSend==0)
+        spikeVal++;
+    
+    var inter1 = ((current * currentDecay) >> 12);
+    current = inter1 + spikeVal*spikeWeight;
+    if (current < 0) current = 0;
+    spikeVal=0;
+    
+    var vInter = (voltage * voltageDecay) >> 12;
+    vInter += (current + (biasMant * Math.pow(2, biasExp)));
+    voltage = vInter;
+    if (voltage < 0) 
+         voltage = 0;
+    
+    var d = new Date();
+    var span = d.getTime()-currentTime.getTime();
+    if(span > 3000)
+    {
+    hz.innerText = "-- Hz";
+    currentTime = new Date();
+    } 
+    
+    if (voltage>actualThresh) 
+    {
+        voltage= 0;
+        opacity = 1;
+        spikesSoFar++;
+        if(span > 1000)
+        {
+            hz.innerText = Math.round(spikesSoFar/(span/1000), 2) + " Hz @ 10 ms";
+            spikesSoFar = 0;
+            currentTime = new Date();
+        }
+    } 
+    
+
+    stepGraph(timeStep, current, voltage);
+
+    timeStep++;
+}
+
+function drawScale()
+{
+    ctx.beginPath();
+    ctx.strokeStyle = "#FFFFFF";
+    ctx.fillStyle = "#FFFFFF";
+    ctx.moveTo(2, c.height);
+    ctx.lineTo(2, 0);
+    var stepSize = c.height/10;
+    var actualStep = max/10;
+    var threshGraph = c.height-c.height*actualThresh/max;
+    var ii = 0;
+    for(var i=0;i<c.height;i+=stepSize)
+    {
+        ctx.moveTo(0, i);
+        ctx.lineTo(10, i);
+        ctx.font="10px Arial";
+        ctx.fillText(((max-actualStep*ii)).toString(),10,i);
+        ii++;
+    }
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.strokeStyle = "#FFFFFF";
+    ctx.setLineDash([5, 15]);
+    ctx.moveTo(0, threshGraph);
+    ctx.lineTo(c.width, threshGraph);
+    ctx.stroke();
+    ctx.setLineDash([]);
+}
+
+function updateCurrent(time)
+{
+  ctx.beginPath();
+  ctx.strokeStyle = "#ffa500";
+  ctx.lineWidth = 2; 
+  ctx.moveTo(0,c.height/2);
+  var prevVal = 0;
+  var midValue = c.height;///4*3;
+
+  for (i = 0; i < time; i++)
+  {
+      var val = midValue-currentBuckets[i]/max*c.height;
+      if(val == midValue && prevVal < midValue)
+         ctx.moveTo(i, val);
+      else
+         ctx.lineTo(i, val);
+      prevVal = val;
+  }
+  ctx.stroke();
+}
+
+function updateVoltage(time)
+{
+  ctx.beginPath();
+  ctx.strokeStyle = "#00FF00";
+  ctx.lineWidth = 1; 
+  ctx.moveTo(0,c.height/2);
+
+  var midValue = c.height;///4*3;
+
+  var prevVal = 0;
+  for (i = 0; i < time; i++)
+  {
+      var val = midValue-voltageBuckets[i]/max*c.height;
+      if(val == midValue && prevVal < midValue)
+         ctx.moveTo(i, val);
+      else
+         ctx.lineTo(i, val);
+      prevVal = val;
+  }
+  ctx.stroke();
+}
+
+initialize();
+timer = setInterval(step, 10);
+
+</script>
+</html>

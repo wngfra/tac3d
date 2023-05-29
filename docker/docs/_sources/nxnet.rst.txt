@@ -1,0 +1,22 @@
+NxNet API
+=========
+.. automodule:: nxsdk.net.net
+   :members:
+   :undoc-members:
+   :inherited-members:
+
+.. toctree::
+   :maxdepth: 2
+   
+   compartment
+   connection
+   connectionsharing
+   neuron
+   groups
+   netprobes
+   learningrule
+   multicompartment
+   spikeinjectionandreceivers
+   nxlogging
+   nxcompiler
+   nxnet_resource_map

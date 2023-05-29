@@ -1,0 +1,2272 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>1. One-shot learning using External Plexiform Layer (EPL) network &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="K Nearest Neighbour" href="../knn.html" />
+    <link rel="prev" title="EPL" href="../epl.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Nx SDK Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../characterization.html">Characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dnn.html">DNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dvs.html">DVS</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../epl.html">EPL</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../epl.html#epl-multi-pattern-learning">EPL Multi Pattern Learning</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../epl.html#parameters-for-epl-network">Parameters For EPL Network</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">1. One-shot learning using External Plexiform Layer (EPL) network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#2.-EPL-network-setup">2. EPL network setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#3.-One-shot-learning-of-a-single-odor-pattern">3. One-shot learning of a single odor pattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#4.-One-shot-learning-of-multiple-patterns">4. One-shot learning of multiple patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../knn.html">K Nearest Neighbour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input_generator.html">Input Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lca.html">LCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../path_planning.html">Path Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../slayer.html">SLAYER Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../slic.html">SLIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spike_streamer.html">Spike Streamer Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../trace_injection.html">Trace Injection Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../modules.html">Nx SDK Modules</a> &raquo;</li>
+        
+          <li><a href="../epl.html">EPL</a> &raquo;</li>
+        
+      <li>1. One-shot learning using External Plexiform Layer (EPL) network</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># INTEL CORPORATION CONFIDENTIAL AND PROPRIETARY</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2019-2021 Intel Corporation.</span>
+<span class="c1">#</span>
+<span class="c1"># This software and the related documents are Intel copyrighted</span>
+<span class="c1"># materials, and your use of them is governed by the express</span>
+<span class="c1"># license under which they were provided to you (License). Unless</span>
+<span class="c1"># the License provides otherwise, you may not use, modify, copy,</span>
+<span class="c1"># publish, distribute, disclose or transmit  this software or the</span>
+<span class="c1"># related documents without Intel&#39;s prior written permission.</span>
+<span class="c1">#</span>
+<span class="c1"># This software and the related documents are provided as is, with</span>
+<span class="c1"># no express or implied warranties, other than those that are</span>
+<span class="c1"># expressly stated in the License.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="1.-One-shot-learning-using-External-Plexiform-Layer-(EPL)-network">
+<h1>1. One-shot learning using External Plexiform Layer (EPL) network<a class="headerlink" href="#1.-One-shot-learning-using-External-Plexiform-Layer-(EPL)-network" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial, we show how to setup, train and test a neuromorphic algorithm for one-shot pattern learning inspired by the External Plexiform Layer (EPL) network of the mammalian olfactory bulb. While the algorithm implemented by the network learns to recognize “odors” (more precisely, using odor chemosensor array data), it can be used to learn any other patterns as the EPL network basically implements a spatio-temporal attractor (STA) network. After the EPL/STA network “learns” an
+odor/pattern, even if a noise corrupted version of the learned pattern (test sample) is presented, the network activity settles down into the attractor state of the learned pattern. This gives the ability for the network to learn (more precisely, recall) from a single exposure to a pattern (i.e. one-shot learning). However, if the noise in the test sample is very high, then the network may not be able to recall the pattern as it may not settle down in the attractor state of the learned pattern.
+However, in practice, we notice that the EPL network is robust to high levels of noise.</p>
+</div>
+<div class="section" id="2.-EPL-network-setup">
+<h1>2. EPL network setup<a class="headerlink" href="#2.-EPL-network-setup" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="EPL-network-structure">
+<h2>EPL network structure<a class="headerlink" href="#EPL-network-structure" title="Permalink to this headline">¶</a></h2>
+<p>The biologically inspired version of the EPL network is a collection of “columns”, where each column is composed of few mitral cells (MCs) and many granule cells (GCs) which act as interneurons. The MCs in a column have sparse, random and excitatory connections to all GCs, including those in other columns. The MC-&gt;GC weights are plastic (E-STDP learning). The GCs in a column only have inhibitory connections with MCs in the same column. The GC-&gt;MC delays are plastic (I-STDP learning).</p>
+<p>The inputs to the network are presented to the MCs as bias currents which causes the MCs to spike. Each MC is fed a bias current from one receptor neuron (in biology) and from one sensor of a chemosensor array in the case of an “artificial nose” implementation. Therefore, the timing of the MC output spike depends on the strength of the MC input bias current.</p>
+<p>Usually, a group of GCs (say five) in each column are allocated to learn one pattern. The E-STDP learning rule for the MC-&gt;GC connections helps to strengthen the weights which causally excite the GCs and prune those weights which don’t excite the GCs. Meanwhile, as the excited GCs spike, the inhibitory delay of the GC-&gt;MC box synapses increases until the various MCs responsible for exciting a particular GC no longer send any pre-synaptic spikes. Thus, the E-STDP learning rule for the sparse
+MC-&gt;GC connections helps the GC neurons to develop a receptive field which is sensitive to higher order features of the MC input patterns.</p>
+<p>The EPL network is tightly synchronized by oscillatory circuits. There are two oscillatory cycles (theta and gamma) which precisely control the operation of the network. The gamma oscialltions are fine grained (say, 1 gamma cycle = 40 timesteps), whereas the thetha oscillations are coase grained and composed of many gamma cycles (say, 1 thetha cycle = 50 gamma cycles during training/ 5 gamma cycles during testing). In each gamma cycle, the MC neurons are on for half of the gamma cycle and off
+for the other half. In the positive theta cycle, the network is consistently exposed to a pattern (i.e. “sniffs” the input), learns and settles into a spatio-temporal attractor state (STSA) for that pattern. Next, during the negative theta cycle (also referred to as idle thetha cycle), the network is not presented any inputs. This helps the network to get rid of any transient neuronal activity. The output of the network, is the spiking pattern of the various MCs in all the columns. Thus the MC
+layer serves as both the input and output layer for the network where the GCs act as the inhibitory interneurons.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># import the required modules</span>
+<span class="kn">from</span> <span class="nn">nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning</span> <span class="kn">import</span> <span class="n">EPLMultiPatternLearning</span>
+<span class="kn">from</span> <span class="nn">nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters</span> <span class="kn">import</span> <span class="n">ParamemtersForEPL</span>
+
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="3.-One-shot-learning-of-a-single-odor-pattern">
+<h1>3. One-shot learning of a single odor pattern<a class="headerlink" href="#3.-One-shot-learning-of-a-single-odor-pattern" title="Permalink to this headline">¶</a></h1>
+<p>We now show how to setup an EPL network to learn a single odor pattern. The odor we want to learn is exposed to a chemo-sensor array of say N sensors. Each sensor binds to a particular part of the odor molecule and emits a reading. Thus the input to the MC neurons is the values of those sensor reading.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Define the parameters using a utility class that sets up the various default parameters</span>
+<span class="n">eplParams</span> <span class="o">=</span> <span class="n">ParamemtersForEPL</span><span class="p">()</span>
+<span class="c1"># list the various parameters</span>
+<span class="n">eplParams</span><span class="o">.</span><span class="n">showDefaults</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+numPatterns=1
+numColumns=72
+numMCsPerColumn=1
+numGCsPerPatternPerColumn=5
+numDelaysMCToGC=1
+minDelaysMCToGC=16
+gammaCycleDuration=40
+connProbMCToGC=0.2
+useRandomSeed=False
+randomGenSeed=0
+numGammaCyclesTrain=45
+numGammaCyclesTest=5
+numGammaCyclesIdle=5
+useLMTSpikeCounters=False
+logSNIPs=False
+executionTimeProbe=False
+</pre></div></div>
+</div>
+<p>From the above cell, we notice that we are setting up a network to learn 1 pattern (odor). The network has 72 columns with 1 MC per each column and 5 GCs per column for each pattern.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">#modify only the ones we need. Here we set the seed for the random number generator to 100 so that the results are repeatble.</span>
+<span class="n">eplParams</span><span class="o">.</span><span class="n">useRandomSeed</span><span class="o">=</span><span class="kc">True</span>
+<span class="n">eplParams</span><span class="o">.</span><span class="n">randomGenSeed</span><span class="o">=</span><span class="mi">100</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># We now setup an EPL network to learn and recall patterns based on the parameters we set</span>
+<span class="n">epl</span> <span class="o">=</span> <span class="n">EPLMultiPatternLearning</span><span class="p">(</span><span class="n">eplParams</span><span class="o">=</span><span class="n">eplParams</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+createMCAndSTONetwork took 0.06940 secs
+createMCToGCNetwork took 0.63326 secs
+compileAndGetBoard took 1.25281 secs
+</pre></div></div>
+</div>
+<p>we now generate “synthetic data” for an odor/pattern by creating synthetic odor chemosensor array data (for an odor/pattern) and also generate noise corrupted test samples for that pattern. In general we can feed any arbitraty patterns we want to learn</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">#generate synthetic training data for 1 pattern</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">epl</span><span class="o">.</span><span class="n">genTrainingData</span><span class="p">(</span><span class="n">numPatterns</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1">#generate synthetic testing data using the pattern to be learned. We take the training pattern, and randomly corrupt a fraction</span>
+<span class="c1">#of the sensor readings (occlusion factor) with impulse noise</span>
+<span class="n">numTestSamples</span><span class="o">=</span><span class="mi">100</span>
+<span class="c1"># occlusionFactor=0.6 i.e. 60% of the sensor values are randomly corrupted with noise</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">epl</span><span class="o">.</span><span class="n">genTestingData</span><span class="p">(</span><span class="n">trainingData</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">numTestSamples</span><span class="o">=</span><span class="n">numTestSamples</span><span class="p">,</span> <span class="n">occlusionFactor</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">#Display the train and test samples</span>
+<span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training data (single pattern) = </span><span class="si">{}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pattern</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">testPattern</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y</span><span class="p">[:</span><span class="mi">5</span><span class="p">]):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Test pattern #</span><span class="si">{}</span><span class="s2"> = </span><span class="si">{}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">testPattern</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Training data (single pattern) = [0, 0, 16, 16, 4, 4, 12, 0, 8, 0, 0, 8, 8, 0, 0, 8, 0, 0, 0, 16, 0, 4, 0, 8, 8, 0, 8, 16, 0, 4, 12, 12, 12, 12, 16, 4, 16, 0, 16, 16, 12, 0, 12, 0, 4, 8, 8, 12, 0, 0, 0, 0, 8, 0, 4, 0, 16, 4, 8, 0, 0, 8, 8, 0, 0, 4, 0, 16, 0, 0, 0, 8]
+
+Test pattern #1 = [11, 4, 5, 0, 4, 0, 10, 0, 8, 16, 0, 12, 5, 0, 12, 8, 0, 12, 14, 6, 6, 4, 5, 8, 8, 2, 14, 16, 4, 4, 12, 12, 13, 16, 3, 9, 4, 3, 7, 16, 12, 1, 12, 0, 14, 13, 11, 12, 0, 2, 2, 1, 14, 13, 0, 4, 16, 4, 15, 0, 0, 8, 8, 0, 3, 4, 0, 2, 0, 9, 3, 8]
+
+Test pattern #2 = [16, 8, 0, 16, 4, 16, 12, 3, 5, 0, 0, 8, 8, 1, 7, 8, 0, 14, 0, 16, 3, 7, 11, 8, 8, 0, 8, 16, 10, 4, 3, 9, 3, 12, 16, 9, 9, 0, 14, 16, 12, 0, 12, 6, 4, 10, 8, 2, 5, 10, 4, 6, 13, 2, 4, 2, 10, 6, 10, 8, 4, 8, 3, 14, 0, 6, 0, 16, 16, 0, 5, 15]
+
+Test pattern #3 = [14, 10, 16, 1, 4, 8, 12, 15, 8, 1, 2, 11, 1, 8, 0, 14, 9, 12, 11, 16, 0, 10, 5, 4, 5, 10, 15, 12, 0, 4, 13, 12, 12, 7, 16, 4, 15, 0, 16, 16, 12, 0, 12, 0, 3, 16, 6, 12, 0, 0, 0, 5, 2, 0, 7, 2, 0, 8, 15, 0, 0, 8, 8, 7, 10, 13, 1, 8, 15, 11, 10, 2]
+
+Test pattern #4 = [4, 0, 12, 16, 4, 16, 1, 0, 8, 0, 0, 12, 8, 10, 0, 8, 0, 13, 0, 5, 13, 7, 2, 8, 8, 0, 8, 14, 0, 11, 0, 9, 12, 13, 0, 14, 9, 6, 16, 14, 15, 16, 12, 4, 15, 4, 6, 9, 12, 0, 0, 0, 12, 3, 4, 7, 16, 4, 4, 7, 15, 5, 8, 13, 0, 9, 0, 9, 0, 0, 16, 12]
+
+Test pattern #5 = [15, 13, 8, 16, 14, 4, 12, 4, 8, 0, 15, 11, 8, 0, 9, 8, 0, 0, 2, 12, 3, 4, 16, 12, 6, 0, 5, 8, 0, 4, 1, 12, 1, 2, 16, 16, 16, 0, 16, 14, 12, 11, 0, 0, 4, 8, 11, 6, 0, 10, 0, 7, 9, 0, 16, 9, 16, 4, 10, 10, 10, 8, 8, 3, 5, 9, 14, 16, 7, 7, 0, 7]
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># We now train the network by presenting one pattern for 45 gamma cycles(numGammaCyclesTrain=45),</span>
+<span class="c1"># where each gamma cycle is 40 timesteps (gammaCycleDuration=40)</span>
+<span class="c1"># After presenting the training pattern, the network is not fed any inputs for 5 gamma cycles (numGammaCyclesIdle=5)</span>
+<span class="n">epl</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trainingSet</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">testingSet</span><span class="o">=</span><span class="n">y</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+_genCodeForConstants took 0.03259 secs
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Connecting to 134.134.68.81:45739
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 0.20s
+<span class="ansi-black-intense-fg ansi-bold">WARNING</span>:<span class="ansi-blue-fg">DRV</span>:  <span class="ansi-yellow-fg">~/ncl/gold/nxsdk-nxsdk ~/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/tutorials
+Compiling in directory : /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395
+Include dir is : /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips
+Compiling -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/initnetwork_0_0.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/initnetwork_0_0.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/initnetwork_0_0.c
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.h:22:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/initnetwork_0_0.c:2:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/common.h:30:20: warning: ‘command2strings’ defined but not used [-Wunused-variable]
+ static const char *command2strings[] = {&#34;DO_NOTHING&#34;,&#34;SWITCH_TO_INFERENCE&#34;,
+                    ^
+Compiling without -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/0_initsnip.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/0_initsnip.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/0_initsnip.c
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.h:21:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: In function ‘changeStdpPreProfileCfg’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:47:5: note: in expansion of macro ‘LOG’
+     StdpPreProfileCfg pp1;
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:53:5: note: in expansion of macro ‘LOG’
+         inputAxonId = baseInpAxonId + (2 * i);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:58:9: note: in expansion of macro ‘LOG’
+                                 profileId + 1;
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:65:9: note: in expansion of macro ‘LOG’
+ void disableGCTOMCLearning() {
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: In function ‘disableGCTOMCLearning’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:72:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: In function ‘dumpConstants’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:79:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;NUM_GCS = %d \n&#34;, NUM_GCS);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:80:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;MCAD_CXGRP_ID = %d \n&#34;, MCAD_CXGRP_ID);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:81:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;MCSOMA_CXGRP_ID = %d \n&#34;, MCSOMA_CXGRP_ID);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:82:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:83:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:84:5: note: in expansion of macro ‘LOG’
+ void initParamsAndInputs(runState *s) {
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:85:5: note: in expansion of macro ‘LOG’
+     //dumpConstants();
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: In function ‘initParamsAndInputs’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:95:27: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:97:5: note: in expansion of macro ‘LOG’
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.h:22:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: At top level:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/common.h:30:20: warning: ‘command2strings’ defined but not used [-Wunused-variable]
+ static const char *command2strings[] = {&#34;DO_NOTHING&#34;,&#34;SWITCH_TO_INFERENCE&#34;,
+                    ^
+Compiling without -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/1_mgmtsnip.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/1_mgmtsnip.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/1_mgmtsnip.c
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.h:21:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘updateSpikeCounters’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:114:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;TIMESTEP = %d:updating spike counters...\n&#34;, time_step);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘applyInputs’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:141:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;reading MCAD input biases... \n&#34;);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘switchToPositiveThetaTest’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:165:9: note: in expansion of macro ‘LOG’
+     //LOG(&#34;Reset MC AD Bias and Voltages \n&#34;);
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘changeMCToGCWeights’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:246:5: note: in expansion of macro ‘LOG’
+             LOG(&#34;OLD: SynFmtId = %d, CIdx=%d, Wgt=%d, Dly=%d \n&#34;,
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:256:9: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:264:13: note: in expansion of macro ‘LOG’
+                     synArray[synIdx].Dly -= 1;
+             ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:267:13: note: in expansion of macro ‘LOG’
+             LOG(&#34;NEW:SynFmtId = %d, CIdx=%d, Wgt=%d, Dly=%d \n&#34;,
+             ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:273:9: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘changeGCToMCWeights’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:280:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:290:9: note: in expansion of macro ‘LOG’
+         int coreId = 2;
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:298:13: note: in expansion of macro ‘LOG’
+     changeGCToMCExcConnections();
+             ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:305:21: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:319:13: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:328:9: note: in expansion of macro ‘LOG’
+     int GCGRP_NEXT_PATTERN = gcGrpIdsPerPattern[numPatternsLearned];
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘switchToInference’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:347:5: note: in expansion of macro ‘LOG’
+     NeuronCore *nc = NEURON_PTR(nx_nth_coreid(coreId));
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘switchToPositiveThetaTrain’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:384:5: note: in expansion of macro ‘LOG’
+             switchToNegativeTheta(s); break;
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:412:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:414:5: warning: implicit declaration of function ‘enableLearning’ [-Wimplicit-function-declaration]
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: At top level:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:418:6: warning: conflicting types for ‘enableLearning’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:414:5: note: previous implicit declaration of ‘enableLearning’ was here
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘enableLearning’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:420:5: warning: implicit declaration of function ‘changeGCToMCLearning’ [-Wimplicit-function-declaration]
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: At top level:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:423:6: warning: conflicting types for ‘changeGCToMCLearning’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:420:5: note: previous implicit declaration of ‘changeGCToMCLearning’ was here
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.h:21:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘changeGCToMCLearning’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:424:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:431:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:436:9: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:443:9: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘runMgmt’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:465:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:466:5: warning: enumeration value ‘SWITCH_TO_INFERENCE’ not handled in switch [-Wswitch]
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.h:21:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:482:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: At top level:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:30:12: warning: ‘mcSomaNumSTDP’ defined but not used [-Wunused-variable]
+ static int mcSomaNumSTDP = 0;
+            ^
+Compiling without -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/main_0_0.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/main_0_0.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/main_0_0.c
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.h:22:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/main_0_0.c:3:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/common.h:30:20: warning: ‘command2strings’ defined but not used [-Wunused-variable]
+ static const char *command2strings[] = {&#34;DO_NOTHING&#34;,&#34;SWITCH_TO_INFERENCE&#34;,
+                    ^
+Compiling without -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/resourceMap_e8ee96d4-1432-49fd-87a6-56dd2e53b880.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/resourceMap_e8ee96d4-1432-49fd-87a6-56dd2e53b880.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/resourceMap_e8ee96d4-1432-49fd-87a6-56dd2e53b880.c
+OBJFILES :  /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/initnetwork_0_0.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/0_initsnip.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/1_mgmtsnip.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/main_0_0.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/resourceMap_e8ee96d4-1432-49fd-87a6-56dd2e53b880.c.o
+gcc -Wall -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/initnetwork_0_0.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/0_initsnip.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/1_mgmtsnip.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/main_0_0.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/resourceMap_e8ee96d4-1432-49fd-87a6-56dd2e53b880.c.o -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699922.4587395/launcher.link nxsdk/lib/embedded/libboot.a nxsdk/lib/embedded/libembedded_nx.a nxsdk/lib/embedded/liblmt.a nxsdk/lib/embedded/libnx.a -Wl,--script=nxsdk/utils/linker.scr -Wl,--build-id=none -Wl,-N -nostdlib
+</span>
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Compiling Embedded snips....Done 0.48s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding axons/synapses.....Done 0.05s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding probes.............Done 0.46ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Booting up..................Done 2.60s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 0.03s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 3.60ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.05ms
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># We now test the ability of the network to recall 100 noise corrputed samples of the trained pattern</span>
+<span class="c1"># During testing, each pattern is presented to the network for 5 gamma cycles(numGammaCyclesTest=5)</span>
+<span class="c1"># In between the presentation of two test samples, the network is not fed any</span>
+<span class="c1">#inputs for 5 gamma cycles (numGammaCyclesIdle=5)</span>
+<span class="n">epl</span><span class="o">.</span><span class="n">predict</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 2.46ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 0.19ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.05ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Executing...................Done 8.55s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Processing timeseries.......Done 0.53s
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># we now evaluate the performance of the network and see how many test samples (i.e. noise corrupted</span>
+<span class="c1"># versions of the trained pattern) can be recalled with more than 80% &quot;similarity&quot;.</span>
+<span class="c1">#We can use various similarity metrics. In this case, we use Jaccard Similarity.</span>
+<span class="c1">#The chosen similarity metric allows us to compute how close the spatio-temporal spiking activity</span>
+<span class="c1">#of the test sample is to that of the trained sample.</span>
+
+<span class="c1">#plot the spatio-temporal spiking activity of the last (100th) test sample</span>
+<span class="n">epl</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">similarityThreshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+*****Execution Report*****
+1 patterns presented. 100 test samples for each pattern
+Classification performance = 100.0%; for similarity threshold = 0.8
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># next we evaluate the performance for more stringent requirements in the similarity of</span>
+<span class="c1"># the spatio-temporal spiking activity of the network</span>
+<span class="n">epl</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">similarityThreshold</span><span class="o">=</span><span class="mf">0.99</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+*****Execution Report*****
+1 patterns presented. 100 test samples for each pattern
+Classification performance = 97.0%; for similarity threshold = 0.99
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># let us visualize the spatio-temporal spiking activity of the network.</span>
+<span class="c1">#Let us see the spike raster for the 18th testSample (i.e sampleIdx=17)</span>
+<span class="sd">&quot;&quot;&quot;%matplotlib notebook&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="n">epl</span><span class="o">.</span><span class="n">showRasterPlot</span><span class="p">(</span><span class="n">patternIdx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sampleIdx</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_epl_multi_pattern_oneshot_learning_20_0.png" src="../_images/jupyter_epl_multi_pattern_oneshot_learning_20_0.png" />
+</div>
+</div>
+<p>In the above spike raster plot, we look at the spatio-temporal spiking activity (STSA) of the various MC neurons for each of the 5 gamma cycles for which the network was presented a test input. In particular, the above plot is for the 18th test sample. In first gamma cycle (left most part of the spike raster plot), the STSA of the network for the training pattern is shown in blue. Whereas, the STSA of the network for the test sample (which is a noise corrupted version of the trained pattern) is
+shown in red. In the first gamma cycle(first 40 timesteps), we notice that there is significant difference between the STSAs of the learned and test patterns. But, by the fifth gamma cycle, we notice that the STSA of the test sample “settles down” to that of the STSA of the trained pattern, thereby enabling the network to recall the pattern it learned using one-shot learning.</p>
+</div>
+<div class="section" id="4.-One-shot-learning-of-multiple-patterns">
+<h1>4. One-shot learning of multiple patterns<a class="headerlink" href="#4.-One-shot-learning-of-multiple-patterns" title="Permalink to this headline">¶</a></h1>
+<p>In this section, we will look at how we can learn patterns which are different from odors. We will see how the EPL network can learn images of 6 different digits and recall the learned digit even when noise corrupted versions of the learned image of the digit are presented.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># load the digits dataset which consists of 8X8 images of digits</span>
+<span class="n">digits</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_digits</span><span class="p">()</span>
+<span class="n">images</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">images</span>
+<span class="n">targets</span> <span class="o">=</span> <span class="n">digits</span><span class="o">.</span><span class="n">target</span>
+<span class="c1"># create a map of {digt-&gt;list of images of the digits}</span>
+<span class="n">image_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span> <span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)}</span>
+<span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">img</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span> <span class="n">images</span><span class="p">):</span>
+    <span class="n">image_dict</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">numPatterns</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="c1">#randomly choose 6 digits</span>
+<span class="n">digits</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">#define utility functions</span>
+<span class="c1">#create the training dataset by choosing the appropriate images of the digts to be learned</span>
+<span class="k">def</span> <span class="nf">get_training_data</span><span class="p">(</span><span class="n">digits</span><span class="p">,</span> <span class="n">fourX</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">train_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">digit</span> <span class="ow">in</span> <span class="n">digits</span><span class="p">:</span>
+        <span class="n">training_image</span> <span class="o">=</span> <span class="n">image_dict</span><span class="p">[</span><span class="n">digit</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+        <span class="c1"># print(training_image)</span>
+        <span class="n">training_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">training_image</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fourX</span><span class="p">:</span> <span class="n">training_image</span> <span class="o">=</span> <span class="p">(</span><span class="n">training_image</span><span class="o">//</span><span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="mi">4</span>
+        <span class="n">training_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">training_image</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="c1"># print(training_image)</span>
+        <span class="n">train_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">training_image</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">train_data</span>
+
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># generate the training data</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">get_training_data</span><span class="p">(</span><span class="n">digits</span><span class="o">=</span><span class="n">digits</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># display the images of the patterns (digits) to be learned</span>
+<span class="k">def</span> <span class="nf">plot_images</span><span class="p">(</span><span class="n">digits</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+                        <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;xticks&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;yticks&#39;</span><span class="p">:</span> <span class="p">[]})</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axs</span><span class="o">.</span><span class="n">flat</span><span class="p">):</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">digits</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># visulize the training data</span>
+<span class="n">plot_images</span><span class="p">(</span><span class="n">digits</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Digits to Learn&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_epl_multi_pattern_oneshot_learning_31_0.png" src="../_images/jupyter_epl_multi_pattern_oneshot_learning_31_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># define the parameters</span>
+<span class="n">plParams</span> <span class="o">=</span> <span class="n">ParamemtersForEPL</span><span class="p">()</span>
+<span class="n">eplParams</span><span class="o">.</span><span class="n">numPatterns</span> <span class="o">=</span> <span class="n">numPatterns</span>
+<span class="c1"># Image size is 8X8 and we are using only 1MC per column</span>
+<span class="n">eplParams</span><span class="o">.</span><span class="n">numColumns</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">eplParams</span><span class="o">.</span><span class="n">numMCsPerColumn</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># Use 5 GCs per column per pattern</span>
+<span class="n">eplParams</span><span class="o">.</span><span class="n">numGCsPerPatternPerColumn</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">eplParams</span><span class="o">.</span><span class="n">connProbMCToGC</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">eplParams</span><span class="o">.</span><span class="n">numDelaysMCToGC</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">eplParams</span><span class="o">.</span><span class="n">useRandomSeed</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">eplParams</span><span class="o">.</span><span class="n">randomGenSeed</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">eplParams</span><span class="o">.</span><span class="n">numGammaCyclesTrain</span> <span class="o">=</span> <span class="mi">45</span>
+<span class="c1"># create the network</span>
+<span class="n">epl</span> <span class="o">=</span> <span class="n">EPLMultiPatternLearning</span><span class="p">(</span><span class="n">eplParams</span><span class="o">=</span><span class="n">eplParams</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+createMCAndSTONetwork took 0.06080 secs
+createMCToGCNetwork took 5.37041 secs
+compileAndGetBoard took 8.11965 secs
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># generate 5 noisy test samples for each pattern</span>
+<span class="n">numTestSamples</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">occlusionPercent</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="c1"># randomly perturb only 20% of the image pixels</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">epl</span><span class="o">.</span><span class="n">generateTestingData</span><span class="p">(</span><span class="n">trainingData</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span>
+                                <span class="n">occlusionPercent</span><span class="o">=</span><span class="n">occlusionPercent</span><span class="p">,</span>
+                                <span class="n">numTestSamples</span><span class="o">=</span><span class="n">numTestSamples</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">#visualize the test data by displaying the 3rd test sample for each pattern</span>
+<span class="n">test_data_subset</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">sampleIdx</span><span class="o">=</span><span class="mi">3</span>
+<span class="k">for</span> <span class="n">patternIdx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numPatterns</span><span class="p">):</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">patternIdx</span> <span class="o">*</span> <span class="n">numTestSamples</span> <span class="o">+</span> <span class="n">sampleIdx</span>
+    <span class="n">test_data_subset</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+
+<span class="c1">#plot the 3rd test sample for each pattern</span>
+<span class="n">plot_images</span><span class="p">(</span><span class="n">digits</span><span class="p">,</span> <span class="n">test_data_subset</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Noisy samples of the learned digits&quot;</span><span class="p">)</span>
+
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_epl_multi_pattern_oneshot_learning_36_0.png" src="../_images/jupyter_epl_multi_pattern_oneshot_learning_36_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">epl</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trainingSet</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> <span class="n">testingSet</span><span class="o">=</span><span class="n">test_data</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+_genCodeForConstants took 0.00984 secs
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Connecting to 134.134.68.81:35239
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 0.18s
+<span class="ansi-black-intense-fg ansi-bold">WARNING</span>:<span class="ansi-blue-fg">DRV</span>:  <span class="ansi-yellow-fg">~/ncl/gold/nxsdk-nxsdk ~/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/tutorials
+Compiling in directory : /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399
+Include dir is : /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips
+Compiling -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/initnetwork_0_0.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/initnetwork_0_0.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/initnetwork_0_0.c
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.h:22:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/initnetwork_0_0.c:2:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/common.h:30:20: warning: ‘command2strings’ defined but not used [-Wunused-variable]
+ static const char *command2strings[] = {&#34;DO_NOTHING&#34;,&#34;SWITCH_TO_INFERENCE&#34;,
+                    ^
+Compiling without -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/0_initsnip.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/0_initsnip.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/0_initsnip.c
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.h:21:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: In function ‘changeStdpPreProfileCfg’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:47:5: note: in expansion of macro ‘LOG’
+     StdpPreProfileCfg pp1;
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:53:5: note: in expansion of macro ‘LOG’
+         inputAxonId = baseInpAxonId + (2 * i);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:58:9: note: in expansion of macro ‘LOG’
+                                 profileId + 1;
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:65:9: note: in expansion of macro ‘LOG’
+ void disableGCTOMCLearning() {
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: In function ‘disableGCTOMCLearning’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:72:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: In function ‘dumpConstants’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:79:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;NUM_GCS = %d \n&#34;, NUM_GCS);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:80:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;MCAD_CXGRP_ID = %d \n&#34;, MCAD_CXGRP_ID);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:81:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;MCSOMA_CXGRP_ID = %d \n&#34;, MCSOMA_CXGRP_ID);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:82:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:83:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:84:5: note: in expansion of macro ‘LOG’
+ void initParamsAndInputs(runState *s) {
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:85:5: note: in expansion of macro ‘LOG’
+     //dumpConstants();
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: In function ‘initParamsAndInputs’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:95:27: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:97:5: note: in expansion of macro ‘LOG’
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.h:22:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: At top level:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/common.h:30:20: warning: ‘command2strings’ defined but not used [-Wunused-variable]
+ static const char *command2strings[] = {&#34;DO_NOTHING&#34;,&#34;SWITCH_TO_INFERENCE&#34;,
+                    ^
+Compiling without -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/1_mgmtsnip.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/1_mgmtsnip.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/1_mgmtsnip.c
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.h:21:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘updateSpikeCounters’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:114:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;TIMESTEP = %d:updating spike counters...\n&#34;, time_step);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘applyInputs’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:141:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;reading MCAD input biases... \n&#34;);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘switchToPositiveThetaTest’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:165:9: note: in expansion of macro ‘LOG’
+     //LOG(&#34;Reset MC AD Bias and Voltages \n&#34;);
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘changeMCToGCWeights’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:246:5: note: in expansion of macro ‘LOG’
+             LOG(&#34;OLD: SynFmtId = %d, CIdx=%d, Wgt=%d, Dly=%d \n&#34;,
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:256:9: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:264:13: note: in expansion of macro ‘LOG’
+                     synArray[synIdx].Dly -= 1;
+             ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:267:13: note: in expansion of macro ‘LOG’
+             LOG(&#34;NEW:SynFmtId = %d, CIdx=%d, Wgt=%d, Dly=%d \n&#34;,
+             ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:273:9: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘changeGCToMCWeights’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:280:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:290:9: note: in expansion of macro ‘LOG’
+         int coreId = 2;
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:298:13: note: in expansion of macro ‘LOG’
+     changeGCToMCExcConnections();
+             ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:305:21: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:319:13: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:328:9: note: in expansion of macro ‘LOG’
+     int GCGRP_NEXT_PATTERN = gcGrpIdsPerPattern[numPatternsLearned];
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘switchToInference’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:347:5: note: in expansion of macro ‘LOG’
+     NeuronCore *nc = NEURON_PTR(nx_nth_coreid(coreId));
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘switchToPositiveThetaTrain’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:384:5: note: in expansion of macro ‘LOG’
+             switchToNegativeTheta(s); break;
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:412:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:414:5: warning: implicit declaration of function ‘enableLearning’ [-Wimplicit-function-declaration]
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: At top level:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:418:6: warning: conflicting types for ‘enableLearning’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:414:5: note: previous implicit declaration of ‘enableLearning’ was here
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘enableLearning’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:420:5: warning: implicit declaration of function ‘changeGCToMCLearning’ [-Wimplicit-function-declaration]
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: At top level:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:423:6: warning: conflicting types for ‘changeGCToMCLearning’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:420:5: note: previous implicit declaration of ‘changeGCToMCLearning’ was here
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.h:21:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘changeGCToMCLearning’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:424:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:431:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:436:9: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:443:9: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘runMgmt’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:465:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:466:5: warning: enumeration value ‘SWITCH_TO_INFERENCE’ not handled in switch [-Wswitch]
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.h:21:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:482:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: At top level:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:30:12: warning: ‘mcSomaNumSTDP’ defined but not used [-Wunused-variable]
+ static int mcSomaNumSTDP = 0;
+            ^
+Compiling without -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/main_0_0.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/main_0_0.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/main_0_0.c
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.h:22:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/main_0_0.c:3:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/common.h:30:20: warning: ‘command2strings’ defined but not used [-Wunused-variable]
+ static const char *command2strings[] = {&#34;DO_NOTHING&#34;,&#34;SWITCH_TO_INFERENCE&#34;,
+                    ^
+Compiling without -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/resourceMap_2b5010de-01c6-4230-92ff-d18531710649.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/resourceMap_2b5010de-01c6-4230-92ff-d18531710649.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/resourceMap_2b5010de-01c6-4230-92ff-d18531710649.c
+OBJFILES :  /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/initnetwork_0_0.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/0_initsnip.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/1_mgmtsnip.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/main_0_0.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/resourceMap_2b5010de-01c6-4230-92ff-d18531710649.c.o
+gcc -Wall -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/initnetwork_0_0.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/0_initsnip.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/1_mgmtsnip.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/main_0_0.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/resourceMap_2b5010de-01c6-4230-92ff-d18531710649.c.o -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699952.0448399/launcher.link nxsdk/lib/embedded/libboot.a nxsdk/lib/embedded/libembedded_nx.a nxsdk/lib/embedded/liblmt.a nxsdk/lib/embedded/libnx.a -Wl,--script=nxsdk/utils/linker.scr -Wl,--build-id=none -Wl,-N -nostdlib
+</span>
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Compiling Embedded snips....Done 0.79s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding axons/synapses.....Done 0.27s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Booting up..................Done 2.66s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding probes.............Done 0.21ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.09ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 3.22ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 0.21s
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">epl</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.07ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 0.08ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 3.39ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Executing...................Done 2.74s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Processing timeseries.......Done 0.28s
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">epl</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">similarityThreshold</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+*****Execution Report*****
+6 patterns presented. 5 test samples for each pattern
+Classification performance = 83.0%; for similarity threshold = 0.85
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">epl</span><span class="o">.</span><span class="n">showRasterPlot</span><span class="p">(</span><span class="n">patternIdx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sampleIdx</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_epl_multi_pattern_oneshot_learning_41_0.png" src="../_images/jupyter_epl_multi_pattern_oneshot_learning_41_0.png" />
+</div>
+</div>
+<p>There are various hyper parameters in the network that can be tuned. With the network parameters we chose before, the accuracy obtained was 83%. Let us try to improve this accuracy by varying one of the hyperparameters and see what happens…</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1">#Change the number of dendrites between MC-&gt;GC connections</span>
+<span class="n">eplParams</span><span class="o">.</span><span class="n">numDelaysMCToGC</span> <span class="o">=</span> <span class="mi">3</span> <span class="c1"># was 2 before</span>
+
+<span class="c1">#create a new network and redo the above process</span>
+<span class="n">epl</span> <span class="o">=</span> <span class="n">EPLMultiPatternLearning</span><span class="p">(</span><span class="n">eplParams</span><span class="o">=</span><span class="n">eplParams</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+createMCAndSTONetwork took 0.07360 secs
+createMCToGCNetwork took 7.93065 secs
+compileAndGetBoard took 12.31260 secs
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># This dumps a lot of output</span>
+<span class="n">epl</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">trainingSet</span><span class="o">=</span><span class="n">train_data</span><span class="p">,</span> <span class="n">testingSet</span><span class="o">=</span><span class="n">test_data</span><span class="p">)</span>
+<span class="n">epl</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+_genCodeForConstants took 0.09278 secs
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Connecting to 134.134.68.81:35663
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 0.36s
+<span class="ansi-black-intense-fg ansi-bold">WARNING</span>:<span class="ansi-blue-fg">DRV</span>:  <span class="ansi-yellow-fg">~/ncl/gold/nxsdk-nxsdk ~/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/tutorials
+Compiling in directory : /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973
+Include dir is : /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips
+Compiling -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/initnetwork_0_0.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/initnetwork_0_0.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/initnetwork_0_0.c
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.h:22:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/initnetwork_0_0.c:2:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/common.h:30:20: warning: ‘command2strings’ defined but not used [-Wunused-variable]
+ static const char *command2strings[] = {&#34;DO_NOTHING&#34;,&#34;SWITCH_TO_INFERENCE&#34;,
+                    ^
+Compiling without -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/0_initsnip.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/0_initsnip.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/0_initsnip.c
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.h:21:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: In function ‘changeStdpPreProfileCfg’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:47:5: note: in expansion of macro ‘LOG’
+     StdpPreProfileCfg pp1;
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:53:5: note: in expansion of macro ‘LOG’
+         inputAxonId = baseInpAxonId + (2 * i);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:58:9: note: in expansion of macro ‘LOG’
+                                 profileId + 1;
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:65:9: note: in expansion of macro ‘LOG’
+ void disableGCTOMCLearning() {
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: In function ‘disableGCTOMCLearning’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:72:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: In function ‘dumpConstants’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:79:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;NUM_GCS = %d \n&#34;, NUM_GCS);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:80:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;MCAD_CXGRP_ID = %d \n&#34;, MCAD_CXGRP_ID);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:81:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;MCSOMA_CXGRP_ID = %d \n&#34;, MCSOMA_CXGRP_ID);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:82:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:83:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:84:5: note: in expansion of macro ‘LOG’
+ void initParamsAndInputs(runState *s) {
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:85:5: note: in expansion of macro ‘LOG’
+     //dumpConstants();
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: In function ‘initParamsAndInputs’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:95:27: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:97:5: note: in expansion of macro ‘LOG’
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.h:22:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.c: At top level:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/common.h:30:20: warning: ‘command2strings’ defined but not used [-Wunused-variable]
+ static const char *command2strings[] = {&#34;DO_NOTHING&#34;,&#34;SWITCH_TO_INFERENCE&#34;,
+                    ^
+Compiling without -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/1_mgmtsnip.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/1_mgmtsnip.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/1_mgmtsnip.c
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.h:21:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘updateSpikeCounters’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:114:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;TIMESTEP = %d:updating spike counters...\n&#34;, time_step);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘applyInputs’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:141:5: note: in expansion of macro ‘LOG’
+     LOG(&#34;reading MCAD input biases... \n&#34;);
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘switchToPositiveThetaTest’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:165:9: note: in expansion of macro ‘LOG’
+     //LOG(&#34;Reset MC AD Bias and Voltages \n&#34;);
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘changeMCToGCWeights’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:246:5: note: in expansion of macro ‘LOG’
+             LOG(&#34;OLD: SynFmtId = %d, CIdx=%d, Wgt=%d, Dly=%d \n&#34;,
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:256:9: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:264:13: note: in expansion of macro ‘LOG’
+                     synArray[synIdx].Dly -= 1;
+             ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:267:13: note: in expansion of macro ‘LOG’
+             LOG(&#34;NEW:SynFmtId = %d, CIdx=%d, Wgt=%d, Dly=%d \n&#34;,
+             ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:273:9: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘changeGCToMCWeights’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:280:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:290:9: note: in expansion of macro ‘LOG’
+         int coreId = 2;
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:298:13: note: in expansion of macro ‘LOG’
+     changeGCToMCExcConnections();
+             ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:305:21: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:319:13: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:328:9: note: in expansion of macro ‘LOG’
+     int GCGRP_NEXT_PATTERN = gcGrpIdsPerPattern[numPatternsLearned];
+         ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘switchToInference’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:347:5: note: in expansion of macro ‘LOG’
+     NeuronCore *nc = NEURON_PTR(nx_nth_coreid(coreId));
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘switchToPositiveThetaTrain’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:384:5: note: in expansion of macro ‘LOG’
+             switchToNegativeTheta(s); break;
+     ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:412:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:414:5: warning: implicit declaration of function ‘enableLearning’ [-Wimplicit-function-declaration]
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: At top level:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:418:6: warning: conflicting types for ‘enableLearning’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:414:5: note: previous implicit declaration of ‘enableLearning’ was here
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘enableLearning’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:420:5: warning: implicit declaration of function ‘changeGCToMCLearning’ [-Wimplicit-function-declaration]
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: At top level:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:423:6: warning: conflicting types for ‘changeGCToMCLearning’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:420:5: note: previous implicit declaration of ‘changeGCToMCLearning’ was here
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.h:21:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘changeGCToMCLearning’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:424:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:431:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:436:9: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:443:9: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: In function ‘runMgmt’:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:465:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:466:5: warning: enumeration value ‘SWITCH_TO_INFERENCE’ not handled in switch [-Wswitch]
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.h:21:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:18:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:46:18: warning: statement with no effect [-Wunused-value]
+ #define LOG_SNIP 0
+                  ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/constants.h:47:22: note: in expansion of macro ‘LOG_SNIP’
+ #define LOG(f_, ...) LOG_SNIP ? printf((f_), ##__VA_ARGS__) : 0
+                      ^
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:482:5: note: in expansion of macro ‘LOG’
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c: At top level:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/mgmtsnip.c:30:12: warning: ‘mcSomaNumSTDP’ defined but not used [-Wunused-variable]
+ static int mcSomaNumSTDP = 0;
+            ^
+Compiling without -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/main_0_0.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/main_0_0.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/main_0_0.c
+In file included from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/initsnip.h:22:0,
+                 from /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/main_0_0.c:3:
+/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips/common.h:30:20: warning: ‘command2strings’ defined but not used [-Wunused-variable]
+ static const char *command2strings[] = {&#34;DO_NOTHING&#34;,&#34;SWITCH_TO_INFERENCE&#34;,
+                    ^
+Compiling without -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/resourceMap_5810f28e-7e1d-4781-8764-f4b732b7da6e.c
+gcc -Wall -I/home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk_modules/epl/src/multi_pattern_learning/snips -Inxsdk/include -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/resourceMap_5810f28e-7e1d-4781-8764-f4b732b7da6e.c.o -c /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/resourceMap_5810f28e-7e1d-4781-8764-f4b732b7da6e.c
+OBJFILES :  /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/initnetwork_0_0.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/0_initsnip.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/1_mgmtsnip.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/main_0_0.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/resourceMap_5810f28e-7e1d-4781-8764-f4b732b7da6e.c.o
+gcc -Wall -fno-stack-protector -msoft-float -m32 -march=i586 -fno-builtin-printf -fno-builtin-sprintf -fno-builtin-fprintf -fno-builtin-memcpy -fstrict-volatile-bitfields -Os -DNDEBUG /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/initnetwork_0_0.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/0_initsnip.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/1_mgmtsnip.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/main_0_0.c.o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/resourceMap_5810f28e-7e1d-4781-8764-f4b732b7da6e.c.o -o /home/sparasa/ncl/gold/nxsdk-nxsdk/nxsdk/driver/compilers/../../../temp/1561699985.457973/launcher.link nxsdk/lib/embedded/libboot.a nxsdk/lib/embedded/libembedded_nx.a nxsdk/lib/embedded/liblmt.a nxsdk/lib/embedded/libnx.a -Wl,--script=nxsdk/utils/linker.scr -Wl,--build-id=none -Wl,-N -nostdlib
+</span>
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Compiling Embedded snips....Done 0.63s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding axons/synapses.....Done 0.31s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Booting up..................Done 2.60s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Encoding probes.............Done 0.20ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.07ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 3.57ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 0.22s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring spikes.........Done 0.35ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Transferring probes.........Done 0.11ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Configuring registers.......Done 3.41ms
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Executing...................Done 2.74s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Processing timeseries.......Done 0.28s
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Accuracy improves to 97% instead of 83% from before</span>
+<span class="n">epl</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">similarityThreshold</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+*****Execution Report*****
+6 patterns presented. 5 test samples for each pattern
+Classification performance = 97.0%; for similarity threshold = 0.85
+
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Conclusion">
+<h1>Conclusion<a class="headerlink" href="#Conclusion" title="Permalink to this headline">¶</a></h1>
+<p>In this tutorial, we have shown very briefly about how to use the EPL network to impletement one-shot learning of multiple patterns and perform a recall/classification from noisy version of the learned patterns. We have used how the EPL network which was originally developed to learn odors can be repurposed to learned other kinds of arbitraty patterns like images.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../knn.html" class="btn btn-neutral float-right" title="K Nearest Neighbour" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../epl.html" class="btn btn-neutral float-left" title="EPL" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

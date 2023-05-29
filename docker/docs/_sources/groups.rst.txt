@@ -1,0 +1,5 @@
+Groups
+======
+.. automodule:: nxsdk.net.groups
+   :members:
+   :undoc-members:

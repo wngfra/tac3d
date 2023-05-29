@@ -1,0 +1,178 @@
+Installing and Running NxSDK on KapohoBay
+=========================================
+
+Recommended Setup
+-----------------
+
+The following recommendation are based on our test configuration. Additional steps might be necessary on other alternatives.
+
+1. OS: Ubuntu 16.04 LTS (x86\_64)
+2. Python 3.5.2
+3. pip (latest)
+
+Installation Guide
+------------------
+
+1.  Plugin Kapoho Bay to your Linux Machine
+2.  Verify USB devices is properly recognized
+
+    2.1 Run ``lsusb`` or ``lsusb -t`` to see if the USB was plugged in and recognized by your machine
+
+    ::
+
+        user@machine:~$ lsusb
+        ...
+        Bus 001 Device 107: ID 0403:6010 Future Technology Devices International, Ltd FT2232C Dual USB-UART/FIFO IC
+        Bus 001 Device 106: ID 0403:6010 Future Technology Devices International, Ltd FT2232C Dual USB-UART/FIFO IC
+        Bus 001 Device 105: ID 0403:6010 Future Technology Devices International, Ltd FT2232C Dual USB-UART/FIFO IC
+
+        user@machine:~$ lsusb -t
+        ...
+        /: Bus 01.Port 1: Dev 1, class="root_hub", Driver=ehci-pci/2p, 480M
+        |__ Port 1: Dev 2, If 0, class="Hub", Driver=hub/6p, 480M
+        |__ Port 2: Dev 39, If 0, class="Human" Interface Device, Driver=usbhid, 1.5M
+        |__ Port 6: Dev 104, If 0, class="Hub", Driver=hub/4p, 480M
+        |__ Port 1: Dev 105, If 0, class="Vendor" Specific Class, Driver=, 480M
+        |__ Port 1: Dev 105, If 1, class="Vendor" Specific Class, Driver=, 480M
+        |__ Port 2: Dev 106, If 0, class="Vendor" Specific Class, Driver=, 480M
+        |__ Port 2: Dev 106, If 1, class="Vendor" Specific Class, Driver=, 480M
+        |__ Port 3: Dev 107, If 0, class="Vendor" Specific Class, Driver=, 480M
+        |__ Port 3: Dev 107, If 1, class="Vendor" Specific Class, Driver=, 480M
+
+    2.2 Remove "ftdi\_sio" kernel modules
+
+        2.2.1 Run ``lsusb -t`` and check if your see the FTDI interfaces. If the driver says ftdi\_sio, you may remove these kernel modules using ``sudo rmmod ftdi_sio``
+        2.2.2 Run ``lsusb -t`` to ensure that **ftdi\_sio** is no longer there
+
+3.  The installation bits are located at **/nfs/ncl/releases**. SSH into the INRC Cloud and check the contents of this directory to identify the latest version (no need to copy at this point):
+
+    ::
+
+        ssh user@YOURVM.research.intel-research.net
+        ls -l /nfs/ncl/releases
+
+4.  **Logout** from INRC Cloud and continue on your linux machine
+
+
+5.  Create a virtual environment in your home directory
+
+
+    5.1 ``cd ~``
+
+    5.2 ``python3 -m venv python3_venv``
+
+    5.3 ``source python3_venv/bin/activate``
+
+    5.4 ``pip install -U pip``
+
+    5.5 Do all following steps within the virtual environment
+
+
+6.  Download the latest tarballs onto your linux machine. There should be 2 packages within the sub-directory
+
+    6.1 *nxsdk-<latest_version>.tar.gz* - A pip installable tarball to install NxSDK
+
+    6.2 *nxsdk-apps-<latest_version>.tar.gz* - Tarball for Jupyter/Python based tutorials and complete NxSDK documentation
+
+    6.3 You may use linux utilities like scp to copy these files onto your linux machine
+
+        6.3.1 **scp user@YOURVM.research.intel-research.net:/nfs/ncl/releases/<latest_version>/nxsdk-<latest_version>.tar.gz .**
+
+        6.3.2 **scp user@YOURVM.research.intel-research.net/nfs/ncl/releases/<latest_version>/nxsdk-apps-<latest_version>.tar.gz .**
+
+    6.4 Substitute above your username, VM and version information. scp copies the artifacts from INRC Cloud into your current directory on your linux machine
+
+7.  Install NxSDK: **python -m pip install nxsdk-<latest_version>.tar.gz**
+
+    7.1 Ignore the \"Failed building wheel for nxsdk\" and the associated "Failed to build nxsdk". This is a known error and pip will retry with setup.py.
+
+8.  Verify NxSDK installation: **python -c "import nxsdk; print(nxsdk.__version__)"**
+
+9.  Find NxSDK installation directory (nxsdk\_install\_dir): **python -c "import nxsdk; print(nxsdk.__path__)"**
+
+10. Unzip Tutorials, Docs and Modules in your home directory: **mkdir nxsdk-apps && tar xzf nxsdk-apps-<latest_version>.tar.gz -C nxsdk-apps --strip-components 1**
+
+    10.1 (Optional) Some modules need additional dependencies. To install these, run: **pip install -r nxsdk-apps/nxsdk_modules/requirements.txt**
+
+11. Copy *99-kapoho\_bay.rules* from *nxsdk-apps/utils* to */etc/udev/rules.d* and run **sudo udevadm control --reload**
+
+12. Install g++ multilib, libgflags-dev, libgoogle-glog-dev and libprotobuf
+
+    12.1 sudo apt-get install g++-multilib
+
+    12.2 sudo apt-get install libgflags-dev
+
+    12.3 sudo apt install libgoogle-glog-dev
+
+    12.4 You may compile libprotobuf17 from source or install libprotobuf17 from debian packages. Latter is shown below.
+
+        12.4.1 wget http://ftp.debian.org/debian/pool/main/p/protobuf/libprotobuf17_3.6.1-4~bpo9+1_amd64.deb
+
+        12.4.2 sudo dpkg -i libprotobuf-lite17_3.6.1-4~bpo9+1_amd64.deb
+
+13. **Test FPIO** /bin/x86/nx\_driver --test-fpio. If you see the following, Kapoho Bay is detected. Sample output:
+
+    ::
+
+        $ `python3 -c "import nxsdk; print(nxsdk.__path__[0])"`/bin/x86/nx --test-fpio
+
+        Using Kapoho Bay serial number 998
+
+        test_fpio_loopback: chips=1 num=10000 len=16 time=238266us => 0.671518Mb/s
+
+14. export KAPOHOBAY=1
+
+15. Run tutorials per instructions in the following sections
+
+16. When complete, deactivate virtual environment
+
+    16.1 ``deactivate``
+
+Daily Use
+---------
+
+After initial installation, only the following steps need to be done to use Kapoho Bay:
+
+1. After plugging in the device, verify the USB devices are properly recognized. The ftdi\_sio kernel modules may need to be removed.
+2. export KAPOHOBAY=1
+3. Test FPIO to ensure Kapoho Bay is property detected
+4. Use the virtual environment
+
+Python Tutorials
+----------------
+
+1. cd nxsdk-apps
+2. To run: python tutorials/nxnet/tutorial\_01\_single\_compartment\_with\_bias.py
+
+Jupyter/IPython Tutorials
+-------------------------
+
+Prerequisites: Install jupyter (pip3 install jupyter)
+
+1. Start Jupyter session (jupyter notebook) and navigate to the directory you unzipped the tutorials
+2. Open one of the Jupyter notebooks and run: tutorials/ipython/a\_compartment\_setup.ipynb
+
+Documentation
+-------------
+
+To view documentation, open index.html from the docs folder unzipped from nxsdk-apps-<latest_version>.tar.gz
+
+Software Updates
+----------------
+
+We will be releasing new versions of NxSDK at /nfs/ncl/releases. Announcements will be made on INRC Channels when a new release is available.
+
+1. To install a new release, just remove the previous NxSDK installation: *pip3 uninstall nxsdk* and install the new tarball using: *pip3 install nxsdk-<latest_version>.tar.gz*
+2. Please check the Release Notes within README for new SDK features, optimizations and changes
+
+Questions/Suggestions
+---------------------
+
+Please reach out to the NCL Team if you have any questions about the SDK, device or installation process. Please use INRC Zendesk system to raise a ticket
+
+Frequently Asked Questions (FAQ)
+--------------------------------
+
+| **Q**. How do I know where NxSDK was installed?
+| **A**. For your version of python3, run **python3 -c "import nxsdk; print(nxsdk.__path__)"**
+

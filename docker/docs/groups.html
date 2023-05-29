@@ -1,0 +1,828 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Groups &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Working with Probes and Monitors in NxNet" href="netprobes.html" />
+    <link rel="prev" title="Neuron and NeuronPrototype" href="neuron.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxnet.html">NxNet API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compartment.html">Compartment and CompartmentPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connection.html">Connection and ConnectionPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connectionsharing.html">Connection Sharing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron.html">Neuron and NeuronPrototype</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netprobes.html">Working with Probes and Monitors in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learningrule.html">Specifying a Learning Rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multicompartment.html">Building Multi Compartment Neuron Model using Stack Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spikeinjectionandreceivers.html">Spike Injection and Spike Receivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxlogging.html">Logging in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcompiler.html">NxCompiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxnet_resource_map.html">NxNet Resource Map Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxnet.html">NxNet API</a> &raquo;</li>
+        
+      <li>Groups</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-nxsdk.net.groups">
+<span id="groups"></span><h1>Groups<a class="headerlink" href="#module-nxsdk.net.groups" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="nxsdk.net.groups.CompartmentGroup">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.groups.</span></code><code class="sig-name descname"><span class="pre">CompartmentGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.CompartmentGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a logical group of compartments.</p>
+<dl class="py method">
+<dt id="nxsdk.net.groups.CompartmentGroup.addCompartments">
+<code class="sig-name descname"><span class="pre">addCompartments</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compartments</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.CompartmentGroup.addCompartments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds new compartments to logical group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>compartments</strong> -- List of Compartment objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.CompartmentGroup.addCompartmentsById">
+<code class="sig-name descname"><span class="pre">addCompartmentsById</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compartments</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.CompartmentGroup.addCompartmentsById" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds new compartments to logical group.  Intended for use with
+NxSDK internal classes, e.g. to efficiently construct compartment
+groups.  This method differs from addCompartments in the following
+two ways:
+1. This method allows for adding compartments by compartment node ID
+2. This method does not verify compartments are in the same network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>compartments</strong> -- List of Compartment objects or compartment ids.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.CompartmentGroup.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dstGrp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototypeMap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectionMask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sharedConnGrp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">synapseSharingOnly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.CompartmentGroup.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects CompartmentGroup to destination group which can be
+another CompartmentGroup.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dstGrp=None</strong> -- The destination Compartment/Receiver of the
+ConnectionGroup.</p></li>
+<li><p><strong>prototype=None</strong> -- A single ConnectionPrototype or list of
+ConnectionPrototype objects. If a single object is provided,
+it is used for all connections in the group. If a list is provided
+<strong>prototypeMap</strong> must be provided as well.</p></li>
+<li><p><strong>prototypeMap=None</strong> -- A 0/1/2D numpy array where each element
+must be within 0..len(prototype) which specifies the prototype to use
+for each connection. A non-2D array is automatically broadcast into a
+(numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>connectionMask</strong> -- A 0/1/2D numpy binary numpy array which
+specifies which connection exists within the
+(numDstNodes x numDstNodes) space. Elements in prototypeMap,
+weights, delays and tags where <strong>connectionMask</strong> == 0 will be ignored. A
+non-2D array is automatically broadcast into a
+(numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>name=None</strong> -- (string) A descriptive name for the group.</p></li>
+<li><p><strong>sharedConnGrp</strong> (<a class="reference internal" href="#nxsdk.net.groups.ConnectionGroup" title="nxsdk.net.groups.ConnectionGroup"><em>ConnectionGroup</em></a>) -- The connection group whose
+connections are to be shared.</p></li>
+<li><p><strong>synapseSharingOnly</strong> (<em>bool</em>) -- True to share synapses only,
+False to share both axons and synapses.</p></li>
+<li><p><strong>weight</strong> -- A 0/1/2D numpy array weight matrix. A non-2D array is
+automatically broadcast into a (numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>delay</strong> -- A 0/1/2D numpy array delay matrix. A non-2D array is
+automatically broadcast into a (numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>tag</strong> -- A 0/1/2D numpy array tag matrix. A non-2D array is
+automatically broadcast into a (numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>enableLearning</strong> -- A 0/1/2D numpy array enableLearning matrix. A
+non-2D array is automatically broadcast into a
+(numDstNodes x numDstNodes) array.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.CompartmentGroup.getState">
+<code class="sig-name descname"><span class="pre">getState</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.CompartmentGroup.getState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a numpy array view of the discrete state for all ids
+specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>state</em>) -- Name of discrete state of which data is requested.</p></li>
+<li><p><strong>(</strong><strong>sequence</strong><strong>)</strong> (<em>ids</em>) -- Sequence of relative compartment indices with
+respect to ComaprtmentGroup. Default is None in which case all states of
+CompartmentGroup are returned.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.CompartmentGroup.probe">
+<code class="sig-name descname"><span class="pre">probe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cxParametersToProbe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probeConditions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.CompartmentGroup.probe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a probe for each compartment in the compartment group and         returns all probes of the same type as ProbeSets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cxParametersToProbe</strong> -- The list of compartment state parameters         (ex: voltage, current, etc.) to probe.</p></li>
+<li><p><strong>probeConditions</strong> -- A list of probeConditions. Each probeCondition         will be applied to the corresponding probe specified in the         cxParametersToProbe list.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple of ProbeSet objects. A ProbeSet combines a set of         probes of the same type and allows to plot all timeSeries via         ProbeSet.plot().</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- If there is mismatch between the probe parameters         and probe conditions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.CompartmentGroup.setState">
+<code class="sig-name descname"><span class="pre">setState</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.CompartmentGroup.setState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets discrete state of a CompartmentGroup to vals for all ids
+specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>state</em>) -- Name of discrete state to configure.</p></li>
+<li><p><strong>vals</strong> -- numpy array of values to set. Must be of a type that can
+be assigned to a numpy array like numpyArray[ids] = vals.</p></li>
+<li><p><strong>(</strong><strong>sequence</strong><strong>)</strong> (<em>ids</em>) -- Sequence of relative compartment indices with
+respect to CompartmentGroup. Default is None in which case &lt;vals&gt; is
+assigned to entire array like numpyArray[:]=vals.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>numpy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.net.groups.CompartmentGroupDendrite">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.groups.</span></code><code class="sig-name descname"><span class="pre">CompartmentGroupDendrite</span></code><a class="headerlink" href="#nxsdk.net.groups.CompartmentGroupDendrite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mixin class to support compartment group dendrite behavior for
+multi-compartment neuron groups</p>
+<dl class="py method">
+<dt id="nxsdk.net.groups.CompartmentGroupDendrite.dendrites">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dendrites</span></code><a class="headerlink" href="#nxsdk.net.groups.CompartmentGroupDendrite.dendrites" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access dendritic comparments of a compartment/neuron group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list with two compartment groups. The first group is the</p>
+</dd>
+</dl>
+<p>group of left children and the second group is the group of right
+children.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.net.groups.ConnectionGroup">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.groups.</span></code><code class="sig-name descname"><span class="pre">ConnectionGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.ConnectionGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connection group class</p>
+<dl class="py method">
+<dt id="nxsdk.net.groups.ConnectionGroup.addConnectionsById">
+<code class="sig-name descname"><span class="pre">addConnectionsById</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connections</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.ConnectionGroup.addConnectionsById" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds new connections to logical group.  Intended for use with
+NxSDK internal classes, e.g. to efficiently construct connection
+groups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>connections</strong> (<em>list</em>) -- List of Connection objects or connection ids.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.ConnectionGroup.addSrcDstGroups">
+<code class="sig-name descname"><span class="pre">addSrcDstGroups</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcGrp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dstGrp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.ConnectionGroup.addSrcDstGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a new pair of source and destination groups that are
+connected via this ConnectionGroup.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>srcGrp</strong> -- The source CompartmentGroup or NeuronGroup.</p></li>
+<li><p><strong>dstGrp</strong> -- The destination CompartmentGroup or NeuronGroup.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.ConnectionGroup.destinationGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">destinationGroups</span></code><a class="headerlink" href="#nxsdk.net.groups.ConnectionGroup.destinationGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all destination groups that this ConnectionGroup
+connects to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.ConnectionGroup.getConnIdToSrcAndDstMapping">
+<code class="sig-name descname"><span class="pre">getConnIdToSrcAndDstMapping</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.ConnectionGroup.getConnIdToSrcAndDstMapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine the source and destination compartment IDs associated with a
+connection ID.  Note that source and destination compartments added
+as shared connections are not included.  Used for connection sharing
+partitioning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>numpy array of size num connections x 3 (conn Id, src cx</p>
+</dd>
+</dl>
+<p>Id, dst cx Id)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.ConnectionGroup.getConnectionState">
+<code class="sig-name descname"><span class="pre">getConnectionState</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stateName</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.ConnectionGroup.getConnectionState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gathers connection state for all connections and returns it as 2D
+numpy array where columns correspond to source and rows to
+destination dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>stateName</em>) -- Name of state to visualize. Default is
+<strong>numConnections</strong>. Other allowed values are <strong>weight</strong>, <strong>delay</strong> or <strong>tag</strong>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Numpy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.ConnectionGroup.getSynapseState">
+<code class="sig-name descname"><span class="pre">getSynapseState</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.ConnectionGroup.getSynapseState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets discrete state of a synapse for all ids
+specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>state</em>) -- Name of state to be set</p></li>
+<li><p><strong>(</strong><strong>int</strong><strong>)</strong> (<em>ids</em>) -- the nodeId(s) to be set within the group</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.ConnectionGroup.probe">
+<code class="sig-name descname"><span class="pre">probe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connParametersToProbe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probeConditions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.ConnectionGroup.probe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a probe for each connection in the connection group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>connParametersToProbe</strong> -- The list of connection state parameters
+(ex: weight, delay, tag, etc) to probe.</p></li>
+<li><p><strong>probeConditions</strong> -- A list of probeConditions. Each probeCondition
+will be applied to the corresponding probe specified in the
+connParametersToProbe list.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of NxProbe objects. NxProbe has properties and utility
+methods to read and plot a particular node state</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- If there is mismatch between the probe parameters
+and probe conditions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.ConnectionGroup.setSynapseState">
+<code class="sig-name descname"><span class="pre">setSynapseState</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.ConnectionGroup.setSynapseState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets discrete state of a synapse to vals for all ids
+specified.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>str</strong><strong>)</strong> (<em>state</em>) -- Name of state to be set</p></li>
+<li><p><strong>vals</strong> -- numpy array of values to set. Must be of a type that can
+be assigned to a numpy array like numpyArray[ids] = vals.</p></li>
+<li><p><strong>(</strong><strong>int</strong><strong>)</strong> (<em>ids</em>) -- the nodeId(s) to be set within the group</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.ConnectionGroup.shareConnections">
+<code class="sig-name descname"><span class="pre">shareConnections</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcGrp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dstGrp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">synapseSharingOnly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.ConnectionGroup.shareConnections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shares the existing connections to connect another source and
+destination pair of compartment groups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>srcGrp</strong> (<em>compartmentGroup</em>) -- The source compartment group</p></li>
+<li><p><strong>dstGrp</strong> (<em>compartmentGroup</em>) -- The destination compartment group</p></li>
+<li><p><strong>synapseSharingOnly</strong> (<em>bool</em>) -- True means that discrete axons are</p></li>
+</ul>
+</dd>
+</dl>
+<p>used and synapses are shared, False (default) means both axons and
+synapses are shared.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.ConnectionGroup.sourceGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">sourceGroups</span></code><a class="headerlink" href="#nxsdk.net.groups.ConnectionGroup.sourceGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all source groups connecting to
+this ConnectionGroup.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.net.groups.GroupIterator">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.groups.</span></code><code class="sig-name descname"><span class="pre">GroupIterator</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodeSet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeIds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.GroupIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterator to traverse nodes in a logical group.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.net.groups.InputStubGroup">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.groups.</span></code><code class="sig-name descname"><span class="pre">InputStubGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.InputStubGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Groups InputStubs together to form a connector between networks</p>
+<dl class="py method">
+<dt id="nxsdk.net.groups.InputStubGroup.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototypeMap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectionMask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.InputStubGroup.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create connection from this input stub group</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.net.groups.LogicalNodeGroup">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.groups.</span></code><code class="sig-name descname"><span class="pre">LogicalNodeGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodeSet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodeIds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.LogicalNodeGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for all logical groups of nodes in an NxGraph. A node can
+be a member of multiple logical groups.</p>
+<dl class="py method">
+<dt id="nxsdk.net.groups.LogicalNodeGroup.addDstConnectionGroup">
+<code class="sig-name descname"><span class="pre">addDstConnectionGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.LogicalNodeGroup.addDstConnectionGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a new ConnectionGroup that this Group connects to.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>grp</strong> (<a class="reference internal" href="#nxsdk.net.groups.ConnectionGroup" title="nxsdk.net.groups.ConnectionGroup"><em>ConnectionGroup</em></a>) -- destination connection group</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.LogicalNodeGroup.addSrcConnectionGroup">
+<code class="sig-name descname"><span class="pre">addSrcConnectionGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.LogicalNodeGroup.addSrcConnectionGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a new ConnectionGroup that connects to this Group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>grp</strong> (<a class="reference internal" href="#nxsdk.net.groups.ConnectionGroup" title="nxsdk.net.groups.ConnectionGroup"><em>ConnectionGroup</em></a>) -- source connection group</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.LogicalNodeGroup.destinationGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">destinationGroups</span></code><a class="headerlink" href="#nxsdk.net.groups.LogicalNodeGroup.destinationGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of all destination Groups that this
+Group connects to.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.LogicalNodeGroup.groupId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">groupId</span></code><a class="headerlink" href="#nxsdk.net.groups.LogicalNodeGroup.groupId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns groupId for this group</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.LogicalNodeGroup.net">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">net</span></code><a class="headerlink" href="#nxsdk.net.groups.LogicalNodeGroup.net" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the net for this group</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.LogicalNodeGroup.nodeIds">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nodeIds</span></code><a class="headerlink" href="#nxsdk.net.groups.LogicalNodeGroup.nodeIds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns nodeIds for members of this group</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.LogicalNodeGroup.nodeSet">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nodeSet</span></code><a class="headerlink" href="#nxsdk.net.groups.LogicalNodeGroup.nodeSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the nodeSet for members of this group</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.LogicalNodeGroup.nodeType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">nodeType</span></code><a class="headerlink" href="#nxsdk.net.groups.LogicalNodeGroup.nodeType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the nodeType for this group</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.LogicalNodeGroup.numNodes">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numNodes</span></code><a class="headerlink" href="#nxsdk.net.groups.LogicalNodeGroup.numNodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns number of nodes in logical group.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.LogicalNodeGroup.sourceGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">sourceGroups</span></code><a class="headerlink" href="#nxsdk.net.groups.LogicalNodeGroup.sourceGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of all source Groups that connect to this
+Group.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.net.groups.NeuronGroup">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.groups.</span></code><code class="sig-name descname"><span class="pre">NeuronGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.NeuronGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a logical group of neurons.</p>
+<dl class="py method">
+<dt id="nxsdk.net.groups.NeuronGroup.addNeuron">
+<code class="sig-name descname"><span class="pre">addNeuron</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">neuron</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.NeuronGroup.addNeuron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add neuron to the neuron group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>neuron</strong> (<a class="reference internal" href="neuron.html#nxsdk.net.nodes.neurons.Neuron" title="nxsdk.net.nodes.neurons.Neuron"><em>Neuron</em></a>) -- The neuron to add.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.NeuronGroup.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dstGrp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototypeMap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectionMask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.NeuronGroup.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects the soma group of the neuron group to destination group
+which can be another CompartmentGroup.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dstGrp=None</strong> -- The destination Compartment/Receiver of the
+ConnectionGroup.</p></li>
+<li><p><strong>prototype=None</strong> -- A single ConnectionPrototype or list of
+ConnectionPrototype objects. If a single object is provided,
+it is used for all connections in the group. If a list is provided
+<strong>prototypeMap</strong> must be provided as well.</p></li>
+<li><p><strong>prototypeMap=None</strong> -- A 0/1/2D numpy array where each element
+must be within 0..len(prototype) which specifies the prototype to use
+for each connection. A non-2D array is automatically broadcast into a
+(numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>connectionMask</strong> -- A 0/1/2D numpy binary numpy array which
+specifies which connection exists within the
+(numDstNodes x numDstNodes) space. Elements in prototypeMap,
+weights, delays and tags where <strong>connectionMask</strong> == 0 will be ignored. A
+non-2D array is automatically broadcast into a
+(numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>name=None</strong> -- (string) A descriptive name for the group.</p></li>
+<li><p><strong>weight</strong> -- A 0/1/2D numpy array weight matrix. A non-2D array is
+automatically broadcast into a (numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>delay</strong> -- A 0/1/2D numpy array delay matrix. A non-2D array is
+automatically broadcast into a (numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>tag</strong> -- A 0/1/2D numpy array tag matrix. A non-2D array is
+automatically broadcast into a (numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>enableLearning</strong> -- A 0/1/2D numpy array enableLearning matrix. A
+non-2D array is automatically broadcast into a
+(numDstNodes x numDstNodes) array.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.NeuronGroup.soma">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">soma</span></code><a class="headerlink" href="#nxsdk.net.groups.NeuronGroup.soma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access all soma compartments in the neuron group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A compartment group of soma compartments.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.net.groups.OutputStubGroup">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.groups.</span></code><code class="sig-name descname"><span class="pre">OutputStubGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.OutputStubGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Groups OutputStubs together to form a connector between networks</p>
+<dl class="py method">
+<dt id="nxsdk.net.groups.OutputStubGroup.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dst</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.OutputStubGroup.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects StubGroups which form the basis of connections between networks/modules
+param Node/NodeGroup dst: The input stubs to connect to</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.net.groups.SpikeInputPortGroup">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.groups.</span></code><code class="sig-name descname"><span class="pre">SpikeInputPortGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.SpikeInputPortGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents logical group of SpikeInputPorts</p>
+<dl class="py method">
+<dt id="nxsdk.net.groups.SpikeInputPortGroup.addSpikeInputPort">
+<code class="sig-name descname"><span class="pre">addSpikeInputPort</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spikeInputPort</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.SpikeInputPortGroup.addSpikeInputPort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds new compartments to logical group.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.net.groups.SpikeInputPortGroup.connect">
+<code class="sig-name descname"><span class="pre">connect</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dstGrp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prototypeMap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectionMask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.SpikeInputPortGroup.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects SpikeInputPortGroup to destination group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dstGrp=None</strong> -- The destination Compartment/NeuronGroup of the
+ConnectionGroup.</p></li>
+<li><p><strong>prototype=None</strong> -- A single ConnectionPrototype or list of
+ConnectionPrototype objects. If a single object is provided,
+it is used for all connections in the group. If a list is provided
+<strong>prototypeMap</strong> must be provided as well.</p></li>
+<li><p><strong>prototypeMap=None</strong> -- A 0/1/2D numpy array where each element
+must be within 0..len(prototype) which specifies the prototype to use
+for each connection. A non-2D array is automatically broadcast into a
+(numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>connectionMask</strong> -- A 0/1/2D numpy binary numpy array which
+specifies which connection exists within the
+(numDstNodes x numDstNodes) space. Elements in prototypeMap,
+weights, delays and tags where <strong>connectionMask</strong> == 0 will be ignored. A
+non-2D array is automatically broadcast into a
+(numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>name=None</strong> -- (string) A descriptive name for the group.</p></li>
+<li><p><strong>weight</strong> -- A 0/1/2D numpy array weight matrix. A non-2D array is
+automatically broadcast into a (numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>delay</strong> -- A 0/1/2D numpy array delay matrix. A non-2D array is
+automatically broadcast into a (numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>tag</strong> -- A 0/1/2D numpy array tag matrix. A non-2D array is
+automatically broadcast into a (numDstNodes x numDstNodes) array.</p></li>
+<li><p><strong>enableLearning</strong> -- A 0/1/2D numpy array enableLearning matrix. A
+non-2D array is automatically broadcast into a
+(numDstNodes x numDstNodes) array.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.net.groups.SpikeOutputPortGroup">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.net.groups.</span></code><code class="sig-name descname"><span class="pre">SpikeOutputPortGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groupId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.SpikeOutputPortGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a logical group of spike output ports.</p>
+<dl class="py method">
+<dt id="nxsdk.net.groups.SpikeOutputPortGroup.addSpikeOutputPorts">
+<code class="sig-name descname"><span class="pre">addSpikeOutputPorts</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spikeOutputPorts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.net.groups.SpikeOutputPortGroup.addSpikeOutputPorts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds new spike output ports to logical group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>spikeOutputPorts</strong> (<em>list</em>) -- List of SpikeOutputPort objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="netprobes.html" class="btn btn-neutral float-right" title="Working with Probes and Monitors in NxNet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="neuron.html" class="btn btn-neutral float-left" title="Neuron and NeuronPrototype" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

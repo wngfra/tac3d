@@ -1,0 +1,40 @@
+###
+EPL
+###
+
+The EPL module provides functionality to setup, train and test a neuromorphic
+algorithm for one-shot pattern learning inspired by the
+External Plexiform Layer (EPL) network of the mammalian olfactory bulb.
+While the algorithm implemented by the network learns to recognize "odors"
+(more precisely, using odor chemosensor array data), it can be used to learn
+any other patterns as the EPL network basically implements a spatio-temporal
+attractor (STA) network. After the EPL/STA network "learns" an odor/pattern,
+even if a noise corrupted version of the learned pattern (test sample) is
+presented, the network activity settles down into the attractor state of the
+learned pattern.
+
+The module provides a EPLMultiPatternLearning class to setup, train, test
+and evaluate the performance of a one-shot learning algorithm.
+
+Jupyter notebook illustrating a :doc:`Multi Pattern One-shot Learning Using
+EPL Network </jupyter/epl_multi_pattern_oneshot_learning>` resides at **nxsdk_modules/epl/tutorials**
+
+EPL Multi Pattern Learning
+------------------
+
+.. autoclass:: nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Parameters For EPL Network
+------------------
+
+.. autoclass:: nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL
+   :members:
+   :undoc-members:
+
+.. toctree::
+   :maxdepth: 1
+
+   jupyter/epl_multi_pattern_oneshot_learning

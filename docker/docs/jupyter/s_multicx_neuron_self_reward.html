@@ -1,0 +1,907 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>23. Implementation of a multi-compartment neuron with self-reward feedback &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="24. vMinExp and vMaxExp Setup" href="t_vMinExp_and_vMaxExp.html" />
+    <link rel="prev" title="21. Stubs and NetModules" href="r_stubs_and_netmodules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../nxnet_tutorials.html">NxNet Tutorials</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../nxnet_jupyter_tutorials.html">NxNet Jupyter Tutorials</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="a_compartment_setup.html">1. Compartment, CompartmentPrototype and Probes Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b_connecting_compartments.html">2. Connecting compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="c_stimulating_compartments.html">3. Stimulating compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="d_synaptic_plasticity.html">4. Synaptic plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="e_neuronal_homeostasis.html">5. Neuronal homeostasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="f_rewards_learning.html">6. Learning with Rewards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="g_snip_for_threshold_modulation.html">7. SNIPs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="h_reward_trace.html">8. Reward Trace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i_performance_profiling.html">9. Performance profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="j_soft_reset_core.html">10. Hard vs. soft membrane voltage reset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="j_soft_reset_net.html">11. Soft reset membrane voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="k_interactive_spike_sender_receiver.html">12. Interactive Spike Sender and Spike Receivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l_snip_for_compartment_setup_with_NxNet_C.html">13. Setup Compartments with NxNet C API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="m_independent_networks_in_same_run.html">14. Independent Networks in Same Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="n_stochastic_networks.html">15. Stochastic Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="n_stochastic_networks.html#C.-Puttin-It-All-Together">16. C. Puttin It All Together</a></li>
+<li class="toctree-l3"><a class="reference internal" href="n_stochastic_networks.html#Modify-createWtaMotif1-to-Include-Detector-Neuron">17. Modify createWtaMotif1 to Include Detector Neuron</a></li>
+<li class="toctree-l3"><a class="reference internal" href="o_snip_for_reading_lakemont_spike_count.html">18. Read Lakemont Spike Count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="p_composable_networks.html">19. Composable Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="q_connection_sharing.html">20. Connection Sharing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="r_stubs_and_netmodules.html">21. Stubs and NetModules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="r_stubs_and_netmodules.html#NetModules">22. NetModules</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">23. Implementation of a multi-compartment neuron with self-reward feedback</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Translation-functions-for-parameters">23.1. Translation functions for parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Instantiate-NxNet">23.2. Instantiate NxNet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Instantiate-all-required-compartment-prototypes">23.3. Instantiate all required compartment prototypes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Instantiate-learning-rules-and-connection-prototypes">23.4. Instantiate learning rules and connection prototypes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Create-a-neuron-prototype-and-instantiate-a-neuron">23.5. Create a neuron prototype and instantiate a neuron</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Spike-generator">23.6. Spike generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Connect-everything-as-needed">23.7. Connect everything as needed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Setup-probes">23.8. Setup probes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Run-and-plot">23.9. Run and plot</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="t_vMinExp_and_vMaxExp.html">24. vMinExp and vMaxExp Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="u_join_op_in_multi_compartment_neuron.html">25. Neurons vs Compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="u_join_op_in_multi_compartment_neuron.html#Multi-compartment-neurons">26. Multi-compartment neurons</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../nxcore_tutorials.html">NxCore Tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../tutorials.html">Tutorials</a> &raquo;</li>
+        
+          <li><a href="../nxnet_jupyter_tutorials.html">NxNet Jupyter Tutorials</a> &raquo;</li>
+        
+      <li><span class="section-number">23. </span>Implementation of a multi-compartment neuron with self-reward feedback</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># INTEL CORPORATION CONFIDENTIAL AND PROPRIETARY</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2019-2021 Intel Corporation.</span>
+<span class="c1">#</span>
+<span class="c1"># This software and the related documents are Intel copyrighted</span>
+<span class="c1"># materials, and your use of them is governed by the express</span>
+<span class="c1"># license under which they were provided to you (License). Unless</span>
+<span class="c1"># the License provides otherwise, you may not use, modify, copy,</span>
+<span class="c1"># publish, distribute, disclose or transmit  this software or the</span>
+<span class="c1"># related documents without Intel&#39;s prior written permission.</span>
+<span class="c1">#</span>
+<span class="c1"># This software and the related documents are provided as is, with</span>
+<span class="c1"># no express or implied warranties, other than those that are</span>
+<span class="c1"># expressly stated in the License.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Implementation-of-a-multi-compartment-neuron-with-self-reward-feedback">
+<h1><span class="section-number">23. </span>Implementation of a multi-compartment neuron with self-reward feedback<a class="headerlink" href="#Implementation-of-a-multi-compartment-neuron-with-self-reward-feedback" title="Permalink to this headline">¶</a></h1>
+<p>We consider a two-compartment neuron being driven by a spike generator as shown below. The synaptic weight connecting the spike generator to the dendritic compartment is learnt by feeding back the soma spikes through a reinforcement channel. This way, the synapse gets reward spikes from soma, and learns to synchronise spikes between the dendrite and the soma (i.e., when dendrite spikes, soma spikes as well, and vice versa).</p>
+<p>After a while, the system is expected to reach a steady state and synaptic weight is supposed to stabilise to a fixed value.</p>
+<p><em>Please read the comments in the code as well.</em></p>
+<p><img alt="image.png" src="data:image/png;base64,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" /></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">config</span> IPCompleter.greedy=True
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">nxsdk.api.n2a</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="o">%</span><span class="k">matplotlib</span> notebook
+</pre></div>
+</div>
+</div>
+<div class="section" id="Translation-functions-for-parameters">
+<h2><span class="section-number">23.1. </span>Translation functions for parameters<a class="headerlink" href="#Translation-functions-for-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># leak</span>
+<span class="k">def</span> <span class="nf">decay_from_tau</span><span class="p">(</span><span class="n">tau</span><span class="p">):</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="n">tau</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="mi">12</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;decay=</span><span class="si">{0}</span><span class="s1"> from tau=</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">tau</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">val</span>
+
+<span class="c1"># synaptic time constant</span>
+<span class="k">def</span> <span class="nf">current_decay_from_tau</span><span class="p">(</span><span class="n">tau</span><span class="p">):</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="n">tau</span> <span class="o">*</span> <span class="mi">2</span><span class="o">**</span><span class="mi">12</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;current-decay=</span><span class="si">{0}</span><span class="s1"> from tau=</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">tau</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">val</span>
+
+<span class="c1"># voltage threshold</span>
+<span class="k">def</span> <span class="nf">vthmant_from_vth</span><span class="p">(</span><span class="n">vth</span><span class="p">):</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">vth</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="mi">6</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;vthMant=</span><span class="si">{0}</span><span class="s1"> from vth=</span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">vth</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">val</span>
+
+<span class="c1"># bias current</span>
+<span class="k">def</span> <span class="nf">biasmant_from_bias</span><span class="p">(</span><span class="n">bias</span><span class="p">,</span> <span class="n">biasExp</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bias</span> <span class="o">/</span> <span class="mi">2</span><span class="o">**</span><span class="n">biasExp</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s1">&#39;biasMant=</span><span class="si">{0}</span><span class="s1"> from biasExp=</span><span class="si">{1}</span><span class="s1"> and bias=</span><span class="si">{2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">biasExp</span><span class="p">,</span> <span class="n">bias</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">val</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Instantiate-NxNet">
+<h2><span class="section-number">23.2. </span>Instantiate NxNet<a class="headerlink" href="#Instantiate-NxNet" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">net</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Instantiate-all-required-compartment-prototypes">
+<h2><span class="section-number">23.3. </span>Instantiate all required compartment prototypes<a class="headerlink" href="#Instantiate-all-required-compartment-prototypes" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Soma prototype</span>
+<span class="n">somaProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="n">biasmant_from_bias</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                                    <span class="n">vThMant</span><span class="o">=</span><span class="n">vthmant_from_vth</span><span class="p">(</span><span class="mi">1500</span><span class="p">),</span>
+                                    <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="n">decay_from_tau</span><span class="p">(</span><span class="mf">1.1</span><span class="p">),</span> <span class="c1"># soma time constants are as small as</span>
+                                    <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="n">decay_from_tau</span><span class="p">(</span><span class="mf">1.1</span><span class="p">),</span> <span class="c1"># possible so that it responds quickly</span>
+                                    <span class="n">refractoryDelay</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                    <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">,</span>
+                                    <span class="n">thresholdBehavior</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_THRESHOLD_MODE</span><span class="o">.</span><span class="n">SPIKE_AND_RESET</span><span class="p">,</span>
+                                    <span class="n">enableSpikeBackprop</span><span class="o">=</span><span class="mi">0</span>
+                                   <span class="p">)</span>
+
+<span class="c1"># Dendrite prototype</span>
+<span class="n">dendProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="n">biasmant_from_bias</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+                                    <span class="n">vThMant</span><span class="o">=</span><span class="n">vthmant_from_vth</span><span class="p">(</span><span class="mi">1500</span><span class="p">),</span>  <span class="c1"># threshold for the dendrite is same as soma</span>
+                                    <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="n">decay_from_tau</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+                                    <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="n">decay_from_tau</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+                                    <span class="n">refractoryDelay</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                    <span class="n">functionalState</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_FUNCTIONAL_STATE</span><span class="o">.</span><span class="n">IDLE</span><span class="p">,</span>
+                                    <span class="n">thresholdBehavior</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_THRESHOLD_MODE</span><span class="o">.</span><span class="n">SPIKE_AND_RESET</span><span class="p">,</span>
+                                    <span class="n">enableSpikeBackprop</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                    <span class="n">enableSpikeBackpropFromSelf</span><span class="o">=</span><span class="mi">1</span>
+                                   <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+biasMant=0 from biasExp=0 and bias=0
+vthMant=23 from vth=1500
+decay=3723 from tau=1.1
+decay=3723 from tau=1.1
+biasMant=0 from biasExp=0 and bias=0
+vthMant=23 from vth=1500
+decay=409 from tau=10
+decay=409 from tau=10
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Instantiate-learning-rules-and-connection-prototypes">
+<h2><span class="section-number">23.4. </span>Instantiate learning rules and connection prototypes<a class="headerlink" href="#Instantiate-learning-rules-and-connection-prototypes" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">lr</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createLearningRule</span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="s1">&#39;2^-6*u0*y1-2^-6*u0*t&#39;</span><span class="p">,</span> <span class="c1"># Dummy tag variable tracks the post-trace y1. Because, there is no post-trace probe to do this. It is not used in actual learning.</span>
+                            <span class="n">dw</span><span class="o">=</span><span class="s1">&#39;2^-5*u0*r1*x1-2^-6*u0*y1*x1&#39;</span><span class="p">,</span>
+                            <span class="n">x1Impulse</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                            <span class="n">x1TimeConstant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                            <span class="n">y1Impulse</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                            <span class="n">y1TimeConstant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                            <span class="n">r1Impulse</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                            <span class="n">r1TimeConstant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                            <span class="n">tEpoch</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Note: The fixed point approximation of exponential decay is less accurate if tEpoch=1</span>
+<span class="n">connProtoLearn</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">signMode</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">SYNAPSE_SIGN_MODE</span><span class="o">.</span><span class="n">MIXED</span><span class="p">,</span>
+                                        <span class="n">weight</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                                        <span class="n">weightExponent</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                                        <span class="n">enableLearning</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                        <span class="n">learningRule</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
+                                        <span class="n">numTagBits</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>  <span class="c1"># High precision tag variable to keep track of y1</span>
+<span class="n">connProtoGeneric</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">signMode</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">SYNAPSE_SIGN_MODE</span><span class="o">.</span><span class="n">MIXED</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Create-a-neuron-prototype-and-instantiate-a-neuron">
+<h2><span class="section-number">23.5. </span>Create a neuron prototype and instantiate a neuron<a class="headerlink" href="#Create-a-neuron-prototype-and-instantiate-a-neuron" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">somaProto</span><span class="o">.</span><span class="n">addDendrite</span><span class="p">(</span><span class="n">dendProto</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">COMPARTMENT_JOIN_OPERATION</span><span class="o">.</span><span class="n">ADD</span><span class="p">)</span>
+<span class="n">neuronProto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NeuronPrototype</span><span class="p">(</span><span class="n">somaProto</span><span class="p">)</span>
+<span class="n">neuron</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createNeuron</span><span class="p">(</span><span class="n">neuronProto</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Spike-generator">
+<h2><span class="section-number">23.6. </span>Spike generator<a class="headerlink" href="#Spike-generator" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">steps</span> <span class="o">=</span> <span class="mi">2000</span>
+<span class="n">spikegen</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createSpikeGenProcess</span><span class="p">(</span><span class="n">numPorts</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">inputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="n">steps</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+<span class="n">spikegen</span><span class="o">.</span><span class="n">addSpikes</span><span class="p">(</span><span class="n">spikeInputPortNodeIds</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">spikeTimes</span><span class="o">=</span><span class="n">inputs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Connect-everything-as-needed">
+<h2><span class="section-number">23.7. </span>Connect everything as needed<a class="headerlink" href="#Connect-everything-as-needed" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">connSpkGenToDend</span> <span class="o">=</span> <span class="n">spikegen</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">neuron</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">prototype</span><span class="o">=</span><span class="n">connProtoLearn</span><span class="p">)</span>
+<span class="n">connSomaToRnfCh</span> <span class="o">=</span> <span class="n">neuron</span><span class="o">.</span><span class="n">soma</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">reinforcementChannel</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">connProtoGeneric</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Setup-probes">
+<h2><span class="section-number">23.8. </span>Setup probes<a class="headerlink" href="#Setup-probes" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">vProbeSoma</span><span class="p">,</span> <span class="n">uProbeSoma</span><span class="p">,</span> <span class="n">sProbeSoma</span> <span class="o">=</span> <span class="n">neuron</span><span class="o">.</span><span class="n">soma</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                        <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                        <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+<span class="n">vProbeDend</span><span class="p">,</span> <span class="n">uProbeDend</span><span class="p">,</span> <span class="n">sProbeDend</span> <span class="o">=</span> <span class="n">neuron</span><span class="o">.</span><span class="n">dendrites</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                                <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                                <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+<span class="n">rewardProbe</span> <span class="o">=</span> <span class="n">connSomaToRnfCh</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">REWARD_TRACE</span><span class="p">])</span>
+<span class="n">tagProbe</span>  <span class="o">=</span> <span class="n">connSpkGenToDend</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SYNAPSE_TAG</span><span class="p">])</span>
+<span class="n">weightProbe</span>  <span class="o">=</span> <span class="n">connSpkGenToDend</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SYNAPSE_WEIGHT</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Run-and-plot">
+<h2><span class="section-number">23.9. </span>Run and plot<a class="headerlink" href="#Run-and-plot" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">net</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
+<span class="n">net</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="n">ax0</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">rewardProbe</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Reward traces&#39;</span><span class="p">)</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ax0</span><span class="p">)</span>
+<span class="n">weightProbe</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">tagProbe</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Learning synapse weight and (tag = y1/2^-6)&#39;</span><span class="p">)</span>  <span class="c1"># tag variable saturates at 8-bits. y1 might be going beyond that.</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ax0</span><span class="p">)</span>
+<span class="n">vProbeSoma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">vProbeDend</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Compartment voltage&#39;</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ax0</span><span class="p">)</span>
+<span class="n">uProbeSoma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">uProbeDend</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Compartment current&#39;</span><span class="p">)</span>
+<span class="n">ax3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ax0</span><span class="p">)</span>
+<span class="n">sProbeSoma</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Soma Spikes&#39;</span><span class="p">)</span>
+<span class="n">ax3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ax0</span><span class="p">)</span>
+<span class="n">sProbeDend</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Dend Spikes&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  SLURM is being run in background
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  /home/szzhu/nxsdk-nxsdk/nxsdk/driver/../bin/nx_driver_server: 16: exec: /home/szzhu/nxsdk-nxsdk/nxsdk/driver/../bin/x86/nx_driver_server: not found
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">HST</span>:  srun: error: ncl-nuc-01: task 0: Exited with exit code 127
+<span class="ansi-black-intense-fg ansi-bold">WARNING</span>:<span class="ansi-blue-fg">DRV</span>:  <span class="ansi-yellow-fg">Connection is taking longer than usual.</span>
+<span class="ansi-black-intense-fg ansi-bold">WARNING</span>:<span class="ansi-blue-fg">DRV</span>:  <span class="ansi-yellow-fg">Boards might be busy or consider reasons below:</span>
+<span class="ansi-black-intense-fg ansi-bold">WARNING</span>:<span class="ansi-blue-fg">DRV</span>:  <span class="ansi-yellow-fg">1. If you are working on INRC Cloud, ensure setting SLURM=1.</span>
+<span class="ansi-black-intense-fg ansi-bold">WARNING</span>:<span class="ansi-blue-fg">DRV</span>:  <span class="ansi-yellow-fg">2. Run sinfo to check if all boards are down.</span>
+<span class="ansi-black-intense-fg ansi-bold">WARNING</span>:<span class="ansi-blue-fg">DRV</span>:  <span class="ansi-yellow-fg">3. Check squeue below for any unfinished jobs. Run scancel &lt;JOBID&gt; to cancel hung jobs.</span>
+<span class="ansi-black-intense-fg ansi-bold">WARNING</span>:<span class="ansi-blue-fg">DRV</span>:  <span class="ansi-yellow-fg">JOBID     NAME                          PARTITION TIME      NODELIST(REASON)    USER</span>
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:      Host server up..............Done 259.46s
+<span class="ansi-black-intense-fg ansi-bold">INFO</span>:<span class="ansi-blue-fg">DRV</span>:  Executor: 2000 timesteps........Done 259.46s
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">timeout</span>                                   Traceback (most recent call last)
+<span class="ansi-green-fg">~/nxsdk-nxsdk/nxsdk/driver/host_coordinator.py</span> in <span class="ansi-cyan-fg">_getHostAddr</span><span class="ansi-blue-fg">(self, portId)</span>
+<span class="ansi-green-intense-fg ansi-bold">    236</span>             <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 237</span><span class="ansi-red-fg">                 </span>conn<span class="ansi-blue-fg">,</span> addr <span class="ansi-blue-fg">=</span> superHostSocket<span class="ansi-blue-fg">.</span>accept<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    238</span>             <span class="ansi-green-fg">except</span> socket<span class="ansi-blue-fg">.</span>timeout<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/usr/lib/python3.5/socket.py</span> in <span class="ansi-cyan-fg">accept</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    194</span>         &#34;&#34;&#34;
+<span class="ansi-green-fg">--&gt; 195</span><span class="ansi-red-fg">         </span>fd<span class="ansi-blue-fg">,</span> addr <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_accept<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    196</span>         <span class="ansi-red-fg"># If our type has the SOCK_NONBLOCK flag, we shouldn&#39;t pass it onto the</span>
+
+<span class="ansi-red-fg">timeout</span>: timed out
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-11-a3b0c5d6e47b&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>net<span class="ansi-blue-fg">.</span>run<span class="ansi-blue-fg">(</span>steps<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      2</span> net<span class="ansi-blue-fg">.</span>disconnect<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> fig <span class="ansi-blue-fg">=</span> plt<span class="ansi-blue-fg">.</span>figure<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> figsize<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">10</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">10</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> ax0 <span class="ansi-blue-fg">=</span> plt<span class="ansi-blue-fg">.</span>subplot<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">6</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/nxsdk-nxsdk/nxsdk/net/runnable_nxnet.py</span> in <span class="ansi-cyan-fg">run</span><span class="ansi-blue-fg">(self, numSteps, compilerOptions, executionOptions, lmtOptions)</span>
+<span class="ansi-green-intense-fg ansi-bold">    150</span>             numSteps <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">**</span><span class="ansi-cyan-fg">31</span> <span class="ansi-blue-fg">-</span> <span class="ansi-cyan-fg">1</span>
+<span class="ansi-green-intense-fg ansi-bold">    151</span>
+<span class="ansi-green-fg">--&gt; 152</span><span class="ansi-red-fg">         </span>board<span class="ansi-blue-fg">.</span>run<span class="ansi-blue-fg">(</span>numSteps<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>executionOptions<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    153</span>
+<span class="ansi-green-intense-fg ansi-bold">    154</span>     <span class="ansi-green-fg">def</span> runAsync<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> numSteps<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">,</span> compilerOptions<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> executionOptions<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span><span class="ansi-blue-fg">,</span> lmtOptions<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/nxsdk-nxsdk/nxsdk/graph/nxboard.py</span> in <span class="ansi-cyan-fg">run</span><span class="ansi-blue-fg">(self, numSteps, aSync, maxTimeInterval, generateCfg, cfgPath, partition)</span>
+<span class="ansi-green-intense-fg ansi-bold">    259</span>                         numSteps<span class="ansi-blue-fg">=</span>numSteps<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-intense-fg ansi-bold">    260</span>                         aSync<span class="ansi-blue-fg">=</span>aSync<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">--&gt; 261</span><span class="ansi-red-fg">                         traceDirectory=traceDirectory)
+</span><span class="ansi-green-intense-fg ansi-bold">    262</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    263</span>             <span class="ansi-green-fg">with</span> setEnvWithinContext<span class="ansi-blue-fg">(</span>PARTITION<span class="ansi-blue-fg">=</span>partition<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/nxsdk-nxsdk/nxsdk/graph/nxboard.py</span> in <span class="ansi-cyan-fg">_run</span><span class="ansi-blue-fg">(self, numSteps, aSync, traceDirectory)</span>
+<span class="ansi-green-intense-fg ansi-bold">    229</span>             <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>executor<span class="ansi-blue-fg">.</span>hasStarted<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    230</span>                 ExecutionBootstrapper.bootstrap(
+<span class="ansi-green-fg">--&gt; 231</span><span class="ansi-red-fg">                     self, traceDirectory=traceDirectory)
+</span><span class="ansi-green-intense-fg ansi-bold">    232</span>             self<span class="ansi-blue-fg">.</span>executor<span class="ansi-blue-fg">.</span>start<span class="ansi-blue-fg">(</span>numSteps<span class="ansi-blue-fg">,</span> aSync<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    233</span>
+
+<span class="ansi-green-fg">~/nxsdk-nxsdk/nxsdk/driver/execution_bootstrapper.py</span> in <span class="ansi-cyan-fg">bootstrap</span><span class="ansi-blue-fg">(nxboard, traceDirectory)</span>
+<span class="ansi-green-intense-fg ansi-bold">     36</span>         hostCoordinator <span class="ansi-blue-fg">=</span> HostCoordinator<span class="ansi-blue-fg">(</span>traceDirectory<span class="ansi-blue-fg">=</span>traceDirectory<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     37</span>         <span class="ansi-green-fg">with</span> HostConstraintRequest<span class="ansi-blue-fg">(</span>nxboard<span class="ansi-blue-fg">,</span> hostCoordinator<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 38</span><span class="ansi-red-fg">             </span>hostCoordinator<span class="ansi-blue-fg">.</span>connect<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     39</span>         rpc <span class="ansi-blue-fg">=</span> hostCoordinator<span class="ansi-blue-fg">.</span>service
+<span class="ansi-green-intense-fg ansi-bold">     40</span>         boardConfiguration <span class="ansi-blue-fg">=</span> hostCoordinator<span class="ansi-blue-fg">.</span>boardConfiguration
+
+<span class="ansi-green-fg">~/nxsdk-nxsdk/nxsdk/driver/host_coordinator.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">     65</span>                 <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     66</span>                     self.hostAddr, remoteHostPort = self._getHostAddr(
+<span class="ansi-green-fg">---&gt; 67</span><span class="ansi-red-fg">                         self.LOCAL_PORT_ID)
+</span><span class="ansi-green-intense-fg ansi-bold">     68</span>                 <span class="ansi-green-fg">except</span> socket<span class="ansi-blue-fg">.</span>error <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     69</span>                     <span class="ansi-green-fg">if</span> e<span class="ansi-blue-fg">.</span>errno <span class="ansi-blue-fg">==</span> socket<span class="ansi-blue-fg">.</span>errno<span class="ansi-blue-fg">.</span>EADDRINUSE<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/nxsdk-nxsdk/nxsdk/driver/host_coordinator.py</span> in <span class="ansi-cyan-fg">_getHostAddr</span><span class="ansi-blue-fg">(self, portId)</span>
+<span class="ansi-green-intense-fg ansi-bold">    254</span>                     self<span class="ansi-blue-fg">.</span>logger<span class="ansi-blue-fg">.</span>warning<span class="ansi-blue-fg">(</span>line<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    255</span>                 superHostSocket<span class="ansi-blue-fg">.</span>settimeout<span class="ansi-blue-fg">(</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 256</span><span class="ansi-red-fg">                 </span>conn<span class="ansi-blue-fg">,</span> addr <span class="ansi-blue-fg">=</span> superHostSocket<span class="ansi-blue-fg">.</span>accept<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    257</span>
+<span class="ansi-green-intense-fg ansi-bold">    258</span>             <span class="ansi-green-fg">with</span> conn<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/usr/lib/python3.5/socket.py</span> in <span class="ansi-cyan-fg">accept</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    193</span>         For IP sockets<span class="ansi-blue-fg">,</span> the address info <span class="ansi-green-fg">is</span> a pair <span class="ansi-blue-fg">(</span>hostaddr<span class="ansi-blue-fg">,</span> port<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>
+<span class="ansi-green-intense-fg ansi-bold">    194</span>         &#34;&#34;&#34;
+<span class="ansi-green-fg">--&gt; 195</span><span class="ansi-red-fg">         </span>fd<span class="ansi-blue-fg">,</span> addr <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_accept<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    196</span>         <span class="ansi-red-fg"># If our type has the SOCK_NONBLOCK flag, we shouldn&#39;t pass it onto the</span>
+<span class="ansi-green-intense-fg ansi-bold">    197</span>         <span class="ansi-red-fg"># new socket. We do not currently allow passing SOCK_NONBLOCK to</span>
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>:
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="t_vMinExp_and_vMaxExp.html" class="btn btn-neutral float-right" title="24. vMinExp and vMaxExp Setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="r_stubs_and_netmodules.html" class="btn btn-neutral float-left" title="21. Stubs and NetModules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

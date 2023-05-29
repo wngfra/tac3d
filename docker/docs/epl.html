@@ -1,0 +1,594 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>EPL &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1. One-shot learning using External Plexiform Layer (EPL) network" href="jupyter/epl_multi_pattern_oneshot_learning.html" />
+    <link rel="prev" title="Loihi backend for SNN-Toolbox" href="dnn_snntb_backend.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Nx SDK Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="characterization.html">Characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dnn.html">DNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dvs.html">DVS</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">EPL</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#epl-multi-pattern-learning">EPL Multi Pattern Learning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters-for-epl-network">Parameters For EPL Network</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="jupyter/epl_multi_pattern_oneshot_learning.html">1. One-shot learning using External Plexiform Layer (EPL) network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="jupyter/epl_multi_pattern_oneshot_learning.html#2.-EPL-network-setup">2. EPL network setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="jupyter/epl_multi_pattern_oneshot_learning.html#3.-One-shot-learning-of-a-single-odor-pattern">3. One-shot learning of a single odor pattern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="jupyter/epl_multi_pattern_oneshot_learning.html#4.-One-shot-learning-of-multiple-patterns">4. One-shot learning of multiple patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="jupyter/epl_multi_pattern_oneshot_learning.html#Conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="knn.html">K Nearest Neighbour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_generator.html">Input Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lca.html">LCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="path_planning.html">Path Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slayer.html">SLAYER Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slic.html">SLIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spike_streamer.html">Spike Streamer Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_injection.html">Trace Injection Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Nx SDK Modules</a> &raquo;</li>
+        
+      <li>EPL</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="epl">
+<h1>EPL<a class="headerlink" href="#epl" title="Permalink to this headline">¶</a></h1>
+<p>The EPL module provides functionality to setup, train and test a neuromorphic
+algorithm for one-shot pattern learning inspired by the
+External Plexiform Layer (EPL) network of the mammalian olfactory bulb.
+While the algorithm implemented by the network learns to recognize &quot;odors&quot;
+(more precisely, using odor chemosensor array data), it can be used to learn
+any other patterns as the EPL network basically implements a spatio-temporal
+attractor (STA) network. After the EPL/STA network &quot;learns&quot; an odor/pattern,
+even if a noise corrupted version of the learned pattern (test sample) is
+presented, the network activity settles down into the attractor state of the
+learned pattern.</p>
+<p>The module provides a EPLMultiPatternLearning class to setup, train, test
+and evaluate the performance of a one-shot learning algorithm.</p>
+<p>Jupyter notebook illustrating a <a class="reference internal" href="jupyter/epl_multi_pattern_oneshot_learning.html"><span class="doc">Multi Pattern One-shot Learning Using
+EPL Network</span></a> resides at <strong>nxsdk_modules/epl/tutorials</strong></p>
+<div class="section" id="epl-multi-pattern-learning">
+<h2>EPL Multi Pattern Learning<a class="headerlink" href="#epl-multi-pattern-learning" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.</span></code><code class="sig-name descname"><span class="pre">EPLMultiPatternLearning</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eplParams</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk_modules.epl.src.epl_utils.EplUtils</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">nxsdk_modules.epl.src.multi_pattern_learning.epl_snips_utils.EplWithSNIPs</span></code></p>
+<p>Create an EPL network to learn multiple patterns and test if the network
+can recall the learned patterns even when noise corrupted test samples of
+the learned patterns are presented</p>
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.connProbMCToGC">
+<code class="sig-name descname"><span class="pre">connProbMCToGC</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.connProbMCToGC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.evaluate">
+<code class="sig-name descname"><span class="pre">evaluate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">similarityThreshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>evaluates the performance of the network</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.executionTimeProbe">
+<code class="sig-name descname"><span class="pre">executionTimeProbe</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.executionTimeProbe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.fit">
+<code class="sig-name descname"><span class="pre">fit</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trainingSet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">testingSet</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>trains the network with the given training set</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.gammaCycleDuration">
+<code class="sig-name descname"><span class="pre">gammaCycleDuration</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.gammaCycleDuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.genTestingData">
+<code class="sig-name descname"><span class="pre">genTestingData</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trainingData</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numTestSamples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occlusionFactor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.genTestingData" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates a synthetic testing dataset of noise corrupted
+versions of odor sensor readings</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.genTrainingData">
+<code class="sig-name descname"><span class="pre">genTrainingData</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numPatterns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.genTrainingData" title="Permalink to this definition">¶</a></dt>
+<dd><p>generates a synthetic training dataset of odor sensor readings</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.logSNIPs">
+<code class="sig-name descname"><span class="pre">logSNIPs</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.logSNIPs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.minDelaysMCToGC">
+<code class="sig-name descname"><span class="pre">minDelaysMCToGC</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.minDelaysMCToGC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numColumns">
+<code class="sig-name descname"><span class="pre">numColumns</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numColumns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numDelaysMCToGC">
+<code class="sig-name descname"><span class="pre">numDelaysMCToGC</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numDelaysMCToGC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numGCsPerPatternPerColumn">
+<code class="sig-name descname"><span class="pre">numGCsPerPatternPerColumn</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numGCsPerPatternPerColumn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numGammaCyclesIdle">
+<code class="sig-name descname"><span class="pre">numGammaCyclesIdle</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numGammaCyclesIdle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numGammaCyclesTest">
+<code class="sig-name descname"><span class="pre">numGammaCyclesTest</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numGammaCyclesTest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numGammaCyclesTrain">
+<code class="sig-name descname"><span class="pre">numGammaCyclesTrain</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numGammaCyclesTrain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numLabelSamples">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numLabelSamples</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numLabelSamples" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the number of patterns presented in the labeling phase.
+In the labeling phase, the learned patters are presented as test
+samples</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numMCsPerColumn">
+<code class="sig-name descname"><span class="pre">numMCsPerColumn</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numMCsPerColumn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numPatterns">
+<code class="sig-name descname"><span class="pre">numPatterns</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numPatterns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numStepsToRun">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numStepsToRun</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numStepsToRun" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the total number of steps for which the network will run</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numTestSamples">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numTestSamples</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numTestSamples" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the number of noise corrupted test samples for
+each pattern presented to the network</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numTotalTestSamples">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numTotalTestSamples</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numTotalTestSamples" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the total number of the samples presented to the network
+in test phase. The first sample is always the learned odor (labeling
+phase). Thus labeling is testing without any noise corruption i.e.
+the trained odor. Next in the actual test phase, we present various
+noise corrupted versions of the trained odor</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numTrainSamples">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numTrainSamples</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.numTrainSamples" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the number of training patterns presented to the network</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.predict">
+<code class="sig-name descname"><span class="pre">predict</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>tests the network with the given testing set</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.randomGenSeed">
+<code class="sig-name descname"><span class="pre">randomGenSeed</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.randomGenSeed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.showRasterPlot">
+<code class="sig-name descname"><span class="pre">showRasterPlot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">patternIdx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampleIdx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.showRasterPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>displays the MC output spike raster during the test phase for a
+particular test sample (sampleIdx) belonging to a particular pattern(
+patternIdx)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.testDuration">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">testDuration</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.testDuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the total number of timesteps in the test phase</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.trainDuration">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">trainDuration</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.trainDuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the total number of timesteps in the train phase</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.useLMTSpikeCounters">
+<code class="sig-name descname"><span class="pre">useLMTSpikeCounters</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.useLMTSpikeCounters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.useRandomSeed">
+<code class="sig-name descname"><span class="pre">useRandomSeed</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_multi_pattern_learning.EPLMultiPatternLearning.useRandomSeed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="parameters-for-epl-network">
+<h2>Parameters For EPL Network<a class="headerlink" href="#parameters-for-epl-network" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.</span></code><code class="sig-name descname"><span class="pre">ParamemtersForEPL</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the default values for the parameters to EPL network. The values
+of the parameter are validated every time they are set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>numPatterns</strong> (<em>int</em>) -- number of patterns to be learned by the EPL     network</p></li>
+<li><p><strong>numColumns</strong> (<em>int</em>) -- number of columns in the network</p></li>
+<li><p><strong>numMCsPerColumn</strong> (<em>int</em>) -- number of MCs per column</p></li>
+<li><p><strong>numGCsPerPatternPerColumn</strong> (<em>int</em>) -- number of GCs per column for each             different pattern</p></li>
+<li><p><strong>numDelaysMCToGC</strong> (<em>int</em>) -- number of different MC-&gt;GC connnection delays</p></li>
+<li><p><strong>minDelaysMCToGC</strong> (<em>int</em>) -- value of the smallest MC-&gt;GC delay</p></li>
+<li><p><strong>gammaCycleDuration</strong> (<em>int</em>) -- number of algorithmic timesteps in a     gamma cycle</p></li>
+<li><p><strong>connProbMCToGC</strong> (<em>float</em>) -- MC-&gt;GC connection probability</p></li>
+<li><p><strong>useRandomSeed</strong> (<em>bool</em>) -- used to set if we want to use a random seed</p></li>
+<li><p><strong>randomGenSeed</strong> (<em>int</em>) -- the value of random seed</p></li>
+<li><p><strong>numGammaCyclesTrain</strong> (<em>int</em>) -- number of gamma cycles to train the network</p></li>
+<li><p><strong>numGammaCyclesTest</strong> (<em>int</em>) -- number of gamma cycles to test the network</p></li>
+<li><p><strong>numGammaCyclesIdle</strong> (<em>int</em>) -- number of gamma cycles when no inputs are     presented</p></li>
+<li><p><strong>useLMTSpikeCounters</strong> (<em>bool</em>) -- set to true if we want to use SNIP based     spike counter instead of spike probes</p></li>
+<li><p><strong>logSNIPs</strong> (<em>bool</em>) -- used to turn SNIP logging on and off</p></li>
+<li><p><strong>executionTimeProbe</strong> (<em>bool</em>) -- set to enable/disable execution time probe</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.connProbMCToGC">
+<code class="sig-name descname"><span class="pre">connProbMCToGC</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.connProbMCToGC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.executionTimeProbe">
+<code class="sig-name descname"><span class="pre">executionTimeProbe</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.executionTimeProbe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.gammaCycleDuration">
+<code class="sig-name descname"><span class="pre">gammaCycleDuration</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.gammaCycleDuration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.logSNIPs">
+<code class="sig-name descname"><span class="pre">logSNIPs</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.logSNIPs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.minDelaysMCToGC">
+<code class="sig-name descname"><span class="pre">minDelaysMCToGC</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.minDelaysMCToGC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numColumns">
+<code class="sig-name descname"><span class="pre">numColumns</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numColumns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numDelaysMCToGC">
+<code class="sig-name descname"><span class="pre">numDelaysMCToGC</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numDelaysMCToGC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numGCsPerPatternPerColumn">
+<code class="sig-name descname"><span class="pre">numGCsPerPatternPerColumn</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numGCsPerPatternPerColumn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numGammaCyclesIdle">
+<code class="sig-name descname"><span class="pre">numGammaCyclesIdle</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numGammaCyclesIdle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numGammaCyclesTest">
+<code class="sig-name descname"><span class="pre">numGammaCyclesTest</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numGammaCyclesTest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numGammaCyclesTrain">
+<code class="sig-name descname"><span class="pre">numGammaCyclesTrain</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numGammaCyclesTrain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numMCsPerColumn">
+<code class="sig-name descname"><span class="pre">numMCsPerColumn</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numMCsPerColumn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numPatterns">
+<code class="sig-name descname"><span class="pre">numPatterns</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.numPatterns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.randomGenSeed">
+<code class="sig-name descname"><span class="pre">randomGenSeed</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.randomGenSeed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.showDefaults">
+<code class="sig-name descname"><span class="pre">showDefaults</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.showDefaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>lists the default values for the various parameters</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.useLMTSpikeCounters">
+<code class="sig-name descname"><span class="pre">useLMTSpikeCounters</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.useLMTSpikeCounters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.useRandomSeed">
+<code class="sig-name descname"><span class="pre">useRandomSeed</span></code><a class="headerlink" href="#nxsdk_modules.epl.src.multi_pattern_learning.epl_parameters.ParamemtersForEPL.useRandomSeed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/epl_multi_pattern_oneshot_learning.html">1. One-shot learning using External Plexiform Layer (EPL) network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/epl_multi_pattern_oneshot_learning.html#2.-EPL-network-setup">2. EPL network setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/epl_multi_pattern_oneshot_learning.html#3.-One-shot-learning-of-a-single-odor-pattern">3. One-shot learning of a single odor pattern</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/epl_multi_pattern_oneshot_learning.html#4.-One-shot-learning-of-multiple-patterns">4. One-shot learning of multiple patterns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/epl_multi_pattern_oneshot_learning.html#Conclusion">Conclusion</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="jupyter/epl_multi_pattern_oneshot_learning.html" class="btn btn-neutral float-right" title="1. One-shot learning using External Plexiform Layer (EPL) network" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dnn_snntb_backend.html" class="btn btn-neutral float-left" title="Loihi backend for SNN-Toolbox" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

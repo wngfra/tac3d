@@ -1,0 +1,26 @@
+NxNet: Synaptic Delays
+=======================
+
+Motivation
+----------
+The motivation behind this tutorial is to show you how to configure synaptic delays illustrated with a simple toy network. This tutorial also shows how to use the basic spike generator to send spikes to "input axons".
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_04.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxnet/tutorial_04_synaptic_delays.py
+
+See also
+--------
+
+* :doc:`netprobes`
+* :doc:`compartment`
+* :doc:`connection`
+* :doc:`inputgen`
+* :doc:`nxnet`
+* :doc:`graph`
+

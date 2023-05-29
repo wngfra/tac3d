@@ -1,0 +1,40 @@
+Spike Streamer Module
+=====================
+
+The Spike Input Streamer provides a means to inject spikes into a model at 
+deterministic times while the model is running on Loihi. Similarly, the 
+Spike Output Streamer provides a way to receive spike from a model while it 
+is running. Together these features allows a model to be programmed to Loihi 
+before specifying the input spikes. The user can then send spikes to the model 
+and receive spikes from the model in an online fashion.
+
+
+Spike Input Streamer
+--------------------
+
+The Spike Input Streamer requires spikes to be provided in chronological order. 
+Whenever enough spikes have been provided to fill a packet, that packet is sent 
+to a SNIP which performs the spike injection and a new packet is started. The user 
+can also flush a partial packet to the SNIP at any time.
+
+The SNIP will always advance Loihi time up until the time of the most recent spike 
+specified by the user (see tutorials).
+
+The Spike Input Streamer also provides a function for advancing chip time in the 
+absence of spikes (see tutorials).
+
+
+Spike Output Streamer
+---------------------
+
+The Spike Output Streamer provides a way to monitor the output spikes from a 
+network at fixed intervals. For example, it can return the cumulative spike count 
+for each output neuron every 100 timesteps (configurable).
+
+
+Spike Streamer Module Documentation
+-----------------------------------
+
+.. automodule:: nxsdk_modules.spike_streamer.src.streaming
+   :members: 
+   :undoc-members:

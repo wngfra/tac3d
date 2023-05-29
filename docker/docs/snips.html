@@ -1,0 +1,457 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Programming SNIPs &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Communicating vis Channels" href="channels.html" />
+    <link rel="prev" title="17. NxCore: Learning" href="core_tutorial_18_learning.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="introduction.html">Introductory Material</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="introduction.html#creating-and-running-spiking-neural-networks-on-loihi">Creating and Running Spiking Neural Networks on Loihi</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="learning.html">Learning with STDP</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Programming SNIPs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#nxnet-c-api">NxNet C API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="channels.html">Communicating vis Channels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="host_snips.html">Programming SNIPs on Host</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="introduction.html">Introductory Material</a> &raquo;</li>
+        
+      <li>Programming SNIPs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="programming-snips">
+<h1>Programming SNIPs<a class="headerlink" href="#programming-snips" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-default">
+<img alt="SNIPs" src="_images/nxsdk_overview.png" />
+</div>
+<p>Revisiting our overview picture above, we can see that most of a spiking neural network (SNN) can be created using the <a class="reference internal" href="nxnet.html"><span class="doc">NxNet API</span></a> or <a class="reference internal" href="nxcore.html"><span class="doc">NxCore API</span></a>. With these APIs we can define the network of compartments and connections, configure the compartment dynamics, modify the weights and delays of the synapses and axons,  create multi-compartment neurons and dendritic trees, and monitor network activity with u, v, a and spike probes. Additionally with these high level APIs we have the ability to define learning rules, choosing the learning epoch and finding the right balance of pre- and post- synaptic traces to enable STDP learning. Finally, we have the ability to define and use basic spike generators that can send spikes into the network.</p>
+<p>What we have, with the above framework, is the ability to:</p>
+<ol class="arabic simple">
+<li><p>Define a network of connected compartments (including dynamics, learning rules, epoch settings, weights, etc)</p></li>
+<li><p>Define the probes we would like to use to monitor network activity.</p></li>
+<li><p>Define the spike generator we will use</p></li>
+<li><p>Run the network for N time steps</p></li>
+<li><p>Review the timeseries data back from the probes</p></li>
+</ol>
+<p>Note the very linear nature of the above flow: define, run, analyze.</p>
+<p>In creating these APIs our core focus has been on the ease of development and definition of a spiking neural network. We recognized early on, however, that it isn't enough to just define the network, run it for a few time steps and then analyze it. We want to be able to do things like add new neurons, or prune synapses, or update learning rules. To that end, we developed an architecture we call symmetric neural interfacing processes or SNIPs. As catchy as this name is, as our framework has evolved, we are likely to shorten the name to just process.</p>
+<p>At the heart of this architecture is what we call the SNN Application Framework. This framework is a simple C program running on one of the x86 cores of Loihi. The sequence diagram below describes its operation.</p>
+<div class="figure align-default">
+<img alt="" src="_images/statemachine.png" />
+</div>
+<p>There are four primary components to the application framework:</p>
+<ol class="arabic simple">
+<li><p>The <strong>Network Control Loop</strong> - this loops runs for N timesteps, where N== the number of time steps you specify in board.run(N) in your python script.</p></li>
+<li><p><strong>Spiking</strong> - the spiking component first checks to see if there are any spikes on the receiving channel (see below). If there are, it checks the time stamp on the spike and if the timestamp on the spike is less than or equal to NOW, then the spike is sent to the target input axon. You control spikes and spike times being sent into this framework by using a Spike Generator. During this phase, custom SNIPs can also be executed.</p></li>
+<li><p><strong>Learning</strong> - the learning component first checks to see if the current timestep coincides with a learning epoch. If it does, then any custom pre-learning management SNIP you want to run will be executed. The sort of SNIPs you would run in here would include modifying learning rules or pre-trace configuration.</p></li>
+<li><p><strong>Management</strong> - the management component will execute every time step, first checking to see if there's a reason to run any custom SNIP you provide, and then running it.</p></li>
+</ol>
+<p>In our current architecture, each chip has 3 x86 cores. Snips can be configured to run on any of the x86 core of any chip, provided chipId is less than number of chips allocated to the network. Following information must be kept in mind, while using snips :</p>
+<ol class="arabic simple">
+<li><p>Snips located on chip x can read the state of neurocore registers located on any chip.</p></li>
+<li><p>Snips located on chip x can only write neurocore registers located on chip x.</p></li>
+<li><p>Snips can be used to send remote spike to any other chip.</p></li>
+</ol>
+<p>Keep these components in mind as we learn more about SNIPs. Also, note that this application framework runs each and everytime you call board.run(N), regardless of whether or not you are using SNIPs.</p>
+<div class="figure align-default">
+<img alt="" src="_images/sniparch.png" />
+</div>
+<p>Using the SNIP architecture is quite simple:</p>
+<ol class="arabic simple">
+<li><p>You setup your network as before.</p></li>
+<li><p>You then setup your SNIPs. You will need always set one up for the init phases of the application framework. This will allow you to setup communication channels. You can then optionally configure one or more SNIPs for the pre-learning, spiking or management phases. See the code snippet below for an example. For each of these, you have to write the C code for the accompanying snip method. You can see an example of this in the examples/snips directory.</p></li>
+<li><p>Next, set up any send/recieve channels you'd like to have for communication with the SNIP (code snippet below).</p></li>
+<li><p>Lastly, call board.run(N).</p></li>
+</ol>
+<p>Code to create SNIPs for the init and management phases. A &quot;guard&quot; is a chunk of code that is executed first (returning a boolean) that determines if the run code should actually be executed. chipId and lmtID determines on which x86 core will this snip run. chipId can take any value less than number of chips allocated to the network, while lmtId takes value 0,1,2. Default value of both chipId and lmtId is 0.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Defining a process which will run during init phase</span>
+<span class="c1"># This snip will run on chip 0 lmt 1</span>
+<span class="n">initProcess</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">createProcess</span><span class="p">(</span>
+                                  <span class="n">name</span><span class="o">=</span><span class="s2">&quot;initprocess&quot;</span><span class="p">,</span>
+                                  <span class="n">cFilePath</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span><span class="o">+</span> <span class="s2">&quot;/initsnip.c&quot;</span><span class="p">,</span>
+                                  <span class="n">includeDir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span>
+                                  <span class="n">funcName</span><span class="o">=</span><span class="s2">&quot;initsnip&quot;</span><span class="p">,</span>
+                                  <span class="n">guardName</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                  <span class="n">phase</span><span class="o">=</span><span class="s2">&quot;init&quot;</span><span class="p">,</span>
+                                  <span class="n">lmtId</span><span class="o">=</span><span class="mi">1</span>
+                                 <span class="p">)</span>
+
+<span class="c1"># Defining a process which will run during spiking phase</span>
+<span class="c1"># This snip will run on chip 1 lmt 0</span>
+<span class="n">spikingProcess</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">createProcess</span><span class="p">(</span>
+                                     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;spikingProcess&quot;</span><span class="p">,</span>
+                                     <span class="n">cFilePath</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span><span class="o">+</span> <span class="s2">&quot;/spiking.c&quot;</span><span class="p">,</span>
+                                     <span class="n">includeDir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span>
+                                     <span class="n">funcName</span><span class="o">=</span><span class="s2">&quot;run_spiking&quot;</span><span class="p">,</span>
+                                     <span class="n">guardName</span><span class="o">=</span><span class="s2">&quot;do_spiking&quot;</span><span class="p">,</span>
+                                     <span class="n">phase</span><span class="o">=</span><span class="s2">&quot;spiking&quot;</span><span class="p">,</span>
+                                     <span class="n">chipId</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                     <span class="n">lmtId</span><span class="o">=</span><span class="mi">0</span>
+                                    <span class="p">)</span>
+
+<span class="c1"># Defining a process which will during run mgmt phase</span>
+<span class="c1"># This snip will run on chip 0 lmt 0</span>
+<span class="n">runMgmtProcess</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">createProcess</span><span class="p">(</span>
+                                     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;runMgmt&quot;</span><span class="p">,</span>
+                                     <span class="n">cFilePath</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span><span class="o">+</span> <span class="s2">&quot;/runmgmt.c&quot;</span><span class="p">,</span>
+                                     <span class="n">includeDir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span>
+                                     <span class="n">funcName</span><span class="o">=</span><span class="s2">&quot;run_mgmt&quot;</span><span class="p">,</span>
+                                     <span class="n">guardName</span><span class="o">=</span><span class="s2">&quot;do_run_mgmt&quot;</span><span class="p">,</span>
+                                     <span class="n">phase</span><span class="o">=</span><span class="s2">&quot;mgmt&quot;</span><span class="p">,</span>
+                                    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Code to create communication channels. This will allow your python code running on your computer (the superhost) to communicate with the C-based SNIP code running on the x86.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create channel named imageChannel for sending data</span>
+<span class="n">imageChannel</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">createChannel</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;imageChannel&#39;</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="c1"># Create channel named recvChannel for receiving data back from lakemont</span>
+<span class="n">recvChannel</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">createChannel</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;recvChannel&#39;</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+
+<span class="c1"># Connecting imageChannel from Superhost to initProcess making it send channel</span>
+<span class="n">imageChannel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">initProcess</span><span class="p">)</span>
+<span class="c1"># Connecting recvChannel from initProcess to Superhost making it recv channel</span>
+<span class="n">recvChannel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">initProcess</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="nxnet-c-api">
+<h2>NxNet C API<a class="headerlink" href="#nxnet-c-api" title="Permalink to this headline">¶</a></h2>
+<p>Within your SNIP using the NxNet C API you can directly access the compartments and compartment groups you create at the NxNet level. The keywords, <strong>nxCompartment</strong> and <strong>nxCompartmentGroup</strong> are reserved to allow you to refer to the NxNet compartments and compartment groups, respectively. The compartments and similarly the compartment groups can be indexed in the order in which they were created at the NxNet level, where the index starts at 0. These indices can be retrieved from the compartments and compartment groups by accessing the compartment.nodeId and compartmentGroup.id, respectively.</p>
+<p>Consider the following NxNet code that creates three compartments and a single compartment group containing two compartments.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a prototype for the compartments</span>
+<span class="n">proto</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                                <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                <span class="n">vThMant</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                                <span class="n">functionalState</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+                                <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">409</span><span class="p">)</span>
+
+<span class="c1"># Create compartments using the prototype</span>
+<span class="n">compartment0</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">proto</span><span class="p">)</span>
+<span class="n">compartment1</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">proto</span><span class="p">)</span>
+<span class="n">compartment2</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">proto</span><span class="p">)</span>
+
+<span class="c1"># Create a compartment group of size zero and add compartments</span>
+<span class="n">compGrp</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">prototype</span><span class="o">=</span><span class="n">proto</span><span class="p">)</span>
+<span class="n">compGrp</span><span class="o">.</span><span class="n">addCompartments</span><span class="p">(</span><span class="n">compartment1</span><span class="p">)</span>
+<span class="n">compGrp</span><span class="o">.</span><span class="n">addCompartments</span><span class="p">(</span><span class="n">compartment2</span><span class="p">)</span>
+
+<span class="c1"># Verify the compartment index for compartment2</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Compartment index for compartment2 is &quot;</span><span class="p">,</span> <span class="n">compartment2</span><span class="o">.</span><span class="n">nodeId</span><span class="p">)</span>
+
+<span class="c1"># Verify the compartment group index for compGrp</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Compartment group index for compGrp is &quot;</span><span class="p">,</span> <span class="n">compGrp</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can refer to the third compartment created in the above NxNet code (i.e. compartment2) within the SNIP by specifying the compartment index, i.e. index 2 or by specifying its index within the compartment group, i.e. index 1.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Access the bias for the third compartment created in NxNet</span>
+<span class="kt">int</span> <span class="n">bias</span> <span class="o">=</span> <span class="n">nxCompartment</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">Bias</span><span class="p">;</span>
+
+<span class="c1">// Access the bias for the same compartment through the compartment group</span>
+<span class="n">bias</span> <span class="o">=</span> <span class="n">nxCompartmentGroup</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">].</span><span class="n">Bias</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>You can <strong>access</strong> and <strong>set</strong> the following fields in the compartments (either directly or through the compartment group):</p>
+<ul class="simple">
+<li><p><strong>Bias</strong>          (equivalent to NxNet <em>biasMant</em>)</p></li>
+<li><p><strong>BiasExp</strong>       (equivalent to NxNet <em>biasExp</em>)</p></li>
+<li><p><strong>Decay_u</strong>       (equivalent to NxNet <em>compartmentCurrentDecay</em>)</p></li>
+<li><p><strong>Decay_v</strong>       (equivalent to NxNet <em>compartmentVoltageDecay</em>)</p></li>
+<li><p><strong>RefractDelay</strong>  (equivalent to NxNet <em>refractoryDelay</em>)</p></li>
+<li><p><strong>Vth</strong>           (equivalent to NxNet <em>vThMant</em>)</p></li>
+</ul>
+<p>You can also <strong>set</strong> these same values for all of the compartments in a compartment group. Accessing the values from a compartment group is not valid syntax and is not allowed.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Set the compartment voltage decay for all of the compartments in nxCompartmentGroup[0]</span>
+<span class="n">nxCompartmentGroup</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">Decay_v</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+
+<span class="c1">// Invalid syntax! Cannot access the compartment group fields</span>
+<span class="c1">// int decayV = nxCompartmentGroup[0].Decay_v;</span>
+</pre></div>
+</div>
+<p>Besides using literal values to index the compartments and compartment groups it is also valid to use variable indices. <strong>Indices with side effects are NOT allowed, e.g. nxCompartmentGroup[i++]</strong>.
+nxCompartment[m+n] or nxCompartment[m+1] is OK.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Use a variable index to refer to a compartment</span>
+<span class="n">nxCompartment</span><span class="p">[</span><span class="n">n</span><span class="p">].</span><span class="n">Bias</span> <span class="o">=</span> <span class="n">m</span><span class="p">;</span>
+
+<span class="c1">// Use two variable indices to refer to a compartment within a compartment group</span>
+<span class="n">nxCompartmentGroup</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">k</span><span class="p">].</span><span class="n">BiasExp</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+
+<span class="c1">// Use a variable to index the compartment within a compartment group</span>
+<span class="n">nxCompartmentGroup</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">k</span><span class="p">].</span><span class="n">Decay_u</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The following are NxNet C API reserved keywords and <strong>cannot</strong> be used as variable names within your SNIP.</p>
+<ul class="simple">
+<li><p><strong>nxNC</strong></p></li>
+<li><p><strong>nxCore</strong></p></li>
+<li><p><strong>nxPtr</strong></p></li>
+<li><p><strong>nxVthPrfStaticCfg</strong></p></li>
+<li><p><strong>nxCxCfg</strong></p></li>
+<li><p><strong>nxCxPrfCfg</strong></p></li>
+</ul>
+<p>When using conditional statements with a single expression to be executed, braces are mandatory.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// if conditional statement with braces</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">time_step</span> <span class="o">==</span> <span class="mi">100</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">nxCompartment</span><span class="p">[</span><span class="mi">15</span><span class="p">].</span><span class="n">Bias</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Within a single statement only one keyword, i.e. nxCompartment/nxCompartmentGroup, should appear.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="c1">// Invalid code! Multiple keywords in same statement</span>
+<span class="c1">// nxCompartment[0].Bias = nxCompartment[1].Bias;</span>
+
+<span class="c1">// The above code can be accomplished with the following</span>
+<span class="kt">int</span> <span class="n">bias</span> <span class="o">=</span> <span class="n">nxCompartment</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">Bias</span><span class="p">;</span>
+<span class="n">nxCompartment</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">Bias</span> <span class="o">=</span> <span class="n">bias</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>For any given core, compartments with the same voltage decay, current decay, and refractory delay values may share configuration registers. If multiple compartments are sharing a single configuration register, when a single compartment's decay_u/decay_v/refractory delay values are updated it will also update these values for all of the other compartments sharing this configuration register. If you want to be able to update these values for a certain compartment or compartments you can provide a unique tuple (composed of decay_u, decay_v and refractory values) in the compartment prototype.</p>
+<p>Similarly, it is possible that compartments with the same Vth will share the same configuration register. In order to distinguish compartments you can specify different Vth values in the compartment prototype.</p>
+<p>If the useDiscreteVth setting is enabled in the compartment prototype, then setting the compartment's Vth through the NxNet C API will not take effect.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Floating point operations are not supported on embedded snips due to lack of architecture support. Please consider quantization/discretization before processing values within embedded snips.</p>
+</div>
+</div>
+<div class="section" id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="graph.html"><span class="doc">N2Board Hierarchy</span></a></p>
+<p><a class="reference internal" href="host_snips.html"><span class="doc">Programming SNIPs on Host</span></a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="channels.html" class="btn btn-neutral float-right" title="Communicating vis Channels" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="core_tutorial_18_learning.html" class="btn btn-neutral float-left" title="17. NxCore: Learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

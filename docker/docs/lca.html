@@ -1,0 +1,1127 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>LCA &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Solving convolutional LASSO with LCA" href="jupyter/a_solving_convolutional_lasso_with_lca.html" />
+    <link rel="prev" title="Input Generator" href="input_generator.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Nx SDK Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="characterization.html">Characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dnn.html">DNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dvs.html">DVS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epl.html">EPL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knn.html">K Nearest Neighbour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_generator.html">Input Generator</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">LCA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="jupyter/a_solving_convolutional_lasso_with_lca.html">Solving convolutional LASSO with LCA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="path_planning.html">Path Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slayer.html">SLAYER Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slic.html">SLIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spike_streamer.html">Spike Streamer Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_injection.html">Trace Injection Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Nx SDK Modules</a> &raquo;</li>
+        
+      <li>LCA</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="lca">
+<h1>LCA<a class="headerlink" href="#lca" title="Permalink to this headline">¶</a></h1>
+<p>The LCA module can be used to solve the constraint LASSO optimization problem
+implemented by a spiking neural network as described in:
+<a class="reference external" href="https://arxiv.org/pdf/1705.05475.pdf">https://arxiv.org/pdf/1705.05475.pdf</a>
+which minimizes the following objective function:
+argmin_a <a href="#id1"><span class="problematic" id="id2">|</span></a>x - D'<a href="#id3"><span class="problematic" id="id4">*</span></a>a|**2 + lambda*|a|_1
+where 'x' is the input, 'D' is a dictionary matrix, 'a' is a sparse code and
+'lambda&quot; is a regularization factor. _1 denotes an L1 norm.</p>
+<p>The module provides the LcaNet class which represents the neural network to
+solve the sparse coding problem as well as a number of helper classes.</p>
+<p>Jupyter notebook illustrating a <a class="reference internal" href="jupyter/a_solving_convolutional_lasso_with_lca.html"><span class="doc">Spiking version of LCA to solve Sparse
+Coding</span></a> resides at <strong>nxsdk_modules/lca/tutorials</strong></p>
+<span class="target" id="module-nxsdk_modules.lca.src.lcanet"></span><dl class="py class">
+<dt id="nxsdk_modules.lca.src.lcanet.CompileParams">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.lca.src.lcanet.</span></code><code class="sig-name descname"><span class="pre">CompileParams</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.CompileParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameter class for configuring compilation parameters for LcaNet.</p>
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.CompileParams.axonCfgSpacing">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">axonCfgSpacing</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.CompileParams.axonCfgSpacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the spacing between successive axons in axonCfg depending
+on 'popMsgSize' and 'useMultiChip'.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.CompileParams.cxSpacingMode">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">cxSpacingMode</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.CompileParams.cxSpacingMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the mode how compartments are allocated of a
+neuronGroup are allocated within a neuroCore. Possible modes are:</p>
+<ul class="simple">
+<li><p><strong>interleaved</strong>: Compartments in a neuronGroup get interleaved by         maxNumNeuronGroupsPerCore.</p></li>
+<li><p><strong>sequential</strong>: Compartments in a neuronGroup get sequentially         allocated without interleaving.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.CompileParams.disableNeuronUpdates">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">disableNeuronUpdates</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.CompileParams.disableNeuronUpdates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disables neuron updates by setting NeuroCore numUpdates parameter
+to 0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.CompileParams.maxNumCoresPerChip">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">maxNumCoresPerChip</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.CompileParams.maxNumCoresPerChip" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum number of neurons allowed per neuroCore.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.CompileParams.maxNumNeuronGroupsPerCore">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">maxNumNeuronGroupsPerCore</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.CompileParams.maxNumNeuronGroupsPerCore" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum number of neuronGroups allowed per neuroCore.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.CompileParams.maxNumNeuronsPerCore">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">maxNumNeuronsPerCore</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.CompileParams.maxNumNeuronsPerCore" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum number of neurons allowed per neuroCore.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.CompileParams.maxNumSynMemWordsPerCore">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">maxNumSynMemWordsPerCore</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.CompileParams.maxNumSynMemWordsPerCore" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum number of synMemWords allowed per neuroCore.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.CompileParams.optimizeCorePlacement">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">optimizeCorePlacement</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.CompileParams.optimizeCorePlacement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Boolean to enable optimization of NeuroCore placement, based solely on
+network architecture (network activity is not currently taken into account)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.CompileParams.packingMode">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">packingMode</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.CompileParams.packingMode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns packingMode of compiler.
+'tight' attempts to pack neurons on as few cores as possible.
+'distributed' attempts to distribute neurons on fixed number of cores</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.CompileParams.partition">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">partition</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.CompileParams.partition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the partition on which to execute LCA net.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.CompileParams.popMsgSize">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">popMsgSize</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.CompileParams.popMsgSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>The spike message type used for population mode/connection
+sharing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.CompileParams.useMultiChip">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">useMultiChip</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.CompileParams.useMultiChip" title="Permalink to this definition">¶</a></dt>
+<dd><p>&quot;Specifies whether LCA net spans multiple chips and thus requires
+usage of remote header for spike messages. This will impact the
+number of output neurons per core.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.lca.src.lcanet.</span></code><code class="sig-name descname"><span class="pre">LcaNet</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modelParams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compileParams</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a neural network that solves a sparse coding problem using    a spiking version of a locally competitive algorithm (LCA) according to:    <a class="reference external" href="https://arxiv.org/pdf/1705.05475.pdf">https://arxiv.org/pdf/1705.05475.pdf</a>
+The sparse coding problem can be summarized as:
+Find a sparse code 'a' that minimizes <a href="#id9"><span class="problematic" id="id10">|x - D'*a|**2 + lambda*|a|</span></a>
+Where x is the input, D is a dictionary and lambda is a sparsity
+parameter that controls the impact of the regularization term <a href="#id11"><span class="problematic" id="id12">|a|</span></a>.</p>
+<p>The LcaNet module provides an interface to set up a single layer network    of a given size, configure the input and a dictionary, execute the    network, probe state and visualize the network structure and output.</p>
+<p>Input to the network is provided in form of neuronal bias currents that
+are computed from the user-provided dictionary matrix and input.
+Furthermore, neurons are mutually connected with inhibitory weights based
+on th similarity of the dictionary elements that these neurons correspond
+to. As a result, neurons initially start to spike in proportion to their
+driving bias current but at the same time, neurons representing similar
+features (i.e. having similar receptive fields) inhibit each other and
+compete for representing their current input.</p>
+<p>Neurons in the network are organized in groups. Each neuronGroup,
+represents a certain sized image patch (a 2D location in the input space).
+The input space is of size (imgSizeY x imgSizeX) and each patch is of size
+(patchSizeY x patchSizeX) which must be smaller than the input space.
+These patches stride across the input space and are spaced by
+strideSizeX/Y.
+Neurons within a group are driven by a bias current b that is
+proportional to dictionary D and the input x_p within the patch:
+b = D * x_p.
+The user-provided dictionary is of size
+(numNeuronsPerGroup x patchSizeX*patchSizeY) and thus x_p is of size
+(patchSizeX*patchSizeY x 1).
+To compute the inhibitory weights between neuronGroups, neuronGroups
+corresponding to fully and partially overlapping patches have to be
+distinguished.
+For fully overlapping patches, the recurrent self-inhibitory weight
+matrix of neuronGroup[i] is essentially:
+W_ii = -D_i * D_i'
+where D_i is the user-provided dictionary.
+For partially overlapping patches, the weight matrix between
+neuronGroups[j] and neuronGroup[i] is:
+W_ij = -D_i * D_j'
+Here, D_i and D_j are extended matrices created from the original dictionary
+D of size (numNeuronsPerGroup x overlapSpaceX*overlapSpaceY).
+The overlapSpace represents the smallest possible bounding box enclosing the
+patches of neuronGroups i and j with the row vectors of D being inserted in
+the locations of D_i and D_j corresponding to the location of the individual
+patches within the overlap space.
+Thereby the dot-product (i.e. similarity) between D_i and D_j takes the
+partial spatial overlap between the involved patches into account.</p>
+<p>In order to setup and configure a network, use the LcaNet() constructor and    provide an instance of ModelParams and CompileParams.    ModelParams contains functionally relevant model parameters such as    network size, patchSize, stride, sparsity parameter, weight precision, etc.    CompileParams contains parameters relevant for compilation. Using    defaults is usually sufficient.    After constructing the LcaNet module, the network can be generated via
+LcaNet.generateNetwork(). This will generate the network according to
+user settings and allocate the required resources.</p>
+<p>Once the network is generated, new dictionaries and inputs can be passed
+to the LcaNet module at any time via setDictionary() and setInput()
+(ideally in that order if a new dictionary is provided).</p>
+<p>In order to debug network activity of read out the solution of the sparse
+sparse coding problem, probes can be configured using
+LcaNet.createProbes() and network execution can be launched with
+LcaNet.run(). LcaNet.solve() can also be used as a short-hand alias that
+probe the required states, run the network and return the result.</p>
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.createProbes">
+<code class="sig-name descname"><span class="pre">createProbes</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stateName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neuronGroups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.createProbes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates probes for all neurons within list of neuronGroups
+for specified state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateName</strong> (<em>str</em>) -- The name of the state to probe. Supported         states are 'compartmentCurrent', 'compartmentVoltage' and 'activity.</p></li>
+<li><p><strong>neuronGroups</strong> (<em>list</em>) -- A list of neuronGroup objects.         :return OrderedDict: Mapping from neuronGroupId to list of probes for         all neurons within neuronGroup.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.createProbesOnCxIds">
+<code class="sig-name descname"><span class="pre">createProbesOnCxIds</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stateName</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neuronIds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.createProbesOnCxIds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates probes for all compartments provided in cxIds
+for specified state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateName</strong> (<em>str</em>) -- The name of the state to probe. Supported         states are 'compartmentCurrent', 'compartmentVoltage' and 'activity.</p></li>
+<li><p><strong>cxIds</strong> (<em>list</em>) -- A list of compartment IDs .         :return list(): list of probes for all specified compartments.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.dictionary">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dictionary</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.dictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns current dictionary as a numpy.array.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.evaluateErrorMetrics">
+<code class="sig-name descname"><span class="pre">evaluateErrorMetrics</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numSteps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reconstruction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rates</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.evaluateErrorMetrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates reconstruction error, objective function of the
+L1-regularisation problem, and sparsity of LcaNet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>numSteps</strong> (<em>int</em>) -- Number of time-steps for which the network was run.</p></li>
+<li><p><strong>reconstruction</strong> (<em>numpy.ndarrray</em>) -- 3D array, containing 2D output         at each time-step.</p></li>
+<li><p><strong>rates</strong> (<em>numpy.ndarray</em>) -- 2D array, containing spiking         cumulative rates of all neurons at each time-step .</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns numpy.ndarray error</dt>
+<dd class="field-even"><p>1D array, reconstruction error as at         every time-step.</p>
+</dd>
+<dt class="field-odd">Returns numpy.ndarray objective</dt>
+<dd class="field-odd"><p>1D array, objective value at every         time-step.</p>
+</dd>
+<dt class="field-even">Returns numpy.array sparsity</dt>
+<dd class="field-even"><p>1D array, sparsity of the network at         every time-step.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.extractProbeData">
+<code class="sig-name descname"><span class="pre">extractProbeData</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">probes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fromEpoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toEpoch</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.extractProbeData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts timeSeries data of all probes within time window defined
+by fromEpoch/toEpoch. Epochs refer to execution periods of duration
+numStepsPerEpoch after which activity traces are read out and reset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>probes</strong> (<em>dict</em>) -- Dictionary mapping neuron group ids to list of</p>
+</dd>
+</dl>
+<p>probes.
+:param int fromEpoch: Specifies epoch at which extraction should be
+begin. Must be &gt;=1.
+:param int toEpoch: Specifies epoch until which to extract data.
+:return time: (numProbeSteps,) vector of time steps for each probe data
+point.
+:rtype: numpy.ndarray
+:return probeData: (numProbeSteps, numNeurons) numpy.ndarray or the
+probed data for all neuron groups.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.extractSparseCode">
+<code class="sig-name descname"><span class="pre">extractSparseCode</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">activityProbes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fromEpoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toEpoch</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.extractSparseCode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the sparse rate code from activity probes within the time
+window specified by fromEpoch/toEpoch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.findConnectivityGroup">
+<code class="sig-name descname"><span class="pre">findConnectivityGroup</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fromNg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toNg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.findConnectivityGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds connectivityGroup that connects neuronGroup fromNg to
+neuronGroup toNg.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fromNg</strong> (<a class="reference internal" href="groups.html#nxsdk.net.groups.NeuronGroup" title="nxsdk.net.groups.NeuronGroup"><em>NeuronGroup</em></a>) -- Source neuronGroup.</p></li>
+<li><p><strong>toNg</strong> (<a class="reference internal" href="groups.html#nxsdk.net.groups.NeuronGroup" title="nxsdk.net.groups.NeuronGroup"><em>NeuronGroup</em></a>) -- Destination neuronGroup.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ConnectionGroup connecting the two neuronGroups or None if         neuronGroups are not connected.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ConnectivityGroup</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.genFullWgtMat">
+<code class="sig-name descname"><span class="pre">genFullWgtMat</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.genFullWgtMat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates full weight matrix of individual connectivityGroup
+weight matrices.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.generateNetwork">
+<code class="sig-name descname"><span class="pre">generateNetwork</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.generateNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the LCA network and allocates resources.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.getWeights">
+<code class="sig-name descname"><span class="pre">getWeights</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.getWeights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return weight matrices of all connectivityGroups as as (n x n x m)         tensor where &lt;n&gt; is the numNeuronsPerGroup and &lt;m&gt; is the number of
+connectivityGroups.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.getWgtMat">
+<code class="sig-name descname"><span class="pre">getWgtMat</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fromNgId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toNgId</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.getWgtMat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the weight matrix connecting the two neuronGroups with id
+fromNgId to toNgId.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fromNgId</strong> (<em>int</em>) -- Source neuronGroupId.</p></li>
+<li><p><strong>toNgId</strong> (<em>int</em>) -- Destination neuronGroupId</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Weight matrix.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.input">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">input</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns current image as numpy array.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.logBoardStatus">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">logBoardStatus</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.logBoardStatus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.numConnectivityGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numConnectivityGroups</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.numConnectivityGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of connectivityGroups.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.numNeuroCores">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numNeuroCores</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.numNeuroCores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns number of neuroCores.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.numNeuronGroups">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numNeuronGroups</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.numNeuronGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of populations, i.e., neuron groups</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.numNeurons">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numNeurons</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.numNeurons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns total number of neurons in LcaNet.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.numPatches">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numPatches</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.numPatches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns number of patches.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.pickleDumpLcaNet">
+<code class="sig-name descname"><span class="pre">pickleDumpLcaNet</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.pickleDumpLcaNet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.reconstructInput">
+<code class="sig-name descname"><span class="pre">reconstructInput</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sparseCode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.reconstructInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reconstructs input from cumulative rates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sparseCode</strong> (<em>numpy.ndarray</em>) -- Cumulative (numSamples x numNeurons)         rate matrix.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(numSamples x imageSizeY x imageSizeX) temporal evolution of         reconstruction.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.resetDynamicStates">
+<code class="sig-name descname"><span class="pre">resetDynamicStates</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stateNames</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.resetDynamicStates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets dynamic neuron states specified by stateNames.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stateNames</strong> (<em>list&lt;str&gt;</em>) -- List of strings specifying state names</p>
+</dd>
+</dl>
+<p>to reset. Allowed values are 'compartmentCurrent',
+'compartmentVoltage' and 'activity'.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.resourceRequirements">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">resourceRequirements</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.resourceRequirements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the resourceRequirements object once network has been
+generated.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.run">
+<code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs LcaNet for numEpochs*numStepsPerEpoch time steps.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.setDictionary">
+<code class="sig-name descname"><span class="pre">setDictionary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.setDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a new dictionary, recomputes weight matrices for each
+connectivityGroup and updates neuroCores.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dictionary</strong> (<em>numpy.ndarray</em>) -- Dictionary matrix of size (dictSize         x patchSizeX*patchSizeY).</p></li>
+<li><p><strong>weights</strong> (<em>np.ndarray</em>) -- (n x m x numConnGrps) array with weights         for all connectivityGroups. If None, weights will be computed from         dictionary matrix for all connectivityGroups. Otherwise precomputed         weights will be used.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.setInput">
+<code class="sig-name descname"><span class="pre">setInput</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.setInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets new input image, recomputes bias currents and updates N2Cores.         For each neuronGroup, the bias current is computed as follows:</p>
+<p>bias = (dict*patchImg - regularizationFactor) * biasScaling</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>numpy.ndarray</em>) -- Input image of size (imgSizeY x imgSizeX).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.setWeights">
+<code class="sig-name descname"><span class="pre">setWeights</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.setWeights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets weights of all connectivityGroups from (n x n x m) weights         tensor where &lt;n&gt; is the numNeuronsPerGroup and &lt;m&gt; is the number of
+connectivityGroups.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.showDictionary">
+<code class="sig-name descname"><span class="pre">showDictionary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">figId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.showDictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualizes dictionary elements on a 2D grid as 2D images.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.showFullWgtMat">
+<code class="sig-name descname"><span class="pre">showFullWgtMat</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.showFullWgtMat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the full weight matrix of all connectivityGroups.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.showGroupConnectivity">
+<code class="sig-name descname"><span class="pre">showGroupConnectivity</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.showGroupConnectivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows a (numNeuronGroups x numNeuronGroups) matrix where each
+element specifies the id of the connectivityGroup connecting the
+neuronGroups.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.showInput">
+<code class="sig-name descname"><span class="pre">showInput</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">figId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.showInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualizes the input image.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.showNGtoNGWgtMat">
+<code class="sig-name descname"><span class="pre">showNGtoNGWgtMat</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fromNgId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">toNgId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saveToFile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.showNGtoNGWgtMat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the weight matrix from fromNgId to toNgId</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.showOverlapMasks">
+<code class="sig-name descname"><span class="pre">showOverlapMasks</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.showOverlapMasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows the overlapMasks of all connectivityGroups. An overlapMask
+is a binary mask of the OR of two neuronGroup's receptive fields
+with respect to the input space. If the receptive fields do not
+overlap, there exists not connectivityGroup and no overlapMask.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.showPatchCoverage">
+<code class="sig-name descname"><span class="pre">showPatchCoverage</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.showPatchCoverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the patch coverage.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.solve">
+<code class="sig-name descname"><span class="pre">solve</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves the sparse coding problem: argmin_z <a href="#id13"><span class="problematic" id="id14">|x - D'*z|**2 + lambda*|z|</span></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Solution object of sparse coding problem.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#nxsdk_modules.lca.src.lcanet.Solution" title="nxsdk_modules.lca.src.lcanet.Solution">Solution</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.LcaNet.verbosity">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">verbosity</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.LcaNet.verbosity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.lca.src.lcanet.</span></code><code class="sig-name descname"><span class="pre">ModelParams</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains all public model parameters for LcaNet and computes derived
+model parameters.</p>
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.biasPrecision">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">biasPrecision</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.biasPrecision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hardware-specific bit-precision for the bias current;
+default value is set to 13-bits, including sign</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.biasScaling">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">biasScaling</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.biasScaling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scaling applied to the bias current</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.computeNumStrides">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">computeNumStrides</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imgSize</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patchSize</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strideSize</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.computeNumStrides" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the number of strides for given imgSize, patchSize and
+strideSize.
+Raises AssertionError if number of strides is not an integer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>imgSize</strong> (<em>int</em>) -- Image size in a dimension.</p></li>
+<li><p><strong>patchSize</strong> (<em>int</em>) -- Size of a patch in a dimension.</p></li>
+<li><p><strong>strideSize</strong> (<em>int</em>) -- Size of stride in a dimension.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return numStrides</dt>
+<dd class="field-even"><p>Integer number of strides in a dimension.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.decayU">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">decayU</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.decayU" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Inverse</em> of time-constant for current decay in a neuron/compartment;
+smaller value =&gt; faster decay</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.decayV">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">decayV</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.decayV" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Inverse</em> of time-constant for membrane voltage decay in a neuron/compartment;
+smaller value =&gt; faster decay</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.dictSize">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">dictSize</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.dictSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of atoms/elements in the overcomplete dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.disableOffboardSpikes">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">disableOffboardSpikes</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.disableOffboardSpikes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables sending of spikes between neurons. If False, axons are
+disconnected.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.enableSomaTrace">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableSomaTrace</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.enableSomaTrace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables soma traces for activity monitoring</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.enableSpikes">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">enableSpikes</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.enableSpikes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables sending of spikes between neurons. If False, axons are
+disconnected.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.imgSizeX">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">imgSizeX</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.imgSizeX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Size of input image in X direction, in pixels</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.imgSizeY">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">imgSizeY</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.imgSizeY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Size of input image in Y direction, in pixels</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.maxConnectionDistance">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">maxConnectionDistance</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.maxConnectionDistance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.numEpochs">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numEpochs</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.numEpochs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of times LcaNet will be run, each run
+comprised of numStepsPerEpoch time-steps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.numNeuronsPerGroup">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numNeuronsPerGroup</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.numNeuronsPerGroup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.numStepsPerEpoch">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numStepsPerEpoch</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.numStepsPerEpoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of time steps of a single epoch. The total runtime is         numStepsPerEpoch*numEpochs. Determines the interval at which         somaTraces are reset by host to avoid saturation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.patchSizeX">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">patchSizeX</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.patchSizeX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Size of a patch (or equivalently, a single
+dictionary element) in X direction, in pixels</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.patchSizeY">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">patchSizeY</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.patchSizeY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Size of a patch (or equivalently, a single
+dictionary element) in Y direction, in pixels</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.probeInterval">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">probeInterval</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.probeInterval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interval at which somaTraces are read out by host.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.probeOffset">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">probeOffset</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.probeOffset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of time-steps skipped (starting from 0) before any
+probing starts</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.regularizationFactor">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">regularizationFactor</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.regularizationFactor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Regularisation parameter/Lagrange multiplier lambda, which quantifies
+the contribution of L1-norm in the objective function; subtracted from
+the bias current after scaling in the LCA dynamical system implementation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.setImgParams">
+<code class="sig-name descname"><span class="pre">setImgParams</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imgSize</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patchSize</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strideSize</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.setImgParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as setImgParamsXY but uses same parameters for X/Y dimension.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>imgSize</strong> (<em>int</em>) -- Positive integer specifying size of image in         X and Y dimension.</p></li>
+<li><p><strong>patchSize</strong> (<em>int</em>) -- Positive integer specifying size of an         individual patch in X and Y dimension.</p></li>
+<li><p><strong>strideSize</strong> (<em>int</em>) -- Positive integer specifying size a stride         from one patch to next in input image space in X and Y dimension.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.setImgParamsXY">
+<code class="sig-name descname"><span class="pre">setImgParamsXY</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imgSizeX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patchSizeX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strideSizeX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imgSizeY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patchSizeY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strideSizeY</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.setImgParamsXY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets imgSizeX/Y, patchSizeX/Y and strideSizeX/Y for input image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>imgSizeX/Y</strong> (<em>int</em>) -- Positive integer specifying size of image in         X/Y dimension.</p></li>
+<li><p><strong>patchSizeX/Y</strong> (<em>int</em>) -- Positive integer specifying size of an         individual patch in X/Y dimension.</p></li>
+<li><p><strong>strideSizeX/Y</strong> (<em>int</em>) -- Positive integer specifying size a stride         from one patch to next in input image space in X/Y dimension.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.somaDecay">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">somaDecay</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.somaDecay" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Inverse</em> of time-constant associated with decay of somatic
+current 'a'; internally computed as a function of somaTau</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.somaExpTimeConst">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">somaExpTimeConst</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.somaExpTimeConst" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.somaRandomThreshold">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">somaRandomThreshold</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.somaRandomThreshold" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.somaSpikeLevelFrac">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">somaSpikeLevelFrac</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.somaSpikeLevelFrac" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fractional part of amount by which somatic current 'a' should
+increase, upon receiving a spike</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.somaSpikeLevelInt">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">somaSpikeLevelInt</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.somaSpikeLevelInt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Integer part of amount by which somatic current 'a' should
+increase, upon receiving a spike</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.somaTau">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">somaTau</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.somaTau" title="Permalink to this definition">¶</a></dt>
+<dd><p>Time constant associated with somatic processes; used to
+compute decay constant of somatic current 'a', etc.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.strideSizeX">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">strideSizeX</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.strideSizeX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stride length in X direction, in pixels</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.strideSizeY">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">strideSizeY</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.strideSizeY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stride length in Y direction, in pixels</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.tEpochDend">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tEpochDend</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.tEpochDend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Legnth of dendritic epoch in number of algorithmic time-steps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.tauU">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tauU</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.tauU" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns compartmentCurrentTimeConstant computed from
+compartmentCurrentDecay
+tauU = dt/decayU*2**12</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.timePerStep">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">timePerStep</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.timePerStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Physical (i.e., wall-clock) time elapsed per algorithmic time-step;
+used in rate-computation for reconstruction</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.useMixedWeights">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">useMixedWeights</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.useMixedWeights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flag to toggle incorporating sign of weights in the weight value itself;
+when True, weights are signed integers. When False, weights are unsigned
+integers, and then there is a separate variable for their sign</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.useOverlapBasedWgtScaling">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">useOverlapBasedWgtScaling</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.useOverlapBasedWgtScaling" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.vth">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">vth</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.vth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Threshold membrane voltage above which a neuron fires</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.wgtExp">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">wgtExp</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.wgtExp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Synaptic weights are scaled by 2^wgtExp when they are
+used in the hardware; see also, wgtPrecision</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.ModelParams.wgtPrecision">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">wgtPrecision</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.ModelParams.wgtPrecision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Desired bit-precision for synaptic weights.
+Should satisfy wgtPrecision + abs(wgtExp) = 8</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk_modules.lca.src.lcanet.Solution">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.lca.src.lcanet.</span></code><code class="sig-name descname"><span class="pre">Solution</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lcaNet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numSpikes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sparseCode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reconstruction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">objective</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sparsity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.Solution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents the solution of a sparse coding problem:
+argmin_a <a href="#id5"><span class="problematic" id="id6">|</span></a>x - D'<a href="#id7"><span class="problematic" id="id8">*</span></a>a|**2 + lambda*|a|_1
+It is returned by LcaNet.solve() and contains the sparseCode,
+the reconstruction error, the objective and sparsity as a function of time.</p>
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.Solution.instRates">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">instRates</span></code><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.Solution.instRates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.Solution.makeColorbar">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">makeColorbar</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mappable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.Solution.makeColorbar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.Solution.plot">
+<code class="sig-name descname"><span class="pre">plot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">figId1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figId2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(10,</span> <span class="pre">10)</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.Solution.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots temporal evolution of reconstruction error, objective
+and sparsity of the LASSO problem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.Solution.plotConvergence">
+<code class="sig-name descname"><span class="pre">plotConvergence</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.Solution.plotConvergence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots error, objective and sparsity.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.Solution.plotReconstruction">
+<code class="sig-name descname"><span class="pre">plotReconstruction</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.Solution.plotReconstruction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots original image and reconstruction image.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.lca.src.lcanet.Solution.print">
+<code class="sig-name descname"><span class="pre">print</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.Solution.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the reconstruction error, objective and sparsity at the
+last time step of the solution.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk_modules.lca.src.lcanet.VerbosityLevel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.lca.src.lcanet.</span></code><code class="sig-name descname"><span class="pre">VerbosityLevel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.VerbosityLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can be used to control verbosity level of status log statements in
+LcaNet (Is currently not used widely in LcaNet).</p>
+<dl class="py attribute">
+<dt id="nxsdk_modules.lca.src.lcanet.VerbosityLevel.HIGH">
+<code class="sig-name descname"><span class="pre">HIGH</span></code><em class="property"> <span class="pre">=</span> <span class="pre">2</span></em><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.VerbosityLevel.HIGH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.lca.src.lcanet.VerbosityLevel.LOW">
+<code class="sig-name descname"><span class="pre">LOW</span></code><em class="property"> <span class="pre">=</span> <span class="pre">0</span></em><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.VerbosityLevel.LOW" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk_modules.lca.src.lcanet.VerbosityLevel.MID">
+<code class="sig-name descname"><span class="pre">MID</span></code><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#nxsdk_modules.lca.src.lcanet.VerbosityLevel.MID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="jupyter/a_solving_convolutional_lasso_with_lca.html">Solving convolutional LASSO with LCA</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="jupyter/a_solving_convolutional_lasso_with_lca.html" class="btn btn-neutral float-right" title="Solving convolutional LASSO with LCA" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="input_generator.html" class="btn btn-neutral float-left" title="Input Generator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

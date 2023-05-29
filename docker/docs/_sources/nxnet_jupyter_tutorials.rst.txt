@@ -1,0 +1,31 @@
+NxNet Jupyter Tutorials
+=======================
+
+Following jupyter tutorials reside under **nxsdk/tutorials/ipython**
+
+.. toctree::
+   :maxdepth: 1
+   :numbered:
+
+   jupyter/a_compartment_setup
+   jupyter/b_connecting_compartments
+   jupyter/c_stimulating_compartments
+   jupyter/d_synaptic_plasticity
+   jupyter/e_neuronal_homeostasis
+   jupyter/f_rewards_learning
+   jupyter/g_snip_for_threshold_modulation
+   jupyter/h_reward_trace
+   jupyter/i_performance_profiling
+   jupyter/j_soft_reset_core
+   jupyter/j_soft_reset_net
+   jupyter/k_interactive_spike_sender_receiver
+   jupyter/l_snip_for_compartment_setup_with_NxNet_C
+   jupyter/m_independent_networks_in_same_run
+   jupyter/n_stochastic_networks
+   jupyter/o_snip_for_reading_lakemont_spike_count
+   jupyter/p_composable_networks
+   jupyter/q_connection_sharing
+   jupyter/r_stubs_and_netmodules
+   jupyter/s_multicx_neuron_self_reward
+   jupyter/t_vMinExp_and_vMaxExp
+   jupyter/u_join_op_in_multi_compartment_neuron

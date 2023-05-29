@@ -1,0 +1,49 @@
+Building Multi Compartment Neuron Model using Stack Operations
+=================================================================
+
+.. note::
+    This multi-compartment neuron interface will be deprecated after NxSDK release 0.8.  For the new neuron interface, see :doc:`neuron`
+
+NxSDK API provides stackIn, stackOut and compartmentJoinOperation to build a multi-compartment neuron model. The
+compartments need to be sequentially arranged in the address space so that the right compartments push and pop their
+information.
+
+Typically, you could build a two compartment neuron model using these stack operations where the first compartment
+might act as the main compartment which consumes (POP) from the stack and the auxiliary compartment produces (PUSH)
+into the stack. The compartment which consumes from the stack needs to define how the information is aggregated using
+the compartmentJoinOperation. From NxNet, the order in which the compartments are created will reflect the order of
+the compartments for the purposes of building multi-compartment neurons. The compartments of a multi-compartment
+neuron must exist on the same logical core.
+
+See below for various enum values of these operations.
+
+.. note::
+    To use stack operations, cxMetaState.phase or functional state of these compartments must be initialized as **IDLE**
+
+* The stack has a max depth of **2** so only binary trees can be built.
+* The peek operation is actually non-biological but can be useful because it allows to distribute from a sending \
+  compartment to multiple receiving compartments.
+
+Relevant Tutorials
+------------------
+
+* **NxNet** :doc:`Neuronal homeostasis </jupyter/e_neuronal_homeostasis>`
+* **NxCore** :doc:`Soft Reset </jupyter/j_soft_reset_core>`
+
+.. autoclass:: nxsdk.api.enums.api_enums.COMPARTMENT_INPUT_MODE
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+
+.. autoclass:: nxsdk.api.enums.api_enums.COMPARTMENT_OUTPUT_MODE
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource
+
+.. autoclass:: nxsdk.api.enums.api_enums.COMPARTMENT_JOIN_OPERATION
+   :members:
+   :undoc-members:
+   :inherited-members:
+   :member-order: bysource

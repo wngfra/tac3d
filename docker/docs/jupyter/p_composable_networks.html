@@ -1,0 +1,738 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>19. Composable Networks &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="20. Connection Sharing" href="q_connection_sharing.html" />
+    <link rel="prev" title="18. Read Lakemont Spike Count" href="o_snip_for_reading_lakemont_spike_count.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../nxnet_tutorials.html">NxNet Tutorials</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../nxnet_jupyter_tutorials.html">NxNet Jupyter Tutorials</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="a_compartment_setup.html">1. Compartment, CompartmentPrototype and Probes Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b_connecting_compartments.html">2. Connecting compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="c_stimulating_compartments.html">3. Stimulating compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="d_synaptic_plasticity.html">4. Synaptic plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="e_neuronal_homeostasis.html">5. Neuronal homeostasis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="f_rewards_learning.html">6. Learning with Rewards</a></li>
+<li class="toctree-l3"><a class="reference internal" href="g_snip_for_threshold_modulation.html">7. SNIPs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="h_reward_trace.html">8. Reward Trace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="i_performance_profiling.html">9. Performance profiling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="j_soft_reset_core.html">10. Hard vs. soft membrane voltage reset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="j_soft_reset_net.html">11. Soft reset membrane voltage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="k_interactive_spike_sender_receiver.html">12. Interactive Spike Sender and Spike Receivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="l_snip_for_compartment_setup_with_NxNet_C.html">13. Setup Compartments with NxNet C API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="m_independent_networks_in_same_run.html">14. Independent Networks in Same Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="n_stochastic_networks.html">15. Stochastic Networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="n_stochastic_networks.html#C.-Puttin-It-All-Together">16. C. Puttin It All Together</a></li>
+<li class="toctree-l3"><a class="reference internal" href="n_stochastic_networks.html#Modify-createWtaMotif1-to-Include-Detector-Neuron">17. Modify createWtaMotif1 to Include Detector Neuron</a></li>
+<li class="toctree-l3"><a class="reference internal" href="o_snip_for_reading_lakemont_spike_count.html">18. Read Lakemont Spike Count</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">19. Composable Networks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Create-three-networks">19.1. Create three networks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Build-connections-between-networks">19.2. Build connections between networks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Compose-the-networks">19.3. Compose the networks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Run-the-networks">19.4. Run the networks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Plot-the-results">19.5. Plot the results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="q_connection_sharing.html">20. Connection Sharing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="r_stubs_and_netmodules.html">21. Stubs and NetModules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="r_stubs_and_netmodules.html#NetModules">22. NetModules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s_multicx_neuron_self_reward.html">23. Implementation of a multi-compartment neuron with self-reward feedback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="t_vMinExp_and_vMaxExp.html">24. vMinExp and vMaxExp Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="u_join_op_in_multi_compartment_neuron.html">25. Neurons vs Compartments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="u_join_op_in_multi_compartment_neuron.html#Multi-compartment-neurons">26. Multi-compartment neurons</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../nxcore_tutorials.html">NxCore Tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../tutorials.html">Tutorials</a> &raquo;</li>
+        
+          <li><a href="../nxnet_jupyter_tutorials.html">NxNet Jupyter Tutorials</a> &raquo;</li>
+        
+      <li><span class="section-number">19. </span>Composable Networks</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># INTEL CORPORATION CONFIDENTIAL AND PROPRIETARY</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright © 2019-2021 Intel Corporation.</span>
+<span class="c1">#</span>
+<span class="c1"># This software and the related documents are Intel copyrighted</span>
+<span class="c1"># materials, and your use of them is governed by the express</span>
+<span class="c1"># license under which they were provided to you (License). Unless</span>
+<span class="c1"># the License provides otherwise, you may not use, modify, copy,</span>
+<span class="c1"># publish, distribute, disclose or transmit  this software or the</span>
+<span class="c1"># related documents without Intel&#39;s prior written permission.</span>
+<span class="c1">#</span>
+<span class="c1"># This software and the related documents are provided as is, with</span>
+<span class="c1"># no express or implied warranties, other than those that are</span>
+<span class="c1"># expressly stated in the License.</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">nxsdk.api.n2a</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Composable-Networks">
+<h1><span class="section-number">19. </span>Composable Networks<a class="headerlink" href="#Composable-Networks" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial demonstrates how to compose multiple networks and link them together to build a tree structure. A network tree is constructed by adding a child network to a parent network. After all networks are linked together, the entire network tree can be run by just running the root network.</p>
+<p>The diagram below shows a network tree structure composed of three subnetworks that will be created in this tutorial. <img alt="jupyter_composable_networks.png" src="data:image/png;base64,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" /></p>
+<div class="section" id="Create-three-networks">
+<h2><span class="section-number">19.1. </span>Create three networks<a class="headerlink" href="#Create-three-networks" title="Permalink to this headline">¶</a></h2>
+<p>Three networks net1, net2 and net3 are created, where compartments in net1 are self excited via bias, and net2 and net3 do not have bias. Current, voltage and spike probes for compartments in three networks are defined here.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># create net1 that is driven by bias</span>
+<span class="n">net1</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+<span class="n">prototype1</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">biasMant</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                     <span class="n">biasExp</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+                                     <span class="n">vThMant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                     <span class="n">functionalState</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                     <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+                                     <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">410</span><span class="p">)</span>
+<span class="n">cg1</span> <span class="o">=</span> <span class="n">net1</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">prototype1</span><span class="p">)</span>
+<span class="c1"># set up net1 probes</span>
+<span class="p">(</span><span class="n">cg1UProbes</span><span class="p">,</span> <span class="n">cg1VProbes</span><span class="p">,</span> <span class="n">cg1SProbes</span><span class="p">)</span> <span class="o">=</span> <span class="n">cg1</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                  <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                  <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+
+<span class="c1"># create net2 without bias</span>
+<span class="n">net2</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+<span class="n">prototype2</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">vThMant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                     <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+                                     <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">410</span><span class="p">)</span>
+<span class="n">cg2</span> <span class="o">=</span> <span class="n">net2</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">prototype2</span><span class="p">)</span>
+<span class="c1"># set up net2 probes</span>
+<span class="p">(</span><span class="n">cg2UProbes</span><span class="p">,</span> <span class="n">cg2VProbes</span><span class="p">,</span> <span class="n">cg2SProbes</span><span class="p">)</span> <span class="o">=</span> <span class="n">cg2</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                  <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                  <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+
+<span class="c1"># create net3 without bias</span>
+<span class="n">net3</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">NxNet</span><span class="p">()</span>
+<span class="n">prototype3</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">vThMant</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                                     <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+                                     <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">410</span><span class="p">)</span>
+<span class="n">cg3</span> <span class="o">=</span> <span class="n">net3</span><span class="o">.</span><span class="n">createCompartmentGroup</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">prototype</span><span class="o">=</span><span class="n">prototype3</span><span class="p">)</span>
+<span class="c1"># set up net3 probes</span>
+<span class="p">(</span><span class="n">cg3UProbes</span><span class="p">,</span> <span class="n">cg3VProbes</span><span class="p">,</span> <span class="n">cg3SProbes</span><span class="p">)</span> <span class="o">=</span> <span class="n">cg3</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_CURRENT</span><span class="p">,</span>
+                                                  <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">COMPARTMENT_VOLTAGE</span><span class="p">,</span>
+                                                  <span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SPIKE</span><span class="p">])</span>
+
+<span class="n">uProbes</span> <span class="o">=</span> <span class="p">[</span><span class="n">cg1UProbes</span><span class="p">,</span> <span class="n">cg2UProbes</span><span class="p">,</span> <span class="n">cg3UProbes</span><span class="p">]</span>
+<span class="n">vProbes</span> <span class="o">=</span> <span class="p">[</span><span class="n">cg1VProbes</span><span class="p">,</span> <span class="n">cg2VProbes</span><span class="p">,</span> <span class="n">cg3VProbes</span><span class="p">]</span>
+<span class="n">sProbes</span> <span class="o">=</span> <span class="p">[</span><span class="n">cg1SProbes</span><span class="p">,</span> <span class="n">cg2SProbes</span><span class="p">,</span> <span class="n">cg3SProbes</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Build-connections-between-networks">
+<h2><span class="section-number">19.2. </span>Build connections between networks<a class="headerlink" href="#Build-connections-between-networks" title="Permalink to this headline">¶</a></h2>
+<p>In this tutorial, compartment group cg1 connects to compartment groups cg2 and cg3 via excitatory and inhibitory weights respectively.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">connProto1</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">()</span>
+<span class="n">connGrp1</span> <span class="o">=</span> <span class="n">cg1</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">cg2</span><span class="p">,</span> <span class="n">connProto1</span><span class="p">,</span>
+                       <span class="n">weight</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                                           <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]),</span>
+                       <span class="n">connectionMask</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                                                   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]))</span>
+
+<span class="n">connProto2</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">()</span>
+<span class="n">connGrp2</span> <span class="o">=</span> <span class="n">cg1</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">cg3</span><span class="p">,</span> <span class="n">connProto2</span><span class="p">,</span>
+                       <span class="n">weight</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                                           <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">]]),</span>
+                       <span class="n">connectionMask</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                                                   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]))</span>
+
+<span class="n">connGrp1WProbe</span> <span class="o">=</span> <span class="n">connGrp1</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SYNAPSE_WEIGHT</span><span class="p">])</span>
+<span class="n">connGrp2WProbe</span> <span class="o">=</span> <span class="n">connGrp2</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="n">nx</span><span class="o">.</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">SYNAPSE_WEIGHT</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Compose-the-networks">
+<h2><span class="section-number">19.3. </span>Compose the networks<a class="headerlink" href="#Compose-the-networks" title="Permalink to this headline">¶</a></h2>
+<p>As shown in the diagram above, the networks tree structure composed of one parent network net2, and two child networks net1 and net2. Child network is added by using addNet from parent network.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">net2</span><span class="o">.</span><span class="n">addNet</span><span class="p">(</span><span class="n">net1</span><span class="p">)</span>
+<span class="n">net2</span><span class="o">.</span><span class="n">addNet</span><span class="p">(</span><span class="n">net3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Run-the-networks">
+<h2><span class="section-number">19.4. </span>Run the networks<a class="headerlink" href="#Run-the-networks" title="Permalink to this headline">¶</a></h2>
+<p>By simply running the root network, the entire network tree will run.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">net2</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">net2</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+INFO:DRV:  SLURM is being run in background
+INFO:DRV:  Connecting to 134.134.68.81:18861
+INFO:DRV:  N2Driver: Running...
+INFO:DRV:      Compiling synapses... Done (0.00s)
+INFO:DRV:      Processing probes... Done (0.00s)
+INFO:DRV:      Writing modified registers... Done (0.01s)
+INFO:DRV:      Initializing... Done (0.01s)
+INFO:DRV:      Preparing input... Done (0.00s)
+INFO:DRV:      Executing... Done (0.01s)
+INFO:DRV:      Processing timeSeries... Done (0.01s)
+INFO:DRV:  N2Driver: Finished (0.04s)
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Plot-the-results">
+<h2><span class="section-number">19.5. </span>Plot the results<a class="headerlink" href="#Plot-the-results" title="Permalink to this headline">¶</a></h2>
+<p>Compartment probes information for current, voltage and spike in net1, net2 and net3 are shown here. Net2 gets excitatory connection from net1, one compartment in net2 with weight 4 fires twice, while the other compartment in net2 with weight 6 fires three times. Net3 gets inhibitory connection from net1, and does not fire.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">numProbes</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">numProbes</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">numProbes</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">uProbes</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;u&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Compartment0&#39;</span><span class="p">,</span> <span class="s1">&#39;Compartment1&#39;</span><span class="p">])</span>
+    <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">numProbes</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">vh</span> <span class="o">=</span> <span class="n">vProbes</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;v&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Compartment0&#39;</span><span class="p">,</span> <span class="s1">&#39;Compartment1&#39;</span><span class="p">])</span>
+    <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">ax3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">numProbes</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">sProbes</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="n">vh</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_color</span><span class="p">(),</span><span class="n">vh</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_color</span><span class="p">()])</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;s&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+    <span class="n">ax3</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;Compartment0&#39;</span><span class="p">,</span> <span class="s1">&#39;Compartment1&#39;</span><span class="p">])</span>
+    <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/jupyter_p_composable_networks_11_0.png" src="../_images/jupyter_p_composable_networks_11_0.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="q_connection_sharing.html" class="btn btn-neutral float-right" title="20. Connection Sharing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="o_snip_for_reading_lakemont_spike_count.html" class="btn btn-neutral float-left" title="18. Read Lakemont Spike Count" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

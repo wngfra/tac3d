@@ -1,0 +1,33 @@
+NxCore: Weight Precision
+========================
+
+Motivation
+----------
+The aim of this tutorial is to show you the effect of weight precision on the synaptic weights you choose. 
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_12.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_12_weight_precision.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`axon_map`
+* :doc:`axon_cfg`
+* :doc:`dendrite_shared_cfg`
+* :doc:`vth_profile_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+

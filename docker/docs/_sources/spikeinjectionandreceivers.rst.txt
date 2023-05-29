@@ -1,0 +1,63 @@
+Spike Injection and Spike Receivers
+===================================
+
+NxSDK provides **BasicSpikeGen** and **InteractiveSpikeGen** processes using which spikes can be injected. BasicSpikeGen \
+should be used to add spikes before running the network while InteractiveSpikeGen should be used to send spikes while \
+the network is running.
+
+Along with Probes, **SpikeReceivers** could also be used to receive the spikes from compartments (groups) using a \
+callback mechanism in an interactive way. Compartments and CompartmentGroups can connect to these spike receivers. \
+These receivers poll the spike activity every 10ms and notify the caller using callback. The caller can then take \
+further action to send more spikes or just monitor.
+
+Refer to jupyter notebook illustrating a demo :doc:`Interactive Spike Sender
+Receiver </jupyter/k_interactive_spike_sender_receiver>`
+
+
+.. code-block:: python
+
+   net = nx.NxNet()
+
+   cp = nx.CompartmentPrototype(vThMant=10, functionalState=nx.COMPARTMENT_FUNCTIONAL_STATE.IDLE)
+   cx = net.createCompartment(prototype=cp)
+
+   probes = cx.probe([nx.ProbeParameter.SPIKE])
+
+   connproto = nx.ConnectionPrototype(weight=255)
+
+   sp = net.createSpikeGenProcess(numPorts=1)
+   sp.connect(cx, prototype=connproto)
+
+   # Add spikes to be inserted before invoking run
+   sp.addSpikes([0], [[1, 2, 3, 4, 5]])
+
+   si = net.createInteractiveSpikeGenProcess(numPorts=1)
+   si.connect(cx, prototype=connproto)
+
+   net.runAsync(2000)
+
+   # Now send spikes interactively
+   for i in range(50):
+       sleep(0.2)
+       si.sendSpikes([1], [1])
+
+   net.disconnect()
+
+   nx.plotProbes(probes)
+   plt.show()
+
+
+.. autoclass:: nxsdk.net.process.basicspikegen.BasicSpikeGen
+   :members:
+   :undoc-members:
+   :inherited-members:
+
+.. autoclass:: nxsdk.net.process.interactivespikegen.InteractiveSpikeGen
+   :members:
+   :undoc-members:
+   :inherited-members:
+
+.. autoclass:: nxsdk.net.process.spikereceiver.SpikeReceiver
+   :members:
+   :undoc-members:
+   :inherited-members:

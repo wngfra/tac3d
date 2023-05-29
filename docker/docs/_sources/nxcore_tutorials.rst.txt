@@ -1,0 +1,29 @@
+NxCore Tutorials
+================
+.. figure:: _static/tutorialmap.png
+   :alt: diagram 
+   
+.. toctree::
+   :maxdepth: 1
+   :numbered:
+
+   core_tutorial_01_single_compartment_with_bias
+   core_tutorial_02_single_compartment_with_bias_connecting_to_two_others
+   core_tutorial_03_multiple_cores_with_bias
+   core_tutorial_04_synaptic_delays
+   core_tutorial_05_synaptic_pre_traces
+   core_tutorial_06_multneurons_multspikegen
+   core_tutorial_07_population_connectivity
+   core_tutorial_08_refractory_delays
+   core_tutorial_10_membrane_potential_threshold
+   core_tutorial_11_box_synapse
+   core_tutorial_12_weight_precision
+   core_tutorial_13_axonal_delay
+   core_tutorial_14_noise_injection
+   core_tutorial_15_two_compartment_neuron
+   core_tutorial_16_axonal_delay_spikes_within_an_epoch
+   core_tutorial_17_spike_probes
+   core_tutorial_18_learning
+   core_tutorial_18b_delay_learning
+   core_tutorial_19_soma_traces
+   core_tutorial_20_soma_homeostatis

@@ -1,0 +1,26 @@
+NxCore: Single Compartment Tutorial
+===================================
+
+Motivation
+----------
+The motivation for this tutorial is to provide you an introduction to the configuration of a single compartment neuron, driven with bias only. Use this tutorial to try out a number of different v threshold values and bias exponent/mantissa values.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_01.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_01_compiled_single_compartment_with_bias.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`vth_profile_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`

@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Programming SNIPs on Host &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started" href="getting_started.html" />
+    <link rel="prev" title="Communicating vis Channels" href="channels.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="introduction.html">Introductory Material</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="introduction.html#creating-and-running-spiking-neural-networks-on-loihi">Creating and Running Spiking Neural Networks on Loihi</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="learning.html">Learning with STDP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="snips.html">Programming SNIPs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="channels.html">Communicating vis Channels</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Programming SNIPs on Host</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-create-a-host-snip">How to create a Host Snip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementing-a-sequential-host-snip">Implementing a Sequential Host Snip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling-a-sequential-host-snip">Scheduling a Sequential Host Snip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#writing-a-concurrent-host-snip">Writing a Concurrent Host Snip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bring-your-own-shared-library">Bring your own shared library</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-debug-logs-to-host-snips">Adding Debug Logs to Host Snips</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="introduction.html">Introductory Material</a> &raquo;</li>
+        
+      <li>Programming SNIPs on Host</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="programming-snips-on-host">
+<h1>Programming SNIPs on Host<a class="headerlink" href="#programming-snips-on-host" title="Permalink to this headline">¶</a></h1>
+<div class="figure align-default">
+<img alt="HostSnips" src="_images/host_snips_arch.png" />
+</div>
+<p>Similar to embedded snips, user could create and run SNIPs on Host by using the createSnip API. Following are some of
+the key distictions regarding Host snips:</p>
+<ul>
+<li><p>Host Snips (currently) can be categorized as Sequential and Concurrent.</p></li>
+<li><p>Supported Phases are: <strong>HOST_PRE_EXECUTION</strong>, <strong>HOST_POST_EXECUTION</strong>, <strong>HOST_CONCURRENT_EXECUTION</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HOST_PRE_EXECUTION</span></code> and <code class="docutils literal notranslate"><span class="pre">HOST_POST_EXECUTION</span></code> phases represent a sequential host snip. The order of snip execution is:</p>
+<p>EMBEDDED_INIT (Only Once) -&gt; <strong>HOST_PRE_EXECUTION</strong> -&gt; EMBEDDED_SPIKING -&gt; EMBEDDED_PRELEARN_MGMT -&gt; EMBEDDED_MGMT -&gt; <strong>HOST_POST_EXECUTION</strong></p>
+</li>
+<li><p>Each Host snip class must be registered by using the REGISTER_SNIP macro in the implementation code.</p></li>
+<li><p>User can either provide a single or multiple cpp files to specify the implementation for host snips.</p></li>
+<li><p>Either raw cpp files can be provided or shared library is given. Using both at the same time is not supported.</p></li>
+<li><p>Host Snips can take advantage of the entire C++ ecosystem and other native libraries.</p></li>
+<li><p>User can bring their own shared library with third party linkages.</p></li>
+<li><p>Accessing memory/register addresses is not supported currently within Host snips. Use embedded snips for any such manipulation.</p></li>
+<li><p>Channel communication, in either direction, is only supported between (SuperHost, Embedded) or (Host, Embedded).</p></li>
+</ul>
+<p>Embedded snips should be preferred for latency sensitive code which can do computation closest to the neurocores and read/write the
+registers. However, if memory/data segment size and limited instructions support are limiting factors, users can use
+Host snips for less performance critical code. It also enables direct interfacing with host for input/feedback loop bypassing the
+superhost.</p>
+<p>Choice between Host Snips:</p>
+<ol class="arabic simple">
+<li><p>If you need to perform some pre-compute, such as sampling or aggregation etc. on input data, pre-execution host snip would be the right place to perform the same.</p></li>
+<li><p>If you need to perform any update upon completion of on-chip execution and communicate it to external sensory devices, post-execution snip would be the right place to write your logic.</p></li>
+<li><p>If you are concurrently executing a task, such as listening on a network port for events or monitoring a device for changes, you might run in parallel to the entire execution and interact with the embedded snip using Concurrent host snips</p></li>
+</ol>
+<div class="section" id="how-to-create-a-host-snip">
+<h2>How to create a Host Snip<a class="headerlink" href="#how-to-create-a-host-snip" title="Permalink to this headline">¶</a></h2>
+<p>Use <strong>board.createSnip()</strong> API to create a Host Snip by specifying the phase and implementation. Make sure to connect
+the host snip to an embedded snip using channels.</p>
+<p>In the example below, we show a scenario where using pre and post sequential host snips might be useful in building
+a closed loop system connecting to the external sensors or networking. The inputProcess, executing prior to on-chip,
+sends the input data to the embedded snip using a channel. The outputProcess, executing after the on-chip run is
+complete, gets the data from lakemont via the feedback channel and can route it out.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">######## Create Host Snips #########</span>
+
+<span class="n">cppFile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;/host_snip.cc&quot;</span>
+<span class="c1"># Create a Host snip in pre execution phase with implementation within host_snip.cc</span>
+<span class="n">inputProcess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">createSnip</span><span class="p">(</span><span class="n">phase</span><span class="o">=</span><span class="n">Phase</span><span class="o">.</span><span class="n">HOST_PRE_EXECUTION</span><span class="p">,</span> <span class="n">cppFile</span><span class="o">=</span><span class="n">cppFile</span><span class="p">)</span>
+<span class="c1"># Create a Host snip in post execution phase with implementation within host_snip.cc</span>
+<span class="n">outputProcess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">createSnip</span><span class="p">(</span><span class="n">phase</span><span class="o">=</span><span class="n">Phase</span><span class="o">.</span><span class="n">HOST_POST_EXECUTION</span><span class="p">,</span> <span class="n">cppFile</span><span class="o">=</span><span class="n">cppFile</span><span class="p">)</span>
+
+<span class="c1">######## Connect to Embedded Snips using Channels #########</span>
+
+<span class="c1"># Assume there is an embeddedProcess executing in one of the phases (other than INIT)</span>
+
+<span class="c1"># Create a channel named inputChannel for sending data from host snip (pre execution) to embedded snip (mgmt phase)</span>
+<span class="n">inputChannel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">createChannel</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;input&#39;</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="c1"># Connecting inputChannel from inputProcess (Host) to embeddedProcess (Lakemont) making it a send channel</span>
+<span class="n">inputChannel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">inputProcess</span><span class="p">,</span> <span class="n">embeddedProcess</span><span class="p">)</span>
+
+<span class="c1"># Create a channel named feedback for getting some result values back</span>
+<span class="n">feedbackChannel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">createChannel</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;feedback&#39;</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="c1"># Connecting feedbackChannel from embeddedProcess (Lakemont) to outputProcess (Host) making it receive channel</span>
+<span class="n">feedbackChannel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">embeddedProcess</span><span class="p">,</span> <span class="n">outputProcess</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="implementing-a-sequential-host-snip">
+<h2>Implementing a Sequential Host Snip<a class="headerlink" href="#implementing-a-sequential-host-snip" title="Permalink to this headline">¶</a></h2>
+<p>All necessary classes and API to write host snips are provided in <strong>nxsdkhost.h</strong> which is bundled within the nxsdk pip
+installation. The exact location for the same (in case you are building shared libraries) is <strong>nxsdk/include</strong>.</p>
+<p>To implement a Sequential Host Snip, you need to publicly inherit one of the <strong>PreExecutionSequentialHostSnip</strong> or
+<strong>PostExecutionSequentialHostSnip</strong> class and provide overrides for <strong>run()</strong> and <strong>schedule()</strong>. Based on the snip
+schedule, its run method is invoked.</p>
+<p>An example implementation for host_snip.cc is shown below.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;nxsdkhost.h&quot;</span><span class="cp"></span>
+
+<span class="k">class</span> <span class="nc">InputProcess</span> <span class="o">:</span> <span class="k">public</span> <span class="n">PreExecutionSequentialHostSnip</span> <span class="p">{</span>
+  <span class="k">private</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">channel</span> <span class="o">=</span> <span class="s">&quot;input&quot;</span><span class="p">;</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="c1">// Writes 4 integers to the input channel</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">run</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">timestep</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="kt">uint32_t</span> <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">timestep</span><span class="p">,</span> <span class="n">timestep</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">timestep</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="n">timestep</span><span class="o">+</span><span class="mi">3</span><span class="p">};</span>
+        <span class="n">writeChannel</span><span class="p">(</span><span class="n">channel</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="n">data</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Schedules execution of this snip on every timestep by choosing to run on all of them</span>
+    <span class="k">virtual</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">schedule</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;&amp;</span> <span class="n">timesteps</span><span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">timesteps</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">FeedbackProcess</span> <span class="o">:</span> <span class="k">public</span> <span class="n">PostExecutionSequentialHostSnip</span> <span class="p">{</span>
+  <span class="k">private</span><span class="o">:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">channel</span> <span class="o">=</span> <span class="s">&quot;feedback&quot;</span><span class="p">;</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="c1">// Reads 4 integers from the feedback channel</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">run</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">timestep</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="kt">uint32_t</span> <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+        <span class="n">readChannel</span><span class="p">(</span><span class="n">channel</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="n">data</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Schedules execution of this snip on every timestep by choosing to run on all of them</span>
+    <span class="k">virtual</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">schedule</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;&amp;</span> <span class="n">timesteps</span><span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">timesteps</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+
+<span class="n">REGISTER_SNIP</span><span class="p">(</span><span class="n">InputProcess</span><span class="p">,</span> <span class="n">PreExecutionSequentialHostSnip</span><span class="p">);</span>
+<span class="n">REGISTER_SNIP</span><span class="p">(</span><span class="n">FeedbackProcess</span><span class="p">,</span> <span class="n">PostExecutionSequentialHostSnip</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="scheduling-a-sequential-host-snip">
+<h2>Scheduling a Sequential Host Snip<a class="headerlink" href="#scheduling-a-sequential-host-snip" title="Permalink to this headline">¶</a></h2>
+<p>User should override the <strong>schedule</strong> method while implementing the sequential host snips to provide scheduling for
+these snips. The <strong>schedule</strong> method takes a sequence of timesteps which will be executed on chip and should return back
+a sequence of timesteps it chooses to be scheduled at.</p>
+<p><strong>schedule</strong> method will be called by the executor upon each invocation of board.run(). So for example:</p>
+<ul class="simple">
+<li><p>The first invocation of board.run(5) will invoke <strong>schedule</strong> with {1,2,3,4,5} - which are the timesteps to be run</p></li>
+<li><p>The next invocation of board.run(10) will invoke <strong>schedule</strong> with {6,7,8,9,10,11,12,13,14,15} - which are the timesteps to be run</p></li>
+</ul>
+<p>User can implement custom logic to choose the set of timesteps the snip should be scheduled at. Following are some examples:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// If the snip should be scheduled on all timesteps</span>
+<span class="k">virtual</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">schedule</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;&amp;</span> <span class="n">timesteps</span><span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">timesteps</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// To schedule every alternative timestep</span>
+<span class="k">virtual</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">schedule</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;&amp;</span> <span class="n">timesteps</span><span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">timesteps</span><span class="p">[</span><span class="n">std</span><span class="o">::</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">timesteps</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)];</span>
+<span class="p">}</span>
+
+<span class="c1">// To schedule on first and last timestep of each execution</span>
+<span class="k">virtual</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">schedule</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;&amp;</span> <span class="n">timesteps</span><span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">timesteps</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">timesteps</span><span class="p">[</span><span class="n">timesteps</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="mi">-1</span><span class="p">]};</span>
+<span class="p">}</span>
+
+<span class="c1">// To schedule on some pre-determined timesteps</span>
+<span class="k">virtual</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">schedule</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;&amp;</span> <span class="n">timesteps</span><span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">36</span><span class="p">,</span><span class="mi">49</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">81</span><span class="p">,</span><span class="mi">100</span><span class="p">};</span>
+<span class="p">}</span>
+
+<span class="c1">// To schedule on some internal state stored in a std::vector (and updated by previous run)</span>
+<span class="k">virtual</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span> <span class="n">schedule</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;&amp;</span> <span class="n">timesteps</span><span class="p">)</span> <span class="k">const</span> <span class="k">override</span> <span class="p">{</span>
+    <span class="c1">// nextsteps is of type std::vector&lt;uint32_t&gt;</span>
+    <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">valarray</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">nextsteps</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span> <span class="n">nextsteps</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="https://en.cppreference.com/w/cpp/numeric/valarray">https://en.cppreference.com/w/cpp/numeric/valarray</a> for further reference on valarrays.</p>
+</div>
+<div class="section" id="writing-a-concurrent-host-snip">
+<h2>Writing a Concurrent Host Snip<a class="headerlink" href="#writing-a-concurrent-host-snip" title="Permalink to this headline">¶</a></h2>
+<p>In similar vein to Sequential Host Snip, Concurrent Host Snip can be created using the board.createSnip API and using
+<strong>Phase.HOST_CONCURRENT_EXECUTION</strong> as phase parameter. Everything else remains same while implementing the python stub.</p>
+<p>For the code implementation, you need to publicly inherit from <strong>ConcurrentHostSnip</strong> and override the run method. Please
+note the following nuances:</p>
+<ul class="simple">
+<li><p>Concurrent Host Snip has no notion of timestep and runs independently until endOfExecution becomes true.</p></li>
+<li><p>Concurrent Host Snip is instantiated upon the first invocation of board.run() and it runs forever within a host thread.</p></li>
+<li><p>The overriden method run() is passed a boolean flag <strong>endOfExecution</strong> (default=false) which is set to true when the host is being shutdown (board.disconnect()). If the user is looping forever in this method, endOfExecution should be checked to break out of any loops to make the thread joinable. User can choose to exit from the method earlier as well.</p></li>
+</ul>
+<p>Here is an example implementation of a Concurrent Host Snip:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ConcurrentProcess</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ConcurrentHostSnip</span> <span class="p">{</span>
+  <span class="k">public</span><span class="o">:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">run</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">atomic_bool</span><span class="o">&amp;</span> <span class="n">endOfExecution</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Executing ConcurrentSnip&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">endOfExecution</span> <span class="o">==</span> <span class="nb">false</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Continue executing ConcurrentSnip&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="n">REGISTER_SNIP</span><span class="p">(</span><span class="n">ConcurrentProcess</span><span class="p">,</span> <span class="n">ConcurrentHostSnip</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="bring-your-own-shared-library">
+<h2>Bring your own shared library<a class="headerlink" href="#bring-your-own-shared-library" title="Permalink to this headline">¶</a></h2>
+<p>Users can provide their own shared library with any third party linkages during creating host snips. Please note - the
+shared library should be compiled for the host architecture. You can look into <strong>nxsdk/utils/make_host_snips.sh</strong> for
+details of compilation. You should invoke <strong>REGISTER_SNIP</strong> macro to register your host snips within the shared library.</p>
+<p>The shared library is loaded upon the first invocation of board.run() and all symbols are immediately resolved.</p>
+<p>The following log might help to compile/link your own shared library.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Include dir is : /home/user/host_snips
+Compiling -c /home/user/host_snips/pre_exec.cc
+arm-linux-gnueabihf-g++ -I/home/user/host_snips -Inxsdk/include -std<span class="o">=</span>c++14 -Wall -Werror -O3 -DNDEBUG -fPIC -rdynamic -o /home/user/pre_exec.cc.o -c /home/user/host_snips/pre_exec.cc
+OBJFILES :  /home/user/pre_exec.cc.o
+arm-linux-gnueabihf-g++ -std<span class="o">=</span>c++14 -Wall -Werror -O3 -DNDEBUG -fPIC -rdynamic /home/user/pre_exec.cc.o -shared -o /home/user/libhostsnip_0.so nxsdk/lib/Host/libnx.a
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Use g++ if building host snips for KapohoBay.</p></li>
+<li><p>libnx.a provides implementation of channels. This module needs to be picked from nxsdk/lib/Host-Usb/libnx.a if working on KapohoBay.</p></li>
+<li><p>nxsdk/lib/Host-Usb-Arm also exists but is untested at the moment.</p></li>
+</ul>
+</div>
+<div class="section" id="adding-debug-logs-to-host-snips">
+<h2>Adding Debug Logs to Host Snips<a class="headerlink" href="#adding-debug-logs-to-host-snips" title="Permalink to this headline">¶</a></h2>
+<p>Macros can help with logging in snips which are helpful while debugging.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Toggle to 1 to enable debugging</span>
+<span class="cp">#define DEBUG 0</span>
+<span class="cp">#define LOG(x) do { if (DEBUG) std::cerr &lt;&lt; #x &lt;&lt; &quot;: &quot; &lt;&lt; x &lt;&lt; std::endl; } while (0)</span>
+
+<span class="c1">// Usage</span>
+<span class="n">LOG</span><span class="p">(</span><span class="n">some_variable</span><span class="p">);</span>
+</pre></div>
+</div>
+<span class="target" id="module-nxsdk.graph.processes.phase_enums"></span><p>Snip Phase Enumeration</p>
+<dl class="py class">
+<dt id="nxsdk.graph.processes.phase_enums.Phase">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.graph.processes.phase_enums.</span></code><code class="sig-name descname"><span class="pre">Phase</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.processes.phase_enums.Phase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the enums for different phases in which snip can run.</p>
+<dl class="py attribute">
+<dt id="nxsdk.graph.processes.phase_enums.Phase.EMBEDDED_INIT">
+<code class="sig-name descname"><span class="pre">EMBEDDED_INIT</span></code><em class="property"> <span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#nxsdk.graph.processes.phase_enums.Phase.EMBEDDED_INIT" title="Permalink to this definition">¶</a></dt>
+<dd><p>INIT Phase of Embedded Snip. This executes only once.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.graph.processes.phase_enums.Phase.EMBEDDED_SPIKING">
+<code class="sig-name descname"><span class="pre">EMBEDDED_SPIKING</span></code><em class="property"> <span class="pre">=</span> <span class="pre">2</span></em><a class="headerlink" href="#nxsdk.graph.processes.phase_enums.Phase.EMBEDDED_SPIKING" title="Permalink to this definition">¶</a></dt>
+<dd><p>SPIKING Phase of Embedded Snip.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.graph.processes.phase_enums.Phase.EMBEDDED_PRELEARN_MGMT">
+<code class="sig-name descname"><span class="pre">EMBEDDED_PRELEARN_MGMT</span></code><em class="property"> <span class="pre">=</span> <span class="pre">3</span></em><a class="headerlink" href="#nxsdk.graph.processes.phase_enums.Phase.EMBEDDED_PRELEARN_MGMT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pre-Learn Management Phase of Embedded Snip.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.graph.processes.phase_enums.Phase.EMBEDDED_MGMT">
+<code class="sig-name descname"><span class="pre">EMBEDDED_MGMT</span></code><em class="property"> <span class="pre">=</span> <span class="pre">4</span></em><a class="headerlink" href="#nxsdk.graph.processes.phase_enums.Phase.EMBEDDED_MGMT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Management Phase of Embedded Snip.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.graph.processes.phase_enums.Phase.HOST_PRE_EXECUTION">
+<code class="sig-name descname"><span class="pre">HOST_PRE_EXECUTION</span></code><em class="property"> <span class="pre">=</span> <span class="pre">5</span></em><a class="headerlink" href="#nxsdk.graph.processes.phase_enums.Phase.HOST_PRE_EXECUTION" title="Permalink to this definition">¶</a></dt>
+<dd><p>Host Pre Execution Phase for Host Snip.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.graph.processes.phase_enums.Phase.HOST_POST_EXECUTION">
+<code class="sig-name descname"><span class="pre">HOST_POST_EXECUTION</span></code><em class="property"> <span class="pre">=</span> <span class="pre">6</span></em><a class="headerlink" href="#nxsdk.graph.processes.phase_enums.Phase.HOST_POST_EXECUTION" title="Permalink to this definition">¶</a></dt>
+<dd><p>Host Post Execution Phase for Host Snip.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.graph.processes.phase_enums.Phase.HOST_CONCURRENT_EXECUTION">
+<code class="sig-name descname"><span class="pre">HOST_CONCURRENT_EXECUTION</span></code><em class="property"> <span class="pre">=</span> <span class="pre">7</span></em><a class="headerlink" href="#nxsdk.graph.processes.phase_enums.Phase.HOST_CONCURRENT_EXECUTION" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concurrent Execution for Host Snip.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.graph.processes.phase_enums.Phase.EMBEDDED_USER_CMD">
+<code class="sig-name descname"><span class="pre">EMBEDDED_USER_CMD</span></code><em class="property"> <span class="pre">=</span> <span class="pre">8</span></em><a class="headerlink" href="#nxsdk.graph.processes.phase_enums.Phase.EMBEDDED_USER_CMD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Any User Command to execute during embedded execution. (Internal Use Only)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.graph.processes.phase_enums.Phase.EMBEDDED_REMOTE_MGMT">
+<code class="sig-name descname"><span class="pre">EMBEDDED_REMOTE_MGMT</span></code><em class="property"> <span class="pre">=</span> <span class="pre">9</span></em><a class="headerlink" href="#nxsdk.graph.processes.phase_enums.Phase.EMBEDDED_REMOTE_MGMT" title="Permalink to this definition">¶</a></dt>
+<dd><p>A management phase snip triggered remotely</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-nxsdk.graph.processes.host.host_snip"></span><p>Host Snip</p>
+<dl class="py class">
+<dt id="nxsdk.graph.processes.host.host_snip.HostSnip">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.graph.processes.host.host_snip.</span></code><code class="sig-name descname"><span class="pre">HostSnip</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nxGraph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hostId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">library</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cppFile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.processes.host.host_snip.HostSnip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds information to compile host snip</p>
+<dl class="py method">
+<dt id="nxsdk.graph.processes.host.host_snip.HostSnip.phase">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">phase</span></code><a class="headerlink" href="#nxsdk.graph.processes.host.host_snip.HostSnip.phase" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the phase associated with Host Snip</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.processes.host.host_snip.HostSnip.name">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">name</span></code><a class="headerlink" href="#nxsdk.graph.processes.host.host_snip.HostSnip.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the name of the Host Snip</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.processes.host.host_snip.HostSnip.hostId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">hostId</span></code><a class="headerlink" href="#nxsdk.graph.processes.host.host_snip.HostSnip.hostId" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the hostId of the Host Snip. Currently only supported as 0</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.processes.host.host_snip.HostSnip.library">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">library</span></code><a class="headerlink" href="#nxsdk.graph.processes.host.host_snip.HostSnip.library" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the shared library associated with the Host Snip. Either provide a shared library or <code class="docutils literal notranslate"><span class="pre">cppFile</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.processes.host.host_snip.HostSnip.cppFile">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">cppFile</span></code><a class="headerlink" href="#nxsdk.graph.processes.host.host_snip.HostSnip.cppFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>gets the cpp code file name associated with the Host Snip. Either provide a shared library or <code class="docutils literal notranslate"><span class="pre">cppFile</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.processes.host.host_snip.HostSnip.channels">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">channels</span></code><a class="headerlink" href="#nxsdk.graph.processes.host.host_snip.HostSnip.channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setter for any associated channels</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="channels.html" class="btn btn-neutral float-left" title="Communicating vis Channels" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

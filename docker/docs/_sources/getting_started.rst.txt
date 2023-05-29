@@ -1,0 +1,286 @@
+Getting Started
+===============
+
+Installation Guide
+------------------
+
+--------------
+
+Prerequisites
+~~~~~~~~~~~~~
+
+-  python 3.5.2
+-  pip
+-  jupyter (for running IPython notebooks)
+
+We highly recommend you to create a virtual environment first.
+
+If you are working on INRC cloud, these packages are pre-installed. To
+use jupyter within INRC, see **Jupyter Tutorials** section below.
+
+Setup
+~~~~~
+
+NxSDK is now packaged as a pip package. The tutorials, documentation and
+modules are separately distributed as a tarball.
+
+You may look into the modules to understand how to implement your own
+modules or extend them. Follow the instructions below to install NxSDK.
+
+Please Note: The same instructions apply while you test NxSDK on Kapoho
+Bay USB device; however as a pre-requisite - you need to download all
+the necessary installation bits to your host machine from the INRC
+Cloud. Follow the instructions you received with Kapoho Bay.
+
+0. (Optional - Only applies for boards outside INRC):
+
+   - Install the following commands on the board (Host OS)
+   - sudo apt install libgoogle-glog-dev
+   - sudo apt-get install libgflags-dev
+   - wget http://ftp.debian.org/debian/pool/main/p/protobuf/libprotobuf17_3.6.1-4~bpo9+1_armhf.deb
+   - sudo dpkg -i libprotobuf17_3.6.1-4~bpo9+1_armhf.deb
+
+1. The installation bits are located at \ **/nfs/ncl/releases**. SSH
+   into the INRC Cloud and check the contents of this directory:
+
+   -  **ssh user@YOURVM.research.intel-research.net**
+   -  **cd /nfs/ncl/releases**
+
+   Identify the version you want to install. It is recommended to
+   install the latest version.
+
+2. There should be 2 packages within the sub-directory:
+
+   1. *nxsdk-<latest\_version>.tar.gz* - A pip installable tarball to
+      install NxSDK
+   2. *nxsdk-apps-<latest\_version>.tar.gz* - Tarball for Jupyter/Python
+      based tutorials, complete NxSDK documentation and NxSDK Modules
+
+      Substitute above your username, VM and version information before
+      running the next commands.
+
+3. Create a virtual environment in your home directory:
+
+   -  ``cd ~``
+   -  ``python3 -m venv python3_venv``
+   -  ``source python3_venv/bin/activate``
+   -  ``pip install -U pip``
+   -  Do all following steps within the virtual environment
+
+4. Copy Release Artifacts:
+
+   .. note:: Please note the **dot** at the end of the command
+
+       **cp /nfs/ncl/releases/<latest\_version>/\* .**
+
+5. Install NxSDK: \ **python -m pip install
+   nxsdk-<latest\_version>.tar.gz**
+
+   -  Ignore the "Failed building wheel for nxsdk" and the associated
+      "Failed to build nxsdk". This is a known error and pip will retry
+      with setup.py.
+
+6. Verify NxSDK installation: \ **python -c "import nxsdk;
+   print(nxsdk.\_\_version\_\_)"**
+7. Find NxSDK installation directory (nxsdk\_install\_dir): **python -c
+   "import nxsdk; print(nxsdk.\_\_path\_\_)"**
+
+8. Unzip Tutorials, Docs and Modules in your home directory: \ **mkdir
+   nxsdk-apps && tar xzf nxsdk-apps-<latest\_version>.tar.gz -C
+   nxsdk-apps --strip-components 1**
+
+   -  Run tutorials per instructions in the following sections.
+   -  (Optional) Some modules need additional dependencies. To install these, run: **pip install -r nxsdk-apps/nxsdk_modules/requirements.txt**
+
+9. When complete, deactivate the virtual environment by running
+   ``deactivate``
+
+Tutorials
+~~~~~~~~~
+
+Jupyter Tutorials (IPython Notebooks)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you are working within the INRC Cloud, follow instructions below to
+run Jupyter
+
+-  Ensure you are in the virtual environment
+   (``source python3_venv/bin/activate``)
+-  Set PYTHONPATH to the location of nxsdk-apps :
+   export PYTHONPATH=/path-to-nxsdk-apps/nxsdk-apps
+-  Run \ **SLURM=1 /nfs/ncl/bin/jupyter\_nx.sh**
+-  Follow the instructions on your terminal screen to enable SSH
+   tunneling and browser access and use Jupyter from the web
+
+   -  If the browser asks for a password or token, please copy and paste
+      the hex string at the end of the web address into the token field.
+   -  For example:
+
+      -  http://localhost:8891/?token=c14eb1f2cee91e5b2fea550e9ca1ce65721c892b4b88dbf1
+      -  The token is: c14eb1f2cee91e5b2fea550e9ca1ce65721c892b4b88dbf1
+
+-  Once you can access the jupyter web UI from your browser, locate the
+   nxsdk-apps directory and open the IPython notebooks from paths
+   mentioned below
+
+Jupyter based tutorials demonstrate NxSDK features and examples using
+Python code snippets. Each tutorial focuses on certain feature set of
+the NxSDK API.
+
+You will find all foundational jupyter notebooks
+under \ **nxsdk-apps/tutorials/ipython**
+
+Jupyter notebooks to demonstrate modules are located under each module.
+
+For example, the jupyter notebook for LCA tutorial is
+at \ **nxsdk-apps/nxsdk\_modules/lca/tutorials/lca\_single\_image\_reconstruction.ipynb**
+
+Python Tutorials
+^^^^^^^^^^^^^^^^
+
+Python based tutorials demonstrate NxSDK features and examples using
+Python code snippets.
+
+Each tutorial focuses on certain feature set of the NxSDK API and can be
+run both from command line or IDE based tools
+
+``source python3_venv/bin/activate``
+
+Set PYTHONPATH to the location of nxsdk-apps :
+export PYTHONPATH=/path-to-nxsdk-apps/nxsdk-apps
+
+``cd nxsdk-apps/tutorials``
+
+To run a NxNet
+tutorial, \ ``SLURM=1 python -m nxnet.tutorial_01_single_compartment_with_bias`` 
+
+-  All NxNet tutorials are under \ **nxsdk-apps/tutorials/nxnet**
+
+To run a NxCore
+tutorial, \ ``SLURM=1 python -m nxcore.tutorial_01_single_compartment_with_bias`` 
+
+-  All NxCore tutorials are under \ **nxsdk-apps/tutorials/nxcore**
+
+To View Documentation
+~~~~~~~~~~~~~~~~~~~~~
+
+``cd nxsdk-apps/docs``
+
+You can start a simple http server or serve the docs via web-server like
+Apache or Nginx
+
+``python -m http.server``
+
+You would need to do SSH tunneling to view the docs.
+
+Alternatively, you may download the docs directory to your local machine
+(Windows or Mac) and click on the index.html. You can do the same if you
+have a VNC session connected to the INRC Cloud.
+
+
+Execution Configuration Options and Utilities
+---------------------------------------------
+
+--------------
+
+SLURM=1
+
+* All execution on the INRC cloud shall be executed with the SLURM=1 option.
+* Example: ``SLURM=1 python -m nxnet.tutorial_01_single_compartment_with_bias``
+
+Getting SLURM information
+
+* ``squeue``: Typing *squeue* in the command line will give the status of the SLURM queue.
+* ``sinfo``: Typing *sinfo* in the command line will give a list of all available partitions and the current status.
+
+Partitions: Each partition contains a set of Loihi systems with certain properties.  Please use ``sinfo`` to see the latest partitions.
+
+* nahuku32
+
+  * 32 N2A2 chips, 20 minute execution time limit
+
+* nahuku32_2h
+
+  * 32 N2A2 chips, 120 minute execution time limit
+
+* nahuku08
+
+  * 8 N2A1 chips, 20 minute execution time limit
+  * N2A1 chips have a HW bug that sometimes may cause the following error: *ERROR: nx_wait_barrier stalled for 60000002us*.  If this problem is seen, please try running on a N2A2 chip partition to determine if this bug is the problem.
+
+* loihi
+
+  * 4 N2A1 chips, 20 minute execution time limit
+  * N2A1 chips have a HW bug that sometimes may cause the following error: *ERROR: nx_wait_barrier stalled for 60000002us*.  If this problem is seen, please try running on a N2A2 chip partition to determine if this bug is the problem.
+
+* loihi_2h
+
+  * 4 N2A1 chips, 120 minute execution time limit
+  * N2A1 chips have a HW bug that sometimes may cause the following error: *ERROR: nx_wait_barrier stalled for 60000002us*.  If this problem is seen, please try running on a N2A2 chip partition to determine if this bug is the problem.
+
+Choosing a specific partition for execution
+
+* Option 1: Environment variables
+
+  * PARTITION=<partition>
+  * Example: To execute NxNet tutorial 01 on the nahuku08 partition, do the following: ``SLURM=1 PARTITION=nahuku08 python -m nxnet.tutorial_01_single_compartment_with_bias``
+
+* Option 2: NxNet
+
+  * net.run(numTimeSteps, executionOptions={'partition':'<partition>'})
+
+* Option 3: NxCore
+
+  * board.run(numTimeSteps, partition='<partition>')
+
+For performance testing options, please see the ``NxSDK Performance Test Suite documentation``.
+
+
+Setup for Non-Slurm or Non-NFS deployments
+------------------------------------------
+
+--------------
+
+* **On Host (Nahuku Boards)**
+
+  1. Ensure the board is on the network and has an IP address. Note its IP address and hostname as it will be used to submit the job.
+  2. For every user which intends to use the board, we need to ensure they can ssh into the board. We internally use ssh to copy SNIPs at runtime which are compiled on the fly. Basically, anyone who wishes to use the board should be able to ssh/scp to NXSDKHOST (mentioned in step 4). To enable this:
+
+     * You can create an user account for every user on the board and make sure they can ssh in
+     * Alternatively, you could setup .ssh/config and map to a common account, instead of having individual accounts.
+
+  3. `[If not using NFS between superhost and host]` Untar nxsdk pip package on the board in an accessible location for users and get the path to nxsdk/bin/arm/nx_driver_server
+
+* **On Superhost (User Machines)**
+
+  4. You are ready now. The following environment variables should be added to your bashrc (or passed via command line) on the superhost
+
+     * ``NOSLURM=1``
+     * ``NXSDKHOST=<IP_ADDRESS_OF_BOARD_OR_HOSTNAME_OF_BOARD>``
+     * `[If not using NFS between superhost and host]` ``HOST_BINARY=<ABSOLUTE_PATH_OF_NX_DRIVER_SERVER_ON_BOARD>``
+
+  5. Follow rest of instructions to install and test NxSDK here: `Setup`_
+
+.. note:: Without a workload manager like SLURM, multiple users can still use the board but they can’t use it at the same time.
+
+
+Getting Started with KapohoBay
+------------------------------
+
+--------------
+
+.. toctree::
+   :maxdepth: 2
+
+   getting_started_kb
+
+
+Setting up DVS with KapohoBay
+------------------------------
+
+--------------
+
+.. toctree::
+   :maxdepth: 2
+
+   dvs

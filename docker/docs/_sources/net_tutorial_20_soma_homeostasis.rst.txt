@@ -1,0 +1,24 @@
+NxNet: Soma Homeostasis
+=======================
+
+Motivation
+----------
+Within this tutorial we learn how to use the Soma Homeostatis.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_20.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxnet/tutorial_20_soma_homeostatis.py
+
+See also
+--------
+
+* :doc:`netprobes`
+* :doc:`compartment`
+* :doc:`connection`
+* :doc:`nxnet`
+* :doc:`graph`

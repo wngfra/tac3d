@@ -1,0 +1,31 @@
+NxCore: Noise Injection
+=======================
+
+Motivation
+----------
+The aim of this tutorial is to show how to configure and use the noise injection capabilities for both the U (current) and V (voltage) settings within a compartment.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_14.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_14_noise_injection.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`cx_meta_state`
+* :doc:`axon_cfg`
+* :doc:`dendrite_shared_cfg`
+* :doc:`vth_profile_cfg`
+* :doc:`num_updates`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+

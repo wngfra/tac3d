@@ -1,0 +1,19 @@
+NxNet: Activity Probe
+=======================
+
+Motivation
+----------
+This tutorial demonstrates how to set up activity probes to monitor spikes.
+
+Location
+--------
+nxsdk-apps/tutorials/nxnet/tutorial_22_activity_probe.py
+
+See also
+--------
+
+* :doc:`netprobes`
+* :doc:`compartment`
+* :doc:`connection`
+* :doc:`nxnet`
+

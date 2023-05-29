@@ -1,0 +1,35 @@
+Learning with STDP
+==================
+The Nx SDK provides a number of features to help you create your learning rules and attach them to synapses. While more documentation in this section is forthcoming, below you will find pointers to further documentation and tutorials:
+
+**Learning using NxNet**
+
+  | The configuration of a learning rule requires the equations that \
+    govern the dynamics of the **weight** *(dw)*, **delay** *(dd)* and **tag** *(dt)* state \
+    variables as well as the **trace** parameters (*impulse*, *timeConstant*) for \
+    up to two pre traces (**x1**, **x2**), up to three post traces (**y1**, **y2**, \
+    **y3**) and one reward trace (**r1**) and the duration of the learning epoch \
+    (**tEpoch**).
+
+  | All impulse values must be within the range 0..127 while all \
+    timeConstant must be positive integers. See :doc:`learningrule` \
+    for further details.
+
+
+Relevant Tutorials
+------------------
+
+**NxNet**
+
+.. toctree::
+      :maxdepth: 1
+
+      net_tutorial_18_learning
+
+**NxCore**
+
+.. toctree::
+      :maxdepth: 1
+
+      core_tutorial_18_learning
+      core_tutorial_18b_delay_learning

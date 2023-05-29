@@ -1,0 +1,30 @@
+NxCore: Host SNIPs with ROS Integration
+========================
+
+Motivation
+----------
+This tutorial demonstrates using ROS publisher/subscriber nodes with host snips.
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_23_host_snips_with_ros_integration
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_meta_state`
+* :doc:`cx_profile_cfg`
+* :doc:`cx_cfg`
+* :doc:`num_updates`
+* :doc:`dendrite_accum_cfg`
+* :doc:`axon_map`
+* :doc:`axon_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+* :doc:`tracecfggen`
+* :doc:`inputgen`

@@ -1,0 +1,36 @@
+NxCore: Axonal Delay
+====================
+
+Motivation
+----------
+The aim of this tutorial is to show how to configure and use the axonal delay feature.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_13.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_13_axonal_delay.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`axon_map`
+* :doc:`soma_state`
+* :doc:`cx_meta_state`
+* :doc:`axon_cfg`
+* :doc:`dendrite_shared_cfg`
+* :doc:`dendrite_time_state`
+* :doc:`vth_profile_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+

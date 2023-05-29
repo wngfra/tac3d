@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Spike Streamer Module &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Trace Injection Module" href="trace_injection.html" />
+    <link rel="prev" title="Single Layer Image Classifier" href="jupyter/single_layer_image_classifier.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Nx SDK Modules</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="characterization.html">Characterization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dnn.html">DNN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dvs.html">DVS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epl.html">EPL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knn.html">K Nearest Neighbour</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_generator.html">Input Generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lca.html">LCA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="path_planning.html">Path Planning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slayer.html">SLAYER Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slic.html">SLIC</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Spike Streamer Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#spike-input-streamer">Spike Input Streamer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spike-output-streamer">Spike Output Streamer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-nxsdk_modules.spike_streamer.src.streaming">Spike Streamer Module Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="trace_injection.html">Trace Injection Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">Nx SDK Modules</a> &raquo;</li>
+        
+      <li>Spike Streamer Module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="spike-streamer-module">
+<h1>Spike Streamer Module<a class="headerlink" href="#spike-streamer-module" title="Permalink to this headline">¶</a></h1>
+<p>The Spike Input Streamer provides a means to inject spikes into a model at
+deterministic times while the model is running on Loihi. Similarly, the
+Spike Output Streamer provides a way to receive spike from a model while it
+is running. Together these features allows a model to be programmed to Loihi
+before specifying the input spikes. The user can then send spikes to the model
+and receive spikes from the model in an online fashion.</p>
+<div class="section" id="spike-input-streamer">
+<h2>Spike Input Streamer<a class="headerlink" href="#spike-input-streamer" title="Permalink to this headline">¶</a></h2>
+<p>The Spike Input Streamer requires spikes to be provided in chronological order.
+Whenever enough spikes have been provided to fill a packet, that packet is sent
+to a SNIP which performs the spike injection and a new packet is started. The user
+can also flush a partial packet to the SNIP at any time.</p>
+<p>The SNIP will always advance Loihi time up until the time of the most recent spike
+specified by the user (see tutorials).</p>
+<p>The Spike Input Streamer also provides a function for advancing chip time in the
+absence of spikes (see tutorials).</p>
+</div>
+<div class="section" id="spike-output-streamer">
+<h2>Spike Output Streamer<a class="headerlink" href="#spike-output-streamer" title="Permalink to this headline">¶</a></h2>
+<p>The Spike Output Streamer provides a way to monitor the output spikes from a
+network at fixed intervals. For example, it can return the cumulative spike count
+for each output neuron every 100 timesteps (configurable).</p>
+</div>
+<div class="section" id="module-nxsdk_modules.spike_streamer.src.streaming">
+<span id="spike-streamer-module-documentation"></span><h2>Spike Streamer Module Documentation<a class="headerlink" href="#module-nxsdk_modules.spike_streamer.src.streaming" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk_modules.spike_streamer.src.streaming.</span></code><code class="sig-name descname"><span class="pre">SpikeStreamer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">net</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer.advanceTime">
+<code class="sig-name descname"><span class="pre">advanceTime</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endTime</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer.advanceTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Advance to a predefined time on the chip</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer.configureStreamer">
+<code class="sig-name descname"><span class="pre">configureStreamer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">board</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regenerateCoreAxon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chipId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">counterIds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer.configureStreamer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines the core/axon location of the model input axons and sets up snips
+which will later be used to inject spikes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>board</strong> (<em>N2Board</em>) -- The compiled board object</p></li>
+<li><p><strong>regenerateCoreAxon</strong> (<em>bool</em>) -- Whether to load core/axon values from file or precompute them</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer.flushSpikes">
+<code class="sig-name descname"><span class="pre">flushSpikes</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer.flushSpikes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send any buffered spikes, even if they do not constitute a full packet.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer.getResults">
+<code class="sig-name descname"><span class="pre">getResults</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer.getResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a result from the spike streamer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer.sendSpikes">
+<code class="sig-name descname"><span class="pre">sendSpikes</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spikeTargets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spikeTimes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer.sendSpikes" title="Permalink to this definition">¶</a></dt>
+<dd><p>spikes: a list or numpy array of integers specifying which input neuron should spike
+times: a list or numpy array of monotonically increasing integers corresponding to the time at which the neuron should spike</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer.setupSpikeInput">
+<code class="sig-name descname"><span class="pre">setupSpikeInput</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numNodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spikesPerPacket</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1024</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">microsecondsPerTimestep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logicalCoreId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connectionPrototype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compartmentPrototype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer.setupSpikeInput" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>numNodes</strong> (<em>int</em>) -- How many inputs to create</p></li>
+<li><p><strong>spikesPerPacket</strong> (<em>int</em>) -- The packet size for spike injection</p></li>
+<li><p><strong>microsecondsPerTimestep</strong> (<em>int</em>) -- The maximum speed at which to run Loihi</p></li>
+<li><p><strong>logicalCoreId</strong> (<em>list</em><em>[</em><em>int</em><em>]</em>) -- Allows controlling the placement of the input neurons</p></li>
+<li><p><strong>connectionPrototype</strong> (<a class="reference internal" href="connection.html#nxsdk.net.nodes.connections.ConnectionPrototype" title="nxsdk.net.nodes.connections.ConnectionPrototype"><em>ConnectionPrototype</em></a>) -- Connection properties</p></li>
+<li><p><strong>compartmentPrototype</strong> (<a class="reference internal" href="compartment.html#nxsdk.net.nodes.compartments.CompartmentPrototype" title="nxsdk.net.nodes.compartments.CompartmentPrototype"><em>CompartmentPrototype</em></a>) -- Input compartment properties</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer.setupSpikeOutput">
+<code class="sig-name descname"><span class="pre">setupSpikeOutput</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">compartmentGroup</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk_modules.spike_streamer.src.streaming.SpikeStreamer.setupSpikeOutput" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="trace_injection.html" class="btn btn-neutral float-right" title="Trace Injection Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="jupyter/single_layer_image_classifier.html" class="btn btn-neutral float-left" title="Single Layer Image Classifier" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

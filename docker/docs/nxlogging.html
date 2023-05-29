@@ -1,0 +1,509 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Logging in NxNet &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NxCompiler" href="nxcompiler.html" />
+    <link rel="prev" title="Spike Injection and Spike Receivers" href="spikeinjectionandreceivers.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxnet.html">NxNet API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compartment.html">Compartment and CompartmentPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connection.html">Connection and ConnectionPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connectionsharing.html">Connection Sharing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron.html">Neuron and NeuronPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="groups.html">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netprobes.html">Working with Probes and Monitors in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="learningrule.html">Specifying a Learning Rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multicompartment.html">Building Multi Compartment Neuron Model using Stack Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spikeinjectionandreceivers.html">Spike Injection and Spike Receivers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Logging in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcompiler.html">NxCompiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxnet_resource_map.html">NxNet Resource Map Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxnet.html">NxNet API</a> &raquo;</li>
+        
+      <li>Logging in NxNet</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="logging-in-nxnet">
+<h1>Logging in NxNet<a class="headerlink" href="#logging-in-nxnet" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are using python logging or external logging framework and
+have configured the handler for root logger, nxsdk loggers will
+use the same handler.</p>
+</div>
+<p>Logging is set to INFO by default. To set to a different log level:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nxsdk.logutils.nxlogging</span> <span class="kn">import</span> <span class="n">set_verbosity</span><span class="p">,</span> <span class="n">LoggingLevel</span>
+
+<span class="c1"># Change the logging level of the global logger to DEBUG</span>
+<span class="n">set_verbosity</span><span class="p">(</span><span class="n">LoggingLevel</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To create loggers for nxsdk modules or components, you may use get_logger API:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nxsdk.logutils.nxlogging</span> <span class="kn">import</span> <span class="n">get_logger</span>
+
+<span class="c1"># Create the module logger</span>
+<span class="n">moduleLogger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="s2">&quot;NET.XYZ&quot;</span><span class="p">)</span>
+
+<span class="c1"># Now use the logger</span>
+<span class="n">moduleLogger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Some info&quot;</span><span class="p">)</span>
+<span class="n">moduleLogger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Some debug info&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>You should name your module loggers with a starting prefix &quot;NET.&quot; so that they inherit
+from the NXNET root logger and have an associated handler in case there is no handler
+associated with the built-in python root logger</p></li>
+<li><p>If you intend to use the logger in multiple places, consider defining it as a enum
+value within NxSDKLogger to avoid using strings</p></li>
+<li><p>If you do not use the NET. convention with the get_logger API, consider defining a root handler or
+use python built-in logging to create your user logger/handler (example below)</p></li>
+</ul>
+</div>
+<p>You can use the python built-in logging to create your user loggers too.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;USER&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;User message&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Loggers are created with StreamHandler which stream to stdout/stderr. If you wish to set a different handler:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="c1"># In this example, we will create a simple file based logger</span>
+<span class="n">fh</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">FileHandler</span><span class="p">(</span><span class="s2">&quot;log.out&quot;</span><span class="p">)</span>
+<span class="c1"># Adding it to the root logger</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">handlers</span><span class="o">=</span><span class="p">[</span><span class="n">fh</span><span class="p">])</span>
+
+<span class="c1"># Ensure to import nxsdk always after adding any custom handlers</span>
+<span class="c1"># so that NxSDK loggers will not create their own handlers</span>
+</pre></div>
+</div>
+<p>To filter logs from certain Logger, you may use <code class="docutils literal notranslate"><span class="pre">logging.Filter</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">Filter</span><span class="p">,</span> <span class="n">StreamHandler</span>
+
+<span class="c1"># Filter all compiler specific logs</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">Filter</span><span class="p">(</span><span class="s2">&quot;CMP&quot;</span><span class="p">)</span>
+<span class="n">handler</span> <span class="o">=</span> <span class="n">StreamHandler</span><span class="p">()</span>
+<span class="n">handler</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span> <span class="n">handlers</span><span class="o">=</span><span class="p">[</span><span class="n">handler</span><span class="p">])</span>
+
+<span class="c1"># Ensure to import nxsdk always after adding any custom handlers</span>
+<span class="c1"># so that NxSDK loggers will not create their own handlers</span>
+</pre></div>
+</div>
+<div class="figure align-default">
+<img alt="NxSDK Logging Hierarchy" src="_images/nxsdklogginghierarchy.png" />
+</div>
+<span class="target" id="module-nxsdk.logutils.nxlogging"></span><p>Logging module for nxsdk</p>
+<dl class="py class">
+<dt id="nxsdk.logutils.nxlogging.LoggingLevel">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.logutils.nxlogging.</span></code><code class="sig-name descname"><span class="pre">LoggingLevel</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.logutils.nxlogging.LoggingLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logging Levels</p>
+<dl class="py attribute">
+<dt id="nxsdk.logutils.nxlogging.LoggingLevel.DEBUG">
+<code class="sig-name descname"><span class="pre">DEBUG</span></code><em class="property"> <span class="pre">=</span> <span class="pre">10</span></em><a class="headerlink" href="#nxsdk.logutils.nxlogging.LoggingLevel.DEBUG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.logutils.nxlogging.LoggingLevel.INFO">
+<code class="sig-name descname"><span class="pre">INFO</span></code><em class="property"> <span class="pre">=</span> <span class="pre">20</span></em><a class="headerlink" href="#nxsdk.logutils.nxlogging.LoggingLevel.INFO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.logutils.nxlogging.LoggingLevel.WARNING">
+<code class="sig-name descname"><span class="pre">WARNING</span></code><em class="property"> <span class="pre">=</span> <span class="pre">30</span></em><a class="headerlink" href="#nxsdk.logutils.nxlogging.LoggingLevel.WARNING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.logutils.nxlogging.LoggingLevel.ERROR">
+<code class="sig-name descname"><span class="pre">ERROR</span></code><em class="property"> <span class="pre">=</span> <span class="pre">40</span></em><a class="headerlink" href="#nxsdk.logutils.nxlogging.LoggingLevel.ERROR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.logutils.nxlogging.LoggingLevel.FATAL">
+<code class="sig-name descname"><span class="pre">FATAL</span></code><em class="property"> <span class="pre">=</span> <span class="pre">50</span></em><a class="headerlink" href="#nxsdk.logutils.nxlogging.LoggingLevel.FATAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.logutils.nxlogging.NxSDKLogger">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.logutils.nxlogging.</span></code><code class="sig-name descname"><span class="pre">NxSDKLogger</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.logutils.nxlogging.NxSDKLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>These are the loggers available in NxSDK. If you need a new logger in nxsdk internal
+code, add an entry here and use <code class="docutils literal notranslate"><span class="pre">get_logger</span></code> to instantiate it by invoking get_logger(NxSDKLogger.MyModuleLogger)
+Follow the <strong>NET.</strong> convention which makes NXNET the parent logger</p>
+<dl class="py attribute">
+<dt id="nxsdk.logutils.nxlogging.NxSDKLogger.NXNET">
+<code class="sig-name descname"><span class="pre">NXNET</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'NET'</span></em><a class="headerlink" href="#nxsdk.logutils.nxlogging.NxSDKLogger.NXNET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use <cite>NXNET</cite> for <cite>user logging</cite> or logging within <cite>NxNet</cite> module. This is the global logger for super host
+which means log()/info()/debug() etc. are logged by this logger. You can get this logger by just invoking
+<code class="docutils literal notranslate"><span class="pre">get_logger()</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.logutils.nxlogging.NxSDKLogger.NXCOMPILER">
+<code class="sig-name descname"><span class="pre">NXCOMPILER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'NET.CMP'</span></em><a class="headerlink" href="#nxsdk.logutils.nxlogging.NxSDKLogger.NXCOMPILER" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use <cite>NXCOMPILER</cite> for logging within compiler and helper files</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.logutils.nxlogging.NxSDKLogger.NXDRIVER">
+<code class="sig-name descname"><span class="pre">NXDRIVER</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'NET.DRV'</span></em><a class="headerlink" href="#nxsdk.logutils.nxlogging.NxSDKLogger.NXDRIVER" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use <cite>NXDRIVER</cite> for logging within Board/Driver and helper files</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.logutils.nxlogging.NxSDKLogger.SNIP">
+<code class="sig-name descname"><span class="pre">SNIP</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'NET.SNP'</span></em><a class="headerlink" href="#nxsdk.logutils.nxlogging.NxSDKLogger.SNIP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use <cite>SNIP</cite> for logging within Proceses and Channels</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.logutils.nxlogging.NxSDKLogger.HOST">
+<code class="sig-name descname"><span class="pre">HOST</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'NET.HST'</span></em><a class="headerlink" href="#nxsdk.logutils.nxlogging.NxSDKLogger.HOST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use <cite>HOST</cite> for logging from Host. This is the root (global) logger for host</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.logutils.nxlogging.NxSDKLogger.PERF">
+<code class="sig-name descname"><span class="pre">PERF</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'NET.PRF'</span></em><a class="headerlink" href="#nxsdk.logutils.nxlogging.NxSDKLogger.PERF" title="Permalink to this definition">¶</a></dt>
+<dd><p>User <cite>PERF</cite> for logging within performance/benchmarking framework and helper files</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.logutils.nxlogging.NxSDKLogger.has_value">
+<em class="property"><span class="pre">classmethod</span> </em><code class="sig-name descname"><span class="pre">has_value</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.logutils.nxlogging.NxSDKLogger.has_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Containment check</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="nxsdk.logutils.nxlogging.get_verbosity">
+<code class="sig-prename descclassname"><span class="pre">nxsdk.logutils.nxlogging.</span></code><code class="sig-name descname"><span class="pre">get_verbosity</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.logutils.nxlogging.get_verbosity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get log verbosity level of global logger</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nxsdk.logutils.nxlogging.set_verbosity">
+<code class="sig-prename descclassname"><span class="pre">nxsdk.logutils.nxlogging.</span></code><code class="sig-name descname"><span class="pre">set_verbosity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.logutils.nxlogging.set_verbosity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set log verbosity level of global logger</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nxsdk.logutils.nxlogging.log">
+<code class="sig-prename descclassname"><span class="pre">nxsdk.logutils.nxlogging.</span></code><code class="sig-name descname"><span class="pre">log</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.logutils.nxlogging.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>generic logging function</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nxsdk.logutils.nxlogging.debug">
+<code class="sig-prename descclassname"><span class="pre">nxsdk.logutils.nxlogging.</span></code><code class="sig-name descname"><span class="pre">debug</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.logutils.nxlogging.debug" title="Permalink to this definition">¶</a></dt>
+<dd><p>log to debug</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nxsdk.logutils.nxlogging.error">
+<code class="sig-prename descclassname"><span class="pre">nxsdk.logutils.nxlogging.</span></code><code class="sig-name descname"><span class="pre">error</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.logutils.nxlogging.error" title="Permalink to this definition">¶</a></dt>
+<dd><p>log to error</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nxsdk.logutils.nxlogging.fatal">
+<code class="sig-prename descclassname"><span class="pre">nxsdk.logutils.nxlogging.</span></code><code class="sig-name descname"><span class="pre">fatal</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.logutils.nxlogging.fatal" title="Permalink to this definition">¶</a></dt>
+<dd><p>log to fatal</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nxsdk.logutils.nxlogging.info">
+<code class="sig-prename descclassname"><span class="pre">nxsdk.logutils.nxlogging.</span></code><code class="sig-name descname"><span class="pre">info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.logutils.nxlogging.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>log as info</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nxsdk.logutils.nxlogging.warning">
+<code class="sig-prename descclassname"><span class="pre">nxsdk.logutils.nxlogging.</span></code><code class="sig-name descname"><span class="pre">warning</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.logutils.nxlogging.warning" title="Permalink to this definition">¶</a></dt>
+<dd><p>log as warning</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nxsdk.logutils.nxlogging.get_logger">
+<code class="sig-prename descclassname"><span class="pre">nxsdk.logutils.nxlogging.</span></code><code class="sig-name descname"><span class="pre">get_logger</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name=&lt;NxSDKLogger.NXNET:</span> <span class="pre">'NET'&gt;</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.logutils.nxlogging.get_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a logger instance given a name as a string and a initial logging level.</p>
+<p>In case no arguments are given, the global logger is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>str</strong> (<em>name</em>) -- Logger Name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Logger</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nxsdk.logutils.nxlogging.installColoredLogs">
+<code class="sig-prename descclassname"><span class="pre">nxsdk.logutils.nxlogging.</span></code><code class="sig-name descname"><span class="pre">installColoredLogs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">level</span></em>, <em class="sig-param"><span class="pre">logger</span></em>, <em class="sig-param"><span class="pre">formatter</span></em>, <em class="sig-param"><span class="pre">stream=&lt;_io.TextIOWrapper</span> <span class="pre">name='&lt;stdout&gt;'</span> <span class="pre">mode='w'</span> <span class="pre">encoding='utf-8'&gt;</span></em>, <em class="sig-param"><span class="pre">isatty=True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.logutils.nxlogging.installColoredLogs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Install color logs if coloredlogs is installed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>int</strong> (<em>level</em>) -- Log level</p></li>
+<li><p><strong>Logger</strong> (<em>logger</em>) -- Logger instance</p></li>
+<li><p><strong>Formatter</strong> (<em>fmt</em>) -- Logger Formatter</p></li>
+<li><p><strong>stream</strong> -- Output stream</p></li>
+<li><p><strong>isatty</strong> -- Required for tty enabled (especially Jupyter)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nxsdk.logutils.nxlogging.timedContextLogging">
+<code class="sig-prename descclassname"><span class="pre">nxsdk.logutils.nxlogging.</span></code><code class="sig-name descname"><span class="pre">timedContextLogging</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="#nxsdk.logutils.nxlogging.NxSDKLogger" title="nxsdk.logutils.nxlogging.NxSDKLogger"><span class="pre">nxsdk.logutils.nxlogging.NxSDKLogger</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.logutils.nxlogging.timedContextLogging" title="Permalink to this definition">¶</a></dt>
+<dd><p>A context manager to print the total time taken within this context with logging</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="nxcompiler.html" class="btn btn-neutral float-right" title="NxCompiler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="spikeinjectionandreceivers.html" class="btn btn-neutral float-left" title="Spike Injection and Spike Receivers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

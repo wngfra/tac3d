@@ -1,0 +1,32 @@
+NxCore: Box Synapse
+===================
+
+Motivation
+----------
+There are occassions when you may want to retain a constant post-synaptic current for a period of time. By using the box-synapse feature along with a synapse delay, we can acheive this aim.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_11.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_11_box_synapse.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`cx_cfg`
+* :doc:`cx_profile_cfg`
+* :doc:`cx_meta_state`
+* :doc:`dendrite_shared_cfg`
+* :doc:`vth_profile_cfg`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+

@@ -1,0 +1,101 @@
+Communicating vis Channels
+===========================
+
+Channels are the abstraction using which we can send data from superhost to the snip process running on the lakemont and vice-versa.
+To be able to send and receive data via channel, it must be connected to a snip. A channel can be of send type or recv. It is not bidirectional. Depending on how the connection
+is made between the snip and the superhost, channel's directionality is determined.
+
+
+.. figure:: _static/sniparch.png
+   :alt:
+
+.. code-block:: python
+
+   # API to create channel
+   def createChannel(self, name, elementType, numElements, behavior=None):
+        """Creates a channel as a means of data communication between Superhost and Host
+
+        :param name: Channel Name
+        :param elementType: Only supports "int" and "packed" for now
+        :param numElements: Maximum capacity of the channel
+        :param behavior: Not implemented
+        :return: channel
+        """
+
+.. automodule:: nxsdk.graph.channel
+   :members:
+   :undoc-members:
+
+How Channels work?
+
+When a channel is created, a buffer of size numElements of elementType is created on the host. When a write call on channel is made,
+the data is written to the buffer and when a read call is made, the data is read from the buffer. Channels operate asynchronously,
+in a standard producer-consumer fashion. Provided there is data in the buffer to read, readChannel will read it.
+If there is no data in the buffer, a readChannel call will block. Similarly, provided there is room in the buffer to write numelements, writeChannel will write it. However, if the buffer is full, writeChannel may hang. Therefore it is important to read faster than write.
+
+Following code illustrates how to use channels :
+
+.. code-block:: python
+
+   # First create a snip which will use the channel
+   cPath = os.path.dirname(os.path.realpath(__file__))+ "/spiking.c"
+   includeDir = os.path.dirname(os.path.realpath(__file__))
+   funcName = "run_spiking"
+   guardName = "do_spiking"
+   phase = "spiking"
+   spikingProcess = board.createProcess("spikingProcess",cPath,includeDir,
+                                     funcName, guardName, phase)
+
+   # Creates a channel named spikeChannel for sending spike data
+   spikeChannel = board.createChannel('nxspiking', "int", 30)
+   # Connects spikeChannel from Superhost to spikingProcess making it send channel
+   spikeChannel.connect(None, spikingProcess)
+
+   # Create a channel named recvChannel for getting the value of tEpoch
+   recvChannel = board.createChannel('nxrecv', "int", 30)
+   # Connecting imageChannel from initProcess to SuperHost making it receive channel
+   recvChannel.connect(spikingProcess, None)
+
+.. code-block:: c
+
+   // In the snip spiking.c
+    static int data;
+    sttaic int spikeChannelID = getChannelID("nxspiking");
+    static int recvChannelID  = getChannelID("nxrecv");
+
+   // Reading 1 element from the spikeChannel into data
+   readChannel(spikeChannelID,&data,1);
+
+   // Writing 1 element(value od data) to the recvChannel
+   writeChannel(recvChannelID,&data,1);
+
+By default elementType is "int", which supports single message of 4 byte size. The SDK supports "packed" element type as well, which supports
+message size of 16 integers, which means in a single call to read and write function 16 4-bytes elements can be read or written.
+
+A simple code snippet to illustrate "packed" mode :
+
+.. code-block:: python
+
+   # Channel creation, define elementType as packed
+   spikeChannel = board.createChannel(name=b'nxspk', elementType="packed", numElements=50)
+   spikeChannel.write(1, [1,2,3,4]);
+
+.. code-block:: c
+
+   //In your Snip
+   static int32_t spikeData[16] = {0};
+   static int channelID = -1;
+   channelID = getChannelID("nxspk");
+   readChannel(channelID, spikeData, 1); //spike data should be able to read 1,2,3,4 in sa single call
+
+
+
+
+
+
+
+
+
+
+
+

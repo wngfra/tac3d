@@ -1,0 +1,88 @@
+NxCompiler
+==========
+
+Overview
+--------
+
+The NxSDK compiler maps an NxNet network or network tree into the appropriate backend, e.g. Loihi hardware.  The compiler
+is run as part of net.run(), where net is an NxNet object. The compiler is composed of two main components, the partitioner
+and the mapper.
+
+The partitioner takes the NxNet network or network tree and assigns logical core IDs to all compartments in the network
+or network tree.  The mapper then consumes the output of the partitioner (i.e. an NxNet network or network tree enhanced
+with logical core ID assignments) and maps it down to the NxCore interface.
+
+.. figure:: _static/nxcompiler_overview.png
+   :alt: NxCompiler Overview
+
+Partitioner
+-----------
+
+The partitioner runs a partitioning algorithm on each network in a network tree.  For a given network in a network tree,
+if a custom partitioner is specified, then the partitioner will use the custom partitioner module for that network.
+Otherwise, the partitioner will utilize a default partitioner module.
+
+The requirement on any partition of a network tree is that each network in a network tree must use a set of logical
+core IDs that is disjoint from the set of logical core IDs used by any other network in the tree.
+
+A custom partitioner is specified for a given network as follows:
+
+.. code-block:: python
+
+   net = nx.NxNet()
+   customPartitionerModule = YourPartitionerModule()
+   net.customPartitioner = customPartitionerModule
+
+The custom partitioner module must be a subclass of AbstractPartitionerModule.
+
+.. autoclass:: nxsdk.compiler.nxsdkcompiler.partitioner_module_abstract_class.AbstractPartitionerModule
+   :members:
+   :undoc-members:
+   :inherited-members:
+
+Mapper
+------
+
+The mapper runs a mapping algorithm on each network in a network tree.  For a given network in a network tree, if a
+custom mapper is specified, then the mapper will use the custom mapper module for that network.  Otherwise, the mapper
+will utilize a default mapper module.
+
+A custom mapper is specified for a given network as follows:
+
+.. code-block:: python
+
+   net = nx.NxNet()
+   mapperModule = YourMapperModule()
+   net.customMapper = mapperModule
+
+The custom mapper module must be a subclass of AbstractMapperModule.
+
+.. autoclass:: nxsdk.compiler.nxsdkcompiler.mapper_module_abstract_class.AbstractMapperModule
+   :members:
+   :undoc-members:
+   :inherited-members:
+
+In order to connect an NxNet network that has a custom mapper module with another NxNet network, each custom mapper
+module must be able to support the following:
+
+* Implement YourOutputMapperStub that inherits from OutputMapperStubInterface.
+* Map NxNet InputStub objects to corresponding InputMapperStub objects.  When an InputMapperStub object is created, call its attemptConnection method.
+* Map NxNet OutputStub objects to corresponding YourOutputMapperStub objects.  When a YourOutputMapperStub is created, call its attemptConnection method.
+
+.. autoclass:: nxsdk.net.nodes.connection_stubs.OutputStub
+   :members:
+   :undoc-members:
+
+.. autoclass:: nxsdk.net.nodes.connection_stubs.InputStub
+   :members:
+   :undoc-members:
+
+.. autoclass:: nxsdk.compiler.nxsdkcompiler.mapper_stubs.OutputMapperStubInterface
+   :members:
+   :undoc-members:
+   :inherited-members:
+
+.. autoclass:: nxsdk.compiler.nxsdkcompiler.mapper_stubs.InputMapperStub
+   :members:
+   :undoc-members:
+   :inherited-members:

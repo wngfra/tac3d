@@ -1,0 +1,69 @@
+Learning Engine Scaling
+===========================
+The Loihi learning engine hardware supports learning rules that take on a sum of products form as shown below:
+
+.. figure:: _static/learning_rule_mathematical_description.png
+   :alt: figure 1 - Generic learning rule description
+
+where Z_l is a synaptic state variable (i.e. weight, delay, tag), D_r is a dependency factor (i.e. x0, y0, r0, uk),
+S_r is a scaling constant, and F_{l,r,s} is a multiplicative factor (e.g. x1, y1, w).
+
+Given that the computation is implemented with fixed point multipliers and accumulators, the Loihi learning engine does
+introduce implicit scaling into the computation to avoid overflowing the accumulator.  Specifically, when computing the
+product of the N_F terms and S_r, the following iterative computation is done:
+
+.. figure:: _static/learning_rule_iterative_mult.png
+   :alt: figure 2 - Product term computation
+
+where \bar{P}_s accumulates the product.  Note that \bar{P}_{N_F+1} is up shifted by the exponent of S_r before being
+summed. b_s is defined as follows:
+
+.. figure:: _static/learning_rule_mult_scaling.png
+   :alt: figure 3 - Product scaling factor
+
+where B^A = 15 and the width of f_k depends on the factor, e.g. width(w) = 8, width(d) = 6, width(t) = 8, width(s_r^{mant}) = 3.
+
+The interative product computation introduces the bit shift b_s that changes the numerical result of the learning engine
+if three factors are multiplied. As an example, consider the following learning connection:
+
+.. code-block:: python
+
+   lr = net.createLearningRule(dw='x0*w*w',
+                                x1Impulse=40,
+                                x1TimeConstant=4,
+                                y1Impulse=40,
+                                y1TimeConstant=4,
+                                tEpoch=1)
+   connProto2 = nx.ConnectionPrototype(weight=10, delay=0, enableLearning=1,
+                                       learningRule=lr)
+
+Assume 2 spikes are injected into the connection at t0 and t1, where t0 < t1.  The resulting weight after each spike is
+shown below.
+
+**At t0 spike**
+
+Starting weight: 10
+
+* b1 = 0
+* b2 = 16 - 15 = 1
+* b3 = 19 - 1 - 15 = 3
+* \bar{P}_1 = (1 >> 0) * 10 = 10
+* \bar{P}_2 = (10 >> 1) * 10 = 50
+* \bar{P}_3 = (50 >> 3) * 1 = 6
+* dw = 6
+
+Ending weight: w = w + dw = 16
+
+**At t1 spike**
+
+Starting weight: 16
+
+* b1 = 0
+* b2 = 16 - 15 = 1
+* b3 = 19 - 1 - 15 = 3
+* \bar{P}_1 = (1 >> 0) * 16 = 16
+* \bar{P}_2 = (16 >> 1) * 16 = 128
+* \bar{P}_3 = (128 >> 3) * 1 = 16
+* dw = 16
+
+Ending weight: w = w + dw = 32

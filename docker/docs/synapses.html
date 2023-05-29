@@ -1,0 +1,493 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Synapses &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Synapse Format" href="synapse_fmt.html" />
+    <link rel="prev" title="Axon Configuration" href="axon_cfg.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxapi.html">NxAPI</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="nxapi.html#nxnet">NxNet</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="nxapi.html#nxcore">NxCore</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="nxcore.html">NxCore API</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#graph">Graph</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="nxcore.html#nodesets">NodeSets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#utilities">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nxcore.html#state-monitoring">State monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#n1-n2-n2a-and-so-forth">N1, N2, N2A, and so forth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#navigating-the-hierarchy">Navigating the Hierarchy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#decomposing-the-compartment">Decomposing the Compartment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nxapi.html#decomposing-the-connection">Decomposing the Connection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxnet.html">NxNet API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxcore.html">NxCore API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#graph">Graph</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="nxcore.html#nodesets">NodeSets</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cx_profile_cfg.html">CxProfileConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cx_cfg.html">CxConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cx_meta_state.html">Compartment Metastate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dendrite_accum_cfg.html">Dendrite Accumulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dendrite_shared_cfg.html">Dendrite Shared Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dendrite_time_state.html">Dendrite Time State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vth_profile_cfg.html">VthProfileConfig</a></li>
+<li class="toctree-l3"><a class="reference internal" href="axon_map.html">Axon Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="axon_cfg.html">Axon Configuration</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Synapses</a></li>
+<li class="toctree-l3"><a class="reference internal" href="synapse_fmt.html">Synapse Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="synapse_map.html">Synapse Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stdp_post_state.html">Stdp Post State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stdp_pre_profile_cfg.html">Stdp Pre Profile Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stdp_profile_cfg.html">Stdp Profile Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="soma_state.html">Soma State Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="num_updates.html">numUpdates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="time_state.html">Time State</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcore.html#state-monitoring">State monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxapi.html">NxAPI</a> &raquo;</li>
+        
+          <li><a href="nxcore.html">NxCore API</a> &raquo;</li>
+        
+      <li>Synapses</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="module-nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf">
+<span id="synapses"></span><h1>Synapses<a class="headerlink" href="#module-nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInf">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.</span></code><code class="sig-name descname"><span class="pre">SynapsesObjInf</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Synapses</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numStdp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents Synapses NodeSet which corresponds to an uncompressed list
+of all synapses on a neuro core.
+This NodeSet does not correspond to a physical register in a neuro core
+but only exists as a more convenient user interface to read and write
+synapses. The synaptic state is actually densely bit-encoded in the
+SynapseMem NodeSet whose entries are generated from the Synapses NodSet
+via the synapse compiler:</p>
+<p>Synapses --[SynapseCompiler]--&gt; SynapseMem</p>
+<p>Each synapse, is described by the absolute compartment index that it is
+connected to, a weight, delay and tag, a learning-enabled flag and a
+pointer to a SynapseFmt entry that provides further shared configuration
+parameters for a synapse.</p>
+<p>Synapse organization:</p>
+<p>All synapses belonging to an input axon have to be defined sequentially
+as a sublist within the Synapses NodeSet because the SynapseMap NodeSet
+points to the beginning and end of this sublist.
+To optimize synapse encoding, synapses that point to the same SynapseFmt
+entry should be allocated sequentially. In addition, those synapses
+should be sorted in ascending order by their compartment index.</p>
+<p>To encode Synapses into SynapseMem, the SynapseCompiler follows the
+following encoding scheme:</p>
+<ul class="simple">
+<li><p>All synapses of an axon are organized in a set of lists called synaptic     entries. With every list being at most 60 synapses long. A new list will     be created if the SynapseFmt pointer changes of the length of the current     exceeds 60.</p></li>
+<li><p>Every synaptic entry consists of a prefix and a list of at most 60     synapses:</p></li>
+</ul>
+<p>SynEntry = (Prefix, {Syn})</p>
+<ul class="simple">
+<li><p>The prefix contains a pointer to a shared SynapseFmt entry and a set of     configuration parameters. Different synaptic entries can share the same     SynapseFmt entry but only the synapses in a SynEntry share the same     prefix.</p></li>
+<li><p>Each Synapse encodes the synaptic state information like weights,</p></li>
+</ul>
+<p>delay, etc. in a format dictated by the SynapseFmt.</p>
+<p>Size: Variable</p>
+<dl class="py attribute">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInf.CIdx">
+<code class="sig-name descname"><span class="pre">CIdx</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInf.CIdx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInf.Dly">
+<code class="sig-name descname"><span class="pre">Dly</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInf.Dly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInf.LrnEn">
+<code class="sig-name descname"><span class="pre">LrnEn</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInf.LrnEn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInf.Tag">
+<code class="sig-name descname"><span class="pre">Tag</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInf.Tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInf.Wgt">
+<code class="sig-name descname"><span class="pre">Wgt</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInf.Wgt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInf.synFmtId">
+<code class="sig-name descname"><span class="pre">synFmtId</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInf.synFmtId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structure/Union member</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.</span></code><code class="sig-name descname"><span class="pre">SynapsesObjInfWrapper</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">SynapsesObjInf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entryId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents Synapses NodeSetInterface.</p>
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper.CIdx">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">CIdx</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper.CIdx" title="Permalink to this definition">¶</a></dt>
+<dd><p>(uint10) Index of the compartment the synapse is connected to. If
+population-mode (connection-sharing) is used, cIdx is the relative
+compartment index with respect to the destination population it is a
+part of. Otherwise, cIdx is the absolute compartment index
+within the neuro core.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper.Dly">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">Dly</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper.Dly" title="Permalink to this definition">¶</a></dt>
+<dd><p>(uint6) Delay of the synapse. It allows to delay the accumulation
+of a spike in the compartment current by a certain number of time
+steps if SynapseFmt.ignoreDly=0. Otherwise <cite>dly</cite> acts as a general
+purpose synaptic variable like <cite>tag</cite> to be used for
+learning. The dynamic range of <cite>dly</cite> is 0..dd..62.
+But the precision 'dd' depends on <cite>Synapse.Fmt.dlyBits</cite>:
+<span class="math notranslate nohighlight">\(dd=2^{6 - numDelayBits}\)</span>.</p>
+<p>That means the given delay will be rounded and the actual delay per
+spike is :</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(numLsbBits = 6 - numDelayBits\)</span></p></li>
+</ul>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(actDelay=(delay &gt;&gt; numLsbBits) &lt;&lt; numLsbBits\)</span></p>
+</div></blockquote>
+<p>This corresponds to only preserving the numDelayBits most significant
+bits.
+Note: When learning is enabled, <cite>dly</cite> will saturate at the
+dynamic range boundaries. Also note that
+<cite>DendAccumCfg.delayBits</cite> must be equal or larger than <cite>dlyBits</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper.LrnEn">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">LrnEn</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper.LrnEn" title="Permalink to this definition">¶</a></dt>
+<dd><p>(uint1) Activates learning and thus modification of synaptic state
+via the learning engine according to the learning rule assigned to
+the synapse via the composite stdpProfile pointer defined in
+StdpPreProfileCfg, SynapseFmt and StdpPostState. Note: This setting
+of LrnEn must be in agreement with SynapseFmt.learningCfg and LrnEn
+of all other synapses using the same SynEntry. I.e. different
+settings of LrnEn within a SynEntry are only allowed if
+SynapseFmt.learningCfg=3.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper.Tag">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">Tag</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper.Tag" title="Permalink to this definition">¶</a></dt>
+<dd><p>(int9) Tag of the synapse. The tag is similar to the synaptic
+weight in that it is subject to the same kinds of dynamic range,
+sign-sharing and precision constraints, except that the tag plays no
+role during spike accumulation but only serves as a general purpose
+scratch variable for learning purposes. For the tag, numTagBits and
+tagBits replace the role of numWgtBits and wgtBits in SynapseFmt.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper.Wgt">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">Wgt</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper.Wgt" title="Permalink to this definition">¶</a></dt>
+<dd><p>(int9) Weight of the synapse. The dynamic range of a weight is
+generally in the range of -256..0..255 but with variable precision
+and the dynamic range can be constraint to only positive or
+negative values. Depending on SynapseFmt.fanoutType and
+SynapseFmt.wgtBits, allowed values are constraint to:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 63%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>fanoutType</p></th>
+<th class="head"><p>dynamicRange</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MIXED</p></td>
+<td><p>-256..dw..254</p></td>
+</tr>
+<tr class="row-odd"><td><p>EXCITATORY</p></td>
+<td><p>0..dw..255</p></td>
+</tr>
+<tr class="row-even"><td><p>INHIBITORY</p></td>
+<td><p>-256..dw..0</p></td>
+</tr>
+</tbody>
+</table>
+<p>Here the precision <cite>dw</cite> depends on <cite>fanoutType</cite> and
+<cite>numWeightBits</cite>.</p>
+<p><span class="math notranslate nohighlight">\(dw=2^{8 - numWeightBits - IS\_MIXED}\)</span>
+where numWeightBits is defined by SynapseFmt.wgtBits. That means the
+given weight will eventually be rounded and the actually
+accumulated weight per spike is :</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(numLsbBits = 8 - numWeightBits - IS\_MIXED\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(actWeight=(wgt &gt;&gt; numLsbBits) &lt;&lt; numLsbBits\)</span></p></li>
+</ul>
+<p>where <span class="math notranslate nohighlight">\(IS_MIXED = fanoutType==MIXED\)</span>.</p>
+<p>This corresponds to only preserving the <span class="math notranslate nohighlight">\((numWeightBits -
+IS_MIXED)\)</span> most significant bits. When learning is enabled, <cite>weight</cite>
+will saturate at the dynamic range boundaries.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows to configure multiple register fields.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper.synFmtId">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">synFmtId</span></code><a class="headerlink" href="#nxsdk.arch.n2a.graph.nodesets.synapses_obj_inf.SynapsesObjInfWrapper.synFmtId" title="Permalink to this definition">¶</a></dt>
+<dd><p>(uint4) Specifies pointer into SynapseFmt and thus selects which
+synapse format is applied to a synapse. Note: SynapseFmt[0] is
+illegal.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="synapse_fmt.html" class="btn btn-neutral float-right" title="Synapse Format" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="axon_cfg.html" class="btn btn-neutral float-left" title="Axon Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

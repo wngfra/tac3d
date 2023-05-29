@@ -1,0 +1,57 @@
+Working with Probes and Monitors in NxNet
+=========================================
+Probes enable you to see how the network changes over time. Below you should find examples on how to create probes
+and helper utilities to plot probes.
+
+.. code-block:: python
+
+    # This example shows how to configure probes for a single compartment
+    compartment = net.createCompartment(p)
+    # Create a compartment probe to probe the compartment states:
+    # compartment current(U) and compartment voltage(V)
+    # probeConditions=None implies default probe conditions
+    # will be used for each probe
+    params = [ProbeParameter.COMPARTMENT_CURRENT, ProbeParameter.COMPARTMENT_VOLTAGE]
+    probes = compartment.probe(params, probeConditions=None)
+
+.. code-block:: python
+
+    # This example shows how to configure probes for a compartment group
+    compartmentGrp = net.createCompartmentGroup(size=10, prototype=p)
+
+    # Create a compartment group probe to probe the compartment states:
+    # compartment current(U) and compartment voltage(V)
+    # Since no ProbeCondition is specified, a default probe condition
+    # will be used.
+    probes = compartmentGrp.probe([ProbeParameter.COMPARTMENT_CURRENT,
+                                       ProbeParameter.COMPARTMENT_VOLTAGE])
+
+Various **ProbeParameters** are enlisted below.
+
+.. autoclass:: nxsdk.api.enums.api_enums.ProbeParameter
+   :members:
+   :undoc-members:
+
+You may use any plotting libraries to plot probes. NxSDK uses *matplotlib* to plot probes.
+See :doc:`tutorials <nxnet_jupyter_tutorials>` for examples.
+
+To quickly plot a list of probes, use **plotProbes** mentioned below.
+
+.. automethod:: nxsdk.utils.plotutils.plotProbes
+
+.. automodule:: nxsdk.graph.monitor.nx_probes
+   :members:
+   :undoc-members:
+
+
+Energy and Execution Time Probes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*  :doc:`Energy and Execution Time Probes </energy_probes>`
+
+
+.. toctree::
+   :maxdepth: 2
+
+   energy_probes
+   telemetry

@@ -1,0 +1,16 @@
+K Nearest Neighbour
+===================
+
+The KNN module implements the KNN model described in the paper:
+
+    E. Paxon Frady, Garrick Orchard, David Florey, Nabil Imam, Ruokun Liu, Joyesh Mishra, Jonathan Tse, Andreas Wild, Friedrich T. Sommer, and Mike Davies. 2020. Neuromorphic Nearest Neighbor Search Using Intel's Pohoiki Springs. In Proceedings of the Neuro-inspired Computational Elements Workshop (NICE '20). Association for Computing Machinery, New York, NY, USA, Article 23, 1–10.
+    DOI: https://doi.org/10.1145/3381755.3398695
+    PrePrint: https://arxiv.org/abs/2004.12691
+
+Tutorials
+---------
+
+.. toctree::
+   :maxdepth: 1
+
+   jupyter/knnGist

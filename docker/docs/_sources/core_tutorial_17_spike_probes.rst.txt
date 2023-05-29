@@ -1,0 +1,27 @@
+NxCore: Spike Probes
+====================
+
+Motivation
+----------
+Within this tutorial, we illustrate how to configure and use spike probes.
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_17.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxcore/tutorial_17_spike_probes.py
+
+See also
+--------
+
+* :doc:`graph`
+* :doc:`coremonitor`
+* :doc:`coretimeseries`
+* :doc:`coreprobes`
+* :doc:`synapses`
+* :doc:`synapse_fmt`
+* :doc:`synapse_map`
+* :doc:`inputgen`

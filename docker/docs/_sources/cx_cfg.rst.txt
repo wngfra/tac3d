@@ -1,0 +1,5 @@
+CxConfig
+========
+.. automodule:: nxsdk.arch.n2a.graph.nodesets.cx_cfg_obj_inf
+   :members:
+   :undoc-members:

@@ -1,0 +1,1033 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Energy and Execution Time Probes &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Performing Energy Measurements in Pohoiki Spring and Kapoho Bay Using Telemetry Server" href="telemetry.html" />
+    <link rel="prev" title="Working with Probes and Monitors in NxNet" href="netprobes.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxnet.html">NxNet API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compartment.html">Compartment and CompartmentPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connection.html">Connection and ConnectionPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connectionsharing.html">Connection Sharing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron.html">Neuron and NeuronPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="groups.html">Groups</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="netprobes.html">Working with Probes and Monitors in NxNet</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="netprobes.html#energy-and-execution-time-probes">Energy and Execution Time Probes</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Energy and Execution Time Probes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="telemetry.html">Performing Energy Measurements in Pohoiki Spring and Kapoho Bay Using Telemetry Server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="learningrule.html">Specifying a Learning Rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multicompartment.html">Building Multi Compartment Neuron Model using Stack Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spikeinjectionandreceivers.html">Spike Injection and Spike Receivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxlogging.html">Logging in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcompiler.html">NxCompiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxnet_resource_map.html">NxNet Resource Map Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxnet.html">NxNet API</a> &raquo;</li>
+        
+          <li><a href="netprobes.html">Working with Probes and Monitors in NxNet</a> &raquo;</li>
+        
+      <li>Energy and Execution Time Probes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="energy-and-execution-time-probes">
+<h1>Energy and Execution Time Probes<a class="headerlink" href="#energy-and-execution-time-probes" title="Permalink to this headline">¶</a></h1>
+<p>This section discusses how the execution time probes
+(<a class="reference internal" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe" title="nxsdk.graph.nxenergy_time.ExecutionTimeProbe"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExecutionTimeProbe</span></code></a>)
+and energy probes
+(<a class="reference internal" href="#nxsdk.graph.nxenergy_time.EnergyProbe" title="nxsdk.graph.nxenergy_time.EnergyProbe"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnergyProbe</span></code></a>)
+work, how to configure probes and the API to use them.</p>
+<div class="section" id="how-power-and-execution-time-are-recorded">
+<h2>How Power and Execution Time are recorded<a class="headerlink" href="#how-power-and-execution-time-are-recorded" title="Permalink to this headline">¶</a></h2>
+<p>NxSDK offers performance profiling while executing a spiking neuron network
+and /or snips on one of the embedded CPUs. This allows to measure both
+execution  time and power/energy consumption by Loihi in real-time. In order
+to support both, NxSDK provides ExecutionTime and EnergyProbes which are
+analogous to other state probes for membrane potential, spikes, etc.
+EnergyProbes allow to measure both energy and execution time while
+ExecutionTimeProbes  allow to only measure execution time.</p>
+<p>Power is measured by the host CPU while the execution time is measured by
+one of the embedded Lakemont (LMT) CPUs which drives the time step
+advancement. Both power and execution time series are acquired independently
+and asynchronously from each other. This means that the host acquires the
+power as a function of the host timestamps while the embedded LMT CPU acquires
+the  wallclock time (using a start and end timestamp) for each algorithmic
+time step using the LMT timestamps.
+Hence the time stamps for the power and execution time data points are
+different.  Only at the end of a network execution, the time axes for both
+the power and execution time data points are synchronized onto a common time
+axis. Therefore, we now have a set of power readings and start and end
+timestamps for each algorithmic timestep on a common time axis.</p>
+<p>To compute energy, using the power readings (obtained on the host), we then
+interpolate them onto the set of time points which correspond to the start
+and end timestamps (obtained on the LMT) for each algorithmic timestep. As a
+result, both power and execution time are now available as a function
+of algorithmic time steps.</p>
+</div>
+<div class="section" id="phases-for-each-algorithmic-timestep">
+<h2>Phases for each algorithmic timestep<a class="headerlink" href="#phases-for-each-algorithmic-timestep" title="Permalink to this headline">¶</a></h2>
+<p>During each algorithmic time step, the embedded CPUs and neuro cores go
+through a number of different sequential but optional phases listed below.
+During each algorithmic time step, one of the embedded CPUs measures the
+time at the start and end of an algorithmic time step just after the last
+optional 'management' phase.</p>
+<p>The various phases are:</p>
+<p>1. <strong>Spiking</strong>: During the first phase, neuro cores update their internal
+state and send and receive spike messages amongst them or the environment. No
+other message types than spike messages are allowed in the asynchronous mesh
+during this phase. In addition, the user has the possibility to execute a snip
+during the 'spiking' phase.</p>
+<p>2. <strong>Pre-Learning Management</strong>: If the 'learning' phase is executed during the
+current time step, the user has the option to execute an optional
+'Pre-Learning management' phase just before the 'learning' phase. During a
+'Pre-Learning management' phase, the neuro cores enter a mode during which they
+are able to process management messages via the asynchrnous mesh while the user
+has the option to execute another snip during the 'Pre-Learning management'
+phase.</p>
+<p>3. <strong>Learning</strong>: Every multiple of a predefined learning epoch, the neuro cores
+update their synaptic state. During this phase, no spike or management message
+will be processed by the neuro cores.</p>
+<p>4. <strong>Management</strong>: Independent of whether a 'learning' phase is executed during
+the current time step or not, another 'management' phase can be executed at
+the end or just after the 'learning' phase giving the user another possibility
+to execute a snip. After this 'management' phase, the embedded CPU will
+immediately proceed to the next algorithmic time step or will hand control back
+to the host CPU. In case the host takes over, it may either reconfigure the
+system or probe any of the states within the neuro cores or the spike counters
+in the embedded CPUs.</p>
+<p>5. <strong>Host</strong>: After the execution of each algorithmic timestep, the embedded
+CPUs (LMT) may interact with the host for additional synchronization. This
+is called the 'host' phase. The time taken for this phase for the current
+algorithm timestep can be simply computed by cacluating the difference
+between the end timestamp of the current algorithmic timestep and the start
+timestamp of the next algorithmic timestep.</p>
+<p>Both energy and execution time probes give access to the execution time
+elapsed during each phase, and power measurements.</p>
+<p><strong>NOTE</strong>: Because the sensor used to measure power consumption has a rather
+long time constant on the order of miliseconds, workloads should generally
+be repeated multiple times in order to allow the system to settle into a
+steady state for reliable energy characterizations.</p>
+</div>
+<div class="section" id="configuring-probes">
+<h2>Configuring Probes<a class="headerlink" href="#configuring-probes" title="Permalink to this headline">¶</a></h2>
+<p>In order to record the energy consumed or time elapsed (i.e. execution
+time) when a spiking neural network is run, we need to know on which board
+(i.e. hardware) the network ran on. Hence, in order to configure energy and
+execution time probes, we need access to the board object.
+Therefore, we use <code class="xref py py-meth docutils literal notranslate"><span class="pre">board.probe()</span></code>
+method to configure energy and execution time probes.
+Once a performance probe is configured, we get a probe object back has a
+rich userfacing API to access, process and visualize the the underlying data.</p>
+<p>Below, we show some examples to create energy and execution time probes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Configure an execution time probe</span>
+<span class="kn">from</span> <span class="nn">nxsdk.graph.monitor.probes</span> <span class="kn">import</span> <span class="n">PerformanceProbeCondition</span>
+<span class="kn">from</span> <span class="nn">nxsdk.api.enums.api_enums</span> <span class="kn">import</span> <span class="n">ProbeParameter</span>
+
+<span class="n">probeCond1</span> <span class="o">=</span> <span class="n">PerformanceProbeCondition</span><span class="p">(</span><span class="n">tStart</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tEnd</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                                    <span class="n">bufferSize</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">binSize</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">tprobe1</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">EXECUTION_TIME</span><span class="p">,</span> <span class="n">probeCond1</span><span class="p">)</span>
+
+<span class="c1"># Configure an energy probe</span>
+<span class="n">probeCond2</span> <span class="o">=</span> <span class="n">PerformanceProbeCondition</span><span class="p">(</span><span class="n">tStart</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tEnd</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                                    <span class="n">bufferSize</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">binSize</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">eprobe1</span> <span class="o">=</span> <span class="n">board</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="n">ProbeParameter</span><span class="o">.</span><span class="n">ENERGY</span><span class="p">,</span> <span class="n">probeCond2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="coreprobes.html#nxsdk.graph.monitor.probes.PerformanceProbeCondition" title="nxsdk.graph.monitor.probes.PerformanceProbeCondition"><code class="xref py py-class docutils literal notranslate"><span class="pre">PerformanceProbeCondition</span></code></a>
+configues the probe and its constructor takes 4 arguments. They are:</p>
+<p><strong>tStart</strong>: Time at which the probing starts.</p>
+<p><strong>tEnd</strong>: Time at which the probing ends.</p>
+<p><strong>bufferSize</strong>: Specifies the size of the buffer on the LMT that will be used
+to collect time stamps. Size in terms of timesteps, e.g. bufferSize = 100,
+will collect beginning and ending time stamps for 100 timesteps before
+sending data back to the host.</p>
+<p><strong>binSize</strong>: Specifies the binSize of the time stamps collected on the LMT, e.g
+. a binSize of 8 indicates that the time stamps for 8 time steps will be
+summed in a single bin and will be returned as a single entry.</p>
+<p><strong>NOTE</strong>:The above mentioned parameters need to be chosen carefully.
+Particularly <strong>bufferSize</strong>. If there is no sufficient memory on the
+Lakemont (LMT), then one can run into out of memory(OOM) erros which
+manifests as a link time error during the build phase of snips. Also, the
+duration of probing as defined by <strong>tStart</strong> and <strong>tEnd</strong> must be
+sufficiently long enough say (at least 1000 timesteps) in order to collect
+ample number of power readings which will be used for energy computation.</p>
+</div>
+<div class="section" id="designing-a-power-test">
+<h2>Designing a Power Test<a class="headerlink" href="#designing-a-power-test" title="Permalink to this headline">¶</a></h2>
+<p>The time constant of the power measurements is significantly longer than a
+typical Loihi timestep or phase duration, so only the average power for a
+workload can be measured in this way. Finer grained power measurements of
+individual workload components requires designing a workload that
+isolates this component.</p>
+<p>For example, a particular algorithm may require a core to be reset.
+Power probes can report the average power of the algorithm, but not how much
+energy was consumed just by the reset itself. To isolate the reset power, we
+would write a test that just resets the core, without running the other
+algorithm steps.</p>
+<p>However, a single reset would be too short in duration for the power to be
+accurately measured, so for power measurement we would repeatedly reset the
+core and measure the average power. At the scale of a single core, the power
+consumed by reset would still be very small compared to the overall system
+power (which in the case of Nahuku32 would include all Nahuku32 chips) and
+could therefore be lost in the power measurement noise. The solution is to
+replicate the workload across many cores/chips and divide the result by the
+total number of copies.</p>
+<p>In general, more accurate measurements can be obtained by repeating the
+workload, both by having multiple copies running simultaneously, and
+by having each repeat its computation multiple times.</p>
+</div>
+<div class="section" id="components-of-power-consumption">
+<h2>Components of Power Consumption<a class="headerlink" href="#components-of-power-consumption" title="Permalink to this headline">¶</a></h2>
+<p>Power consumption can be broken down into &quot;static&quot; (transistor leakage)
+and &quot;dynamic&quot; (switching) components. Power consumption can also be broken
+down by Loihi component: Lakemonts and Neurocores.</p>
+<p>Lakemonts are always fully powered, so there is no way to reduce Lakemont
+static power consumption. However, power probes know how many Lakemonts a
+model uses and will report the static power for those Lakemonts.</p>
+<p>Unlike Lakemonts, unused Neurocores can be partially powered down to reduce
+their static power consumption, and this is handled automatically by NxSDK.
+The power probes will also automatically remove any power consumed by
+unused/partially powered down cores from the detailed power measurement.</p>
+<p>Lakemont dynamic power consists of clock power, and additional power
+consumed by code execution (when a Lakemont is not in a &quot;waiting&quot; state).
+NxSDK will only clock the Lakemonts which are in use, and will measure the
+percentage of time each clocked Lakemont is executing code. These
+measurements are used to determine how much dynamic power Lakemonts are
+consuming. Clock power can be significant, almost 1.5W in total for all 96
+Lakemonts on a Nahuku32, and clocked Lakemonts continue to consume clock
+power, even when not performing any computation (such as when waiting for
+the next Loihi phase to start).</p>
+<p>Neurocore dynamic power depends entirely on computation being performed.
+If a Neurocore has finished its computation for the current phase and is
+waiting for the start of the next phase, it will not consume any dynamic
+power (the Neurocores are asynchronous, there is no clock).</p>
+</div>
+<div class="section" id="power-measurement-sequence">
+<h2>Power Measurement Sequence<a class="headerlink" href="#power-measurement-sequence" title="Permalink to this headline">¶</a></h2>
+<p>When energy probes are enabled, the shutdown sequency of the board is
+modified. NxSDK will take additional power measurements after the run
+completes, but with the Lakemonts still clocked to measure the &quot;idle&quot;
+power (power when neurocore dynamic energy is 0).</p>
+<p>The neurocores are then powered down and further measurements are taken.
+By measuring the power drop when neurocores are powered down, the static
+power consumption of the cores is inferred.</p>
+<p>When disconnecting from the board, NxSDK estimates the various
+components (static/dynamic, Lakemont/Neurocore) of power. These values
+are only therefore only available after disconnecting.</p>
+</div>
+<div class="section" id="power-report">
+<h2>Power Report<a class="headerlink" href="#power-report" title="Permalink to this headline">¶</a></h2>
+<p>The different components of power consumption are reported as a dictionary accessible through <strong>board.energyTimeMonitor.powerProfileStats.power</strong></p>
+<p>All power measurements are in units of mW.</p>
+<dl class="simple">
+<dt>The fields are:</dt><dd><ul class="simple">
+<li><p><strong>total</strong>: The total power consumption of the system during the run including all used and unused components</p></li>
+<li><p><strong>idle</strong>: The total power consumption of the system after Neurocore and Lakemont execution has finished, but Lakemonts are still clocked</p></li>
+<li><p><strong>static</strong>: The total static power consumption of the system during the run</p></li>
+<li><p><strong>dynamic</strong>: The total dynamic power consumption of the system during the run</p></li>
+<li><p><strong>core</strong>: A dictionary holding breakdown of the Neurocore power consumption
+- <strong>logic_static</strong>: Total leakage for logic in all used Neurocores
+- <strong>SRAM_static</strong>: Total leakage for memory in all used Neurocores
+- <strong>static</strong>: Total leakage of all used Neurocores
+- <strong>dynamic</strong>: Total dynamic power of all used Neurocores during the run</p></li>
+<li><p><strong>lakemont</strong>: A dictionary holding breakdown of the Lakemont power consumption
+- <strong>logic_static</strong>: Total leakage for logic in all used Lakemonts
+- <strong>SRAM_static</strong>: Total leakage for memory in all used Lakemonts
+- <strong>static</strong>: Total leakage of all used Lakemonts
+- <strong>clock</strong>: Total clock power for all used Lakemonts
+- <strong>code</strong>: Additional power consumed by code execution across all Lakemonts
+- <strong>dynamic</strong>: Total dynamic power for all used Lakemonts</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="executiontimeprobe">
+<h2>ExecutionTimeProbe<a class="headerlink" href="#executiontimeprobe" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.graph.nxenergy_time.</span></code><code class="sig-name descname"><span class="pre">ExecutionTimeProbe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energyTimeMonitor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probeCondition</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe" title="Permalink to this definition">¶</a></dt>
+<dd><p>A probe that allows to measure the execution time per algorithmic time     step.</p>
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.allTimeStamps">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">allTimeStamps</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.allTimeStamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the timestamps which record the start and end of every phase
+in a timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.binSize">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">binSize</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.binSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the bin size being used</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.bufferSize">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">bufferSize</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.bufferSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the buffer size being used</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.endTimeStamps">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">endTimeStamps</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.endTimeStamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the timestamps which record the end of every phase in a
+timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.hostTimePerTimeStep">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">hostTimePerTimeStep</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.hostTimePerTimeStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the time spent in the host phase for each algorithmic
+timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.isDone">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">isDone</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.isDone" title="Permalink to this definition">¶</a></dt>
+<dd><p>A probe is done when all the data collection is done i.e. when
+current timestep &gt; tEnd</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.isReady">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">isReady</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.isReady" title="Permalink to this definition">¶</a></dt>
+<dd><p>A probe is ready when tStart &lt; current timestep &lt;= tEnd i.e. when
+some the probe data was collected and recieved at least once</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.learningTimePerTimeStep">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">learningTimePerTimeStep</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.learningTimePerTimeStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the time spent in the learning phase for each algorithmic
+timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.managementTimePerTimeStep">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">managementTimePerTimeStep</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.managementTimePerTimeStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the time spent in the management phase for each algorithmic
+timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.numStepsMax">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numStepsMax</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.numStepsMax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the maximum number of time steps for which the
+probe will run</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.numStepsRan">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">numStepsRan</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.numStepsRan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of steps for which the probe ran for</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.plotExecutionTime">
+<code class="sig-name descname"><span class="pre">plotExecutionTime</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yAxis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.plotExecutionTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the time spent in various phases (along with the total time
+spent in all phases&quot; for each timestep.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>yAxis</strong> (<em>str</em>) -- Selects between 'linear' and 'log' scaled y axis.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.preLearningMgmtTimePerTimeStep">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">preLearningMgmtTimePerTimeStep</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.preLearningMgmtTimePerTimeStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the time spent in the pre-learning management phase for each
+algorithmic timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.spikingTimePerTimeStep">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">spikingTimePerTimeStep</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.spikingTimePerTimeStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the time spent in the spiking phase for each algorithmic
+timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.startTimeStamps">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">startTimeStamps</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.startTimeStamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the timestamps which record the start of every phase in a
+timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.tEnd">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tEnd</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.tEnd" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns tEnd, the timestep at which probing ends</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.tStart">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tStart</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.tStart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns tStart, the timestep at which probing starts</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.timeSteps">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">timeSteps</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.timeSteps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of algorithmic timesteps for which the probe ran
+for</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.timeUnits">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">timeUnits</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.timeUnits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the units for timesteps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.totalExecutionTime">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">totalExecutionTime</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.totalExecutionTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total time spent in all the phases for each
+algorithmic timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.totalHostTime">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">totalHostTime</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.totalHostTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total time spent in the host phase for each
+algorithmic timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.totalLearningTime">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">totalLearningTime</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.totalLearningTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total time spent in the learning phase for each
+algorithmic timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.totalManagementTime">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">totalManagementTime</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.totalManagementTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total time spent in the management phase for each
+algorithmic timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.totalPreLearningMgmtTime">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">totalPreLearningMgmtTime</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.totalPreLearningMgmtTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total time spent in the pre-learning management phase
+for each algorithmic timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.totalSpikingTime">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">totalSpikingTime</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.totalSpikingTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the total time spent in the spiking phase for each
+algorithmic timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.ExecutionTimeProbe.totalTimePerTimeStep">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">totalTimePerTimeStep</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.ExecutionTimeProbe.totalTimePerTimeStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the time spent in all the phase for each algorithmic
+timestep</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="energyprobe">
+<h2>EnergyProbe<a class="headerlink" href="#energyprobe" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">nxsdk.graph.nxenergy_time.</span></code><code class="sig-name descname"><span class="pre">EnergyProbe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energyTimeMonitor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probeCondition</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>A probe that allows to measure the power and energy per algorithmic
+time step. Energy Types: The Energy and Power comes from 4 different
+components: VDD, VDDM, VDDA, VDDIO. VDD_TOTAL is the sum of all the
+before mentioned components. Thus we have 5 Energy Types in Total.</p>
+<p><strong>VDD</strong>: Neuro cores, embedded Lakemont CPU, mesh router, FPIO/PIO     protocol logic, etc. (everything else that consumes power on the chip)</p>
+<p><strong>VDDM</strong>: SRAM memories inside embedded Lakemont CPUs and within neuro    cores (includes both static leakage and active power)</p>
+<p><strong>VDDA</strong>: Phase locked loop (PLL) power for clock generation on the     embedded Lakemont CPU</p>
+<p><strong>VDDIO</strong>: Pad drivers for FPIO and PIO communication interfaces</p>
+<p><strong>Energy Phases</strong>: Also, for each power (and energy type) we collect     readings at distinct phases: Spiking, PreLearnManagement, Learning,    Management and Host Phases. Total phase is the sum of readings in all the    individual phases. Thus, we have 6 phases in Total.</p>
+</div></blockquote>
+<p>For each energy type and energy phase, we can obtain its corresponding   timeseries which can be visualized as a matrix below. The rows represent    the various energy phases and the columns represent the various energy
+types and each entry is the corresponding timeseries</p>
+<blockquote>
+<div><table class="docutils align-default">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 21%" />
+<col style="width: 18%" />
+<col style="width: 21%" />
+<col style="width: 11%" />
+<col style="width: 13%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Spiking</p></th>
+<th class="head"><p>PreLearnMgmt</p></th>
+<th class="head"><p>Learning</p></th>
+<th class="head"><p>Management</p></th>
+<th class="head"><p>Host</p></th>
+<th class="head"><p>Total</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>VDD</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>VDDM</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>VDDA</p></td>
+<td></td>
+<td></td>
+<td><p>X</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>VDDIO</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Total</p></td>
+<td><p>Y</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>Z</p></td>
+</tr>
+</tbody>
+</table>
+<p>In the above figure X, Y, Z are various timeseries.</p>
+<p><strong>X</strong> - getEnergyPerTimeStep(EnergyType.VDDA, EnergyPhase.MANAGEMENT)</p>
+<p><strong>Y</strong> - getEnergyPerTimeStep(EnergyType.TOTAL, EnergyPhase.PRE_LEARN_MGMT)    this can also be obtained as preLearnManagementPhaseEnergyPerTimeStep()</p>
+<p><strong>Z</strong> - getEnergyPerTimeStep(EnergyType.TOTAL, EnergyPhase.TOTAL)     this can also be obtained as totalEnergyPerTimeStep()</p>
+</div></blockquote>
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.EnergyPhase">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">EnergyPhase</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.EnergyPhase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access the energy phase Enum</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.EnergyType">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">EnergyType</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.EnergyType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access the energy type Enum</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.energyUnits">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">energyUnits</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.energyUnits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the units for energy</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.getEnergyPerTimeStep">
+<code class="sig-name descname"><span class="pre">getEnergyPerTimeStep</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energyType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energyPhase</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.getEnergyPerTimeStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the energy type and energy phase, returns the
+corresponding energy per
+timestep</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.hostPhaseEnergyPerTimeStep">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">hostPhaseEnergyPerTimeStep</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.hostPhaseEnergyPerTimeStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a numpy array of energy per timestep spent in the host
+phase</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.learningPhaseEnergyPerTimeStep">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">learningPhaseEnergyPerTimeStep</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.learningPhaseEnergyPerTimeStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a numpy array of energy per timestep spent in the learning
+phase</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.managementPhaseEnergyPerTimeStep">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">managementPhaseEnergyPerTimeStep</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.managementPhaseEnergyPerTimeStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>&quot; Get a numpy array of energy per timestep spent in the management
+phase</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.plotEnergy">
+<code class="sig-name descname"><span class="pre">plotEnergy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yAxis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.plotEnergy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the energy per timestep corresponding to all phases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>yAxis</strong> (<em>str</em>) -- Selects between 'linear' and 'log' scaled y axis.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.plotEnergyPhase">
+<code class="sig-name descname"><span class="pre">plotEnergyPhase</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energyPhase</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yAxis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.plotEnergyPhase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the various energy types for a particular energy phase vs.
+algorithmic timesteps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>energyPhase</strong> (<em>EnergyPhaseEnum</em>) -- Specify the energy phase</p></li>
+<li><p><strong>yAxis</strong> (<em>str</em>) -- Selects between 'linear' and 'log' scaled y axis.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.plotEnergyType">
+<code class="sig-name descname"><span class="pre">plotEnergyType</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energyType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yAxis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.plotEnergyType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the various energy phases for a particular energy type vs.
+algorithmic timesteps.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>energyType</strong> (<em>EnergyTypeEnum</em>) -- Specify the energy phase</p></li>
+<li><p><strong>yAxis</strong> (<em>str</em>) -- Selects between 'linear' and 'log' scaled y axis.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.plotPower">
+<code class="sig-name descname"><span class="pre">plotPower</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.plotPower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots raw power readings of energy probe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ylim</strong> -- specify the limits of y axis.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of line style objects for all power components.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.plotTemp">
+<code class="sig-name descname"><span class="pre">plotTemp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.plotTemp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots temperature readings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ylim</strong> -- specify the limits of y axis.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of line style objects for Vdd and Vddm temperature.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.power">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">power</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the interpolated total power values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.powerUnits">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">powerUnits</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.powerUnits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the units for power</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.powerVdd">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">powerVdd</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.powerVdd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the interpolated Vdd power values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.powerVdda">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">powerVdda</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.powerVdda" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the interpolated Vdda power values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.powerVddio">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">powerVddio</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.powerVddio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the interpolated Vddio power values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.powerVddm">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">powerVddm</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.powerVddm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the interpolated Vddm power values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.preLearnManagementPhaseEnergyPerTimeStep">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">preLearnManagementPhaseEnergyPerTimeStep</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.preLearnManagementPhaseEnergyPerTimeStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a numpy array of energy per timestep spent in the pre-learning management phase</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.rawPowerTimeStamps">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rawPowerTimeStamps</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.rawPowerTimeStamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the total raw power values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.rawPowerTotal">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rawPowerTotal</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.rawPowerTotal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the raw total power values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.rawPowerVdd">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rawPowerVdd</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.rawPowerVdd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the total raw Vdd power values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.rawPowerVdda">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rawPowerVdda</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.rawPowerVdda" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the total raw Vdda power values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.rawPowerVddio">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rawPowerVddio</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.rawPowerVddio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the total raw Vddio power values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.rawPowerVddm">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">rawPowerVddm</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.rawPowerVddm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the total raw Vddm power values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.spikingPhaseEnergyPerTimeStep">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">spikingPhaseEnergyPerTimeStep</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.spikingPhaseEnergyPerTimeStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a numpy array of energy per timestep spent in the spiking
+phase</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.tempMean">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tempMean</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.tempMean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the mean temp values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.tempUnits">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tempUnits</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.tempUnits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the units for temp</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.tempVdd">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tempVdd</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.tempVdd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Vdd temp values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.tempVddm">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">tempVddm</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.tempVddm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Vddm temp values</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.time">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">time</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the time of raw power measurements in seconds.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.totalEnergy">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">totalEnergy</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.totalEnergy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the cumulative sum of total energy for all phases and for ALL
+timesteps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.totalEnergyPerTimeStep">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">totalEnergyPerTimeStep</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.totalEnergyPerTimeStep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a numpy array of total energy per timestep for all
+energy types and phases</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.totalHostPhaseEnergy">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">totalHostPhaseEnergy</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.totalHostPhaseEnergy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the cumulative sum of energy for host phase for ALL
+timesteps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.totalLearningPhaseEnergy">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">totalLearningPhaseEnergy</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.totalLearningPhaseEnergy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the cumulative sum of energy for learning phase
+for ALL timesteps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.totalManagementPhaseEnergy">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">totalManagementPhaseEnergy</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.totalManagementPhaseEnergy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the cumulative sum of energy for management phase
+for ALL timesteps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.totalPreLearnManagementPhaseEnergy">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">totalPreLearnManagementPhaseEnergy</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.totalPreLearnManagementPhaseEnergy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the cumulative sum of energy for preLearn management phase
+for ALL timesteps</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="nxsdk.graph.nxenergy_time.EnergyProbe.totalSpikingPhaseEnergy">
+<em class="property"><span class="pre">property</span> </em><code class="sig-name descname"><span class="pre">totalSpikingPhaseEnergy</span></code><a class="headerlink" href="#nxsdk.graph.nxenergy_time.EnergyProbe.totalSpikingPhaseEnergy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the cumulative sum of energy for spiking phase
+for ALL timesteps</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="telemetry.html" class="btn btn-neutral float-right" title="Performing Energy Measurements in Pohoiki Spring and Kapoho Bay Using Telemetry Server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="netprobes.html" class="btn btn-neutral float-left" title="Working with Probes and Monitors in NxNet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+#############
+Path Planning
+#############
+
+Path planning model is based on the planning algorithm modeled after the operational principles of
+hippocampal place cells. The algorithm infers associations between neurons in a network from the
+asymmetric effects of STDP on a propagating sequence of spikes.
+
+Jupyter notebook illustrating resides at **nxsdk_modules/path_planning/tutorials**
+
+.. automodule:: nxsdk_modules.path_planning.src.nxcore.path_planning
+   :members:
+   :undoc-members:
+
+.. toctree::
+   :maxdepth: 1
+
+   jupyter/tutorial_path_planning

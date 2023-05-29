@@ -1,0 +1,319 @@
+#####
+NxAPI
+#####
+The following is a decomposition of the entire Nx API. Within this document, we will introduce you first to the highest level components and general concepts and philosophy for the Nx API. We will then decompose each object to show how the high level components are compiled to create efficient network models on Loihi. We will  begin with the basic concepts for NxNet, which we often refer to as the "high-level" API, and then describe the lower level API, called NxCore. 
+
+As you review the APIs keep in mind the general nomenclature. A Network is a set of nodes and connections. In fact, we consider the connections themselves (the edges of a typical graph) as nodes as well. Taken to the final conclusion, a network, in this nomenclature is nothing more than a set of nodes.
+
+*****
+NxNet
+*****
+The intention with :doc:`nxnet` is to provide a spiking neural network API that doesn't require you to know anything about the underlying hardware. Though you may specify some "anchor" core information (i.e. you may decide on which core to place a grouping of compartments), you will not need to known any hardware details (i.e. core-to-core mappings) in order to connect compartments to other compartments.
+
+Basic Concepts
+==============
+Let's start with the basic components of the API: Net and Nodes. We will then continue by looking at the two most common Nodes: Compartments and Connections.
+
+Net
+---
+A net is a set of Nodes. More information on the API for Net can be found here :doc:`nxnet`
+
+Nodes
+-----
+
+Below are the different Nodes of the Nx API. Nodes marked with a \* do not run on the neurocores. They either run on the x86 cores, or they are abstract concepts used only during the programming phase.
+
+========================  ================================================================================
+Name                        Description
+========================  ================================================================================
+Compartment                The building block for a neuron. The simplest neuron is a single compartment.
+Connection                 A connection between other nodes. Connections encapsulate Axons and Synapses.
+Neuron                     Can be a single or multiple compartments combined into a single neuron.
+Reinforcement Channel      A means to communicate reinforcement spikes to a compartment.
+\* Spike Input Port        A means to send external spikes into Loihi (for example, from a PC).
+\* Spike Output Port       A means to receive Loihi spikes on a host PC (Kapoho Bay only for now).
+\* Input Stub              Allows describing a connection before the source is specified.
+\* Output Stub             Allows describing a connection before the destination is specified.
+========================  ================================================================================
+
+
+Compartment
+-----------
+A Compartment is a building block for a neuron body (soma) or a collection of dendrites joined in some logical way (dendritic compartment). In fact, you can define a multi-compartment neuron, consisting of a dendritic tree feeding into a soma (see :doc:`neuron`). To learn how to do such things, check out the tutorials included with the Nx SDK. To learn more about Compartments, you can find the API here: :doc:`compartment`
+
+To learn more about compartment (or neuron) dynamics, check out this interactive demonstration.
+
+.. raw:: html
+   :file: _static/neuron_dynamics_tutorial.html
+
+Connection
+----------
+A Connection connects two Nodes together.  Learn more about the Connection API here: :doc:`connection`
+
+.. figure:: _static/image1.png
+   :alt: Basic network
+
+The figure above shows a Net, which is a collection of Compartments connected to other Compartments via Connections. 
+
+The following connections are currently supported in the Nx API
+
+=======================  ===================================================================================
+Source                    Destinations
+=======================  ===================================================================================
+Compartment               Compartment, Reinforcement Channel, Spike Output Port, Input/Output Stub
+Neuron                    Compartment, Reinforcement Channel, Spike Output Port, Input/Output Stub
+Reinforcement Channel     (Reinforcement Channels are used in learning rules)
+Spike Input Port          Compartment, Neuron, Reinforcement Channel
+Spike Output Port         (Spike Output Ports appear on the host PC, they cannot connect to other nodes)
+Input Stub                Compartment
+Output Stub               Input Stub, Compartment
+=======================  ===================================================================================
+
+
+Beyond the Basics - Prototypes and Groups
+=========================================
+In order to create larger networks, we have to consider how compartments and connections are defined and grouped. Noting that many compartments will be similarly constructed, the NxNet API establishes the notion of prototypes. Procedurally, creating a large network looks something like this:
+
+1. Create a prototypical compartment, setting bias information, thresholds and other various state information.
+2. Create a large group of these compartments.
+3. Create a prototypical connection, setting weight and delay information as well as other various state variables.
+4. Create a connection group that connects one group of compartments to another group of compartments, utilizing the connection prototype to define the initial state information for each connection (from compartment to compartment). 
+
+
+The following Nodes can be created in groups:
+
+1. Compartment
+2. Connection
+3. Neuron
+4. Spike Input Port
+5. Spike Output Port
+6. Input Stub
+7. Output Stub
+
+
+CompartmentPrototype
+--------------------
+A compartment prototype defines a prototypical compartment. Whereas a compartment has over 40 tunable parameters, the CompartmentPrototype allows you to set these once and replicate them in hundreds or thousands of compartments. More documentation on this is here: :doc:`compartment`
+
+CompartmentGroup
+----------------
+A compartment group defines group of identical compartments. The following code snippet combines these two concepts (prototypes and groups). More documentation on this is here: :doc:`groups`
+
+.. code-block:: python
+
+    myCompartmentPrototype = nx.CompartmentPrototype(biasMant=100, 
+                                                        biasExp=6, 
+                                                        vThMant=1000, 
+                                                        functionalState=2, 
+                                                        compartmentVoltageDecay=256, 
+                                                        logicalCoreId=0)
+
+    #create 100 compartments with the same prototype
+    myCompartmentGroup = net.createCompartmentGroup(100, myCompartmentPrototype)
+
+ConnectionPrototype
+-------------------
+A connection prototype defines a prototypical connection. As with the compartment prototype, a connection is a complex entity with hundreds of settings. The connection prototype enables you to set just the few settings you care about and allow the rest to be defaulted. A connection (via the prototype) also configures all of the routing information necessary to properly connect together compartments or groups of compartments. Learn more about the Connection Prototype API here: :doc:`connection`
+
+ConnectionGroup
+---------------
+A connection group is a group of connections. Utilizing the connection prototype, you can quickly create hundreds of connections between two compartment groups using code like this. You can learn more about the API for connection group here: :doc:`groups`
+
+.. code-block:: python
+
+    myCompartmentPrototype = nx.CompartmentPrototype(biasMant=100, 
+                                                        biasExp=6, 
+                                                        vThMant=1000, 
+                                                        functionalState=2, 
+                                                        compartmentVoltageDecay=256, 
+                                                        logicalCoreId=0)
+
+    myConnectionPrototype = nx.ConnectionPrototype(biasMant=100, biasExp=6)
+
+    #create 100 compartments with the same prototype
+    myCompartmentGroup1 = net.createCompartmentGroup(100, myCompartmentPrototype)
+    myCompartmentGroup2 = net.createCompartmentGroup(100, myCompartmentPrototype)
+
+    connectionGroup1 = myCompartmentGroup1.connect(myCompartmentGroup2, myConnectionPrototype, weights=weightMatrix)
+
+
+.. figure:: _static/image2.png
+   :alt: Basic network with Prototypes and Groups
+
+
+Composable Networks
+===================
+
+The NxSDK API provides the ability to construct composable networks.  Multiple NxNet objects can be created and then
+linked together in a tree structure.  A network can have an arbitrary number of children networks, though a given
+network can only appear once in a tree.
+
+.. figure:: _static/composable_networks_tree.png
+   :alt: Network Tree
+
+A network tree is constructed by adding a child network to a parent network.  After all the networks within the network
+tree are populated with compartments, connections, etc., the entire network tree can be run by running the root network.
+
+.. code-block:: python
+
+   # Create 4 network objects
+   net1 = nx.NxNet()
+   net2 = nx.NxNet()
+   net3 = nx.NxNet()
+   net4 = nx.NxNet()
+
+   # Add net1 as subnetwork of net3
+   net3.addNet(net1)
+   # Add net2 as subnetwork of net3
+   net3.addNet(net2)
+   # Add net4 as subnetwork of net2
+   net2.addNet(net4)
+
+   # Populate net1, net2, net3, and net4
+
+   # Run the network tree by running the root network
+   runTime = 30
+   net3.run(runTime)
+   net3.disconnect()
+
+With the preliminary support of composable networks that is currently released, only non-learning connections are supported. A connection between nets takes the form:
+Compartment -> Output Stub -> Input Stub -> Compartment
+
+In code, a user can directly connect two compartments and the Nx API will take care of creating and connecting the intermediate Output Stub and Input Stub in the background.
+
+
+.. figure:: _static/composable_networks_connections.png
+   :alt: Inter-Network Connections
+
+The inter-network connections are created in the same way as intra-network connections.  Connection probes are also
+configured in the same manner.
+
+.. code-block:: python
+
+   net1 = nx.NxNet()
+   # Source compartment is bias driven
+   prototype1 = nx.CompartmentPrototype(biasMant=1,
+                                        biasExp=6,
+                                        vThMant=10,
+                                        functionalState=2,
+                                        compartmentVoltageDecay=256,
+                                        compartmentCurrentDecay=410)
+   compartment1 = net1.createCompartment(prototype1)
+   cx1Probes = compartment1.probe([nx.ProbeParameter.COMPARTMENT_CURRENT,
+                                   nx.ProbeParameter.COMPARTMENT_VOLTAGE])
+
+   net2 = nx.NxNet()
+   # Destination compartment
+   prototype2 = nx.CompartmentPrototype(vThMant=10,
+                                        compartmentVoltageDecay=256,
+                                        compartmentCurrentDecay=410)
+   compartment2 = net2.createCompartment(prototype2)
+   cx2Probes = compartment2.probe([nx.ProbeParameter.COMPARTMENT_CURRENT,
+                                   nx.ProbeParameter.COMPARTMENT_VOLTAGE])
+
+   # Cross network connection
+   connProto1 = nx.ConnectionPrototype(weight=4)
+   conn = compartment1.connect(compartment2, connProto1)
+   connProbe = conn.probe([nx.ProbeParameter.SYNAPSE_WEIGHT])
+
+   # Compose networks
+   net1.addNet(net2)
+
+   # Run
+   net1.run(30)
+   net1.disconnect()
+
+******
+NxCore
+******
+The :doc:`nxcore` API is much lower level than NxNet. Though still implemented in python, it requires knowledge of neurocore configurations and per-core, per-register, per-field programming. The high-level API (NxNet) is meant to shield you from the details of NxCore; but often times it can be helpful to know how to work at this lower level of abstraction. To that end, we will first provide you an overview of the nodes and hierarchy at this lower level, we will then discuss a few recipes to help decode the node configurations to accomplish essential things (such as connecting two compartments).
+
+.. figure:: _static/nxnetandcore.png
+   :alt: NxNet to NxCore
+
+For more details on the NxCore objects, see the table of contents below.
+
+.. toctree::
+   :maxdepth: 2
+   
+   nxcore
+   
+
+
+N1, N2, N2A, and so forth
+=========================
+A quick note about the naming conventions and folder structure of the API. You will often see reference to N2A or N2Board, etc. Loihi's pedigree goes back a few generations, starting with N1. The current generation is N2A. N2A denotes both a physical realization in hardware, a particular register and core design and, by extension, a particular flavor for the NxCore API (N2Core). Though the higher level API (NxNet) will remain relatively unchanged from generation to generation (as we abstract away many of the minor generational differences), it too follows this nomenclature.
+
+Navigating the Hierarchy
+========================
+As mentioned in the :doc:`introduction`, the Loihi hardware is hierarchical and heterogeneous. We will address heterogeneous construction in the :doc:`snips` section. We will address the hierarchical construction here. 
+
+- A Loihi Board has 1-N Chips.
+- A Loihi Chip has 128 Neurocores.
+- A Neurocore has the capacity to define up to 1024 neurons (though if some are multi-compartment, this reduces the total number of "neurons").
+- A single neuron in a single core can theoretically connect to all other neurons in a chip through synapse registers and tables.
+
+A Neurcore also adheres to some simple design heuristics:
+
+1. Neurons are often created in homogeneous groups can share configuration
+2. Populations of neurons often connect to populations of other neurons, and these connections are often configured similarly and can therefore share configuration information
+3. Precise spike timing is a critical feature for many of the algorithms Loihi supports
+
+As we review the organization of the neurocore register file and resulting python object hierarchy, you will see these design principles come to light.
+
+Working with NxCore Hierarchy
+-----------------------------
+Within the NxCore API, most code begins with initialization of an N2Board object.  
+
+.. code-block:: python
+
+    # -------------------------------------------------------------------------
+    # Initialize board
+    # -------------------------------------------------------------------------
+
+    # N2Board ID
+    boardId = 1
+    # Number of chips
+    numChips = 1
+    # Number of cores per chip
+    numCoresPerChip = [4]
+    # Number of synapses per core
+    numSynapsesPerCore = [[1,1,1,1]]
+    # Initialize the board
+    board = N2Board(boardId,numChips,numCoresPerChip,numSynapsesPerCore)
+    # Obtain the relevant cores (four in total)
+    n2Cores = board.n2Chips[0].n2Cores
+
+Already, you should note a stark difference between the NxNet API and the NxCore API. Whereas the former assumes nothing about the underlying hardware, the latter requires that you know how many chips per board, and state just how many cores per chip you intend to use...and synapses per core. In short, when using the NxCore API, you need to provide a relative mountain of information in order to get things started. Once you've provided this information, you can begin to use the object hierarchy as expected:
+
+.. code-block:: python
+
+    n2Cores = board.n2Chips[0].n2Cores
+    n2Cores[0].cxProfileCfg[0].configure(decayV = int(1/16*2**12))
+
+In the above code example, we can see that from the board, we get the first chip, and from that chip, we retrieve the 4 cores we initialized during the creation and initialization of the board. We can then configure the voltage decay field of the first compartment profile configuration register of the first core to be 1/16.
+
+For more information and examples on working with the hierarchy, check out the :doc:`tutorials` or :doc:`graph`.
+
+To learn more about the decomposition of NxNet into NxCore component nodes and nodesets, continue reading below. 
+
+Decomposing the Compartment
+===========================
+In biology, neurons are composed of a soma body and multiple, incoming dendrites. Dendrites integrate stimuli from incoming synapses or other dendrites as biological dendrites are often organized in dendritic tree structures. Dendrites then finally merge into the soma which integrates all the input. When the soma reaches some threshold, it spikes. These spikes are sent out via the neuron’s axon. An axon emerges from the soma body and eventually split/fan-out into multiple axonal arbors to form long-range connections to the dendrites of other neurons via synaptic connections. A simplified depiction of this architecture is given in the figure below. 
+
+.. figure:: _static/biology.png
+   :alt: Simple view of neurons and connections
+
+In the N2 model, neurons are composed of compartments. Compartments are the fundamental computational units of a neuron that can integrate inputs from three sources: other compartments, input synapses or bias currents. These compartments can be configured to behave as a biological soma or a biological dendrite. In that sense both the soma or a dendrite have an IS-A relationship to the compartment. Just like in biology, neurons/compartments are connected to other compartments possibly via many axons/axon arbors. In N2 however, we don’t have dedicated wires between neurons; the communication is “virtualized” via a shared communication mesh via (an AER type of system). Therefore we adapt/translate the notion of an axon with possibly many arbors into a set of (outputAxon, inputAxon) pairs. The outputAxon is like the terminal with which an arbor connects to its one and only source neuron/axon. The inputAxon is like the main portion/section of the arbor that has the connections to a set of neurons in a certain spatial region (in our case a NeuroCore).
+
+Decomposing the Connection
+==========================
+An NxNet connection decomposes into the following NxCore objects, each of which must be properly configured to establish the desired connection on Loihi:
+
+1. :doc:`axon_map`
+2. :doc:`axon_cfg`
+3. :doc:`synapses`
+4. :doc:`synapse_fmt`
+5. :doc:`synapse_map`
+6. :doc:`axon_compiler`
+

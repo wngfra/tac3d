@@ -1,0 +1,249 @@
+Programming SNIPs on Host
+=========================
+
+.. figure:: _static/host_snips_arch.png
+   :alt: HostSnips
+
+Similar to embedded snips, user could create and run SNIPs on Host by using the createSnip API. Following are some of
+the key distictions regarding Host snips:
+
+* Host Snips (currently) can be categorized as Sequential and Concurrent.
+* Supported Phases are: **HOST_PRE_EXECUTION**, **HOST_POST_EXECUTION**, **HOST_CONCURRENT_EXECUTION**.
+* ``HOST_PRE_EXECUTION`` and ``HOST_POST_EXECUTION`` phases represent a sequential host snip. The order of snip execution is:
+
+  EMBEDDED_INIT (Only Once) -> **HOST_PRE_EXECUTION** -> EMBEDDED_SPIKING -> EMBEDDED_PRELEARN_MGMT -> EMBEDDED_MGMT -> **HOST_POST_EXECUTION**
+
+* Each Host snip class must be registered by using the REGISTER_SNIP macro in the implementation code.
+* User can either provide a single or multiple cpp files to specify the implementation for host snips.
+* Either raw cpp files can be provided or shared library is given. Using both at the same time is not supported.
+* Host Snips can take advantage of the entire C++ ecosystem and other native libraries.
+* User can bring their own shared library with third party linkages.
+* Accessing memory/register addresses is not supported currently within Host snips. Use embedded snips for any such manipulation.
+* Channel communication, in either direction, is only supported between (SuperHost, Embedded) or (Host, Embedded).
+
+Embedded snips should be preferred for latency sensitive code which can do computation closest to the neurocores and read/write the
+registers. However, if memory/data segment size and limited instructions support are limiting factors, users can use
+Host snips for less performance critical code. It also enables direct interfacing with host for input/feedback loop bypassing the
+superhost.
+
+Choice between Host Snips:
+
+1. If you need to perform some pre-compute, such as sampling or aggregation etc. on input data, pre-execution host snip would be the right place to perform the same.
+2. If you need to perform any update upon completion of on-chip execution and communicate it to external sensory devices, post-execution snip would be the right place to write your logic.
+3. If you are concurrently executing a task, such as listening on a network port for events or monitoring a device for changes, you might run in parallel to the entire execution and interact with the embedded snip using Concurrent host snips
+
+
+How to create a Host Snip
+-------------------------
+
+Use **board.createSnip()** API to create a Host Snip by specifying the phase and implementation. Make sure to connect
+the host snip to an embedded snip using channels.
+
+In the example below, we show a scenario where using pre and post sequential host snips might be useful in building
+a closed loop system connecting to the external sensors or networking. The inputProcess, executing prior to on-chip,
+sends the input data to the embedded snip using a channel. The outputProcess, executing after the on-chip run is
+complete, gets the data from lakemont via the feedback channel and can route it out.
+
+.. code-block:: python
+
+        ######## Create Host Snips #########
+
+        cppFile = os.path.dirname(os.path.realpath(__file__)) + "/host_snip.cc"
+        # Create a Host snip in pre execution phase with implementation within host_snip.cc
+        inputProcess = self.board.createSnip(phase=Phase.HOST_PRE_EXECUTION, cppFile=cppFile)
+        # Create a Host snip in post execution phase with implementation within host_snip.cc
+        outputProcess = self.board.createSnip(phase=Phase.HOST_POST_EXECUTION, cppFile=cppFile)
+
+        ######## Connect to Embedded Snips using Channels #########
+
+        # Assume there is an embeddedProcess executing in one of the phases (other than INIT)
+
+        # Create a channel named inputChannel for sending data from host snip (pre execution) to embedded snip (mgmt phase)
+        inputChannel = self.board.createChannel(b'input', "int", 30)
+        # Connecting inputChannel from inputProcess (Host) to embeddedProcess (Lakemont) making it a send channel
+        inputChannel.connect(inputProcess, embeddedProcess)
+
+        # Create a channel named feedback for getting some result values back
+        feedbackChannel = self.board.createChannel(b'feedback', "int", 30)
+        # Connecting feedbackChannel from embeddedProcess (Lakemont) to outputProcess (Host) making it receive channel
+        feedbackChannel.connect(embeddedProcess, outputProcess)
+
+
+Implementing a Sequential Host Snip
+-----------------------------------
+
+All necessary classes and API to write host snips are provided in **nxsdkhost.h** which is bundled within the nxsdk pip
+installation. The exact location for the same (in case you are building shared libraries) is **nxsdk/include**.
+
+To implement a Sequential Host Snip, you need to publicly inherit one of the **PreExecutionSequentialHostSnip** or
+**PostExecutionSequentialHostSnip** class and provide overrides for **run()** and **schedule()**. Based on the snip
+schedule, its run method is invoked.
+
+An example implementation for host_snip.cc is shown below.
+
+.. code-block:: c++
+
+    #include <iostream>
+    #include "nxsdkhost.h"
+
+    class InputProcess : public PreExecutionSequentialHostSnip {
+      private:
+        std::string channel = "input";
+      public:
+        // Writes 4 integers to the input channel
+        virtual void run(uint32_t timestep) override {
+            uint32_t data[4] = {timestep, timestep+1, timestep+2, timestep+3};
+            writeChannel(channel.c_str(), data, 4);
+        }
+
+        // Schedules execution of this snip on every timestep by choosing to run on all of them
+        virtual std::valarray<uint32_t> schedule(const std::valarray<uint32_t>& timesteps) const override {
+            return timesteps;
+        }
+    };
+
+    class FeedbackProcess : public PostExecutionSequentialHostSnip {
+      private:
+        std::string channel = "feedback";
+      public:
+        // Reads 4 integers from the feedback channel
+        virtual void run(uint32_t timestep) override {
+            uint32_t data[4] = {0};
+            readChannel(channel.c_str(), data, 4);
+        }
+
+        // Schedules execution of this snip on every timestep by choosing to run on all of them
+        virtual std::valarray<uint32_t> schedule(const std::valarray<uint32_t>& timesteps) const override {
+            return timesteps;
+        }
+    };
+
+
+    REGISTER_SNIP(InputProcess, PreExecutionSequentialHostSnip);
+    REGISTER_SNIP(FeedbackProcess, PostExecutionSequentialHostSnip);
+
+
+Scheduling a Sequential Host Snip
+---------------------------------
+
+User should override the **schedule** method while implementing the sequential host snips to provide scheduling for
+these snips. The **schedule** method takes a sequence of timesteps which will be executed on chip and should return back
+a sequence of timesteps it chooses to be scheduled at.
+
+**schedule** method will be called by the executor upon each invocation of board.run(). So for example:
+
+* The first invocation of board.run(5) will invoke **schedule** with {1,2,3,4,5} - which are the timesteps to be run
+* The next invocation of board.run(10) will invoke **schedule** with {6,7,8,9,10,11,12,13,14,15} - which are the timesteps to be run
+
+User can implement custom logic to choose the set of timesteps the snip should be scheduled at. Following are some examples:
+
+.. code-block:: c++
+
+    // If the snip should be scheduled on all timesteps
+    virtual std::valarray<uint32_t> schedule(const std::valarray<uint32_t>& timesteps) const override {
+        return timesteps;
+    }
+
+    // To schedule every alternative timestep
+    virtual std::valarray<uint32_t> schedule(const std::valarray<uint32_t>& timesteps) const override {
+        return timesteps[std::slice(0, timesteps.size()/2, 2)];
+    }
+
+    // To schedule on first and last timestep of each execution
+    virtual std::valarray<uint32_t> schedule(const std::valarray<uint32_t>& timesteps) const override {
+        return {timesteps[0], timesteps[timesteps.size()-1]};
+    }
+
+    // To schedule on some pre-determined timesteps
+    virtual std::valarray<uint32_t> schedule(const std::valarray<uint32_t>& timesteps) const override {
+        return {1,4,9,16,25,36,49,64,81,100};
+    }
+
+    // To schedule on some internal state stored in a std::vector (and updated by previous run)
+    virtual std::valarray<uint32_t> schedule(const std::valarray<uint32_t>& timesteps) const override {
+        // nextsteps is of type std::vector<uint32_t>
+        return std::valarray<uint32_t>(nextsteps.data(), nextsteps.size());
+    }
+
+
+See https://en.cppreference.com/w/cpp/numeric/valarray for further reference on valarrays.
+
+
+Writing a Concurrent Host Snip
+------------------------------
+
+In similar vein to Sequential Host Snip, Concurrent Host Snip can be created using the board.createSnip API and using
+**Phase.HOST_CONCURRENT_EXECUTION** as phase parameter. Everything else remains same while implementing the python stub.
+
+For the code implementation, you need to publicly inherit from **ConcurrentHostSnip** and override the run method. Please
+note the following nuances:
+
+* Concurrent Host Snip has no notion of timestep and runs independently until endOfExecution becomes true.
+* Concurrent Host Snip is instantiated upon the first invocation of board.run() and it runs forever within a host thread.
+* The overriden method run() is passed a boolean flag **endOfExecution** (default=false) which is set to true when the host is being shutdown (board.disconnect()). If the user is looping forever in this method, endOfExecution should be checked to break out of any loops to make the thread joinable. User can choose to exit from the method earlier as well.
+
+Here is an example implementation of a Concurrent Host Snip:
+
+.. code-block:: c++
+
+    class ConcurrentProcess : public ConcurrentHostSnip {
+      public:
+        virtual void run(std::atomic_bool& endOfExecution) override {
+            std::cout << "Executing ConcurrentSnip" << std::endl;
+            while(endOfExecution == false) {
+                std::cout << "Continue executing ConcurrentSnip" << std::endl;
+            }
+        }
+    };
+
+    REGISTER_SNIP(ConcurrentProcess, ConcurrentHostSnip);
+
+
+Bring your own shared library
+-----------------------------
+
+Users can provide their own shared library with any third party linkages during creating host snips. Please note - the
+shared library should be compiled for the host architecture. You can look into **nxsdk/utils/make_host_snips.sh** for
+details of compilation. You should invoke **REGISTER_SNIP** macro to register your host snips within the shared library.
+
+The shared library is loaded upon the first invocation of board.run() and all symbols are immediately resolved.
+
+The following log might help to compile/link your own shared library.
+
+.. code-block:: bash
+
+    Include dir is : /home/user/host_snips
+    Compiling -c /home/user/host_snips/pre_exec.cc
+    arm-linux-gnueabihf-g++ -I/home/user/host_snips -Inxsdk/include -std=c++14 -Wall -Werror -O3 -DNDEBUG -fPIC -rdynamic -o /home/user/pre_exec.cc.o -c /home/user/host_snips/pre_exec.cc
+    OBJFILES :  /home/user/pre_exec.cc.o
+    arm-linux-gnueabihf-g++ -std=c++14 -Wall -Werror -O3 -DNDEBUG -fPIC -rdynamic /home/user/pre_exec.cc.o -shared -o /home/user/libhostsnip_0.so nxsdk/lib/Host/libnx.a
+
+* Use g++ if building host snips for KapohoBay.
+* libnx.a provides implementation of channels. This module needs to be picked from nxsdk/lib/Host-Usb/libnx.a if working on KapohoBay.
+* nxsdk/lib/Host-Usb-Arm also exists but is untested at the moment.
+
+
+Adding Debug Logs to Host Snips
+-------------------------------
+
+Macros can help with logging in snips which are helpful while debugging.
+
+.. code-block:: c++
+
+    // Toggle to 1 to enable debugging
+    #define DEBUG 0
+    #define LOG(x) do { if (DEBUG) std::cerr << #x << ": " << x << std::endl; } while (0)
+
+    // Usage
+    LOG(some_variable);
+
+
+.. automodule:: nxsdk.graph.processes.phase_enums
+   :members:
+   :undoc-members:
+   :member-order: bysource
+
+.. automodule:: nxsdk.graph.processes.host.host_snip
+   :members:
+   :undoc-members:
+   :member-order: bysource

@@ -1,0 +1,85 @@
+Specifying a Learning Rule
+==========================
+
+.. automodule:: nxsdk.net.nodes.learning_rule
+   :members:
+   :undoc-members:
+
+Additional details on rewards can be found at the link below:
+
+.. toctree::
+   :maxdepth: 1
+
+   learning_reinforcements
+   learning_engine_scaling
+
+Learning rule examples with pre-synaptic and post-synaptic traces:
+
+.. code-block:: python
+
+    lr = net.createLearningRule(dw='2*x1*y0-2*y1*x0',
+                                x1Impulse=40,
+                                x1TimeConstant=4,
+                                y1Impulse=40,
+                                y1TimeConstant=4,
+                                tEpoch=2)
+    connProto = nx.ConnectionPrototype(weight=50, delay=0, enableLearning=1,
+                                       learningRule=lr)
+
+Learning rule with pre-synaptic, post-synaptic, and reward traces:
+
+.. code-block:: python
+
+    lr = net.createLearningRule(dt='2*x1*y0-2*y1*x0',
+                                dw='u0*r1*t',
+                                x1Impulse=40,
+                                x1TimeConstant=4,
+                                y1Impulse=40,
+                                y1TimeConstant=4,
+                                r1Impulse=30,
+                                r1TimeConstant=2,
+                                tEpoch=2)
+    connProto = nx.ConnectionPrototype(weight=50, delay=0, enableLearning=1,
+                                       learningRule=lr)
+
+Probes for pre-synaptic traces:
+
+.. code-block:: python
+
+   c1 = net.createCompartment(prototype=p)
+   c2 = net.createCompartment(prototype=p)
+
+   conn1 = net.createConnection(c1, c2,
+                                self.conn_proto_with_learning_rule(
+                                net,
+                                '2*x1*x2*y0'))
+   conn2 = net.createConnection(c1, c2,
+                                self.conn_proto_with_learning_rule(
+                                net, 'x1*y0',
+                                x1Impulse=80,
+                                x1TimeConst=32))
+   PP = ProbeParameter
+   preTraceProbes1 = conn1.probe([PP.PRE_TRACE_X1, PP.PRE_TRACE_X2])
+   preTraceProbes2 = conn2.probe([PP.PRE_TRACE_X1])
+
+   plt.plot(preTraceProbes1[0].data, label="Syn1: X1", marker='o')
+   plt.plot(preTraceProbes1[1].data, label="Syn1: X2", marker='*')
+   plt.plot(preTraceProbes2[0].data, label="Syn2: X1", marker='o')
+
+   def conn_proto_with_learning_rule(self, net, learning_rule,
+                 x1Impulse=40, x1TimeConst=4, x2Impulse=20, x2TimeConst=16):
+      lr = net.createLearningRule(
+                                 dw=learning_rule,
+                                 x1Impulse=x1Impulse,
+                                 x1TimeConstant=x1TimeConst,
+                                 x2Impulse=x2Impulse,
+                                 x2TimeConstant=x2TimeConst,
+                                 y1Impulse=40,
+                                 y1TimeConstant=4,
+                                 tEpoch=1)
+      connProto = nx.ConnectionPrototype(
+                                 weight=50, delay=0,
+                                 enableLearning=1,
+                                 learningRule=lr)
+
+      return connProto

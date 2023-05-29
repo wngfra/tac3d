@@ -1,0 +1,20 @@
+NxNet: Receptive Field
+=======================
+
+Motivation
+----------
+This tutorial is to implement a receptive field connectivity which detects activity from a particular subset of target neurons.
+
+Location
+--------
+nxsdk-apps/tutorials/nxnet/tutorial_24_receptive_field.py
+
+See also
+--------
+
+* :doc:`netprobes`
+* :doc:`compartment`
+* :doc:`connection`
+* :doc:`nxnet`
+* :doc:`graph`
+

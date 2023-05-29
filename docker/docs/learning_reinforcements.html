@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Learning with Reinforcement &mdash; NxSDK 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Learning Engine Scaling" href="learning_engine_scaling.html" />
+    <link rel="prev" title="Specifying a Learning Rule" href="learningrule.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NxSDK
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introductory Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nxapi.html">NxAPI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="nxnet.html">NxNet API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compartment.html">Compartment and CompartmentPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connection.html">Connection and ConnectionPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connectionsharing.html">Connection Sharing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neuron.html">Neuron and NeuronPrototype</a></li>
+<li class="toctree-l2"><a class="reference internal" href="groups.html">Groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netprobes.html">Working with Probes and Monitors in NxNet</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="learningrule.html">Specifying a Learning Rule</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Learning with Reinforcement</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#relevant-tutorials">Relevant Tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="learning_engine_scaling.html">Learning Engine Scaling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multicompartment.html">Building Multi Compartment Neuron Model using Stack Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spikeinjectionandreceivers.html">Spike Injection and Spike Receivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxlogging.html">Logging in NxNet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxcompiler.html">NxCompiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nxnet_resource_map.html">NxNet Resource Map Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nxcore.html">NxCore API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="composable.html">Composability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="embedded_execution_engine.html">Embedded Execution Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Nx SDK Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance-suite.html">NxSDK Performance Test Suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">NxSDK Release History</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NxSDK</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nxnet.html">NxNet API</a> &raquo;</li>
+        
+          <li><a href="learningrule.html">Specifying a Learning Rule</a> &raquo;</li>
+        
+      <li>Learning with Reinforcement</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="learning-with-reinforcement">
+<h1>Learning with Reinforcement<a class="headerlink" href="#learning-with-reinforcement" title="Permalink to this headline">¶</a></h1>
+<p>The Nx SDK supports injecting reinforcement to a learning rule in two different ways: injecting reinforcement directly from a spike generator or injecting reinforcement from another compartment.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If two reinforcement channels have the exact same parameters, they will be combined into a single reinforcement channel.</p>
+</div>
+<p><strong>Injecting Reinforcement From A Spike Generator</strong></p>
+<div class="figure align-default">
+<img alt="figure 1 - Reinforcement Injection from Spike Generator" src="_images/spikegenReward.png" />
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prototypes</span>
+<span class="n">pbasic</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">vThMant</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+                             <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">3276</span><span class="p">,</span>
+                             <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">3276</span><span class="p">,</span>
+                             <span class="n">logicalCoreId</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plrn</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">vThMant</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+                           <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">3276</span><span class="p">,</span>
+                           <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">3276</span><span class="p">,</span>
+                           <span class="n">enableSpikeBackprop</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                           <span class="n">enableSpikeBackpropFromSelf</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                           <span class="n">logicalCoreId</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createLearningRule</span><span class="p">(</span><span class="n">dw</span><span class="o">=</span><span class="s1">&#39;0*u0*x1+u0*r1+0*u0*y1&#39;</span><span class="p">,</span>
+                              <span class="n">x1Impulse</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                              <span class="n">x1TimeConstant</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                              <span class="n">y1Impulse</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                              <span class="n">y1TimeConstant</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                              <span class="n">r1Impulse</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                              <span class="n">r1TimeConstant</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                              <span class="n">tEpoch</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">connProto2</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                <span class="n">enableLearning</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                <span class="n">learningRule</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+
+<span class="c1"># Created Compartments</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">pbasic</span><span class="p">)</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">plrn</span><span class="p">)</span>
+
+<span class="c1"># Create Connections</span>
+<span class="n">conn1</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createConnection</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">connProto2</span><span class="p">)</span>
+
+<span class="c1"># Create Spike Generators and Connect to Reinforcement Channel</span>
+<span class="n">numPorts</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">portNum</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">spikeTime</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">spikeGenReward</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createSpikeGenProcess</span><span class="p">(</span><span class="n">numPorts</span><span class="p">)</span>
+<span class="n">spikeGenReward</span><span class="o">.</span><span class="n">addSpikes</span><span class="p">([</span><span class="n">portNum</span><span class="p">],</span> <span class="p">[[</span><span class="n">spikeTime</span><span class="p">]])</span>
+<span class="n">conn3</span> <span class="o">=</span> <span class="n">spikeGenReward</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">reinforcementChannel</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Injecting Reinforcement From Another Compartment</strong></p>
+<div class="figure align-default">
+<img alt="figure 2 - Reinforcement Injection from Compartment" src="_images/compartmentReward.png" />
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prototypes</span>
+<span class="n">pbasic</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">vThMant</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+                             <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">3276</span><span class="p">,</span>
+                             <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">3276</span><span class="p">,</span>
+                             <span class="n">logicalCoreId</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plrn</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">CompartmentPrototype</span><span class="p">(</span><span class="n">vThMant</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+                           <span class="n">compartmentCurrentDecay</span><span class="o">=</span><span class="mi">3276</span><span class="p">,</span>
+                           <span class="n">compartmentVoltageDecay</span><span class="o">=</span><span class="mi">3276</span><span class="p">,</span>
+                           <span class="n">enableSpikeBackprop</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                           <span class="n">enableSpikeBackpropFromSelf</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                           <span class="n">logicalCoreId</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createLearningRule</span><span class="p">(</span><span class="n">dw</span><span class="o">=</span><span class="s1">&#39;0*u0*x1+u0*r1+0*u0*y1&#39;</span><span class="p">,</span>
+                              <span class="n">x1Impulse</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                              <span class="n">x1TimeConstant</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                              <span class="n">y1Impulse</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                              <span class="n">y1TimeConstant</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                              <span class="n">r1Impulse</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+                              <span class="n">r1TimeConstant</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                              <span class="n">tEpoch</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">connProto2</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">ConnectionPrototype</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                <span class="n">enableLearning</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                <span class="n">learningRule</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+
+<span class="c1"># Create Compartments</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">pbasic</span><span class="p">)</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">plrn</span><span class="p">)</span>
+<span class="n">c5</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createCompartment</span><span class="p">(</span><span class="n">pbasic</span><span class="p">)</span>
+
+<span class="c1"># Create Connections</span>
+<span class="n">conn1</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createConnection</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">connProto2</span><span class="p">)</span>
+<span class="n">conn3</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">createConnection</span><span class="p">(</span><span class="n">c5</span><span class="p">,</span><span class="n">lr</span><span class="o">.</span><span class="n">reinforcementChannel</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="relevant-tutorials">
+<h2>Relevant Tutorials<a class="headerlink" href="#relevant-tutorials" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="learning_engine_scaling.html" class="btn btn-neutral float-right" title="Learning Engine Scaling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="learningrule.html" class="btn btn-neutral float-left" title="Specifying a Learning Rule" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2018-2021, Intel Corporation.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

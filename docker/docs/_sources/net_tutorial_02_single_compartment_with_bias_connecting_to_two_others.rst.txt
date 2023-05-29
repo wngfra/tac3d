@@ -1,0 +1,25 @@
+NxNet: Simple EI Network Tutorial
+==================================
+
+Motivation
+----------
+The motivation for this tutorial is to provide you an introduction to configuring a single compartment neuron, driven with bias only and connected to two other neurons - one via an inhibitory synapse and one via an excitatory synapse.
+
+
+Diagram
+-------
+.. figure:: _static/core_tutorial_02.png
+   :alt: diagram
+
+Location
+--------
+nxsdk-apps/tutorials/nxnet/tutorial_02_single_compartment_with_bias_connecting_to_two_others.py
+
+See also
+--------
+
+* :doc:`compartment`
+* :doc:`connection`
+* :doc:`netprobes`
+* :doc:`nxnet`
+* :doc:`graph`

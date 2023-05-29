@@ -1,0 +1,20 @@
+####
+SLIC
+####
+
+The Single Layer Image Classifier (SLIC) module provides functions to build one layer neural network for image
+classification. The images for SLIC can be grayscale images stored as a numpy array. SLIC module provides function to
+preprocess grayscale images into binary images, which drive linescan engine to generate spikes that are further
+processed by Loihi. Both the image data and the corresponding labels are needed to train the network.
+
+Jupyter notebook illustrating a :doc:`Single Layer Image Classifier
+</jupyter/single_layer_image_classifier>` resides at **nxsdk_modules/slic/tutorials**
+
+.. automodule:: nxsdk_modules.slic.src.nxnet.slicnet_nxnet
+   :members:
+   :undoc-members:
+
+.. toctree::
+   :maxdepth: 1
+
+   jupyter/single_layer_image_classifier
