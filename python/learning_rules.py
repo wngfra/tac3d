@@ -5,7 +5,7 @@ import nengo
 import numpy as np
 from nengo.builder.builder import Builder
 from nengo.builder.learning_rules import get_pre_ens, get_post_ens, build_or_passthrough
-from nengo.builder.operator import Operator
+from nengo.builder.operator import Operator, Reset
 from nengo.builder.signal import Signal
 from nengo.params import Default, NumberParam
 from nengo.synapses import Lowpass, SynapseParam
@@ -121,9 +121,11 @@ class SimSS(Operator):
             post_memory[...] = post_filtered * dt
             drift = np.outer(post, pre)
             # mu[...] = weights + drift
-            
+
             diffusion = (
-                1e-3 * np.random.normal(0, 1/np.sqrt(1+np.square(drift)), drift.shape) * np.exp(-drift)
+                1e-3
+                * np.random.normal(0, 1 / np.sqrt(1 + np.square(drift)), drift.shape)
+                * np.exp(-drift)
             )
             delta[...] = drift + diffusion
 
@@ -171,3 +173,119 @@ def build_ss(model, ss, rule):
     model.sig[rule]["post_memory"] = post_memory
     model.sig[rule]["mu"] = mu
     model.sig[rule]["cov"] = cov
+
+
+class PreSup(nengo.learning_rules.LearningRuleType):
+    """
+    Simple pre-synaptic supervised learning rule.
+    """
+
+    modifies = "weights"
+    probeable = (
+        "error",
+        "pre_filtered",
+        "post_filtered",
+        "delta",
+    )
+
+    pre_synapse = SynapseParam("pre_synapse", default=Lowpass(tau=0.005), readonly=True)
+    post_synapse = SynapseParam("post_synapse", default=None, readonly=True)
+
+    def __init__(
+        self,
+        pre_synapse=Default,
+        post_synapse=Default,
+    ):
+        super().__init__(0, size_in="pre")
+        self.pre_synapse = pre_synapse
+        self.post_synapse = (
+            self.pre_synapse if post_synapse is Default else post_synapse
+        )
+
+
+class SimPS(Operator):
+    def __init__(
+        self,
+        error,
+        pre_filtered,
+        post_filtered,
+        weights,
+        delta,
+        tag=None,
+    ):
+        super().__init__(tag=tag)
+        self.sets = []
+        self.incs = []
+        self.reads = [error, pre_filtered, post_filtered, weights]
+        self.updates = [delta]
+
+    @property
+    def error(self):
+        return self.reads[0]
+    
+    @property
+    def pre_filtered(self):
+        return self.reads[1]
+
+    @property
+    def post_filtered(self):
+        return self.reads[2]
+
+    @property
+    def weights(self):
+        return self.reads[3]
+
+    @property
+    def delta(self):
+        return self.updates[0]
+
+    @property
+    def _descstr(self):
+        return f"pre={self.pre_filtered}, post={self.post_filtered} -> {self.weights}"
+
+    def make_step(self, signals, dt, rng):
+        pre_filtered = signals[self.pre_filtered]
+        post_filtered = signals[self.post_filtered]
+        weights = signals[self.weights]
+        delta = signals[self.delta]
+        error = signals[self.error]
+
+        def step_simps():
+            pre = pre_filtered * dt 
+            post = post_filtered * dt
+            err = error * dt
+            
+            delta[...] = -1e-3*np.outer(pre, post)
+
+        return step_simps
+
+
+@Builder.register(PreSup)
+def build_ps(model, ps, rule):
+    conn = rule.connection
+    
+    # Create input error signal
+    # FIXME: this should be a passthrough node
+    error = Signal(name="PreSup:error")
+    model.add_op(Reset(error))
+    model.sig[rule]["in"] = error
+    
+    pre_activities = model.sig[get_pre_ens(conn).neurons]["out"]
+    post_activities = model.sig[get_post_ens(conn).neurons]["out"]
+    pre_filtered = build_or_passthrough(model, ps.pre_synapse, pre_activities)
+    post_filtered = build_or_passthrough(model, ps.post_synapse, post_activities)
+
+    model.add_op(
+        SimPS(
+            error,
+            pre_filtered,
+            post_filtered,
+            model.sig[conn]["weights"],
+            model.sig[rule]["delta"],
+        )
+    )
+
+    # expose these for probes
+    model.sig[rule]["error"] = error
+    model.sig[rule]["pre_filtered"] = pre_filtered
+    model.sig[rule]["post_filtered"] = post_filtered

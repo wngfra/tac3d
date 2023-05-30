@@ -8,8 +8,7 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 from BarGenerator import BarGenerator
-from custom_learning_rules import SynapticSampling
-from nengo_extras.learning_rules import DeltaRule
+from learning_rules import SynapticSampling, PreSup
 from nengo_extras.plot_spikes import plot_spikes
 
 from OrientationMap import sample_bipole_gaussian
@@ -20,7 +19,7 @@ matplotlib.rc("font", **font)
 N_FILTERS = 18
 KERN_SIZE = 5
 STRIDES = (KERN_SIZE - 1, KERN_SIZE - 1)
-STIM_SHAPE = (20, 20)
+STIM_SHAPE = (15, 15)
 
 
 def gen_transform(pattern=None):
@@ -95,7 +94,7 @@ stim_size = np.prod(STIM_SHAPE)
 bg = BarGenerator(STIM_SHAPE)
 
 # Prepare dataset
-num_samples = 18
+num_samples = 6
 X_train, y_train = bg.gen_sequential_bars(
     num_samples=num_samples,
     dim=(2, 20),
@@ -109,11 +108,12 @@ y_train = y_train / 90 - 1
 # Simulation parameters
 dt = 1e-3
 K = (STIM_SHAPE[0] - KERN_SIZE) // STRIDES[0] + 1
+n_latent_neurons = 16
 n_hidden_neurons = K * K * N_FILTERS
 n_coding_neurons = N_FILTERS
 n_state_neurons = 36
 decay_time = 0.1
-presentation_time = 1 + decay_time  # Leave 0.05s for decay
+presentation_time = 0.5 + decay_time  # Leave 0.05s for decay
 duration = num_samples * presentation_time
 sample_every = 1 * dt
 learning_rule = nengo.BCM()
@@ -171,7 +171,7 @@ layer_confs = [
     dict(
         name="stim",
         n_neurons=stim_size,
-        dimensions=1,
+        dimensions=stim_size,
         on_chip=False,
     ),
     dict(
@@ -182,6 +182,21 @@ layer_confs = [
     dict(
         name="coding",
         n_neurons=n_coding_neurons,
+        dimensions=1,
+    ),
+    dict(
+        name="latent",
+        n_neurons=n_latent_neurons,
+        dimensions=1,
+    ),
+    dict(
+        name="mirror",
+        n_neurons=stim_size,
+        dimensions=1,
+    ),
+    dict(
+        name="error",
+        n_neurons=stim_size,
         dimensions=1,
     ),
 ]
@@ -224,6 +239,12 @@ conn_confs = [
         synapse=5e-3,
     ),
     dict(
+        pre="stim_neurons",
+        post="latent_neurons",
+        transform=gen_transform(),
+        synapse=5e-3,
+    ),
+    dict(
         pre="hidden_neurons",
         post="coding_neurons",
         transform=gen_transform("orthogonal_excitation"),
@@ -236,9 +257,36 @@ conn_confs = [
         transform=gen_transform("circular_inhibition"),
         synapse=2e-3,
     ),
+    dict(
+        pre="coding_neurons",
+        post="mirror_neurons",
+        transform=gen_transform(),
+        synapse=0,
+        learning_rule=PreSup(),
+    ),
+    dict(
+        pre="latent_neurons",
+        post="mirror_neurons",
+        transform=gen_transform(),
+        synapse=0,
+    ),
+    dict(
+        pre="mirror_neurons",
+        post="error_neurons",
+        transform=-1,
+        synapse=1e-3,
+    ),
+    dict(
+        pre="stim_neurons",
+        post="error_neurons",
+        transform=1,
+        synapse=1e-3,
+    ),
 ]
 
-learning_confs = []
+learning_confs = [
+    
+]
 
 
 # Create the Nengo model
@@ -369,20 +417,23 @@ def main(plot=False):
     with nengo.Simulator(model, dt=dt, optimize=True) as sim:
         sim.run(duration)
 
-    conn_name = "{}2{}".format("hidden_neurons", "coding_neurons")
-    ens_names = ["stim_neurons", "hidden_neurons", "coding_neurons"]
+    name_pairs = [("hidden", "coding"), ("latent", "mirror"), ("coding", "mirror")]
+    conn_names = ["{}_neurons2{}_neurons".format(pre, post) for (pre, post) in name_pairs]
+    ens_names = ["stim_neurons", "hidden_neurons", "coding_neurons", "error_neurons"]
 
     # save_data(sim, ["hidden_neurons", "state"], "data/test_data.csv")
 
     if plot:
-        plt.figure(figsize=(5, 10))
-        # Find weight row with max variance
-        neuron = np.argmax(np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1))
-        plt.plot(sim.trange(sample_every), sim.data[probes[conn_name]][:, neuron, :])
-        plt.xlabel("time (s)")
-        plt.ylabel("weights")
+        for conn_name in conn_names:
+            plt.figure(figsize=(5, 10))
+            # Find weight row with max variance
+            neuron = np.argmax(np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1))
+            plt.plot(sim.trange(sample_every), sim.data[probes[conn_name]][:, neuron, :])
+            plt.xlabel("time (s)")
+            plt.ylabel("weights")
+            plt.title(conn_name)
 
-        _, axs = plt.subplots(len(ens_names), 1, figsize=(5 * len(ens_names), 10))
+        _, axs = plt.subplots(len(ens_names), 1, figsize=(5 * len(ens_names), 10), sharex=True)
         for i, ens_name in enumerate(ens_names):
             if "neurons" in ens_name:
                 plot_spikes(
@@ -390,15 +441,15 @@ def main(plot=False):
                     sim.data[probes[ens_name]],
                     ax=axs[i],
                 )
-                axs[i].set_ylabel("neuron")
+                axs[i].set_ylabel("nid")
             else:
                 axs[i].plot(
                     sim.trange(sample_every=sample_every), sim.data[probes[ens_name]]
                 )
                 axs[i].set_ylabel("encoder")
             axs[i].set_title(ens_name)
-            axs[i].set_xlabel("time (s)")
             axs[i].grid()
+        plt.xlabel("time (s)")
         plt.tight_layout()
         plt.show()
 
