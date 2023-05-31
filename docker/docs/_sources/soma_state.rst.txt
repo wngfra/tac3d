@@ -1,5 +1,0 @@
-Soma State Configuration
-========================
-.. automodule:: nxsdk.arch.n2a.graph.nodesets.soma_state_obj_inf
-   :members:
-   :undoc-members:

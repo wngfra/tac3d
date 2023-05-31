@@ -1,5 +1,0 @@
-Dendrite Time State
-===================
-.. automodule:: nxsdk.arch.n2a.graph.nodesets.dendrite_time_state_obj_inf
-   :members:
-   :undoc-members:

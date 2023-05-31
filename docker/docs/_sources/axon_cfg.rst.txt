@@ -1,5 +1,0 @@
-Axon Configuration
-==================
-.. automodule:: nxsdk.arch.n2a.graph.nodesets.axon_cfg_obj_inf
-   :members:
-   :undoc-members:

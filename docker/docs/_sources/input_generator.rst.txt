@@ -1,8 +1,0 @@
-Input Generator
-===============
-
-.. autoclass:: nxsdk_modules.input_generator.input_generator.InputGenerator
-   :members:
-   :undoc-members:
-   :inherited-members:
-   :member-order: bysource

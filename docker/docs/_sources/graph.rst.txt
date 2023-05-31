@@ -1,7 +1,0 @@
-N2Board Hierarchy
-=================
-
-
-.. automodule:: nxsdk.base.nxboard
-   :members:
-   :undoc-members:

@@ -9,6 +9,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from BarGenerator import BarGenerator
 from learning_rules import SynapticSampling, PreSup
+from nengo_extras.learning_rules import DeltaRule
 from nengo_extras.plot_spikes import plot_spikes
 
 from OrientationMap import sample_bipole_gaussian
@@ -16,13 +17,48 @@ from OrientationMap import sample_bipole_gaussian
 font = {"weight": "normal", "size": 30}
 matplotlib.rc("font", **font)
 
-N_FILTERS = 18
-KERN_SIZE = 5
-STRIDES = (KERN_SIZE - 1, KERN_SIZE - 1)
-STIM_SHAPE = (15, 15)
+n_filter = 18
+ksize = 5
+strides = (ksize - 1, ksize - 1)
+stim_shape = (11, 11)
+stim_size = np.prod(stim_shape)
+
+# Prepare dataset
+bg = BarGenerator(stim_shape)
+num_samples = 6
+X_train, y_train = bg.gen_sequential_bars(
+    num_samples=num_samples,
+    dim=(2, 11),
+    shift=(0, 0),
+    start_angle=0,
+    step=360 / num_samples,
+)
+y_train = y_train - 90
 
 
-def gen_transform(pattern=None):
+# Simulation parameters
+dt = 1e-3
+K = (stim_shape[0] - ksize) // strides[0] + 1
+n_latent_neurons = 16
+n_hidden = K * K * n_filter
+n_output = 100
+decay_time = 0.1
+presentation_time = 0.5 + decay_time  # Leave 0.05s for decay
+duration = num_samples * presentation_time
+sample_every = 1 * dt
+learning_rule = nengo.BCM()
+
+# Default neuron parameters
+max_rate = 100  # Hz
+amp = 1.0
+rate_target = max_rate * amp  # must be in amplitude scaled units
+default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.05)
+default_rates = nengo.dists.Choice([rate_target])
+default_intercepts = nengo.dists.Choice([0])
+default_encoders = nengo.dists.ScatteredHypersphere(surface=True)
+
+
+def gen_transform(pattern=None, **kwargs):
     def inner(shape):
         """Closure of the transform matrix generator.
 
@@ -43,24 +79,24 @@ def gen_transform(pattern=None):
                     W[i, target[i * n : (i + 1) * n]] = np.random.normal(0.3, 0.1)
                 W[W < 0.1] = 0
             case "bipolar_gaussian_conv":
-                kernel = np.empty((KERN_SIZE, KERN_SIZE, 1, N_FILTERS))
-                delta_phi = np.pi / (N_FILTERS + 1)
-                for i in range(N_FILTERS):
-                    kernel[:, :, 0, i] = sample_bipole_gaussian(
-                        (KERN_SIZE, KERN_SIZE),
-                        (KERN_SIZE // 2, KERN_SIZE // 2),
+                try:
+                    kern_size = kwargs["kern_size"]
+                    n_filter = kwargs["n_filter"]
+                except:
+                    raise KeyError("Missing keyword arguments!")
+                # FIXME: This is a hacky way to generate the kernel
+                W = np.zeros(shape)
+                delta_phi = np.pi / (n_filter + 1)
+                for i in range(n_filter):
+                    W = sample_bipole_gaussian(
+                        (kern_size, kern_size),
+                        (kern_size // 2, kern_size // 2),
                         (3, 0.5),
                         i * delta_phi,
                         binary=False,
                     )
-                conv = nengo.Convolution(
-                    n_filters=N_FILTERS,
-                    input_shape=STIM_SHAPE + (1,),
-                    kernel_size=(KERN_SIZE, KERN_SIZE),
-                    strides=STRIDES,
-                    init=kernel,
-                )
-                return conv
+
+                return W
             case "circular_inhibition":
                 # For self-connections
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
@@ -70,64 +106,16 @@ def gen_transform(pattern=None):
                     W[i, :] = -np.roll(weight, i + shape[0] // 2)
                 W *= 3 / np.max(np.abs(W))
             case _:
-                W = nengo.Dense(
-                    shape,
-                    init=nengo.dists.Uniform(0, 1e-5),
-                )
+                if "weights" in kwargs:
+                    W = kwargs["weights"]
+                else:
+                    W = nengo.Dense(
+                        shape,
+                        init=nengo.dists.Uniform(0, 1e-2),
+                    )
         return W
 
     return inner
-
-
-# Delay node
-class Delay:
-    def __init__(self, dims, timesteps=50):
-        self.history = np.zeros((timesteps, dims))
-
-    def step(self, t, x):
-        self.history = np.roll(self.history, -1)
-        self.history[-1] = x
-        return self.history[0]
-
-
-stim_size = np.prod(STIM_SHAPE)
-bg = BarGenerator(STIM_SHAPE)
-
-# Prepare dataset
-num_samples = 6
-X_train, y_train = bg.gen_sequential_bars(
-    num_samples=num_samples,
-    dim=(2, 20),
-    shift=(1, 1),
-    start_angle=0,
-    step=360 / num_samples,
-)
-y_train = y_train / 90 - 1
-
-
-# Simulation parameters
-dt = 1e-3
-K = (STIM_SHAPE[0] - KERN_SIZE) // STRIDES[0] + 1
-n_latent_neurons = 16
-n_hidden_neurons = K * K * N_FILTERS
-n_coding_neurons = N_FILTERS
-n_state_neurons = 36
-decay_time = 0.1
-presentation_time = 0.5 + decay_time  # Leave 0.05s for decay
-duration = num_samples * presentation_time
-sample_every = 1 * dt
-learning_rule = nengo.BCM()
-
-delay = Delay(1, timesteps=int(0.1 / dt))
-
-# Default neuron parameters
-max_rate = 60  # Hz
-amp = 1.0
-rate_target = max_rate * amp  # must be in amplitude scaled units
-default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.05)
-default_rates = nengo.dists.Choice([rate_target])
-default_intercepts = nengo.dists.Choice([0])
-default_encoders = nengo.dists.ScatteredHypersphere(surface=True)
 
 
 def stim_func(t):
@@ -140,29 +128,14 @@ def stim_func(t):
         return np.zeros_like(sample)
 
 
-def state_func(t):
-    return 0
-
-
 # Define layers
 layer_confs = [
+    # Input/Visual layers
     dict(
-        name="state_node",
+        name="target",
         neuron=None,
         output=lambda t: y_train[int(t / presentation_time) % len(y_train)],
     ),
-    #    dict(
-    #        name="delay_node",
-    #        neuron=None,
-    #        output=delay.step,
-    #        size_in=1,
-    #    ),
-    #    dict(name="state", n_neurons=2 * n_state_neurons, dimensions=2),
-    #    dict(
-    #        name="delta_state",
-    #        n_neurons=n_state_neurons,
-    #        dimensions=1,
-    #    ),
     dict(
         name="stimulus",
         neuron=None,
@@ -170,122 +143,61 @@ layer_confs = [
     ),
     dict(
         name="stim",
-        n_neurons=stim_size,
+        n_neurons=8 * stim_size,
         dimensions=stim_size,
-        on_chip=False,
     ),
+    dict(
+        name="visual",
+        n_neurons=stim_size,
+        dimensions=1,
+    ),
+    # Encoding/Output layers
     dict(
         name="hidden",
-        n_neurons=n_hidden_neurons,
-        dimensions=1,
+        n_neurons=8 * n_hidden,
+        dimensions=n_hidden,
     ),
     dict(
-        name="coding",
-        n_neurons=n_coding_neurons,
+        name="output",
+        n_neurons=n_output,
         dimensions=1,
-    ),
-    dict(
-        name="latent",
-        n_neurons=n_latent_neurons,
-        dimensions=1,
-    ),
-    dict(
-        name="mirror",
-        n_neurons=stim_size,
-        dimensions=1,
-    ),
-    dict(
-        name="error",
-        n_neurons=stim_size,
-        dimensions=1,
+        radius=90,
     ),
 ]
 
 # Define connections
 conn_confs = [
-    #    dict(
-    #        pre="state_node",
-    #        post="delay_node",
-    #        transform=1,
-    #    ),
-    #    dict(
-    #        pre="state_node",
-    #        post="state",
-    #        dim_out=0,
-    #        transform=1,
-    #    ),
-    #    dict(
-    #        pre="delay_node",
-    #        post="state",
-    #        dim_out=1,
-    #        transform=1,
-    #    ),
-    #    dict(
-    #        pre="state",
-    #        post="delta_state",
-    #        solver=nengo.solvers.LstsqL2(weights=True),
-    #        function=lambda x: x[0] - x[1],
-    #    ),
+    # Input/Visual connections
     dict(
         pre="stimulus",
-        post="stim_neurons",
+        post="stim",
         transform=1,
         synapse=0,
     ),
     dict(
-        pre="stim_neurons",
-        post="hidden_neurons",
-        transform=gen_transform("bipolar_gaussian_conv"),
-        synapse=5e-3,
-    ),
-    dict(
-        pre="stim_neurons",
-        post="latent_neurons",
-        transform=gen_transform(),
-        synapse=5e-3,
-    ),
-    dict(
-        pre="hidden_neurons",
-        post="coding_neurons",
-        transform=gen_transform("orthogonal_excitation"),
-        learning_rule=learning_rule,
-        synapse=5e-3,
-    ),
-    dict(
-        pre="coding_neurons",
-        post="coding_neurons",
-        transform=gen_transform("circular_inhibition"),
-        synapse=2e-3,
-    ),
-    dict(
-        pre="coding_neurons",
-        post="mirror_neurons",
-        transform=gen_transform(),
-        synapse=0,
-        learning_rule=PreSup(),
-    ),
-    dict(
-        pre="latent_neurons",
-        post="mirror_neurons",
-        transform=gen_transform(),
-        synapse=0,
-    ),
-    dict(
-        pre="mirror_neurons",
-        post="error_neurons",
-        transform=-1,
-        synapse=1e-3,
-    ),
-    dict(
-        pre="stim_neurons",
-        post="error_neurons",
+        pre="stim",
+        post="visual_neurons",
         transform=1,
-        synapse=1e-3,
+        synapse=0,
+    ),
+    # Encoding/Output connections
+    dict(
+        pre="stim",
+        post="hidden",
+        transform=gen_transform(),
+        synapse=0,
+    ),
+    dict(
+        pre="hidden",
+        post="output",
+        transform=gen_transform(),
+        synapse=0,
+        solver=nengo.solvers.LstsqL2(weights=True, reg=0.01),
+        learning_rule=nengo.Oja(),
     ),
 ]
 
 learning_confs = [
-    
 ]
 
 
@@ -417,9 +329,9 @@ def main(plot=False):
     with nengo.Simulator(model, dt=dt, optimize=True) as sim:
         sim.run(duration)
 
-    name_pairs = [("hidden", "coding"), ("latent", "mirror"), ("coding", "mirror")]
-    conn_names = ["{}_neurons2{}_neurons".format(pre, post) for (pre, post) in name_pairs]
-    ens_names = ["stim_neurons", "hidden_neurons", "coding_neurons", "error_neurons"]
+    name_pairs = [("hidden", "output")]
+    conn_names = ["{}2{}".format(pre, post) for (pre, post) in name_pairs]
+    ens_names = ["stim", "hidden", "error"]
 
     # save_data(sim, ["hidden_neurons", "state"], "data/test_data.csv")
 
@@ -427,13 +339,19 @@ def main(plot=False):
         for conn_name in conn_names:
             plt.figure(figsize=(5, 10))
             # Find weight row with max variance
-            neuron = np.argmax(np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1))
-            plt.plot(sim.trange(sample_every), sim.data[probes[conn_name]][:, neuron, :])
+            neuron = np.argmax(
+                np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1)
+            )
+            plt.plot(
+                sim.trange(sample_every), sim.data[probes[conn_name]][:, neuron, :]
+            )
             plt.xlabel("time (s)")
             plt.ylabel("weights")
             plt.title(conn_name)
 
-        _, axs = plt.subplots(len(ens_names), 1, figsize=(5 * len(ens_names), 10), sharex=True)
+        _, axs = plt.subplots(
+            len(ens_names), 1, figsize=(5 * len(ens_names), 10), sharex=True
+        )
         for i, ens_name in enumerate(ens_names):
             if "neurons" in ens_name:
                 plot_spikes(

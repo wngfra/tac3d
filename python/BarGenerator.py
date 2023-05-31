@@ -33,7 +33,7 @@ class BarGenerator:
             L // 2 - dim[0] // 2 : L // 2 - dim[0] // 2 + dim[0],
             L // 2 - dim[1] // 2 : L // 2 - dim[1] // 2 + dim[1],
         ] = 1
-        padded = ndimage.rotate(padded, angle, order=0)
+        padded = ndimage.rotate(padded, angle)
         if shift:
             padded = ndimage.shift(padded, shift)
         padbottom, padleft = (padded.shape - self.shape) // 2
@@ -42,7 +42,7 @@ class BarGenerator:
             padbottom : padbottom + self.shape[0], padleft : padleft + self.shape[1]
         ]
 
-        cropped[cropped < 0.5] = 0
+        cropped[cropped < 0.1] = 0
         cropped /= cropped.max() if cropped.max() > 0 else 1
 
         return cropped

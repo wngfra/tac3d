@@ -1,5 +1,0 @@
-Axon Map
-========
-.. automodule:: nxsdk.arch.n2a.graph.nodesets.axon_map_obj_inf
-   :members:
-   :undoc-members:

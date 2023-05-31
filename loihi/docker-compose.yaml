@@ -1,0 +1,14 @@
+name: loihi
+
+services:
+  loihi:
+    image: loihi
+    container_name: loihi_container
+    working_dir: /workspace
+    volumes:
+      - ${PWD}:/workspace/loihi
+    command: [ "bash" ]
+    privileged: true
+    network_mode: host
+    devices:
+      - "/dev/bus/usb:/dev/bus/usb"
