@@ -25,7 +25,7 @@ stim_size = np.prod(stim_shape)
 
 # Prepare dataset
 bg = BarGenerator(stim_shape)
-num_samples = 6
+num_samples = 10
 X_train, y_train = bg.gen_sequential_bars(
     num_samples=num_samples,
     dim=(2, 11),
@@ -49,7 +49,7 @@ sample_every = 1 * dt
 learning_rule = nengo.BCM()
 
 # Default neuron parameters
-max_rate = 100  # Hz
+max_rate = 150  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.05)
@@ -143,7 +143,7 @@ layer_confs = [
     ),
     dict(
         name="stim",
-        n_neurons=8 * stim_size,
+        n_neurons=12 * stim_size,
         dimensions=stim_size,
     ),
     dict(
@@ -154,7 +154,7 @@ layer_confs = [
     # Encoding/Output layers
     dict(
         name="hidden",
-        n_neurons=8 * n_hidden,
+        n_neurons=6 * n_hidden,
         dimensions=n_hidden,
     ),
     dict(
