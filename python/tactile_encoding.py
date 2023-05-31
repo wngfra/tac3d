@@ -33,17 +33,17 @@ X_train, y_train = bg.gen_sequential_bars(
     start_angle=0,
     step=360 / num_samples,
 )
-y_train = y_train - 90
+y_train = y_train / 180 - 1
 
 
 # Simulation parameters
 dt = 1e-3
 K = (stim_shape[0] - ksize) // strides[0] + 1
 n_latent_neurons = 16
-n_hidden = K * K * n_filter
-n_output = 100
-decay_time = 0.1
-presentation_time = 0.5 + decay_time  # Leave 0.05s for decay
+n_hidden = n_filter
+n_output = 50
+decay_time = 0
+presentation_time = 1 + decay_time  # Leave 0.05s for decay
 duration = num_samples * presentation_time
 sample_every = 1 * dt
 learning_rule = nengo.BCM()
@@ -143,7 +143,7 @@ layer_confs = [
     ),
     dict(
         name="stim",
-        n_neurons=12 * stim_size,
+        n_neurons=8 * stim_size,
         dimensions=stim_size,
     ),
     dict(
@@ -154,14 +154,20 @@ layer_confs = [
     # Encoding/Output layers
     dict(
         name="hidden",
-        n_neurons=6 * n_hidden,
+        n_neurons=8 * n_hidden,
         dimensions=n_hidden,
     ),
     dict(
         name="output",
         n_neurons=n_output,
         dimensions=1,
-        radius=90,
+        radius=1,
+    ),
+    dict(
+        name="error",
+        n_neurons=2 * n_output,
+        dimensions=1,
+        radius=2,
     ),
 ]
 
@@ -193,11 +199,25 @@ conn_confs = [
         transform=gen_transform(),
         synapse=0,
         solver=nengo.solvers.LstsqL2(weights=True, reg=0.01),
-        learning_rule=nengo.Oja(),
+        learning_rule=nengo.PES(learning_rate=1e-5),
+    ),
+    dict(
+        pre="target",
+        post="error",
+        transform=-1,
+    ),
+    dict(
+        pre="output",
+        post="error",
+        transform=1,
     ),
 ]
 
 learning_confs = [
+    dict(
+        pre="error",
+        post="hidden2output",
+    ),
 ]
 
 
@@ -339,11 +359,12 @@ def main(plot=False):
         for conn_name in conn_names:
             plt.figure(figsize=(5, 10))
             # Find weight row with max variance
-            neuron = np.argmax(
-                np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1)
-            )
+            if "neurons" in conn_name:
+                neuron = np.argmax(
+                    np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1)
+                )
             plt.plot(
-                sim.trange(sample_every), sim.data[probes[conn_name]][:, neuron, :]
+                sim.trange(sample_every), sim.data[probes[conn_name]][..., 10]#[:, neuron, :]
             )
             plt.xlabel("time (s)")
             plt.ylabel("weights")
