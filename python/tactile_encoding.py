@@ -17,18 +17,18 @@ from OrientationMap import sample_bipole_gaussian
 font = {"weight": "normal", "size": 30}
 matplotlib.rc("font", **font)
 
-n_filter = 18
-ksize = 5
-strides = (ksize - 1, ksize - 1)
-stim_shape = (11, 11)
+n_filters = 18
+kern_size = 5
+strides = (kern_size - 1, kern_size - 1)
+stim_shape = (15, 15)
 stim_size = np.prod(stim_shape)
 
 # Prepare dataset
 bg = BarGenerator(stim_shape)
-num_samples = 10
+num_samples = 18
 X_train, y_train = bg.gen_sequential_bars(
     num_samples=num_samples,
-    dim=(2, 11),
+    dim=(2, 15),
     shift=(0, 0),
     start_angle=0,
     step=360 / num_samples,
@@ -38,18 +38,18 @@ y_train = y_train / 180 - 1
 
 # Simulation parameters
 dt = 1e-3
-K = (stim_shape[0] - ksize) // strides[0] + 1
+K = (stim_shape[0] - kern_size) // strides[0] + 1
 n_latent_neurons = 16
-n_hidden = n_filter
-n_output = 50
+n_hidden = K * K * n_filters
+n_output = n_filters
 decay_time = 0
-presentation_time = 1 + decay_time  # Leave 0.05s for decay
+presentation_time = 0.1 + decay_time  # Leave 0.05s for decay
 duration = num_samples * presentation_time
-sample_every = 1 * dt
+sample_every = 10 * dt
 learning_rule = nengo.BCM()
 
 # Default neuron parameters
-max_rate = 150  # Hz
+max_rate = 100  # Hz
 amp = 1.0
 rate_target = max_rate * amp  # must be in amplitude scaled units
 default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.05)
@@ -80,23 +80,28 @@ def gen_transform(pattern=None, **kwargs):
                 W[W < 0.1] = 0
             case "bipolar_gaussian_conv":
                 try:
-                    kern_size = kwargs["kern_size"]
-                    n_filter = kwargs["n_filter"]
+                    ksize = kwargs["ksize"]
+                    nfilter = kwargs["nfilter"]
                 except:
                     raise KeyError("Missing keyword arguments!")
-                # FIXME: This is a hacky way to generate the kernel
-                W = np.zeros(shape)
-                delta_phi = np.pi / (n_filter + 1)
-                for i in range(n_filter):
-                    W = sample_bipole_gaussian(
-                        (kern_size, kern_size),
-                        (kern_size // 2, kern_size // 2),
-                        (3, 0.5),
+                kernel = np.empty((ksize, ksize, 1, nfilter))
+                delta_phi = np.pi / (nfilter + 1)
+                for i in range(nfilter):
+                    kernel[:, :, 0, i] = sample_bipole_gaussian(
+                        (ksize, ksize),
+                        (ksize // 2, ksize // 2),
+                        (2, 0.5),
                         i * delta_phi,
                         binary=False,
                     )
-
-                return W
+                conv = nengo.Convolution(
+                    n_filters=nfilter,
+                    input_shape=stim_shape + (1,),
+                    kernel_size=(ksize, ksize),
+                    strides=strides,
+                    init=kernel,
+                )
+                return conv
             case "circular_inhibition":
                 # For self-connections
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
@@ -104,7 +109,7 @@ def gen_transform(pattern=None, **kwargs):
                 weight = np.abs(np.arange(shape[0]) - shape[0] // 2)
                 for i in range(shape[0]):
                     W[i, :] = -np.roll(weight, i + shape[0] // 2)
-                W *= 3 / np.max(np.abs(W))
+                W *= 5 / np.max(np.abs(W))
             case _:
                 if "weights" in kwargs:
                     W = kwargs["weights"]
@@ -154,20 +159,14 @@ layer_confs = [
     # Encoding/Output layers
     dict(
         name="hidden",
-        n_neurons=8 * n_hidden,
-        dimensions=n_hidden,
+        n_neurons=n_hidden,
+        dimensions=1,
     ),
     dict(
         name="output",
         n_neurons=n_output,
         dimensions=1,
         radius=1,
-    ),
-    dict(
-        name="error",
-        n_neurons=2 * n_output,
-        dimensions=1,
-        radius=2,
     ),
 ]
 
@@ -176,48 +175,34 @@ conn_confs = [
     # Input/Visual connections
     dict(
         pre="stimulus",
-        post="stim",
-        transform=1,
-        synapse=0,
-    ),
-    dict(
-        pre="stim",
         post="visual_neurons",
         transform=1,
         synapse=0,
     ),
     # Encoding/Output connections
     dict(
-        pre="stim",
-        post="hidden",
+        pre="stimulus",
+        post="hidden_neurons",
+        transform=gen_transform(
+            "bipolar_gaussian_conv", ksize=kern_size, nfilter=n_filters
+        ),
+        synapse=0,
+    ),
+    dict(
+        pre="hidden_neurons",
+        post="output_neurons",
         transform=gen_transform(),
         synapse=0,
     ),
     dict(
-        pre="hidden",
-        post="output",
-        transform=gen_transform(),
+        pre="output_neurons",
+        post="output_neurons",
+        transform=gen_transform("circular_inhibition"),
         synapse=0,
-        solver=nengo.solvers.LstsqL2(weights=True, reg=0.01),
-        learning_rule=nengo.PES(learning_rate=1e-5),
-    ),
-    dict(
-        pre="target",
-        post="error",
-        transform=-1,
-    ),
-    dict(
-        pre="output",
-        post="error",
-        transform=1,
     ),
 ]
 
 learning_confs = [
-    dict(
-        pre="error",
-        post="hidden2output",
-    ),
 ]
 
 
@@ -350,22 +335,24 @@ def main(plot=False):
         sim.run(duration)
 
     name_pairs = [("hidden", "output")]
-    conn_names = ["{}2{}".format(pre, post) for (pre, post) in name_pairs]
     ens_names = ["stim", "hidden", "error"]
 
     # save_data(sim, ["hidden_neurons", "state"], "data/test_data.csv")
 
     if plot:
-        for conn_name in conn_names:
+        for pre, post in name_pairs:
+            conn_name = "{}2{}".format(pre, post)
             plt.figure(figsize=(5, 10))
             # Find weight row with max variance
             if "neurons" in conn_name:
                 neuron = np.argmax(
                     np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1)
                 )
-            plt.plot(
-                sim.trange(sample_every), sim.data[probes[conn_name]][..., 10]#[:, neuron, :]
-            )
+                plt.plot(
+                    sim.trange(sample_every), sim.data[probes[conn_name]][:, neuron, :]
+                )
+            else:
+                plt.plot(sim.trange(sample_every), sim.data[probes[conn_name]][..., 10])
             plt.xlabel("time (s)")
             plt.ylabel("weights")
             plt.title(conn_name)

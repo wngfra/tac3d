@@ -1,5 +1,3 @@
-name: tac3d
-
 x-shared-data:
   &default-data
   type: bind
