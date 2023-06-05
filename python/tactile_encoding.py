@@ -8,8 +8,8 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 from BarGenerator import BarGenerator
-from learning_rules import SynapticSampling, PreSup
-from nengo_extras.learning_rules import DeltaRule
+# from learning_rules import SynapticSampling, PreSup
+# from nengo_extras.learning_rules import DeltaRule
 from nengo_extras.plot_spikes import plot_spikes
 
 from OrientationMap import sample_bipole_gaussian
@@ -42,11 +42,11 @@ K = (stim_shape[0] - kern_size) // strides[0] + 1
 n_latent_neurons = 16
 n_hidden = K * K * n_filters
 n_output = n_filters
-decay_time = 0
-presentation_time = 0.1 + decay_time  # Leave 0.05s for decay
+decay_time = 0.1
+presentation_time = 1 + decay_time  # Leave 0.05s for decay
 duration = num_samples * presentation_time
 sample_every = 10 * dt
-learning_rule = nengo.BCM()
+learning_rule = nengo.BCM(2e-7)
 
 # Default neuron parameters
 max_rate = 100  # Hz
@@ -116,7 +116,7 @@ def gen_transform(pattern=None, **kwargs):
                 else:
                     W = nengo.Dense(
                         shape,
-                        init=nengo.dists.Uniform(0, 1e-2),
+                        init=nengo.dists.Uniform(1e-2, 0.1),
                     )
         return W
 
@@ -145,11 +145,6 @@ layer_confs = [
         name="stimulus",
         neuron=None,
         output=stim_func,
-    ),
-    dict(
-        name="stim",
-        n_neurons=8 * stim_size,
-        dimensions=stim_size,
     ),
     dict(
         name="visual",
@@ -191,14 +186,15 @@ conn_confs = [
     dict(
         pre="hidden_neurons",
         post="output_neurons",
-        transform=gen_transform(),
+        transform=gen_transform("othogonal_excitation"),
+        learning_rule=learning_rule,
         synapse=0,
     ),
     dict(
         pre="output_neurons",
         post="output_neurons",
         transform=gen_transform("circular_inhibition"),
-        synapse=0,
+        synapse=2e-3,
     ),
 ]
 
@@ -334,8 +330,8 @@ def main(plot=False):
     with nengo.Simulator(model, dt=dt, optimize=True) as sim:
         sim.run(duration)
 
-    name_pairs = [("hidden", "output")]
-    ens_names = ["stim", "hidden", "error"]
+    name_pairs = [("hidden_neurons", "output_neurons")]
+    ens_names = ["stimulus", "hidden_neurons", "output_neurons"]
 
     # save_data(sim, ["hidden_neurons", "state"], "data/test_data.csv")
 
