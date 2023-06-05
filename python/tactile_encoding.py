@@ -8,8 +8,7 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 from BarGenerator import BarGenerator
-# from learning_rules import SynapticSampling, PreSup
-# from nengo_extras.learning_rules import DeltaRule
+from learning_rules import SynapticSampling, PreSup
 from nengo_extras.plot_spikes import plot_spikes
 
 from OrientationMap import sample_bipole_gaussian
@@ -17,7 +16,7 @@ from OrientationMap import sample_bipole_gaussian
 font = {"weight": "normal", "size": 30}
 matplotlib.rc("font", **font)
 
-n_filters = 18
+n_filters = 10
 kern_size = 5
 strides = (kern_size - 1, kern_size - 1)
 stim_shape = (15, 15)
@@ -41,12 +40,12 @@ dt = 1e-3
 K = (stim_shape[0] - kern_size) // strides[0] + 1
 n_latent_neurons = 16
 n_hidden = K * K * n_filters
-n_output = n_filters
+n_output = 18
 decay_time = 0.1
-presentation_time = 1 + decay_time  # Leave 0.05s for decay
+presentation_time = 0.5 + decay_time  # Leave 0.05s for decay
 duration = num_samples * presentation_time
-sample_every = 10 * dt
-learning_rule = nengo.BCM(2e-7)
+sample_every = 1 * dt
+learning_rule = SynapticSampling()
 
 # Default neuron parameters
 max_rate = 100  # Hz
@@ -333,7 +332,7 @@ def main(plot=False):
     name_pairs = [("hidden_neurons", "output_neurons")]
     ens_names = ["stimulus", "hidden_neurons", "output_neurons"]
 
-    # save_data(sim, ["hidden_neurons", "state"], "data/test_data.csv")
+    save_data(sim, ["stimulus", "hidden_neurons", "target"], "test_data.csv")
 
     if plot:
         for pre, post in name_pairs:

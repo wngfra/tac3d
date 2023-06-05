@@ -10,7 +10,7 @@
 5. [tac3d](tac3d/) contains the [ROS2](https://docs.ros.org/en/humble/index.html) packages for active tactile exploration simulation.
 
 ## Features
-- Intel Loihi support(beta)
+- Intel Loihi support via docker
 - Online simulation in [MuJoCo](https://mujoco.org/) with [ROS2](https://www.ros.org/) interfaces
 - Asynchronous neural simulation in [Nengo](https://www.nengo.ai/)
 
