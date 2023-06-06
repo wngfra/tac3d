@@ -67,7 +67,7 @@ class Cortex(Node):
         msg.header.stamp = self.get_clock().now().to_msg()
 
         signal = np.zeros(6, dtype=np.float64)
-        signal[2] -= np.exp(-2e-3 * t) if self._contact_force <= 0.1 else 0.0
+        signal[2] += -20 * (1e-2 - self._contact_force)
 
         msg.spike_signal = signal.tolist()
         self._ms_pub.publish(msg)
