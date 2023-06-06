@@ -109,31 +109,29 @@ class Simulator(Node):
             m (mujoco.MjModel): Robot model.
             d (mujoco.MjData): Binded data.
         """
-
-        # Compute translational error
-        dtype = d.qpos.dtype
-        err = np.zeros(6, dtype=dtype)
-        err_pos, err_rot = err[:3], err[3:]
-        err_pos[:] = self.ik.ref_xpos - d.site_xpos[self.ik.site_id]
-
-        # Compute rotation error
-        site_xmat = d.site_xmat[self.ik.site_id]
-        site_xquat = np.empty(4, dtype=dtype)
-        target_quat = np.empty(4, dtype=dtype)
-        neg_site_xquat = np.empty(4, dtype=dtype)
-        err_rot_quat = np.empty(4, dtype=dtype)
-        mujoco.mju_mat2Quat(site_xquat, site_xmat)
-        mujoco.mju_mat2Quat(target_quat, self.ik.ref_xmat)
-        mujoco.mju_negQuat(neg_site_xquat, site_xquat)
-        mujoco.mju_mulQuat(err_rot_quat, target_quat, neg_site_xquat)
-        mujoco.mju_quat2Vel(err_rot, err_rot_quat, 1)
-        
         # Add control to error vector.
         if len(self._ctrls) > 0:
+            # Compute translational error
+            dtype = d.qpos.dtype
+            err = np.zeros(6, dtype=dtype)
+            err_pos, err_rot = err[:3], err[3:]
+            err_pos[:] = self.ik.ref_xpos - d.site_xpos[self.ik.site_id]
+    
+            # Compute rotation error
+            site_xmat = d.site_xmat[self.ik.site_id]
+            site_xquat = np.empty(4, dtype=dtype)
+            target_quat = np.empty(4, dtype=dtype)
+            neg_site_xquat = np.empty(4, dtype=dtype)
+            err_rot_quat = np.empty(4, dtype=dtype)
+            mujoco.mju_mat2Quat(site_xquat, site_xmat)
+            mujoco.mju_mat2Quat(target_quat, self.ik.ref_xmat)
+            mujoco.mju_negQuat(neg_site_xquat, site_xquat)
+            mujoco.mju_mulQuat(err_rot_quat, target_quat, neg_site_xquat)
+            mujoco.mju_quat2Vel(err_rot, err_rot_quat, 1)
+            
             ctrl = self._ctrls.pop() * _CTRL_SCALE
             err_pos += ctrl[:3]
             err_rot += ctrl[3:]
-        if np.linalg.norm(err_pos) > 1e-6:
             # Compute IK and set control
             mujoco.mj_jacSite(m, d, self.ik.jacp, self.ik.jacr, self.ik.site_id)
             jac_joints = self.ik.jac[:, self.ik.dof_indices]

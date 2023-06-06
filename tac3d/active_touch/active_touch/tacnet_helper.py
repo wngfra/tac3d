@@ -13,21 +13,22 @@ _AMP = 1.0
 _RATE_TARGET = _MAX_RATE * _AMP
 
 # Constatns for the convolutional layer
-_N_FILTERS = 18
-_KERN_SIZE = 7
+_N_FILTERS = 16
+_KERN_SIZE = 5
 _STRIDES = (_KERN_SIZE - 1, _KERN_SIZE - 1)
 
 # Network params
 dt = 1e-3
 k = (stim_shape[0] - _KERN_SIZE) // _STRIDES[0] + 1
-n_hidden_neurons = k * k * _N_FILTERS
-n_coding_neurons = 36
-learning_rate = 5e-9
+n_hidden = k * k * _N_FILTERS
+n_output = 18
+tau_rc = 0.02
 
-# Default neuron parameters
-default_neuron = nengo.AdaptiveLIF(amplitude=_AMP, tau_rc=0.05)
+# Default neuronal and synaptic parameters
+default_neuron = nengo.AdaptiveLIF(amplitude=_AMP, tau_rc=tau_rc)
 default_rates = nengo.dists.Choice([_RATE_TARGET])
 default_intercepts = nengo.dists.Choice([0])
+learning_rule = [nengo.BCM(5e-8), nengo.Oja(5e-6)]
 
 
 def normalize(x, dtype=np.uint8):
@@ -80,7 +81,7 @@ def sample_bipole_gaussian(shape, center, eigenvalues, phi, binary=False):
     return pdf
 
 
-def gen_transform(pattern=None):
+def gen_transform(pattern=None, **kwargs):
     def inner(shape):
         """Closure of the transform matrix generator.
 
@@ -92,26 +93,34 @@ def gen_transform(pattern=None):
         W: Optional[np.ndarray] = None
 
         match pattern:
-            case "identity_excitation":
-                if 0 in shape:
-                    W = 1
-                else:
-                    W = np.ones(shape)
+            case "orthogonal_excitation":
+                W = np.zeros(shape)
+                target = np.arange(shape[1])
+                n = shape[1] // shape[0]
+                np.random.shuffle(target)
+                for i in range(shape[0]):
+                    W[i, target[i * n : (i + 1) * n]] = np.random.normal(0.3, 0.2)
+                W[W < 0.1] = 0
             case "bipolar_gaussian_conv":
-                kernel = np.empty((_KERN_SIZE, _KERN_SIZE, 1, _N_FILTERS))
-                delta_phi = np.pi / (_N_FILTERS + 1)
-                for i in range(_N_FILTERS):
+                try:
+                    ksize = kwargs["ksize"]
+                    nfilter = kwargs["nfilter"]
+                except:
+                    raise KeyError("Missing keyword arguments!")
+                kernel = np.empty((ksize, ksize, 1, nfilter))
+                delta_phi = np.pi / (nfilter + 1)
+                for i in range(nfilter):
                     kernel[:, :, 0, i] = sample_bipole_gaussian(
-                        (_KERN_SIZE, _KERN_SIZE),
-                        (_KERN_SIZE // 2, _KERN_SIZE // 2),
-                        (2.0, 0.5),
+                        (ksize, ksize),
+                        (ksize // 2, ksize // 2),
+                        (2, 0.5),
                         i * delta_phi,
                         binary=False,
                     )
                 conv = nengo.Convolution(
-                    n_filters=_N_FILTERS,
+                    n_filters=nfilter,
                     input_shape=stim_shape + (1,),
-                    kernel_size=(_KERN_SIZE, _KERN_SIZE),
+                    kernel_size=(ksize, ksize),
                     strides=_STRIDES,
                     init=kernel,
                 )
@@ -123,12 +132,15 @@ def gen_transform(pattern=None):
                 weight = np.abs(np.arange(shape[0]) - shape[0] // 2)
                 for i in range(shape[0]):
                     W[i, :] = -np.roll(weight, i + shape[0] // 2)
-                W /= np.max(np.abs(W))
+                W = -np.expm1(-W)
             case _:
-                W = nengo.Dense(
-                    shape,
-                    init=nengo.dists.Gaussian(0.0, 0.2),
-                )
+                if "weights" in kwargs:
+                    W = kwargs["weights"]
+                else:
+                    W = nengo.Dense(
+                        shape,
+                        init=nengo.dists.Uniform(0, 0.3),
+                    )
         return W
 
     return inner
@@ -144,34 +156,28 @@ class Delay:
         return self.history[0]
 
 
-# Function to inhibit the error population after 15s
-def inhib(t):
-    return 2 if t > 20.0 else 0.0
-
-
-delay = Delay(n_coding_neurons, timesteps=int(0.1 / dt))
+delay = Delay(n_output, timesteps=int(0.1 / dt))
 
 # Define layers
 layer_confs = [
     dict(
-        name="stim_node",
+        name="stimulus",
         neuron=None,
         output="input_func",
     ),
     dict(
-        name="stim",
+        name="visual",
         n_neurons=stim_size,
         dimensions=1,
-        on_chip=False,
     ),
     dict(
         name="hidden",
-        n_neurons=n_hidden_neurons,
+        n_neurons=n_hidden,
         dimensions=1,
     ),
     dict(
-        name="wta",
-        n_neurons=n_coding_neurons,
+        name="output",
+        n_neurons=n_output,
         dimensions=1,
     ),
 ]
@@ -179,31 +185,33 @@ layer_confs = [
 # Define connections
 conn_confs = [
     dict(
-        pre="stim_node",
-        post="stim_neurons",
-        transform=gen_transform("identity_excitation"),
-        synapse=0.001,
+        pre="stimulus",
+        post="visual_neurons",
+        transform=1,
+        synapse=0,
     ),
+    # Encoding/Output connections
     dict(
-        pre="stim_neurons",
+        pre="stimulus",
         post="hidden_neurons",
-        transform=gen_transform("bipolar_gaussian_conv"),
-        synapse=1e-3,
-    ),
-    dict(
-        pre="hidden_neurons",
-        post="wta_neurons",
-        transform=gen_transform(),
-        # learning_rule=SynapticSampling(),
+        transform=gen_transform(
+            "bipolar_gaussian_conv", ksize=_KERN_SIZE, nfilter=_N_FILTERS
+        ),
         synapse=0,
     ),
     dict(
-        pre="wta_neurons",
-        post="wta_neurons",
-        transform=gen_transform("circular_inhibition"),
-        synapse=0.01,
+        pre="hidden_neurons",
+        post="output_neurons",
+        transform=gen_transform("othogonal_excitation"),
+        learning_rule=learning_rule,
+        synapse=2e-3,
     ),
-    
+    dict(
+        pre="output_neurons",
+        post="output_neurons",
+        transform=gen_transform("circular_inhibition"),
+        synapse=5e-3,
+    ),
 ]
 
 # Define learning rules

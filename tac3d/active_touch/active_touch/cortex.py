@@ -28,12 +28,17 @@ class Cortex(Node):
         )
         # Robot state subscription
         self._rs_sub = self.create_subscription(
-            RobotState, "mujoco_simulator/robot_state", self.subscribe_rs, 10
+            RobotState, "mujoco_simulator/robot_state", self.subscribe_robot_state, 10
         )
+
         # Tactile encoding subscription
-        self._te_sub = self.create_subscription(
-            Locus, "active_touch/tacnet_encoding", self.subscribe_te, 10
-        )
+        topic_names_and_types = self.get_topic_names_and_types()
+        for topic_name, _ in topic_names_and_types:
+            if "tacnet/output" in topic_name:
+                self.create_subscription(
+                    Locus, topic_name, self.subscribe_tactile_output, 10
+                )
+
         # Timer for publishing motor signal
         timer_period = 1.0 / _FREQ
         self.tmr = self.create_timer(timer_period, self.timer_callback)
@@ -41,7 +46,7 @@ class Cortex(Node):
         # Desired pose
         self._desired_pose = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
-    def subscribe_rs(self, msg):
+    def subscribe_robot_state(self, msg):
         xpos = msg.site_position
         xquat = msg.site_quaternion
         xrpy = R.from_quat(xquat).as_euler("xyz", degrees=True)
@@ -50,7 +55,7 @@ class Cortex(Node):
 
         self._contact_force = msg.contact_force
 
-    def subscribe_te(self, msg):
+    def subscribe_tactile_output(self, msg):
         pass
 
     def timer_callback(self):
@@ -63,7 +68,7 @@ class Cortex(Node):
 
         signal = np.zeros(6, dtype=np.float64)
         signal[2] -= np.exp(-2e-3 * t) if self._contact_force <= 0.1 else 0.0
-        signal[1] = np.sin(0.5 * t)
+
         msg.spike_signal = signal.tolist()
         self._ms_pub.publish(msg)
 
