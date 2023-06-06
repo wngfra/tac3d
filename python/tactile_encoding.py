@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 from BarGenerator import BarGenerator
-from learning_rules import SynapticSampling, PreSup
+from custom_objects import SynapticSampling
 from nengo_extras.plot_spikes import plot_spikes
 
 from OrientationMap import sample_bipole_gaussian
@@ -27,7 +27,7 @@ bg = BarGenerator(stim_shape)
 num_samples = 18
 X_train, y_train = bg.gen_sequential_bars(
     num_samples=num_samples,
-    dim=(2, 15),
+    dim=(5, 15),
     shift=(0, 0),
     start_angle=0,
     step=360 / num_samples,
@@ -44,14 +44,15 @@ n_output = 18
 decay_time = 0.1
 presentation_time = 0.5 + decay_time  # Leave 0.05s for decay
 duration = num_samples * presentation_time
-sample_every = 1 * dt
-learning_rule = SynapticSampling()
+sample_every = 10 * dt
+learning_rule = [nengo.BCM(5e-8), nengo.Oja(5e-6)]  # SynapticSampling()
 
 # Default neuron parameters
-max_rate = 100  # Hz
+max_rate = 150  # Hz
 amp = 1.0
+tau_rc = 0.02
 rate_target = max_rate * amp  # must be in amplitude scaled units
-default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=0.05)
+default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=tau_rc)
 default_rates = nengo.dists.Choice([rate_target])
 default_intercepts = nengo.dists.Choice([0])
 default_encoders = nengo.dists.ScatteredHypersphere(surface=True)
@@ -75,7 +76,7 @@ def gen_transform(pattern=None, **kwargs):
                 n = shape[1] // shape[0]
                 np.random.shuffle(target)
                 for i in range(shape[0]):
-                    W[i, target[i * n : (i + 1) * n]] = np.random.normal(0.3, 0.1)
+                    W[i, target[i * n : (i + 1) * n]] = np.random.normal(0.3, 0.2)
                 W[W < 0.1] = 0
             case "bipolar_gaussian_conv":
                 try:
@@ -108,14 +109,14 @@ def gen_transform(pattern=None, **kwargs):
                 weight = np.abs(np.arange(shape[0]) - shape[0] // 2)
                 for i in range(shape[0]):
                     W[i, :] = -np.roll(weight, i + shape[0] // 2)
-                W *= 5 / np.max(np.abs(W))
+                W = -np.expm1(-W)
             case _:
                 if "weights" in kwargs:
                     W = kwargs["weights"]
                 else:
                     W = nengo.Dense(
                         shape,
-                        init=nengo.dists.Uniform(1e-2, 0.1),
+                        init=nengo.dists.Uniform(0, 0.3),
                     )
         return W
 
@@ -160,7 +161,6 @@ layer_confs = [
         name="output",
         n_neurons=n_output,
         dimensions=1,
-        radius=1,
     ),
 ]
 
@@ -187,18 +187,17 @@ conn_confs = [
         post="output_neurons",
         transform=gen_transform("othogonal_excitation"),
         learning_rule=learning_rule,
-        synapse=0,
+        synapse=2e-3,
     ),
     dict(
         pre="output_neurons",
         post="output_neurons",
         transform=gen_transform("circular_inhibition"),
-        synapse=2e-3,
+        synapse=5e-3,
     ),
 ]
 
-learning_confs = [
-]
+learning_confs = []
 
 
 # Create the Nengo model
@@ -330,7 +329,7 @@ def main(plot=False):
         sim.run(duration)
 
     name_pairs = [("hidden_neurons", "output_neurons")]
-    ens_names = ["stimulus", "hidden_neurons", "output_neurons"]
+    ens_names = ["visual_neurons", "hidden_neurons", "output_neurons"]
 
     save_data(sim, ["stimulus", "hidden_neurons", "target"], "test_data.csv")
 
