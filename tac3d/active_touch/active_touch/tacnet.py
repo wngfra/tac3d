@@ -242,7 +242,7 @@ class Tacnet(Node):
                 self._sim.run(_DURATION)
                 hidden = self._sim.data[self._probes["hidden_neurons"]][-1]
                 output = self._sim.data[self._probes["output_neurons"]][-1]
-                
+
                 # Publish simulation results
                 self.publish_image("tacnet_encoded_pub", hidden)
                 # self.publish_output(output)
@@ -264,10 +264,8 @@ class Tacnet(Node):
         img_msg.step = dim
         img_msg.data = normalize(image).tolist()
         self._confs[pub_name].publish(img_msg)
-    
-    def publish_output(
-        self, output: np.ndarray, location: np.ndarray = None
-    ):
+
+    def publish_output(self, output: np.ndarray, location: np.ndarray = None):
         header = std_msgs.msg.Header()
         header.frame_id = "world"
         header.stamp = self.get_clock().now().to_msg()
@@ -280,7 +278,7 @@ class Tacnet(Node):
         ec_msg.height = dim
         ec_msg.width = dim
         ec_msg.data = output
-        #self._confs["te_pub"].publish(ec_msg)
+        # self._confs["te_pub"].publish(ec_msg)
 
         # Prepare tactile spatial memory as point cloud
         if points is not None:
@@ -304,7 +302,7 @@ class Tacnet(Node):
                 row_step=itemsize * points.shape[0] * 1,
                 data=points.astype(dtype).tobytes(),
             )
-            #self._confs["tp_pub"].publish(pc2_msg)
+            # self._confs["tp_pub"].publish(pc2_msg)
 
     def subscribe_robot_state(self, msg: RobotState):
         # Update the robot state

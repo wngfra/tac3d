@@ -27,7 +27,7 @@ bg = BarGenerator(stim_shape)
 num_samples = 18
 X_train, y_train = bg.gen_sequential_bars(
     num_samples=num_samples,
-    dim=(5, 15),
+    dim=(3, 15),
     shift=(0, 0),
     start_angle=0,
     step=360 / num_samples,
@@ -324,14 +324,15 @@ with nengo.Network(label="tacnet", seed=1) as model:
         )
 
 
-def main(plot=False):
+def main(plot=False, savedata=False):
     with nengo.Simulator(model, dt=dt, optimize=True) as sim:
         sim.run(duration)
 
     name_pairs = [("hidden_neurons", "output_neurons")]
     ens_names = ["visual_neurons", "hidden_neurons", "output_neurons"]
 
-    save_data(sim, ["stimulus", "hidden_neurons", "target"], "test_data.csv")
+    if savedata:
+        save_data(sim, ["stimulus", "hidden_neurons", "output_neurons", "target"], "test_data.csv")
 
     if plot:
         for pre, post in name_pairs:
@@ -379,9 +380,14 @@ def save_data(sim, save_list, filename):
 
     data = []
     labels = []
-    for name in save_list:
-        data.append(sim.data[probes[name]])
-        labels += [name + "_{}".format(i) for i in range(data[-1].shape[1])]
+    for item_name in save_list:
+        if "2" in item_name:
+            # Save connection weights
+            weights = sim.data[probes[item_name]]
+            np.save(f"{item_name}_weights", weights)
+        else:
+            data.append(sim.data[probes[item_name]])
+            labels += [item_name + "_{}".format(i) for i in range(data[-1].shape[1])]
     df = pd.DataFrame(
         np.hstack(data), index=sim.trange(sample_every=sample_every), columns=labels
     )
@@ -389,4 +395,4 @@ def save_data(sim, save_list, filename):
 
 
 if __name__ == "__main__":
-    main(True)
+    main(False, True)
