@@ -8,7 +8,7 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 from BarGenerator import BarGenerator
-from custom_objects import SynapticSampling
+from learning_rules import SynapticSampling
 from nengo_extras.plot_spikes import plot_spikes
 
 from OrientationMap import sample_bipole_gaussian
@@ -16,9 +16,8 @@ from OrientationMap import sample_bipole_gaussian
 font = {"weight": "normal", "size": 30}
 matplotlib.rc("font", **font)
 
-n_filters = 10
-kern_size = 5
-strides = (kern_size - 1, kern_size - 1)
+n_filters = 6
+kern_size = 7
 stim_shape = (15, 15)
 stim_size = np.prod(stim_shape)
 
@@ -27,8 +26,8 @@ bg = BarGenerator(stim_shape)
 num_samples = 18
 X_train, y_train = bg.gen_sequential_bars(
     num_samples=num_samples,
-    dim=(3, 15),
-    shift=(0, 0),
+    dim=(3, 10),
+    shift=(3, 3),
     start_angle=0,
     step=360 / num_samples,
 )
@@ -37,18 +36,18 @@ y_train = y_train / 180 - 1
 
 # Simulation parameters
 dt = 1e-3
-K = (stim_shape[0] - kern_size) // strides[0] + 1
+K = (stim_shape[0] - kern_size) // (kern_size - 1) + 1
 n_latent_neurons = 16
 n_hidden = K * K * n_filters
-n_output = 18
+n_output = 36
 decay_time = 0.1
 presentation_time = 0.5 + decay_time  # Leave 0.05s for decay
 duration = num_samples * presentation_time
 sample_every = 10 * dt
-learning_rule = [nengo.BCM(5e-8), nengo.Oja(5e-6)]  # SynapticSampling()
+learning_rule = None #[nengo.BCM(5e-9), nengo.Oja(5e-9)]  # SynapticSampling()
 
 # Default neuron parameters
-max_rate = 150  # Hz
+max_rate = 100  # Hz
 amp = 1.0
 tau_rc = 0.02
 rate_target = max_rate * amp  # must be in amplitude scaled units
@@ -86,6 +85,7 @@ def gen_transform(pattern=None, **kwargs):
                     raise KeyError("Missing keyword arguments!")
                 kernel = np.empty((ksize, ksize, 1, nfilter))
                 delta_phi = np.pi / (nfilter + 1)
+                strides = (ksize - 1, ksize - 1)
                 for i in range(nfilter):
                     kernel[:, :, 0, i] = sample_bipole_gaussian(
                         (ksize, ksize),
@@ -116,7 +116,7 @@ def gen_transform(pattern=None, **kwargs):
                 else:
                     W = nengo.Dense(
                         shape,
-                        init=nengo.dists.Uniform(0, 0.3),
+                        init=nengo.dists.Uniform(0, 0.1),
                     )
         return W
 
@@ -332,7 +332,11 @@ def main(plot=False, savedata=False):
     ens_names = ["visual_neurons", "hidden_neurons", "output_neurons"]
 
     if savedata:
-        save_data(sim, ["stimulus", "hidden_neurons", "output_neurons", "target"], "test_data.csv")
+        save_data(
+            sim,
+            ["stimulus", "hidden_neurons", "output_neurons", "target"],
+            "test_data.csv",
+        )
 
     if plot:
         for pre, post in name_pairs:
@@ -395,4 +399,4 @@ def save_data(sim, save_list, filename):
 
 
 if __name__ == "__main__":
-    main(False, True)
+    main(True, False)

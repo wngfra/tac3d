@@ -156,7 +156,7 @@ class Simulator(Node):
         Args:
             msg (mujoco_interfaces.msg.MotorSignal): 6D MotorSignal message
         """
-        signal = np.asarray(msg.spike_signal)
+        signal = np.asarray(msg.signal)
         if np.any(signal):
             self._ctrls.appendleft(signal)
 

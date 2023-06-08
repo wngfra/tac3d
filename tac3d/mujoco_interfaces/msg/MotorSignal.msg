@@ -1,2 +1,2 @@
 std_msgs/Header header
-float64[] spike_signal
+float64[] signal
