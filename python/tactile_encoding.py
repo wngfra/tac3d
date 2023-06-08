@@ -11,7 +11,7 @@ from BarGenerator import BarGenerator
 from learning_rules import SynapticSampling
 from nengo_extras.plot_spikes import plot_spikes
 
-from OrientationMap import sample_bipole_gaussian
+from orientation_map import sample_bipole_gaussian
 
 font = {"weight": "normal", "size": 30}
 matplotlib.rc("font", **font)
