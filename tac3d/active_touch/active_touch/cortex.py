@@ -15,6 +15,8 @@ t = 0
 
 
 class Cortex(Node):
+    """Cortex node controls the robot using the tactile feedback."""
+
     def __init__(self, qos_profile):
         super().__init__("cortex_node")
         self._contact_force = 0.0
@@ -75,7 +77,7 @@ class Cortex(Node):
             signal[0] += 1 * np.cos(0.1 * np.pi * t)
             signal[1] += 1 * np.sin(0.1 * np.pi * t)
 
-        msg.spike_signal = signal.tolist()
+        msg.signal = signal.tolist()
         self._ms_pub.publish(msg)
 
 
