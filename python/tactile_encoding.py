@@ -26,8 +26,8 @@ bg = BarGenerator(stim_shape)
 num_samples = 18
 X_train, y_train = bg.gen_sequential_bars(
     num_samples=num_samples,
-    dim=(3, 10),
-    shift=(3, 3),
+    dim=(3, 15),
+    shift=(0, 0),
     start_angle=0,
     step=360 / num_samples,
 )
@@ -39,12 +39,12 @@ dt = 1e-3
 K = (stim_shape[0] - kern_size) // (kern_size - 1) + 1
 n_latent_neurons = 16
 n_hidden = K * K * n_filters
-n_output = 36
-decay_time = 0.1
+n_output = 18
+decay_time = 0
 presentation_time = 0.5 + decay_time  # Leave 0.05s for decay
 duration = num_samples * presentation_time
 sample_every = 10 * dt
-learning_rule = None #[nengo.BCM(5e-9), nengo.Oja(5e-9)]  # SynapticSampling()
+learning_rule = [nengo.BCM(5e-9), nengo.Oja(5e-9)]  # SynapticSampling()
 
 # Default neuron parameters
 max_rate = 100  # Hz
@@ -132,6 +132,8 @@ def stim_func(t):
     else:
         return np.zeros_like(sample)
 
+def output_index(t, x):
+    return np.argmax(x)
 
 # Define layers
 layer_confs = [
@@ -162,6 +164,12 @@ layer_confs = [
         n_neurons=n_output,
         dimensions=1,
     ),
+    dict(
+        name="decoder",
+        neuron=None,
+        size_in=n_output,
+        output=output_index,
+    )
 ]
 
 # Define connections
@@ -194,6 +202,12 @@ conn_confs = [
         post="output_neurons",
         transform=gen_transform("circular_inhibition"),
         synapse=5e-3,
+    ),
+    dict(
+        pre="output_neurons",
+        post="decoder",
+        synapse=5e-3,
+        probeable=False,
     ),
 ]
 
@@ -274,6 +288,7 @@ with nengo.Network(label="tacnet", seed=1) as model:
         learning_rule = conn_conf.pop("learning_rule", None)
         name = "{}2{}".format(pre, post)
         function = conn_conf.pop("function", None)
+        probeable = conn_conf.pop("probeable", True)
 
         assert len(conn_conf) == 0, "Unused fields in {}: {}".format(
             [name], list(layer_conf)
@@ -302,14 +317,15 @@ with nengo.Network(label="tacnet", seed=1) as model:
             conn.learning_rule_type = learning_rule
         connections[name] = conn
 
-        probe = nengo.Probe(
-            conn,
-            "weights",
-            synapse=0.01,
-            sample_every=sample_every,
-            label="weights_{}".format(name),
-        )
-        probes[name] = probe
+        if probeable:
+            probe = nengo.Probe(
+                conn,
+                "weights",
+                synapse=0.01,
+                sample_every=sample_every,
+                label="weights_{}".format(name),
+            )
+            probes[name] = probe
 
     # Connect learning rule
     for k, learning_conf in enumerate(learning_confs):
