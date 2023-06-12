@@ -16,35 +16,34 @@ from orientation_map import sample_bipole_gaussian
 font = {"weight": "normal", "size": 30}
 matplotlib.rc("font", **font)
 
-n_filters = 6
-kern_size = 7
+n_filters = 18
+kern_size = 5
 stim_shape = (15, 15)
 stim_size = np.prod(stim_shape)
 
 # Prepare dataset
 bg = BarGenerator(stim_shape)
 num_samples = 18
-X_train, y_train = bg.gen_sequential_bars(
+X_in, y_in = bg.generate_samples(
     num_samples=num_samples,
-    dim=(3, 15),
+    dim=(3, 20),
     shift=(0, 0),
     start_angle=0,
-    step=360 / num_samples,
+    step=180 / num_samples,
+    add_test=True,
 )
-y_train = y_train / 180 - 1
 
 
 # Simulation parameters
 dt = 1e-3
 K = (stim_shape[0] - kern_size) // (kern_size - 1) + 1
-n_latent_neurons = 16
 n_hidden = K * K * n_filters
 n_output = 18
-decay_time = 0
-presentation_time = 0.5 + decay_time  # Leave 0.05s for decay
-duration = num_samples * presentation_time
+decay_time = 0.1
+presentation_time = 1.0 + decay_time  # Leave 0.05s for decay
+duration = X_in.shape[0] * presentation_time
 sample_every = 10 * dt
-learning_rule = [nengo.BCM(5e-9), nengo.Oja(5e-9)]  # SynapticSampling()
+learning_rule = nengo.BCM(1e-8)
 
 # Default neuron parameters
 max_rate = 100  # Hz
@@ -124,16 +123,25 @@ def gen_transform(pattern=None, **kwargs):
 
 
 def stim_func(t):
-    Xid = int(t / presentation_time) % len(X_train)
+    Xid = int(t / presentation_time) % len(X_in)
     stage = t - int(t / presentation_time) * presentation_time
-    sample = X_train[Xid].ravel()
+    sample = X_in[Xid].ravel()
     if stage <= presentation_time - decay_time:
         return sample
     else:
         return np.zeros_like(sample)
 
-def output_index(t, x):
-    return np.argmax(x)
+
+def target_func(t):
+    if t > duration * 0.5:
+        return np.zeros(n_output)
+
+    target = y_in[int(t / presentation_time) % len(y_in)]
+    n_target = int(target / (180 / n_output))
+    spike = -2 * np.ones(n_output)
+    spike[n_target] = 1
+    return spike
+
 
 # Define layers
 layer_confs = [
@@ -141,7 +149,7 @@ layer_confs = [
     dict(
         name="target",
         neuron=None,
-        output=lambda t: y_train[int(t / presentation_time) % len(y_train)],
+        output=target_func,
     ),
     dict(
         name="stimulus",
@@ -165,11 +173,10 @@ layer_confs = [
         dimensions=1,
     ),
     dict(
-        name="decoder",
+        name="learning_node",
         neuron=None,
-        size_in=n_output,
-        output=output_index,
-    )
+        output=lambda t: 1 if t < duration * 0.5 else 0,
+    ),
 ]
 
 # Define connections
@@ -188,25 +195,18 @@ conn_confs = [
         transform=gen_transform(
             "bipolar_gaussian_conv", ksize=kern_size, nfilter=n_filters
         ),
-        synapse=0,
+        synapse=1e-2,
     ),
     dict(
         pre="hidden_neurons",
         post="output_neurons",
-        transform=gen_transform("othogonal_excitation"),
+        transform=np.zeros,
         learning_rule=learning_rule,
         synapse=2e-3,
     ),
     dict(
-        pre="output_neurons",
+        pre="target",
         post="output_neurons",
-        transform=gen_transform("circular_inhibition"),
-        synapse=5e-3,
-    ),
-    dict(
-        pre="output_neurons",
-        post="decoder",
-        synapse=5e-3,
         probeable=False,
     ),
 ]

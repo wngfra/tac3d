@@ -47,46 +47,18 @@ class BarGenerator:
 
         return cropped
 
-    def gen_sequential_bars(self, num_samples, dim, shift=None, start_angle=0, step=1):
+    def generate_samples(
+        self, num_samples, dim, shift=None, start_angle=0, step=1, add_test=False
+    ):
         bars = [self(shift, start_angle + i * step, dim) for i in range(num_samples)]
         info = np.arange(start_angle, start_angle + num_samples * step, step)
-        return bars, info
-
-    def gen_random_bars(
-        self,
-        num_samples,
-        min_offset=(0, 0),
-        max_offset=(1, 1),
-        min_angle=0,
-        max_angle=180,
-        min_dim=(1, 1),
-        max_dim=(1, 1),
-    ):
-        """Generate a set of random bars.
-
-        Args:
-            num_samples (int): Number of samples to generate.
-            min_offset (tuple, optional): Minimum offset of the bar. Defaults to (0, 0).
-            max_offset (tuple, optional): Maximum offset of the bar. Defaults to (0, 0).
-            min_angle (float, optional): Minimum angle of the bar. Defaults to 0.
-            max_angle (float, optional): Maximum angle of the bar. Defaults to 180.
-            min_dim (tuple, optional): Minimum dimension of the bar. Defaults to (1, 1).
-            max_dim (tuple, optional): Maximum dimension of the bar. Defaults to (1, 1).
-
-        Returns:
-            np.ndarray: Bars with shape (num_samples, width, shape[1]).
-            np.ndarray: Info with shape (num_samples, 1). Defaults to degrees in [0, 180].
-        """
-        bars = np.empty((num_samples, *self._shape))
-        info = np.empty((num_samples, 1))
-        for i in range(num_samples):
-            x = np.random.randint(min_offset[0], max_offset[0])
-            y = np.random.randint(min_offset[1], max_offset[1])
-            angle = np.random.randint(min_angle, max_angle)
-            dimx = np.random.randint(min_dim[0], max_dim[0])
-            dimy = np.random.randint(min_dim[1], max_dim[1])
-            bars[i] = self((x, y), angle, (dimx, dimy))
-            info[i] = angle
+        bars = np.asarray(bars)
+        info = np.asarray(info)
+        if add_test:
+            arr = np.arange(num_samples, dtype=int)
+            np.random.shuffle(arr)
+            bars = np.concatenate((bars, bars[arr]))
+            info = np.concatenate((info, info[arr]))
         return bars, info
 
     @property
