@@ -32,17 +32,16 @@ X_in, y_in = bg.generate_samples(
     add_test=True,
 )
 
-
 # Simulation parameters
 dt = 1e-3
-K = (stim_shape[0] - kern_size) // (kern_size - 1) + 1
-n_hidden = K * K * n_filters
+filter_size = (stim_shape[0] - kern_size) // (kern_size - 1) + 1
+n_hidden = filter_size * filter_size * n_filters
 n_output = num_samples
 decay_time = 0.1
-presentation_time = 0.5 + decay_time  # Leave 0.05s for decay
+presentation_time = 5.0 + decay_time
 duration = X_in.shape[0] * presentation_time
 sample_every = 10 * dt
-learning_rule = SynapticSampling()
+learning_rule = SynapticSampling(time_constant=0.05)
 
 # Default neuron parameters
 max_rate = 100  # Hz
@@ -107,7 +106,8 @@ def gen_transform(pattern=None, **kwargs):
                 weight = np.abs(np.arange(shape[0]) - shape[0] // 2)
                 for i in range(shape[0]):
                     W[i, :] = -np.roll(weight, i + shape[0] // 2)
-                W = -np.expm1(-W)
+                W /= np.sum(np.abs(W))
+                W /= np.max(np.abs(W))
             case _:
                 if "weights" in kwargs:
                     W = kwargs["weights"]
@@ -210,15 +210,15 @@ conn_confs = [
     dict(
         pre="hidden_neurons",
         post="output_neurons",
-        transform=np.zeros,
+        transform=gen_transform(),
         learning_rule=learning_rule,
-        synapse=2e-3,
+        synapse=0,
     ),
     dict(
         pre="output_neurons",
         post="output_neurons",
         transform=gen_transform("circular_inhibition"),
-        synapse=0,
+        synapse=5e-3,
     ),
 ]
 
