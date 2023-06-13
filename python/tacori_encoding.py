@@ -10,20 +10,19 @@ import matplotlib.pyplot as plt
 from BarGenerator import BarGenerator
 from learning_rules import SynapticSampling
 from nengo_extras.plot_spikes import plot_spikes
-
 from orientation_map import sample_bipole_gaussian
 
 font = {"weight": "normal", "size": 30}
 matplotlib.rc("font", **font)
 
-n_filters = 18
+n_filters = 10
 kern_size = 5
 stim_shape = (15, 15)
 stim_size = np.prod(stim_shape)
+num_samples = 10
 
 # Prepare dataset
 bg = BarGenerator(stim_shape)
-num_samples = 18
 X_in, y_in = bg.generate_samples(
     num_samples=num_samples,
     dim=(3, 20),
@@ -38,19 +37,19 @@ X_in, y_in = bg.generate_samples(
 dt = 1e-3
 K = (stim_shape[0] - kern_size) // (kern_size - 1) + 1
 n_hidden = K * K * n_filters
-n_output = 18
+n_output = num_samples
 decay_time = 0.1
-presentation_time = 1.0 + decay_time  # Leave 0.05s for decay
+presentation_time = 0.5 + decay_time  # Leave 0.05s for decay
 duration = X_in.shape[0] * presentation_time
 sample_every = 10 * dt
-learning_rule = nengo.BCM(1e-8)
+learning_rule = SynapticSampling()
 
 # Default neuron parameters
 max_rate = 100  # Hz
 amp = 1.0
 tau_rc = 0.02
 rate_target = max_rate * amp  # must be in amplitude scaled units
-default_neuron = nengo.AdaptiveLIF(amplitude=amp, tau_rc=tau_rc)
+default_neuron = nengo.LIF(amplitude=amp, tau_rc=tau_rc)
 default_rates = nengo.dists.Choice([rate_target])
 default_intercepts = nengo.dists.Choice([0])
 default_encoders = nengo.dists.ScatteredHypersphere(surface=True)
@@ -115,7 +114,7 @@ def gen_transform(pattern=None, **kwargs):
                 else:
                     W = nengo.Dense(
                         shape,
-                        init=nengo.dists.Uniform(0, 0.1),
+                        init=nengo.dists.Gaussian(0, 1e-2),
                     )
         return W
 
@@ -133,14 +132,15 @@ def stim_func(t):
 
 
 def target_func(t):
-    if t > duration * 0.5:
-        return np.zeros(n_output)
-
     target = y_in[int(t / presentation_time) % len(y_in)]
-    n_target = int(target / (180 / n_output))
-    spike = -2 * np.ones(n_output)
-    spike[n_target] = 1
-    return spike
+    stage = t - int(t / presentation_time) * presentation_time
+    if t < duration and stage <= presentation_time - decay_time:
+        n_target = int(target / (180 / n_output))
+        spike = -1 * np.ones(n_output)
+        spike[n_target] = 1
+        return spike
+    else:
+        return np.zeros(n_output)
 
 
 # Define layers
@@ -161,6 +161,15 @@ layer_confs = [
         n_neurons=stim_size,
         dimensions=1,
     ),
+    dict(
+        name="view_target",
+        n_neurons=n_output,
+    ),
+    dict(
+        name="learning_node",
+        neuron=None,
+        output=lambda t: 1 if t < 0.5 * duration else 0,
+    ),
     # Encoding/Output layers
     dict(
         name="hidden",
@@ -172,11 +181,6 @@ layer_confs = [
         n_neurons=n_output,
         dimensions=1,
     ),
-    dict(
-        name="learning_node",
-        neuron=None,
-        output=lambda t: 1 if t < duration * 0.5 else 0,
-    ),
 ]
 
 # Define connections
@@ -185,6 +189,12 @@ conn_confs = [
     dict(
         pre="stimulus",
         post="visual_neurons",
+        transform=1,
+        synapse=0,
+    ),
+    dict(
+        pre="target",
+        post="view_target_neurons",
         transform=1,
         synapse=0,
     ),
@@ -205,9 +215,10 @@ conn_confs = [
         synapse=2e-3,
     ),
     dict(
-        pre="target",
+        pre="output_neurons",
         post="output_neurons",
-        probeable=False,
+        transform=gen_transform("circular_inhibition"),
+        synapse=0,
     ),
 ]
 

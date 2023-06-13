@@ -24,11 +24,12 @@ class SynapticSampling(nengo.learning_rules.LearningRuleType):
         "delta",
         "mu",
         "cov",
+        "T",
         "pre_memory",
         "post_memory",
     )
 
-    time_constant = NumberParam("time_constant", default=0.005, low=0, readonly=True)
+    time_constant = NumberParam("time_constant", default=0.01, low=0, readonly=True)
     pre_synapse = SynapseParam("pre_synapse", default=Lowpass(tau=0.005), readonly=True)
     post_synapse = SynapseParam("post_synapse", default=None, readonly=True)
 
@@ -57,6 +58,8 @@ class SimSS(Operator):
         post_memory,
         mu,
         cov,
+        T,
+        timer,
         time_constant,
         tag=None,
     ):
@@ -66,7 +69,7 @@ class SimSS(Operator):
         self.sets = []
         self.incs = []
         self.reads = [weights, pre_filtered, post_filtered]
-        self.updates = [delta, pre_memory, post_memory, mu, cov]
+        self.updates = [delta, pre_memory, post_memory, mu, cov, T, timer]
 
     @property
     def pre_filtered(self):
@@ -101,6 +104,14 @@ class SimSS(Operator):
         return self.updates[4]
 
     @property
+    def T(self):
+        return self.updates[5]
+
+    @property
+    def timer(self):
+        return self.updates[6]
+
+    @property
     def _descstr(self):
         return f"pre={self.pre_filtered}, post={self.post_filtered} -> {self.weights}"
 
@@ -113,20 +124,35 @@ class SimSS(Operator):
         post_memory = signals[self.post_memory]
         mu = signals[self.mu]
         cov = signals[self.cov]
+        T = signals[self.T]
+        timer = signals[self.timer]
 
         def step_simss():
-            pre = pre_filtered * dt - pre_memory
-            post = post_filtered * dt - post_memory
-            pre_memory[...] = pre_filtered * dt
-            post_memory[...] = post_filtered * dt
-            drift = np.outer(post, pre)
-            # mu[...] = weights + drift
+            pre = pre_filtered * dt
+            post = post_filtered * dt
+            if timer >= self.time_constant or timer == 0.0:
+                timer[...] = dt
+                pre_memory[...] = 0
+                post_memory[...] = 0
+                T[...] = 298.15
+            else:
+                pre_memory[...] *= timer
+                post_memory[...] *= timer
+                timer[...] += dt
+            alpha = 2
+            pre_memory[...] = (pre_memory + pre) / (timer / dt)
+            post_memory[...] = (post_memory + post) / (timer / dt)
+            drift = (np.exp(-alpha * np.abs(weights)) - np.exp(-alpha)) * np.outer(
+                post - post_memory, pre - pre_memory
+            )
 
             diffusion = (
                 1e-3
-                * np.random.normal(0, 1 / np.sqrt(1 + np.square(drift)), drift.shape)
+                * np.exp(-1 / T)
+                * np.random.normal(0, np.sqrt(np.exp(-1e-3 * drift)), drift.shape)
                 * np.exp(-drift)
             )
+            T[...] += -0.2 * T
             delta[...] = drift + diffusion
 
         return step_simss
@@ -151,6 +177,8 @@ def build_ss(model, ss, rule):
     )
     mu = Signal(shape=model.sig[conn]["weights"].shape, name="mu")
     cov = Signal(shape=model.sig[conn]["weights"].shape, name="cov")
+    T = Signal(initial_value=298.15, name="T")
+    timer = Signal(initial_value=0.0, name="timer")
 
     model.add_op(
         SimSS(
@@ -162,6 +190,8 @@ def build_ss(model, ss, rule):
             post_memory,
             mu,
             cov,
+            T,
+            timer,
             ss.time_constant,
         )
     )
@@ -173,3 +203,4 @@ def build_ss(model, ss, rule):
     model.sig[rule]["post_memory"] = post_memory
     model.sig[rule]["mu"] = mu
     model.sig[rule]["cov"] = cov
+    model.sig[rule]["T"] = T

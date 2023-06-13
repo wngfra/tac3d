@@ -55,6 +55,7 @@ class BarGenerator:
         bars = np.asarray(bars)
         info = np.asarray(info)
         if add_test:
+            rng = np.random.default_rng(seed=0)
             arr = np.arange(num_samples, dtype=int)
             np.random.shuffle(arr)
             bars = np.concatenate((bars, bars[arr]))
