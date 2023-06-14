@@ -15,8 +15,8 @@ from orientation_map import sample_bipole_gaussian
 font = {"weight": "normal", "size": 30}
 matplotlib.rc("font", **font)
 
-n_filters = 10
-kern_size = 5
+n_filters = 9
+kern_size = 7
 stim_shape = (15, 15)
 stim_size = np.prod(stim_shape)
 num_samples = 18
@@ -38,10 +38,13 @@ filter_size = (stim_shape[0] - kern_size) // (kern_size - 1) + 1
 n_hidden = filter_size * filter_size * n_filters
 n_output = num_samples
 decay_time = 0.02
-presentation_time = 60 + decay_time
+presentation_time = 1 + decay_time
 duration = X_in.shape[0] * presentation_time
-sample_every = 100 * dt
-learning_rule = [nengo.BCM(2e-10), nengo.Oja(1e-9)] # SynapticSampling(time_constant=0.1)
+sample_every = 10 * dt
+learning_rule = [
+    nengo.BCM(2e-10),
+    nengo.Oja(1e-9),
+]  # SynapticSampling(time_constant=0.1)
 
 # Default neuron parameters
 max_rate = 100  # Hz
@@ -354,17 +357,26 @@ with nengo.Network(label="tacnet", seed=1) as model:
 def main(plot=False, savedata=False):
     with nengo.Simulator(model, dt=dt, optimize=True) as sim:
         sim.run(duration)
-    
+
     with open("tacnet.pickle", "wb") as f:
         pickle.dump(sim, f)
 
-    name_pairs = [("hidden_neurons", "output_neurons"), ("hidden_neurons", "view_target_neurons")]
+    name_pairs = [
+        ("hidden_neurons", "output_neurons"),
+        ("hidden_neurons", "view_target_neurons"),
+    ]
     ens_names = ["visual_neurons", "hidden_neurons", "output_neurons"]
 
     if savedata:
         save_data(
             sim,
-            ["stimulus", "hidden_neurons", "output_neurons", "target", "view_target_neurons"],
+            [
+                "stimulus",
+                "hidden_neurons",
+                "output_neurons",
+                "target",
+                "view_target_neurons",
+            ],
             "test_data.csv",
         )
 
