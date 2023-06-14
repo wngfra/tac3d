@@ -38,7 +38,7 @@ filter_size = (stim_shape[0] - kern_size) // (kern_size - 1) + 1
 n_hidden = filter_size * filter_size * n_filters
 n_output = num_samples
 decay_time = 0.02
-presentation_time = 10 + decay_time
+presentation_time = 60 + decay_time
 duration = X_in.shape[0] * presentation_time
 sample_every = 100 * dt
 learning_rule = [nengo.BCM(2e-10), nengo.Oja(1e-9)] # SynapticSampling(time_constant=0.1)
@@ -364,7 +364,7 @@ def main(plot=False, savedata=False):
     if savedata:
         save_data(
             sim,
-            ["stimulus", "hidden_neurons", "output_neurons", "target"],
+            ["stimulus", "hidden_neurons", "output_neurons", "target", "view_target_neurons"],
             "test_data.csv",
         )
 
