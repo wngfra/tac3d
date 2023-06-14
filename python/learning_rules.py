@@ -126,8 +126,11 @@ class SimSS(Operator):
         cov = signals[self.cov]
         T = signals[self.T]
         timer = signals[self.timer]
-        alpha = 2
 
+        alpha = 2
+        beta = np.exp(-alpha)
+        a = 1 / (1 - beta)
+        b = beta / (beta - 1)
 
         def step_simss():
             pre = pre_filtered * dt
@@ -137,9 +140,12 @@ class SimSS(Operator):
             timer[...] += dt
 
             if timer >= self.time_constant:
-                drift = (np.exp(-alpha * np.abs(weights)) - np.exp(-alpha)) * np.outer(
+                drift = (a * np.exp(-alpha * np.abs(weights)) + b) * np.outer(
                     post_mean, pre_mean
                 )
+                wtaIdx = np.argmax(drift, axis=0)
+                drift = -np.abs(drift)
+                drift[wtaIdx, :] *= -1
 
                 # Flush synaptic cache/memory
                 pre_mean[...] = 0
@@ -151,7 +157,6 @@ class SimSS(Operator):
                     1e-4
                     * np.exp(-1 / T)
                     * np.random.normal(0, np.sqrt(np.exp(-1e-3 * drift)), drift.shape)
-                    * np.exp(-drift)
                 )
                 T[...] += -0.2 * T
                 delta[...] = drift

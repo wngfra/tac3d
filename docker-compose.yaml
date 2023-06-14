@@ -9,7 +9,7 @@ volumes:
 
 services:
   mujoco_sim:
-    image: wngfra/ros2:cuda
+    image: wngfra/ros2:base
     container_name: mujoco_sim_container
     working_dir: /workspace
     volumes:

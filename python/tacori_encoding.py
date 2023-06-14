@@ -2,11 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from typing import Optional
-
 import nengo
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+import pickle
 from BarGenerator import BarGenerator
 from learning_rules import SynapticSampling
 from nengo_extras.plot_spikes import plot_spikes
@@ -19,13 +19,13 @@ n_filters = 10
 kern_size = 5
 stim_shape = (15, 15)
 stim_size = np.prod(stim_shape)
-num_samples = 10
+num_samples = 18
 
 # Prepare dataset
 bg = BarGenerator(stim_shape)
 X_in, y_in = bg.generate_samples(
     num_samples=num_samples,
-    dim=(3, 20),
+    dim=(3, 15),
     shift=(0, 0),
     start_angle=0,
     step=180 / num_samples,
@@ -33,15 +33,15 @@ X_in, y_in = bg.generate_samples(
 )
 
 # Simulation parameters
-dt = 1e-3
+dt = 2e-3
 filter_size = (stim_shape[0] - kern_size) // (kern_size - 1) + 1
 n_hidden = filter_size * filter_size * n_filters
 n_output = num_samples
-decay_time = 0.1
-presentation_time = 5.0 + decay_time
+decay_time = 0.02
+presentation_time = 10 + decay_time
 duration = X_in.shape[0] * presentation_time
-sample_every = 10 * dt
-learning_rule = SynapticSampling(time_constant=0.05)
+sample_every = 100 * dt
+learning_rule = [nengo.BCM(2e-10), nengo.Oja(1e-9)] # SynapticSampling(time_constant=0.1)
 
 # Default neuron parameters
 max_rate = 100  # Hz
@@ -78,8 +78,9 @@ def gen_transform(pattern=None, **kwargs):
                 try:
                     ksize = kwargs["ksize"]
                     nfilter = kwargs["nfilter"]
-                except:
-                    raise KeyError("Missing keyword arguments!")
+                except KeyError as _:
+                    ksize = 5
+                    nfilter = 10
                 kernel = np.empty((ksize, ksize, 1, nfilter))
                 delta_phi = np.pi / (nfilter + 1)
                 strides = (ksize - 1, ksize - 1)
@@ -91,14 +92,13 @@ def gen_transform(pattern=None, **kwargs):
                         i * delta_phi,
                         binary=False,
                     )
-                conv = nengo.Convolution(
+                return nengo.Convolution(
                     n_filters=nfilter,
                     input_shape=stim_shape + (1,),
                     kernel_size=(ksize, ksize),
                     strides=strides,
                     init=kernel,
                 )
-                return conv
             case "circular_inhibition":
                 # For self-connections
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
@@ -106,8 +106,6 @@ def gen_transform(pattern=None, **kwargs):
                 weight = np.abs(np.arange(shape[0]) - shape[0] // 2)
                 for i in range(shape[0]):
                     W[i, :] = -np.roll(weight, i + shape[0] // 2)
-                W /= np.sum(np.abs(W))
-                W /= np.max(np.abs(W))
             case _:
                 if "weights" in kwargs:
                     W = kwargs["weights"]
@@ -134,9 +132,9 @@ def stim_func(t):
 def target_func(t):
     target = y_in[int(t / presentation_time) % len(y_in)]
     stage = t - int(t / presentation_time) * presentation_time
-    if t < duration and stage <= presentation_time - decay_time:
+    if t < 0.5 * duration and stage <= presentation_time - decay_time:
         n_target = int(target / (180 / n_output))
-        spike = -1 * np.ones(n_output)
+        spike = -30 * np.ones(n_output)
         spike[n_target] = 1
         return spike
     else:
@@ -164,11 +162,6 @@ layer_confs = [
     dict(
         name="view_target",
         n_neurons=n_output,
-    ),
-    dict(
-        name="learning_node",
-        neuron=None,
-        output=lambda t: 1 if t < 0.5 * duration else 0,
     ),
     # Encoding/Output layers
     dict(
@@ -213,6 +206,13 @@ conn_confs = [
         transform=gen_transform(),
         learning_rule=learning_rule,
         synapse=0,
+    ),
+    dict(
+        pre="hidden_neurons",
+        post="view_target_neurons",
+        transform=np.zeros,
+        learning_rule=nengo.Oja(),
+        synapse=5e-3,
     ),
     dict(
         pre="output_neurons",
@@ -354,8 +354,11 @@ with nengo.Network(label="tacnet", seed=1) as model:
 def main(plot=False, savedata=False):
     with nengo.Simulator(model, dt=dt, optimize=True) as sim:
         sim.run(duration)
+    
+    with open("tacnet.pickle", "wb") as f:
+        pickle.dump(sim, f)
 
-    name_pairs = [("hidden_neurons", "output_neurons")]
+    name_pairs = [("hidden_neurons", "output_neurons"), ("hidden_neurons", "view_target_neurons")]
     ens_names = ["visual_neurons", "hidden_neurons", "output_neurons"]
 
     if savedata:
@@ -426,4 +429,4 @@ def save_data(sim, save_list, filename):
 
 
 if __name__ == "__main__":
-    main(True, False)
+    main(plot=True, savedata=True)
