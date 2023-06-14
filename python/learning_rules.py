@@ -346,35 +346,29 @@ class SimSDSP(Operator):
         theta_V = 0.8
 
         def step_simsdsp():
-            if self.learning_mode:
-                t_pre = pre_filtered[pre_filtered > 0]
-                if len(t_pre) > 0:
-                    mask_Va = post_voltage > theta_V
-                    mask_up = np.logical_and(
-                        c[mask_Va] > theta_lup, c[mask_Va] < theta_hup
-                    )
+            t_pre = pre_filtered[pre_filtered > 0]
+            if len(t_pre) > 0:
+                mask_Va = post_voltage > theta_V
+                mask_up = np.logical_and(c[mask_Va] > theta_lup, c[mask_Va] < theta_hup)
+                mask_Vb = post_voltage <= theta_V
+                mask_down = np.logical_and(
+                    c[mask_Vb] > theta_ldown, c[mask_Vb] < theta_hdown
+                )
+                try:
+                    X[mask_Va][mask_up] += a
+                    X[mask_Vb][mask_down] -= b
+                except IndexError as _:
+                    pass
+            X[X > theta_X] += alpha * dt
+            X[X <= theta_X] -= beta * dt
+            X[...] = np.clip(X, X_min, X_max)
 
-                    mask_Vb = post_voltage <= theta_V
-                    mask_down = np.logical_and(
-                        c[mask_Vb] > theta_ldown, c[mask_Vb] < theta_hdown
-                    )
-                    try:
-                        X[mask_Va][mask_up] += a
-                        X[mask_Vb][mask_down] -= b
-                    except _:
-                        pass
-
-                X[X > theta_X] += alpha * dt
-                X[X <= theta_X] -= beta * dt
-                X[...] = np.clip(X, X_min, X_max)
-                
-                weights[X > theta_X] = 1
-                weights[X <= theta_X] = 0
-
-                c[...] += (
-                    -1 / self.tau_c * c
-                    + self.J_C * np.tile(post_filtered[:, np.newaxis], c.shape[1])
-                ) * dt
+            weights[X > theta_X] = 1
+            weights[X <= theta_X] = 0
+            c[...] += (
+                -1 / self.tau_c * c
+                + self.J_C * np.tile(post_filtered[:, np.newaxis], c.shape[1])
+            ) * dt
 
         return step_simsdsp
 
@@ -395,8 +389,8 @@ def build_sdsp(model, sdsp, rule):
     post_voltage = model.sig[get_post_ens(conn).neurons]["voltage"]
     weights = model.sig[conn]["weights"]
 
-    X = Signal(shape=weights.shape, name="X")
-    c = Signal(shape=weights.shape, name="c")
+    X = Signal(initial_value=np.ones(weights.shape), name="X")
+    c = Signal(initial_value=2 * np.ones(weights.shape), name="c")
 
     model.add_op(
         SimSDSP(

@@ -44,7 +44,7 @@ sample_every = 5 * dt
 learning_rule = SDSP()
 
 # Default neuron parameters
-max_rate = 100  # Hz
+max_rate = 60  # Hz
 amp = 1.0
 tau_rc = 0.02
 rate_target = max_rate * amp  # must be in amplitude scaled units
@@ -332,69 +332,44 @@ def main(plot=False, savedata=False):
     with nengo.Simulator(model, dt=dt, optimize=True) as sim:
         sim.run(duration)
 
-    name_pairs = [
-        ("visual_neurons", "output_neurons"),
-    ]
     ens_names = ["visual_neurons", "output_neurons"]
-    conn_names = [f"{name_pair[0]}2{name_pair[1]}" for name_pair in name_pairs]
+    conn_names = [f"{ens_names[0]}2{ens_names[1]}"]
 
     if savedata:
         with open("tacnet.pickle", "wb") as f:
             pickle.dump(sim, f)
-        save_data(
-            sim,
-            [
-                "stimulus",
-                "hidden_neurons",
-                "output_neurons",
-                "target",
-                "view_target_neurons",
-            ],
-            "test_data.csv",
-        )
 
     if plot:
+        _, axs = plt.subplots(2, 1, figsize=(20, 10), sharex=True)
         for conn_name in conn_names:
-            plt.figure(figsize=(10, 10))
-            # Find weight row with max variance
-            if "neurons" in conn_name:
-                neuron = np.argmax(
-                    np.mean(np.var(sim.data[probes[conn_name]], axis=0), axis=1)
-                )
-                plt.plot(
-                    sim.trange(sample_every), sim.data[probes[conn_name]][:, neuron, :]
-                )
-            else:
-                plt.plot(sim.trange(sample_every), sim.data[probes[conn_name]][..., 10])
-            plt.xlabel("time (s)")
-            plt.ylabel("weights")
-            plt.title(conn_name)
+            axs[0].plot(
+                sim.trange(sample_every=sample_every),
+                sim.data[probes[conn_name + "_weights"]][:, 10, :],
+            )
+            axs[0].set_title("weight")
+            axs[1].plot(
+                sim.trange(sample_every=sample_every),
+                sim.data[probes[conn_name + "_X"]][:, 10, :],
+            )
+            axs[1].set_title("synaptic variable")
+        plt.xlabel("time (s)")
+        plt.tight_layout()
 
         _, axs = plt.subplots(
             len(ens_names), 1, figsize=(5 * len(ens_names), 10), sharex=True
         )
         for i, ens_name in enumerate(ens_names):
-            if "neurons" in ens_name:
-                plot_spikes(
-                    sim.trange(sample_every=sample_every),
-                    sim.data[probes[ens_name]],
-                    ax=axs[i],
-                )
-                axs[i].set_ylabel("nid")
-            else:
-                axs[i].plot(
-                    sim.trange(sample_every=sample_every), sim.data[probes[ens_name]]
-                )
-                axs[i].set_ylabel("encoder")
+            plot_spikes(
+                sim.trange(sample_every=sample_every),
+                sim.data[probes[ens_name]],
+                ax=axs[i],
+            )
+            axs[i].set_ylabel("neuron index")
             axs[i].set_title(ens_name)
             axs[i].grid()
         plt.xlabel("time (s)")
         plt.tight_layout()
         plt.show()
-
-
-def save_data(sim, save_list, filename):
-    pass
 
 
 if __name__ == "__main__":
