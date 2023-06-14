@@ -38,9 +38,9 @@ filter_size = (stim_shape[0] - kern_size) // (kern_size - 1) + 1
 n_hidden = filter_size * filter_size * n_filters
 n_output = num_samples
 decay_time = 0.02
-presentation_time = 1 + decay_time
+presentation_time = 0.5 + decay_time
 duration = X_in.shape[0] * presentation_time
-sample_every = 10 * dt
+sample_every = 5 * dt
 learning_rule = SDSP()
 
 # Default neuron parameters
@@ -269,7 +269,6 @@ with nengo.Network(label="tacnet", seed=1) as model:
         learning_rule = conn_conf.pop("learning_rule", None)
         name = "{}2{}".format(pre, post)
         function = conn_conf.pop("function", None)
-        probeable = conn_conf.pop("probeable", True)
 
         assert len(conn_conf) == 0, "Unused fields in {}: {}".format(
             [name], list(layer_conf)
@@ -296,17 +295,25 @@ with nengo.Network(label="tacnet", seed=1) as model:
             conn.solver = solver
         if learning_rule:
             conn.learning_rule_type = learning_rule
-        connections[name] = conn
-
-        if probeable:
-            probe = nengo.Probe(
-                conn,
-                "weights",
+            name_ = name + "_X"
+            probes[name_] = nengo.Probe(
+                conn.learning_rule,
+                "X",
                 synapse=0.01,
                 sample_every=sample_every,
-                label="weights_{}".format(name),
+                label=f"{name_}",
             )
-            probes[name] = probe
+        connections[name] = conn
+
+        # Probe weights
+        name_ = name + "_weights"
+        probes[name_] = nengo.Probe(
+            conn,
+            "weights",
+            synapse=0.01,
+            sample_every=sample_every,
+            label=f"{name_}",
+        )
 
     # Connect learning rule
     for k, learning_conf in enumerate(learning_confs):
@@ -325,9 +332,6 @@ def main(plot=False, savedata=False):
     with nengo.Simulator(model, dt=dt, optimize=True) as sim:
         sim.run(duration)
 
-    with open("tacnet.pickle", "wb") as f:
-        pickle.dump(sim, f)
-
     name_pairs = [
         ("visual_neurons", "output_neurons"),
     ]
@@ -335,6 +339,8 @@ def main(plot=False, savedata=False):
     conn_names = [f"{name_pair[0]}2{name_pair[1]}" for name_pair in name_pairs]
 
     if savedata:
+        with open("tacnet.pickle", "wb") as f:
+            pickle.dump(sim, f)
         save_data(
             sim,
             [
@@ -349,7 +355,7 @@ def main(plot=False, savedata=False):
 
     if plot:
         for conn_name in conn_names:
-            plt.figure(figsize=(5, 10))
+            plt.figure(figsize=(10, 10))
             # Find weight row with max variance
             if "neurons" in conn_name:
                 neuron = np.argmax(
@@ -392,4 +398,4 @@ def save_data(sim, save_list, filename):
 
 
 if __name__ == "__main__":
-    main(plot=True, savedata=True)
+    main(plot=True, savedata=False)

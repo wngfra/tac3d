@@ -364,9 +364,17 @@ class SimSDSP(Operator):
                     except _:
                         pass
 
-                delta[X > theta_X] += alpha * dt
-                delta[X <= theta_X] -= beta * dt
-                c[...] += (-1 / self.tau_c * c + self.J_C * post_filtered) * dt
+                X[X > theta_X] += alpha * dt
+                X[X <= theta_X] -= beta * dt
+                X[...] = np.clip(X, X_min, X_max)
+                
+                weights[X > theta_X] = 1
+                weights[X <= theta_X] = 0
+
+                c[...] += (
+                    -1 / self.tau_c * c
+                    + self.J_C * np.tile(post_filtered[:, np.newaxis], c.shape[1])
+                ) * dt
 
         return step_simsdsp
 
