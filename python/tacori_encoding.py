@@ -8,7 +8,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pickle
 from BarGenerator import BarGenerator
-from learning_rules import SynapticSampling
+from learning_rules import SDSP
 from nengo_extras.plot_spikes import plot_spikes
 from orientation_map import sample_bipole_gaussian
 
@@ -17,7 +17,7 @@ matplotlib.rc("font", **font)
 
 n_filters = 9
 kern_size = 7
-stim_shape = (15, 15)
+stim_shape = (20, 20)
 stim_size = np.prod(stim_shape)
 num_samples = 18
 
@@ -25,7 +25,7 @@ num_samples = 18
 bg = BarGenerator(stim_shape)
 X_in, y_in = bg.generate_samples(
     num_samples=num_samples,
-    dim=(3, 15),
+    dim=(3, 20),
     shift=(0, 0),
     start_angle=0,
     step=180 / num_samples,
@@ -41,10 +41,7 @@ decay_time = 0.02
 presentation_time = 1 + decay_time
 duration = X_in.shape[0] * presentation_time
 sample_every = 10 * dt
-learning_rule = [
-    nengo.BCM(2e-10),
-    nengo.Oja(1e-9),
-]  # SynapticSampling(time_constant=0.1)
+learning_rule = SDSP()
 
 # Default neuron parameters
 max_rate = 100  # Hz
@@ -69,14 +66,6 @@ def gen_transform(pattern=None, **kwargs):
         W: Optional[np.ndarray] = None
 
         match pattern:
-            case "orthogonal_excitation":
-                W = np.zeros(shape)
-                target = np.arange(shape[1])
-                n = shape[1] // shape[0]
-                np.random.shuffle(target)
-                for i in range(shape[0]):
-                    W[i, target[i * n : (i + 1) * n]] = np.random.normal(0.3, 0.2)
-                W[W < 0.1] = 0
             case "bipolar_gaussian_conv":
                 try:
                     ksize = kwargs["ksize"]
@@ -166,12 +155,6 @@ layer_confs = [
         name="view_target",
         n_neurons=n_output,
     ),
-    # Encoding/Output layers
-    dict(
-        name="hidden",
-        n_neurons=n_hidden,
-        dimensions=1,
-    ),
     dict(
         name="output",
         n_neurons=n_output,
@@ -194,28 +177,12 @@ conn_confs = [
         transform=1,
         synapse=0,
     ),
-    # Encoding/Output connections
     dict(
-        pre="stimulus",
-        post="hidden_neurons",
-        transform=gen_transform(
-            "bipolar_gaussian_conv", ksize=kern_size, nfilter=n_filters
-        ),
-        synapse=1e-2,
-    ),
-    dict(
-        pre="hidden_neurons",
+        pre="visual_neurons",
         post="output_neurons",
         transform=gen_transform(),
         learning_rule=learning_rule,
         synapse=0,
-    ),
-    dict(
-        pre="hidden_neurons",
-        post="view_target_neurons",
-        transform=np.zeros,
-        learning_rule=nengo.Oja(),
-        synapse=5e-3,
     ),
     dict(
         pre="output_neurons",
@@ -362,10 +329,10 @@ def main(plot=False, savedata=False):
         pickle.dump(sim, f)
 
     name_pairs = [
-        ("hidden_neurons", "output_neurons"),
-        ("hidden_neurons", "view_target_neurons"),
+        ("visual_neurons", "output_neurons"),
     ]
-    ens_names = ["visual_neurons", "hidden_neurons", "output_neurons"]
+    ens_names = ["visual_neurons", "output_neurons"]
+    conn_names = [f"{name_pair[0]}2{name_pair[1]}" for name_pair in name_pairs]
 
     if savedata:
         save_data(
@@ -381,8 +348,7 @@ def main(plot=False, savedata=False):
         )
 
     if plot:
-        for pre, post in name_pairs:
-            conn_name = "{}2{}".format(pre, post)
+        for conn_name in conn_names:
             plt.figure(figsize=(5, 10))
             # Find weight row with max variance
             if "neurons" in conn_name:
@@ -422,22 +388,7 @@ def main(plot=False, savedata=False):
 
 
 def save_data(sim, save_list, filename):
-    import pandas as pd
-
-    data = []
-    labels = []
-    for item_name in save_list:
-        if "2" in item_name:
-            # Save connection weights
-            weights = sim.data[probes[item_name]]
-            np.save(f"{item_name}_weights", weights)
-        else:
-            data.append(sim.data[probes[item_name]])
-            labels += [item_name + "_{}".format(i) for i in range(data[-1].shape[1])]
-    df = pd.DataFrame(
-        np.hstack(data), index=sim.trange(sample_every=sample_every), columns=labels
-    )
-    df.to_csv(filename, index=False)
+    pass
 
 
 if __name__ == "__main__":
