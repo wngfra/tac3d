@@ -20,6 +20,7 @@ services:
     environment:
       - DISPLAY=${DISPLAY}
       - XAUTHORITY=/root/.Xauthority
+      - NVIDIA_DISABLE_REQUIRE=1
     command: [ "bash", "run.sh" ]
     deploy:
       resources:

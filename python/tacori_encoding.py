@@ -8,24 +8,21 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pickle
 from BarGenerator import BarGenerator
-from learning_rules import SDSP
+from SDSP import SDSP
 from nengo_extras.plot_spikes import plot_spikes
-from orientation_map import sample_bipole_gaussian
 
 font = {"weight": "normal", "size": 30}
 matplotlib.rc("font", **font)
 
-n_filters = 9
-kern_size = 7
-stim_shape = (20, 20)
+stim_shape = (15, 15)
 stim_size = np.prod(stim_shape)
-num_samples = 18
+num_samples = 4
 
 # Prepare dataset
 bg = BarGenerator(stim_shape)
 X_in, y_in = bg.generate_samples(
     num_samples=num_samples,
-    dim=(3, 20),
+    dim=(3, 15),
     shift=(0, 0),
     start_angle=0,
     step=180 / num_samples,
@@ -33,18 +30,16 @@ X_in, y_in = bg.generate_samples(
 )
 
 # Simulation parameters
-dt = 2e-3
-filter_size = (stim_shape[0] - kern_size) // (kern_size - 1) + 1
-n_hidden = filter_size * filter_size * n_filters
+dt = 1e-3
 n_output = num_samples
-decay_time = 0.02
-presentation_time = 0.5 + decay_time
+decay_time = 0.06
+presentation_time = 1 + decay_time
 duration = X_in.shape[0] * presentation_time
-sample_every = 5 * dt
-learning_rule = SDSP()
+sample_every = 10 * dt
+learning_rule_option = SDSP()
 
 # Default neuron parameters
-max_rate = 60  # Hz
+max_rate = 50  # Hz
 amp = 1.0
 tau_rc = 0.02
 rate_target = max_rate * amp  # must be in amplitude scaled units
@@ -66,46 +61,11 @@ def gen_transform(pattern=None, **kwargs):
         W: Optional[np.ndarray] = None
 
         match pattern:
-            case "bipolar_gaussian_conv":
-                try:
-                    ksize = kwargs["ksize"]
-                    nfilter = kwargs["nfilter"]
-                except KeyError as _:
-                    ksize = 5
-                    nfilter = 10
-                kernel = np.empty((ksize, ksize, 1, nfilter))
-                delta_phi = np.pi / (nfilter + 1)
-                strides = (ksize - 1, ksize - 1)
-                for i in range(nfilter):
-                    kernel[:, :, 0, i] = sample_bipole_gaussian(
-                        (ksize, ksize),
-                        (ksize // 2, ksize // 2),
-                        (2, 0.5),
-                        i * delta_phi,
-                        binary=False,
-                    )
-                return nengo.Convolution(
-                    n_filters=nfilter,
-                    input_shape=stim_shape + (1,),
-                    kernel_size=(ksize, ksize),
-                    strides=strides,
-                    init=kernel,
-                )
-            case "circular_inhibition":
-                # For self-connections
-                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
-                W = np.empty(shape)
-                weight = np.abs(np.arange(shape[0]) - shape[0] // 2)
-                for i in range(shape[0]):
-                    W[i, :] = -np.roll(weight, i + shape[0] // 2)
             case _:
                 if "weights" in kwargs:
                     W = kwargs["weights"]
                 else:
-                    W = nengo.Dense(
-                        shape,
-                        init=nengo.dists.Gaussian(0, 1e-2),
-                    )
+                    W = np.random.choice([0, 1], shape)
         return W
 
     return inner
@@ -124,9 +84,9 @@ def stim_func(t):
 def target_func(t):
     target = y_in[int(t / presentation_time) % len(y_in)]
     stage = t - int(t / presentation_time) * presentation_time
-    if t < 0.5 * duration and stage <= presentation_time - decay_time:
+    if stage <= presentation_time - decay_time:
         n_target = int(target / (180 / n_output))
-        spike = -30 * np.ones(n_output)
+        spike = -np.ones(n_output)
         spike[n_target] = 1
         return spike
     else:
@@ -148,6 +108,7 @@ layer_confs = [
     ),
     dict(
         name="visual",
+        neuron=nengo.RectifiedLinear(),
         n_neurons=stim_size,
         dimensions=1,
     ),
@@ -181,14 +142,14 @@ conn_confs = [
         pre="visual_neurons",
         post="output_neurons",
         transform=gen_transform(),
-        learning_rule=learning_rule,
+        learning_rule=learning_rule_option,
         synapse=0,
     ),
     dict(
         pre="output_neurons",
         post="output_neurons",
-        transform=gen_transform("circular_inhibition"),
-        synapse=5e-3,
+        transform=-np.ones((n_output, n_output)) + 2 * np.eye(n_output),
+        synapse=0,
     ),
 ]
 
@@ -303,6 +264,14 @@ with nengo.Network(label="tacnet", seed=1) as model:
                 sample_every=sample_every,
                 label=f"{name_}",
             )
+            name_ = name + "_C"
+            probes[name_] = nengo.Probe(
+                conn.learning_rule,
+                "C",
+                synapse=0.01,
+                sample_every=sample_every,
+                label=f"{name_}",
+            )
         connections[name] = conn
 
         # Probe weights
@@ -340,20 +309,28 @@ def main(plot=False, savedata=False):
             pickle.dump(sim, f)
 
     if plot:
-        _, axs = plt.subplots(2, 1, figsize=(20, 10), sharex=True)
         for conn_name in conn_names:
-            axs[0].plot(
-                sim.trange(sample_every=sample_every),
-                sim.data[probes[conn_name + "_weights"]][:, 10, :],
+            plt.figure()
+            plt.imshow(
+                sim.data[probes[conn_name + "_weights"]].reshape(
+                    -1, n_output * stim_size
+                )
             )
-            axs[0].set_title("weight")
-            axs[1].plot(
-                sim.trange(sample_every=sample_every),
-                sim.data[probes[conn_name + "_X"]][:, 10, :],
-            )
-            axs[1].set_title("synaptic variable")
-        plt.xlabel("time (s)")
-        plt.tight_layout()
+            plt.xlabel("time (ms)")
+            plt.title("Synaptic Efficacy")
+
+            if learning_rule_option:
+                _, axs = plt.subplots(2, 1, figsize=(16, 8))
+                axs[0].plot(
+                    sim.data[probes[conn_name + "_X"]].reshape(-1, n_output * stim_size)
+                )
+                axs[1].plot(
+                    sim.data[probes[conn_name + "_C"]].reshape(-1, n_output * stim_size)
+                )
+                axs[0].set_title(f"Internal States $X$")
+                axs[1].set_title(f"Calcium Variables $C$")
+                plt.xlabel("time (ms)")
+                plt.tight_layout()
 
         _, axs = plt.subplots(
             len(ens_names), 1, figsize=(5 * len(ens_names), 10), sharex=True
