@@ -32,8 +32,8 @@ class SDSP(nengo.learning_rules.LearningRuleType):
     tau_c = NumberParam("tau_c", default=0.06, low=0, readonly=True)
     X_limit = TupleParam("X_limit", default=(0, 1.0), readonly=True)
     X_coeff = TupleParam("X_coeff", default=(0.1, 0.1, 3.5, 3.5), readonly=True)
-    theta_coeff = TupleParam("theta_coeff", default=(13, 4, 4, 3), readonly=True)
-    pre_synapse = SynapseParam("pre_synapse", default=None, readonly=True)
+    theta_coeff = TupleParam("theta_coeff", default=(13, 3, 4, 3), readonly=True)
+    pre_synapse = SynapseParam("pre_synapse", default=Lowpass(tau=5e-3), readonly=True)
     post_synapse = SynapseParam("post_synapse", default=None, readonly=True)
 
     def __init__(
@@ -219,7 +219,7 @@ def build_sdsp(model, sdsp, rule):
             X,
             C,
             sum_post,
-            learning_mode,
+            model.sig[rule]["in"],
             sdsp.J_C,
             sdsp.tau_c,
             sdsp.X_limit,

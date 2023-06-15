@@ -14,9 +14,9 @@ from nengo_extras.plot_spikes import plot_spikes
 font = {"weight": "normal", "size": 30}
 matplotlib.rc("font", **font)
 
-stim_shape = (15, 15)
+stim_shape = (10, 10)
 stim_size = np.prod(stim_shape)
-num_samples = 4
+num_samples = 12
 
 # Prepare dataset
 bg = BarGenerator(stim_shape)
@@ -30,13 +30,19 @@ X_in, y_in = bg.generate_samples(
 )
 
 # Simulation parameters
-dt = 1e-3
-n_output = num_samples
-decay_time = 0.06
+dt = 5e-3
+n_output = 6
+decay_time = 0.03
 presentation_time = 1 + decay_time
 duration = X_in.shape[0] * presentation_time
-sample_every = 10 * dt
-learning_rule_option = SDSP()
+sample_every = 2 * dt
+learning_rule_option = SDSP(
+    J_C=1,
+    tau_c=0.06,
+    X_limit=(0, 1),  # (X_min, X_max)
+    X_coeff=(0.1, 0.1, 3.5, 3.5),  # （a, b, alpha, beta）
+    theta_coeff=(12, 3, 4, 3),  # (theta_hup, theta_lup, theta_hdown, theta_ldown)
+)
 
 # Default neuron parameters
 max_rate = 50  # Hz
@@ -61,6 +67,14 @@ def gen_transform(pattern=None, **kwargs):
         W: Optional[np.ndarray] = None
 
         match pattern:
+            case "circular_inhibition":
+                # For self-connections
+                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
+                W = np.empty(shape)
+                weight = np.abs(np.arange(shape[0]) - shape[0] // 2)
+                for i in range(shape[0]):
+                    W[i, :] = np.roll(weight, i + shape[0] // 2)
+                W *= -W
             case _:
                 if "weights" in kwargs:
                     W = kwargs["weights"]
@@ -108,7 +122,7 @@ layer_confs = [
     ),
     dict(
         name="visual",
-        neuron=nengo.RectifiedLinear(),
+        neuron=nengo.LIF(),
         n_neurons=stim_size,
         dimensions=1,
     ),
@@ -120,6 +134,11 @@ layer_confs = [
         name="output",
         n_neurons=n_output,
         dimensions=1,
+    ),
+    dict(
+        name="learning_switch",
+        neuron=None,
+        output=lambda t: True if t < duration else False,
     ),
 ]
 
@@ -148,7 +167,7 @@ conn_confs = [
     dict(
         pre="output_neurons",
         post="output_neurons",
-        transform=-np.ones((n_output, n_output)) + 2 * np.eye(n_output),
+        transform=gen_transform("circular_inhibition"),
         synapse=0,
     ),
 ]
@@ -312,9 +331,9 @@ def main(plot=False, savedata=False):
         for conn_name in conn_names:
             plt.figure()
             plt.imshow(
-                sim.data[probes[conn_name + "_weights"]].reshape(
-                    -1, n_output * stim_size
-                )
+                sim.data[probes[conn_name + "_weights"]]
+                .reshape(-1, n_output * stim_size)
+                .T
             )
             plt.xlabel("time (ms)")
             plt.title("Synaptic Efficacy")
