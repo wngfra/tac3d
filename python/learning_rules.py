@@ -170,10 +170,8 @@ class SimSDSP(Operator):
             np.putmask(X, X >theta_X, np.clip(X + alpha, X_min, X_max))
             np.putmask(X, X <= theta_X, np.clip(X - beta, X_min, X_max))
 
-            delta[...] = (X_max - X) * (X > theta_X) + (X_min - X) * (X <= theta_X)
-            factor = weights.sum(axis=1, keepdims=True)
-            factor[factor == 0] = 1
-            weights[...] /= factor
+            np.putmask(weights, X > theta_X, X_max)
+            np.putmask(weights, X <= theta_X, X_min)
 
         return step_simsdsp
 
