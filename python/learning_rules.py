@@ -1,4 +1,4 @@
-# Copyright 2023 wngfra.
+6  # Copyright 2023 wngfra.
 # SPDX-License-Identifier: Apache-2.0
 import nengo
 import numpy as np
@@ -35,7 +35,7 @@ class SDSP(nengo.learning_rules.LearningRuleType):
     theta_coeff = TupleParam("theta_coeff", default=(13, 3, 4, 3), readonly=True)
     pre_synapse = SynapseParam("pre_synapse", default=Lowpass(tau=0.01), readonly=True)
     post_synapse = SynapseParam(
-        "post_synapse", default=Lowpass(tau=0.01), readonly=True
+        "post_synapse", default=None, readonly=True
     )
 
     def __init__(
@@ -67,6 +67,7 @@ class SimSDSP(Operator):
         post_filtered,
         post_voltage,
         weights,
+        delta,
         X,
         C,
         sum_post,
@@ -88,7 +89,7 @@ class SimSDSP(Operator):
         self.sets = []
         self.incs = []
         self.reads = [pre_filtered, post_filtered, post_voltage, learning_mode]
-        self.updates = [weights, X, C, sum_post]
+        self.updates = [weights, delta, X, C, sum_post]
 
     @property
     def pre_filtered(self):
@@ -111,16 +112,20 @@ class SimSDSP(Operator):
         return self.updates[0]
 
     @property
-    def X(self):
+    def delta(self):
         return self.updates[1]
 
     @property
-    def C(self):
+    def X(self):
         return self.updates[2]
 
     @property
-    def sum_post(self):
+    def C(self):
         return self.updates[3]
+
+    @property
+    def sum_post(self):
+        return self.updates[4]
 
     @property
     def _descstr(self):
@@ -131,6 +136,7 @@ class SimSDSP(Operator):
         post_filtered = signals[self.post_filtered]
         post_voltage = signals[self.post_voltage]
         weights = signals[self.weights]
+        delta = signals[self.delta]
         X = signals[self.X]
         C = signals[self.C]
         sum_post = signals[self.sum_post]
@@ -145,27 +151,29 @@ class SimSDSP(Operator):
         theta_V = 0.8
 
         def step_simsdsp():
-            # In the presence of pre-synaptic spikes
-            mask_pre = np.tile((pre_filtered > 0)[:, np.newaxis], weights.shape[0]).T
-            mask_up = np.logical_and(C > theta_lup, C < theta_hup)
-            mask_down = np.logical_and(C > theta_ldown, C < theta_hdown)
-            # TODO: pre-synaptic dependent update
-            
-            # In the presence of post-synaptic spikes
-            sum_post[...] += post_filtered * dt
-
-            # Synaptic dynamics
+            sum_post[...] += self.J_C * post_filtered * dt
             C[...] += (
-                -C / self.tau_c
-                + self.J_C * np.tile(sum_post[:, np.newaxis], weights.shape[1])
-            ) * dt
-            np.putmask(X, X > theta_X, np.clip(X + alpha, X_min, X_max))
+                -C * dt / self.tau_c
+                + np.tile(sum_post[:, np.newaxis], C.shape[1]) * dt
+            )
+
+            # Pre-synaptic update
+            mask_Va = np.tile((post_voltage > theta_V)[:, np.newaxis], weights.shape[1])
+            mask_Xa = (C > theta_lup) & (C < theta_hup)
+            mask_Vb = np.tile(
+                (post_voltage <= theta_V)[:, np.newaxis], weights.shape[1]
+            )
+            mask_Xb = (C > theta_ldown) & (C < theta_hdown)
+            np.putmask(X, mask_Va & mask_Xa, np.clip(X + a, X_min, X_max))
+            np.putmask(X, mask_Vb & mask_Xb, np.clip(X - b, X_min, X_max))
+
+            np.putmask(X, X >theta_X, np.clip(X + alpha, X_min, X_max))
             np.putmask(X, X <= theta_X, np.clip(X - beta, X_min, X_max))
 
-            # Update weights
-            np.putmask(weights, X > theta_X, 1)
-            np.putmask(weights, X <= theta_X, 0)
-            weights[...] /= np.sum(weights, axis=1, keepdims=True)
+            delta[...] = (X_max - X) * (X > theta_X) + (X_min - X) * (X <= theta_X)
+            factor = weights.sum(axis=1, keepdims=True)
+            factor[factor == 0] = 1
+            weights[...] /= factor
 
         return step_simsdsp
 
@@ -185,6 +193,7 @@ def build_sdsp(model, sdsp, rule):
     post_filtered = build_or_passthrough(model, sdsp.post_synapse, post_activities)
     post_voltage = model.sig[get_post_ens(conn).neurons]["voltage"]
     weights = model.sig[conn]["weights"]
+    delta = model.sig[rule]["delta"]
 
     X = Signal(initial_value=np.random.random(weights.shape), name="X")
     C = Signal(initial_value=2 * np.ones(weights.shape), name="C")
@@ -196,6 +205,7 @@ def build_sdsp(model, sdsp, rule):
             post_activities,
             post_voltage,
             weights,
+            delta,
             X,
             C,
             sum_post,
