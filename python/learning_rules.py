@@ -34,7 +34,7 @@ class SDSP(nengo.learning_rules.LearningRuleType):
     X_max = NumberParam("X_max", default=1.0, low=0, readonly=True)
     X_coeff = TupleParam("X_coeff", default=(0.1, 0.1, 3.5, 3.5), readonly=True)
     theta_coeff = TupleParam("theta_coeff", default=(13, 3, 4, 3), readonly=True)
-    pre_synapse = SynapseParam("pre_synapse", default=Lowpass(tau=0.01), readonly=True)
+    pre_synapse = SynapseParam("pre_synapse", default=None, readonly=True)
     post_synapse = SynapseParam("post_synapse", default=None, readonly=True)
 
     def __init__(
@@ -150,8 +150,8 @@ class SimSDSP(Operator):
             # Update calcium variable
             sum_post[...] += self.J_C * post_filtered * dt
             C[...] += (
-                -C * dt / self.tau_c + np.tile(sum_post[:, np.newaxis], C.shape[1]) * dt
-            )
+                -C / self.tau_c + np.tile(sum_post[:, np.newaxis], C.shape[1])
+            ) * dt
 
             # Pre-synaptic mask
             mask_pre = np.tile((pre_filtered > 0)[:, np.newaxis], weights.shape[0]).T
