@@ -149,6 +149,7 @@ class SimSDSP(Operator):
         def step_simsdsp():
             # Update calcium variable
             sum_post[...] += self.J_C * post_filtered * dt
+            sum_post[...] += -sum_post[...] * dt
             C[...] += (
                 -C / self.tau_c + np.tile(sum_post[:, np.newaxis], C.shape[1])
             ) * dt

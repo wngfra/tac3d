@@ -95,7 +95,7 @@ def gen_transform(pattern=None, **kwargs):
         match pattern:
             case "uniform_inhibition":
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
-                W = -np.ones(shape) + 1 * np.eye(shape[0])
+                W = -np.ones(shape) + 2 * np.eye(shape[0])
             case "circular_inhibition":
                 # For self-connections
                 assert shape[0] == shape[1], "Transform matrix is not symmetric!"
@@ -129,13 +129,13 @@ X_in, y_in = bg.generate_samples(
 # Simulation parameters
 dt = 1e-3
 n_output = 10
-decay_time = 0.05
-presentation_time = 2 + decay_time
+decay_time = 0.02
+presentation_time = 0.6 + decay_time
 duration = X_in.shape[0] * presentation_time
 sample_every = 100 * dt
 learning_rule_option = SDSP(
     J_C=1,
-    tau_c=0.05,
+    tau_c=0.06,
     X_coeff=(0.1, 0.1, 3.5, 3.5),  # (a, b, alpha, beta)
     theta_coeff=(13, 3, 4, 3),  # (theta_hup, theta_lup, theta_hdown, theta_ldown)
 )
@@ -233,13 +233,13 @@ conn_confs = [
     dict(
         pre="output_neurons",
         post="output_neurons",
-        transform=gen_transform("uniform_inhibition"),
+        transform=0,
         synapse=5e-3,
     ),
     dict(
         pre="target_neurons",
         post="output_neurons",
-        transform=1,
+        transform=gen_transform("uniform_inhibition"),
         synapse=0,
     ),
 ]
