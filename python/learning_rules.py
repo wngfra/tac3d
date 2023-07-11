@@ -21,7 +21,7 @@ class SDSP(nengo.learning_rules.LearningRuleType):
 
     modifies = "weights"
     probeable = (
-        "learning_mode",
+        "switch",
         "pre_filtered",
         "post_filtered",
         "X",
@@ -30,6 +30,7 @@ class SDSP(nengo.learning_rules.LearningRuleType):
 
     J_C = NumberParam("J_C", default=1, low=0, readonly=True)
     tau_c = NumberParam("tau_c", default=0.06, low=0, readonly=True)
+    tau_j = NumberParam("tau_c", default=0.02, low=0, readonly=True)
     X_min = NumberParam("X_min", default=0.0, low=0, readonly=True)
     X_max = NumberParam("X_max", default=1.0, low=0, readonly=True)
     X_coeff = TupleParam("X_coeff", default=(0.1, 0.1, 3.5, 3.5), readonly=True)
@@ -41,6 +42,7 @@ class SDSP(nengo.learning_rules.LearningRuleType):
         self,
         J_C=Default,
         tau_c=Default,
+        tau_j=Default,
         X_min=Default,
         X_max=Default,
         X_coeff=Default,
@@ -51,6 +53,7 @@ class SDSP(nengo.learning_rules.LearningRuleType):
         super().__init__(0, size_in=0)
         self.J_C = J_C
         self.tau_c = tau_c
+        self.tau_J = tau_j
         self.X_min = X_min
         self.X_max = X_max
         self.X_coeff = X_coeff
@@ -67,13 +70,14 @@ class SimSDSP(Operator):
         pre_filtered,
         post_filtered,
         post_voltage,
+        switch,
         weights,
         X,
         C,
         sum_post,
-        learning_mode,
         J_C,
         tau_c,
+        tau_j,
         X_min,
         X_max,
         X_coeff,
@@ -83,6 +87,7 @@ class SimSDSP(Operator):
         super().__init__(tag=tag)
         self.J_C = J_C
         self.tau_c = tau_c
+        self.tau_j = tau_j
         self.X_min, self.X_max = X_min, X_max
         self.a, self.b, self.alpha, self.beta = np.multiply(X_coeff, X_max)
         (
@@ -96,7 +101,7 @@ class SimSDSP(Operator):
 
         self.sets = []
         self.incs = []
-        self.reads = [pre_filtered, post_filtered, post_voltage, learning_mode]
+        self.reads = [pre_filtered, post_filtered, post_voltage, switch]
         self.updates = [weights, X, C, sum_post]
 
     @property
@@ -112,9 +117,9 @@ class SimSDSP(Operator):
         return self.reads[2]
 
     @property
-    def learning_mode(self):
+    def switch(self):
         return self.reads[3]
-
+    
     @property
     def weights(self):
         return self.updates[0]
@@ -139,6 +144,7 @@ class SimSDSP(Operator):
         pre_filtered = signals[self.pre_filtered]
         post_filtered = signals[self.post_filtered]
         post_voltage = signals[self.post_voltage]
+        switch = signals[self.switch]
         weights = signals[self.weights]
         X = signals[self.X]
         C = signals[self.C]
@@ -147,43 +153,44 @@ class SimSDSP(Operator):
         np.putmask(X, weights > 0, self.X_max)
 
         def step_simsdsp():
-            # Update calcium variable
-            sum_post[...] += self.J_C * post_filtered * dt
-            sum_post[...] += -sum_post[...] * dt
-            C[...] += (
-                -C / self.tau_c + np.tile(sum_post[:, np.newaxis], C.shape[1])
-            ) * dt
+            if switch:
+                # Update calcium variable
+                sum_post[...] += self.J_C * post_filtered * dt
+                sum_post[...] += -sum_post[...] / self.tau_j * dt
+                C[...] += (
+                    -C / self.tau_c + np.tile(sum_post[:, np.newaxis], C.shape[1])
+                ) * dt
 
-            # Pre-synaptic mask
-            mask_pre = np.tile((pre_filtered > 0)[:, np.newaxis], weights.shape[0]).T
+                # Pre-synaptic mask
+                mask_pre = np.tile((pre_filtered > 0)[:, np.newaxis], weights.shape[0]).T
 
-            # LTP
-            mask_V = np.tile(
-                (post_voltage > self.theta_V)[:, np.newaxis], weights.shape[1]
-            )
-            mask_C = (C > self.theta_lup) & (C < self.theta_hup)
-            np.putmask(
-                X, mask_pre & mask_V & mask_C, np.clip(X + self.a, self.X_min, self.X_max)
-            )
-            np.putmask(
-                X,
-                ~mask_pre | (mask_pre & mask_V & ~mask_C),
-                np.clip(X + self.alpha * dt, self.X_min, self.X_max),
-            )
-            # LTD
-            mask_C = (C > self.theta_ldown) & (C < self.theta_hdown)
-            np.putmask(
-                X, mask_pre & ~mask_V & mask_C, np.clip(X - self.b, self.X_min, self.X_max)
-            )
-            np.putmask(
-                X,
-                ~mask_pre | (mask_pre & ~mask_V & ~mask_C),
-                np.clip(X - self.beta * dt, self.X_min, self.X_max),
-            )
+                # Potentiation
+                mask_V = np.tile(
+                    (post_voltage > self.theta_V)[:, np.newaxis], weights.shape[1]
+                )
+                mask_C = (C > self.theta_lup) & (C < self.theta_hup)
+                np.putmask(
+                    X, mask_pre & mask_V & mask_C, np.clip(X + self.a, self.X_min, self.X_max)
+                )
+                np.putmask(
+                    X,
+                    ~mask_pre | (mask_pre & mask_V & ~mask_C),
+                    np.clip(X + self.alpha * dt, self.X_min, self.X_max),
+                )
+                # Depression
+                mask_C = (C > self.theta_ldown) & (C < self.theta_hdown)
+                np.putmask(
+                    X, mask_pre & ~mask_V & mask_C, np.clip(X - self.b, self.X_min, self.X_max)
+                )
+                np.putmask(
+                    X,
+                    ~mask_pre | (mask_pre & ~mask_V & ~mask_C),
+                    np.clip(X - self.beta * dt, self.X_min, self.X_max),
+                )
 
-            # Update weights
-            np.putmask(weights, mask_pre & (X > self.theta_X), 1)
-            np.putmask(weights, mask_pre & (X <= self.theta_X), 0)
+                # Update weights
+                np.putmask(weights, mask_pre & (X > self.theta_X), 1)
+                np.putmask(weights, mask_pre & (X <= self.theta_X), 0)
 
         return step_simsdsp
 
@@ -193,9 +200,10 @@ def build_sdsp(model, sdsp, rule):
     conn = rule.connection
 
     # Add input to learning rule
-    learning_mode = Signal(initial_value=True, name="learning_mode")
-    model.add_op(Reset(learning_mode))
-    model.sig[rule]["in"] = learning_mode
+    switch = Signal(shape=1, name="SDSP:switch")
+    # assert rule.size_in == 1
+    model.add_op(Reset(switch, value=1.0))
+    model.sig[rule]["in"] = switch
 
     pre_activities = model.sig[get_pre_ens(conn).neurons]["out"]
     post_activities = model.sig[get_post_ens(conn).neurons]["out"]
@@ -213,13 +221,14 @@ def build_sdsp(model, sdsp, rule):
             pre_activities,
             post_activities,
             post_voltage,
+            model.sig[rule]["in"],
             weights,
             X,
             C,
             sum_post,
-            model.sig[rule]["in"],
             sdsp.J_C,
             sdsp.tau_c,
+            sdsp.tau_j,
             sdsp.X_min,
             sdsp.X_max,
             sdsp.X_coeff,
@@ -233,4 +242,4 @@ def build_sdsp(model, sdsp, rule):
     model.sig[rule]["post_voltage"] = post_voltage
     model.sig[rule]["X"] = X
     model.sig[rule]["C"] = C
-    model.sig[rule]["learning_mode"] = learning_mode
+    model.sig[rule]["switch"] = switch
