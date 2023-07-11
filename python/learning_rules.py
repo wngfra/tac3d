@@ -40,6 +40,7 @@ class SDSP(nengo.learning_rules.LearningRuleType):
 
     def __init__(
         self,
+        switch=None,
         J_C=Default,
         tau_c=Default,
         tau_j=Default,
@@ -51,6 +52,7 @@ class SDSP(nengo.learning_rules.LearningRuleType):
         post_synapse=Default,
     ):
         super().__init__(0, size_in=0)
+        self.switch = switch
         self.J_C = J_C
         self.tau_c = tau_c
         self.tau_J = tau_j
@@ -200,9 +202,8 @@ def build_sdsp(model, sdsp, rule):
     conn = rule.connection
 
     # Add input to learning rule
-    switch = Signal(shape=1, name="SDSP:switch")
-    # assert rule.size_in == 1
-    model.add_op(Reset(switch, value=1.0))
+    switch = Signal(np.ones(rule.size_in), name="SDSP:switch")
+    model.add_op(Reset(switch))
     model.sig[rule]["in"] = switch
 
     pre_activities = model.sig[get_pre_ens(conn).neurons]["out"]
@@ -221,7 +222,7 @@ def build_sdsp(model, sdsp, rule):
             pre_activities,
             post_activities,
             post_voltage,
-            model.sig[rule]["in"],
+            switch,
             weights,
             X,
             C,
