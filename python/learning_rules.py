@@ -40,7 +40,6 @@ class SDSP(nengo.learning_rules.LearningRuleType):
 
     def __init__(
         self,
-        switch=None,
         J_C=Default,
         tau_c=Default,
         tau_j=Default,
@@ -51,8 +50,7 @@ class SDSP(nengo.learning_rules.LearningRuleType):
         pre_synapse=Default,
         post_synapse=Default,
     ):
-        super().__init__(0, size_in=0)
-        self.switch = switch
+        super().__init__(0, size_in=1)
         self.J_C = J_C
         self.tau_c = tau_c
         self.tau_J = tau_j
@@ -155,7 +153,7 @@ class SimSDSP(Operator):
         np.putmask(X, weights > 0, self.X_max)
 
         def step_simsdsp():
-            if switch:
+            if switch > 0.5:
                 # Update calcium variable
                 sum_post[...] += self.J_C * post_filtered * dt
                 sum_post[...] += -sum_post[...] / self.tau_j * dt
@@ -202,7 +200,7 @@ def build_sdsp(model, sdsp, rule):
     conn = rule.connection
 
     # Add input to learning rule
-    switch = Signal(np.ones(rule.size_in), name="SDSP:switch")
+    switch = Signal(np.zeros(rule.size_in), name="SDSP:switch")
     model.add_op(Reset(switch))
     model.sig[rule]["in"] = switch
 
