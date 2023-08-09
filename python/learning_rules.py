@@ -1,4 +1,4 @@
-6  # Copyright 2023 wngfra.
+# Copyright 2023 wngfra.
 # SPDX-License-Identifier: Apache-2.0
 import nengo
 import numpy as np
