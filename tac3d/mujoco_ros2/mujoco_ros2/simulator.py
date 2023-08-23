@@ -25,7 +25,7 @@ from mujoco_ros2.sim_helper import normalize, nullspace_method
 
 _DEFAULT_XML_PATH = "/workspace/src/tac3d/models/scene.xml"
 _HEIGHT, _WIDTH = 15, 15
-_TIMER_RATE = 200
+_TIMER_RATE = 100
 _IKSITE_TYPE = 2
 _CTRL_SCALE = 1e-3
 _QOS_PROFILE = QoSProfile(depth=20, reliability=QoSReliabilityPolicy.RELIABLE)

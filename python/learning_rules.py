@@ -191,6 +191,12 @@ class SimSDSP(Operator):
                 # Update weights
                 np.putmask(weights, mask_pre & (X > self.theta_X), 1)
                 np.putmask(weights, mask_pre & (X <= self.theta_X), 0)
+            else:
+                if np.any((X > self.X_min) & (X < self.X_max)):
+                    np.putmask(weights, X > self.theta_X, 1)
+                    np.putmask(weights, X <= self.theta_X, 0)
+                    np.putmask(X, X > self.theta_X, self.X_max)
+                    np.putmask(X, X <= self.theta_X, self.X_min)
 
         return step_simsdsp
 
