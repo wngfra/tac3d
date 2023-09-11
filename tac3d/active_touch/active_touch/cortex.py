@@ -13,7 +13,6 @@ _SIM_RATE = 200
 _FREQ = 100
 t = 0
 
-
 class Cortex(Node):
     """Cortex node controls the robot using the tactile feedback."""
 
