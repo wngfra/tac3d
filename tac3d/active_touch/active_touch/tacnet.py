@@ -5,9 +5,9 @@ from typing import Optional
 import nengo
 import numpy as np
 import rclpy
-import sensor_msgs.msg
-import std_msgs.msg
-import visualization_msgs.msg
+from sensor_msgs.msg import Image
+from std_msgs.msg import Header
+from geometry_msgs.msg import PointStamped
 from mujoco_interfaces.msg import Locus, RobotState
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
@@ -44,7 +44,7 @@ NODE_CONFS = [
     # Publisher configs
     dict(
         name="tacnet_encoded_pub",
-        msg_type=sensor_msgs.msg.Image,
+        msg_type=Image,
         topic="active_touch/tacnet/encoded",
     ),
     dict(
@@ -53,9 +53,9 @@ NODE_CONFS = [
         topic="active_touch/tacnet/output",
     ),
     dict(
-        name="tacnet_marker_pub",
-        msg_type=visualization_msgs.msg.Marker,
-        topic="active_touch/tacnet/marker",
+        name="tacnet_point_pub",
+        msg_type=PointStamped,
+        topic="active_touch/tacnet/point",
     ),
 ]
 
@@ -249,13 +249,13 @@ class Tacnet(Node):
                 self._sim.clear_probes()
 
     def publish_image(self, pub_name, image: np.ndarray):
-        header = std_msgs.msg.Header()
+        header = Header()
         header.frame_id = "world"
         header.stamp = self.get_clock().now().to_msg()
 
         # Prepare reconstruction tactile image
         dim = int(np.sqrt(image.size))
-        img_msg = sensor_msgs.msg.Image()
+        img_msg = Image()
         img_msg.header = header
         img_msg.height = dim
         img_msg.width = dim
@@ -265,8 +265,8 @@ class Tacnet(Node):
         img_msg.data = normalize(image).tolist()
         self._confs[pub_name].publish(img_msg)
 
-    def publish_output(self, output: np.ndarray, location: np.ndarray = None):
-        header = std_msgs.msg.Header()
+    def publish_output(self, output: np.ndarray, point: np.ndarray = None):
+        header = Header()
         header.frame_id = "world"
         header.stamp = self.get_clock().now().to_msg()
 
@@ -281,28 +281,13 @@ class Tacnet(Node):
         # self._confs["te_pub"].publish(ec_msg)
 
         # Prepare tactile spatial memory as point cloud
-        if points is not None:
-            points = points[:3]
-            ros_dtype = sensor_msgs.msg.PointField.FLOAT32
-            dtype = np.float32
-            itemsize = np.dtype(dtype).itemsize  # A 32-bit float takes 4 bytes.
-            pc2_msg = sensor_msgs.msg.PointCloud2(
-                header=header,
-                height=1,
-                width=points.shape[0],
-                is_dense=False,
-                is_bigendian=False,
-                fields=[
-                    sensor_msgs.msg.PointField(
-                        name=n, offset=i * itemsize, datatype=ros_dtype, count=1
-                    )
-                    for i, n in enumerate("xyz")
-                ],
-                point_step=itemsize * 1,
-                row_step=itemsize * points.shape[0] * 1,
-                data=points.astype(dtype).tobytes(),
-            )
-            # self._confs["tp_pub"].publish(pc2_msg)
+        if point:
+            point_msg = PointStamped()
+            point_msg.header = header
+            point_msg.point.x = point[0]
+            point_msg.point.y = point[1]
+            point_msg.point.z = point[2]
+            self._confs["tp_pub"].publish(point_msg)
 
     def subscribe_robot_state(self, msg: RobotState):
         # Update the robot state

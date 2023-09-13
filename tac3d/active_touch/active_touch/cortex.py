@@ -2,7 +2,7 @@ from collections import deque
 
 import numpy as np
 import rclpy
-import std_msgs.msg
+from std_msgs.msg import Header
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
 from rclpy.qos import QoSReliabilityPolicy
@@ -63,7 +63,7 @@ class Cortex(Node):
         global t
         t += 0.1
         msg = MotorSignal()
-        msg.header = std_msgs.msg.Header()
+        msg.header = Header()
         msg.header.frame_id = "world"
         msg.header.stamp = self.get_clock().now().to_msg()
 
@@ -72,9 +72,6 @@ class Cortex(Node):
             signal[2] -= 1
         else:
             signal[2] += -1 * (1e-2 - self._contact_force)
-
-            signal[0] += 1 * np.cos(0.1 * np.pi * t)
-            signal[1] += 1 * np.sin(0.1 * np.pi * t)
 
         msg.signal = signal.tolist()
         self._ms_pub.publish(msg)
