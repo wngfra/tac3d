@@ -134,3 +134,4 @@ robots/
 *.gz
 output/
 tmp/
+*.pickle

@@ -105,8 +105,9 @@ def gen_transform(pattern=None, **kwargs):
                 try:
                     ksize = kwargs["ksize"]
                     nfilter = kwargs["nfilter"]
-                except:
-                    raise KeyError("Missing keyword arguments!")
+                except KeyError as _:
+                    ksize = _KERN_SIZE
+                    nfilter = _N_FILTERS
                 kernel = np.empty((ksize, ksize, 1, nfilter))
                 delta_phi = np.pi / (nfilter + 1)
                 for i in range(nfilter):

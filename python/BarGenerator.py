@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import numpy as np
-
 from numpy import linalg
 from scipy import ndimage
 
@@ -47,48 +46,6 @@ class BarGenerator:
 
         return cropped
 
-    def gen_sequential_bars(self, num_samples, dim, shift=None, start_angle=0, step=1):
-        bars = [self(shift, start_angle + i * step, dim) for i in range(num_samples)]
-        info = np.arange(start_angle, start_angle + num_samples * step, step)
-        return bars, info
-
-    def gen_random_bars(
-        self,
-        num_samples,
-        min_offset=(0, 0),
-        max_offset=(1, 1),
-        min_angle=0,
-        max_angle=180,
-        min_dim=(1, 1),
-        max_dim=(1, 1),
-    ):
-        """Generate a set of random bars.
-
-        Args:
-            num_samples (int): Number of samples to generate.
-            min_offset (tuple, optional): Minimum offset of the bar. Defaults to (0, 0).
-            max_offset (tuple, optional): Maximum offset of the bar. Defaults to (0, 0).
-            min_angle (float, optional): Minimum angle of the bar. Defaults to 0.
-            max_angle (float, optional): Maximum angle of the bar. Defaults to 180.
-            min_dim (tuple, optional): Minimum dimension of the bar. Defaults to (1, 1).
-            max_dim (tuple, optional): Maximum dimension of the bar. Defaults to (1, 1).
-
-        Returns:
-            np.ndarray: Bars with shape (num_samples, width, shape[1]).
-            np.ndarray: Info with shape (num_samples, 1). Defaults to degrees in [0, 180].
-        """
-        bars = np.empty((num_samples, *self._shape))
-        info = np.empty((num_samples, 1))
-        for i in range(num_samples):
-            x = np.random.randint(min_offset[0], max_offset[0])
-            y = np.random.randint(min_offset[1], max_offset[1])
-            angle = np.random.randint(min_angle, max_angle)
-            dimx = np.random.randint(min_dim[0], max_dim[0])
-            dimy = np.random.randint(min_dim[1], max_dim[1])
-            bars[i] = self((x, y), angle, (dimx, dimy))
-            info[i] = angle
-        return bars, info
-
     @property
     def shape(self):
         return self._shape
@@ -97,12 +54,60 @@ class BarGenerator:
     def shape(self, shape):
         self._shape = shape
 
+    def generate_samples(
+        self,
+        num_samples,
+        dim,
+        shift=None,
+        start_angle=0,
+        step=1,
+        repeats=2,
+        add_test=False,
+    ):
+        bar = [self(shift, start_angle + i * step, dim) for i in range(num_samples)]
+        inf = np.arange(start_angle, start_angle + num_samples * step, step)
+        bar = np.asarray(bar)
+        bars = np.repeat(bar, axis=0, repeats=repeats)
+        infs = np.repeat(inf, axis=0, repeats=repeats)
+        rng = np.random.default_rng(seed=0)
+        arr = np.arange(infs.size, dtype=int)
+        np.random.shuffle(arr)
+        bars = bars[arr]
+        infs = infs[arr]
+        if add_test:
+            bars = np.concatenate((bars, bar))
+            infs = np.concatenate((infs, inf))
+        return bars, infs
 
-if __name__ == "__main__":
-    bg = BarGenerator((15, 15))
-    bar = bg((0, 0), 60, (2, 21))
-    import matplotlib.pyplot as plt
 
-    plt.imshow(bar)
-    plt.grid()
-    plt.show()
+def gen_transform(pattern=None, **kwargs):
+    def inner(shape):
+        """Closure of the transform matrix generator.
+
+        Args:
+            shape (array_like): Linear transform mapping of shape (size_out, size_mid).
+        Returns:
+            inner: Function that returns the transform matrix.
+        """
+        W = np.zeros(shape)
+
+        match pattern:
+            case "uniform_inhibition":
+                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
+                W = -np.ones(shape) + 2 * np.eye(shape[0])
+            case "circular_inhibition":
+                # For self-connections
+                assert shape[0] == shape[1], "Transform matrix is not symmetric!"
+                weight = np.abs(np.arange(shape[0]) - shape[0] // 2)
+                for i in range(shape[0]):
+                    W[i, :] = np.roll(weight, i + shape[0] // 2 + 1)
+                W = -W + np.eye(shape[0])
+            case 0:
+                pass
+            case 1:
+                W = np.ones(W.shape)
+            case _:
+                W = np.random.randint(0, 2, W.shape)
+        return W
+
+    return inner
