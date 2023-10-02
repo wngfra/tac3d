@@ -1,13 +1,13 @@
 import logging
 import random
+import mujoco
 import numpy as np
 
-from ssp.coppeliasim_files import sim
 from itertools import count
 
 
 class SimulationError(Exception):
-    """An error dealing with CoppeliaSim."""
+    """An error dealing with MuJoCo."""
 
     pass
 
@@ -16,7 +16,7 @@ class Object:
     """Encapsulates data concerning an environment object.
 
     These objects are intended to encode environment dynamics and interface
-    with CoppeliaSim to ensure that API calls respect these dynamics.
+    with MuJoCo to ensure that API calls respect these dynamics.
 
     Parameters
     ----------
@@ -34,21 +34,20 @@ class Object:
     z : float
         The z-coordinate for the object's position.
     inputInts : list of ints
-        Integers passed to Lua child-script function in CoppeliaSim
+        Integers passed to Lua child-script function in MuJoCo
     inputFloats : list of floats
-        Floats passed to Lua child-script function in CoppeliaSim
+        Floats passed to Lua child-script function in MuJoCo
     inputStrings : list of strings
-        Strings passed to Lua child-script function in CoppeliaSim
+        Strings passed to Lua child-script function in MuJoCo
     inputBuffer : bytearray
-        Buffer passed to Lua child-script function in CoppeliaSim
+        Buffer passed to Lua child-script function in MuJoCo
     handle : None
-        Handle of obj in CoppeliaSim once it has been built
+        Handle of obj in MuJoCo once it has been built
     """
 
     id_gen = count(0)  # tracks number of objects that have been created
 
     def __init__(self, name, color, shape):
-
         self.name = str(name)
         self.color = list(color)
         self.shape = list(shape)
@@ -95,48 +94,49 @@ class Object:
 
     @property
     def inputInts(self):
-        """List of ints passed to Lua function in CoppeliaSim."""
+        """List of ints passed to Lua function in MuJoCo."""
         return self.shape
 
     @property
     def inputFloats(self):
-        """List of floats passed to Lua function in CoppeliaSim."""
+        """List of floats passed to Lua function in MuJoCo."""
         return self.size + self.color + list(self.location) + self.mass
 
     @property
     def inputStrings(self):
-        """List of strings passed to Lua function in CoppeliaSim."""
+        """List of strings passed to Lua function in MuJoCo."""
         return [self.name]
 
     @property
     def inputBuffer(self):
-        """Buffer passed to Lua function in CoppeliaSim (required by API)."""
+        """Buffer passed to Lua function in MuJoCo (required by API)."""
         return bytearray()  # currently no use of bytearrays
 
 
-class CoppeliaSim:
-    """Provides an interface to a CoppeliaSim simulation.
+class MJCSim:
+    """Provides an interface to a MuJoCo simulation.
 
     Objects can be added to the simulation and their positions can be
     retrieved while they move around in accordance with the dynamics imposed
-    by the CoppeliaSim physics simulator.
-
-    Note that this interface is current setup to assume use with a specific
-    CoppeliaSim scene file (`blocks.ttt`) supplied with this code.
+    by the MuJoCo physics simulator.
 
     Parameters
     ----------
     x_len: int (optional)
         The length of the simulation environment along the x-axis in
-        CoppeliaSim.
+        MuJoCo.
     y_len: int (optional)
         The length of the simulation environment along the y-axis in
-        CoppeliaSim.
+        MuJoCo.
     """
 
     def __init__(self, x_len=2, y_len=2, *args, **kwargs):
-
-        self.x_len = x_len  # init defaults are for `blocks.ttt`
+        xml = """
+        """
+        model = mujoco.MjModel.from_xml_string(xml)
+        self.data = mujoco.MjData(model)
+        
+        self.x_len = x_len
         self.y_len = y_len
 
         # create grid of points to select from when initializing objects
@@ -145,122 +145,31 @@ class CoppeliaSim:
 
         self.grid = [np.array([x, y]) for x in self.xs for y in self.ys]
         self.object_lookup = {}
-        self.connected = False
-        self._connect_params = (args, kwargs)
-
-    def __enter__(self):
-        self.connect(*self._connect_params[0], **self._connect_params[1])
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        self.disconnect()
-
-    @staticmethod
-    def check_error_code(error_code):
-        """Display CoppeliaSim error code if API call fails."""
-        if error_code != 0:
-            raise SimulationError("Call failure with code %d" % error_code)
-
-    def connect(self, host="127.0.0.1", dt=0.005):
-        """Connect to the current scene open in CoppeliaSim."""
-        if self.connected:
-            raise SimulationError("Cannot connect; already connected")
-
-        # close any open connections
-        sim.simxFinish(-1)
-        # Connect to the CoppeliaSim continuous server
-        self.clientID = sim.simxStart(host, 19997, True, True, 500, 5)
-
-        if self.clientID == -1:
-            raise SimulationError("Failed connecting to remote API server: %s" % host)
-
-        sim.simxSynchronous(self.clientID, True)
-
-        sim.simxSetFloatingParameter(
-            self.clientID,
-            sim.sim_floatparam_simulation_time_step,
-            dt,  # specify a simulation time step
-            sim.simx_opmode_oneshot,
-        )
-
-        sim.simxSetBooleanParameter(
-            self.clientID,
-            sim.sim_boolparam_display_enabled,
-            True,
-            sim.simx_opmode_blocking,
-        )
-
-        # start our simulation in lockstep with our code
-        sim.simxStartSimulation(self.clientID, sim.simx_opmode_blocking)
-
-        logging.info("Connected to CoppeliaSim remote API server")
-        self.connected = True
-
-    def disconnect(self):
-        """Stop and reset the simulation."""
-        if not self.connected:
-            raise SimulationError("Cannot disconnect; not connected")
-
-        # stop the simulation
-        sim.simxStopSimulation(self.clientID, sim.simx_opmode_blocking)
-
-        # Before closing the connection to CoppeliaSim,
-        # make sure that the last command sent out had time to arrive.
-        sim.simxGetPingTime(self.clientID)
-
-        # Now close the connection to CoppeliaSim
-        sim.simxFinish(self.clientID)
-        logging.info("CoppeliaSim connection closed...")
-
-    def get_handle(self, name):
-        """Get the simulator handle associated with an object name."""
-        if not self.connected:
-            raise SimulationError("Cannot get handle; not connected")
-
-        _, handle = sim.simxGetObjectHandle(
-            self.clientID, name, sim.simx_opmode_blocking
-        )
-
-        return handle
 
     def get_xyz(self, name):
-        """Get the current xyz coordinates of an object in CoppeliaSim."""
-        handle = self.get_handle(name)
-
-        _, xyz = sim.simxGetObjectPosition(
-            self.clientID, handle, -1, sim.simx_opmode_blocking
-        )
+        """Get the current xyz coordinates of an object in MuJoCo."""
+        
+        xyz = self.data.geom(name).xpos
 
         return xyz
 
     def set_xyz(self, name, xyz):
-        """Set the xyz coordinates of an object in CoppeliaSim."""
-        handle = self.get_handle(name)
-
-        sim.simxSetObjectPosition(
-            self.clientID, handle, -1, xyz, sim.simx_opmode_blocking
-        )
+        """Set the xyz coordinates of an object in MuJoCo."""
+        
+        self.data.geom(name).xpos = xyz
 
     def get_orientation(self, name, in_degrees=True):
-        """Get the orientation of an object in CoppeliaSim."""
-        handle = self.get_handle(name)
-
-        _, angles = sim.simxGetObjectOrientation(
-            self.clientID, handle, -1, sim.simx_opmode_blocking
-        )
-
-        angles = [np.rad2deg(x) for x in angles] if in_degrees else angles
-
+        """Get the orientation of an object in MuJoCo."""
+        
+        xmat = self.data.geom(name).xmat
+        # TODO: convert to euler angles
         return angles
 
+    # TODO: Implementation of the MuJoCo API.
+    
     def set_orientation(self, name, angles, in_degrees=True):
-        """Set the orientation of an object in CoppeliaSim."""
-        handle = self.get_handle(name)
+        """Set the orientation of an object in MuJoCo."""
         angles = [np.deg2rad(x) for x in angles] if in_degrees else angles
-
-        sim.simxSetObjectOrientation(
-            self.clientID, handle, -1, angles, sim.simx_opmode_blocking
-        )
 
     def set_sensor(self, name):
         """Store sensor handle retrived name for convenient image capture"""
@@ -271,7 +180,7 @@ class CoppeliaSim:
         self.sensor_data = []
 
     def call_build_script(self, obj):
-        """Build an object into an open CoppeliaSim simulation."""
+        """Build an object into an open MuJoCo simulation."""
         if not self.connected:
             raise SimulationError("Cannot call build script; not connected")
 
@@ -292,7 +201,7 @@ class CoppeliaSim:
         sim.simxSynchronousTrigger(self.clientID)
 
     def create_object(self, name):
-        """Add a randomly configured object to the CoppeliaSim scene."""
+        """Add a randomly configured object to the MuJoCo scene."""
         color = np.random.uniform(0, 1, size=3)
         obj = Object(name=name, color=color, shape=[1])
 
@@ -304,7 +213,7 @@ class CoppeliaSim:
         self.object_lookup[name] = obj
 
     def delete_object(self, name):
-        """Delete the named object from the CoppeliaSim scene."""
+        """Delete the named object from the MuJoCo scene."""
         handle = self.get_handle(name)
         sim.simxRemoveObject(self.clientID, handle, sim.simx_opmode_blocking)
 
@@ -337,7 +246,7 @@ class CoppeliaSim:
         sim.simxSynchronousTrigger(self.clientID)
 
     def advance(self):
-        """Advance the CoppeliaSim simulation by one time step (dt)."""
+        """Advance the MuJoCo simulation by one time step (dt)."""
         if not self.connected:
             raise SimulationError("Cannot advance simulation; not connected")
 

@@ -2,12 +2,9 @@
 ![Cover](./docs/cover.gif "Robot Touch")
 ![Contact](./docs/soft_contact.png "Soft Contact")
 
-## Contents
-1. [arduino_readout](arduino_readout) contains the Arduino readout scheme for event-based tactile sensors.
-2. [CAD](CAD/) contains the CAD files (AutoDesk Inventor).
-3. [piezoresistive_sensor](piezoresistive_sensor/) contains the KiCAD project of the sensor design.
-4. [python](python/) contains the python scripts and Jupyter notebooks of data generation (MuJoCo) and tactile encoding study.
-5. [tac3d](tac3d/) contains the [ROS2](https://docs.ros.org/en/humble/index.html) packages for active tactile exploration simulation.
+1. [CAD](CAD/) contains the CAD files (AutoDesk Inventor).
+2. [demos](demos/) contains demos of tactile memory and exploration with spatial semantic pointer (SSP).
+3. [tac3d](tac3d/) contains the [ROS2](https://docs.ros.org/en/humble/index.html) packages for active tactile exploration simulation.
 
 ## Features
 - Intel Loihi support via docker
