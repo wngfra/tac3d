@@ -69,7 +69,7 @@ def lineplot_animation(lines, figsize, titles=None, interval=100):
 
     if titles is not None:
         for i, ax in enumerate(axes):
-            ax.title.set_text(titles[i])
+            ax.set_title(titles[i])
 
     ani = animation.ArtistAnimation(fig, images, interval=interval, blit=True)
     plt.close()
@@ -130,7 +130,7 @@ def heatmap_animation(
 
     if titles is not None:
         for i, ax in enumerate(axes):
-            ax.title.set_text(titles[i])
+            ax.set_title(titles[i])
 
     ani = animation.ArtistAnimation(fig, images, interval=interval, blit=True)
     plt.close()
