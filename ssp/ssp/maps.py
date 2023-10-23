@@ -9,8 +9,8 @@ class Spatial2D:
     """Handles SSP representations of two-dimensional planes with entities
     occupying locations seperated by a continuous distance metric. Instances of
     this class are used to maintain, update, and perform queries on an SSP
-    representation of some underlying 2D space. Updates can either be performed
-    on the basis of API calls to an underlying CoppeliaSim simulation that
+    representation of some underlying 2D space. Updates can be performed
+    on the basis of API calls to an underlying MuJoCo simulation that
     defines the 'ground truth' of the 2D space the SSP representation is
     intended to represent. Alternatively, updates can be performed on the
     basis of a set of `Object` instances that define the 'ground truth' of the
