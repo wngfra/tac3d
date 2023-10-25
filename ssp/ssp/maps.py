@@ -188,6 +188,10 @@ class Spatial2D:
         point_enc = self.encode_point(obj.x, obj.y)  # incl. position alone
         self.ssp_mem += point_enc + self.voc[obj.name] * point_enc
 
+    def add_point(self, x, y, reset=False):
+        """Add SSPencoding of the supplied coordinate"""
+        self.ssp_mem += self.encode_point(x, y)
+    
     def add_region(self, xs, ys, reset=False):
         """Add SSP encoding that covers region tiled by xs and ys"""
         self.ssp_mem += self.encode_region(xs, ys)
