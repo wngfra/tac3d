@@ -135,3 +135,4 @@ robots/
 output/
 tmp/
 *.pickle
+*.mp4
