@@ -1,6 +1,5 @@
 # Tactile 3D Exploration
-![Cover](./docs/cover.gif "Robot Touch")
-![Contact](./docs/soft_contact.png "Soft Contact")
+![Cover](./cover.gif "Robot Touch")
 
 1. [CAD](CAD/) contains the CAD files (AutoDesk Inventor).
 2. [demos](demos/) contains demos of tactile memory and exploration with spatial semantic pointer (SSP).

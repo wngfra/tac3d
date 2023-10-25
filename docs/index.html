@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+
+	<title>Active Perception</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/monokai.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.min.css" id="theme">
+	<link rel="stylesheet" href="css/common.css">
+</head>
+
+<body>
+
+	<div class="reveal">
+
+		<div class="header">
+			<h1 class="running-title">Active Perception</h1><img class="logo"
+				src="https://www.iit.it/image/layout_set_logo?img_id=1268156&t=1652029305689">
+		</div>
+
+		<div class="slides">
+			<section data-auto-animate data-auto-animate-unmatched="fade">
+				<h4 style="margin-top: 0em; font-size: xxx-large">Tactile Exploration of Planar Shapes</h4>
+				<p style="opacity: 0.5">WANG SIAO</p>
+				<p style="opacity: 0.7">Oct 25th, 2023</p>
+			</section>
+
+			<section>
+				<h4 style="margin-top: 1em;">Tactile Memory</h4>
+				<p style="opacity: 0.5;">Touch Simulation</p>
+				<video data-autoplay src="resources/touch_sim.mp4"></video>
+			</section>
+
+			<section>
+				<section>
+					<h4 style="margin-top: 1em;">Stimulus Generator</h4>
+					<p style="opacity: 0.5;">Simulated Bars</p>
+					<img class="r-stretch" src="resources/Bars.png">
+				</section>
+
+				<section>
+					<h4 style="margin-top: 1em">Orientational Map</h4>
+					<div class="r-stack">
+						<div class="fragment fade-out" data-fragment-index="0">
+							<p style="opacity: 0.7; margin-top: -3em">Visual</p>
+							<img src="resources/visual_orientation_map.png">
+							<p style="font-size: 0.5em; opacity: 0.5;">Paik, S.-B., & Ringach, D. L. (2011). Retinal
+								origin of orientation maps in visual cortex. Nature Neuroscience, 14(7), 919–925.
+							</p>
+						</div>
+						<div class="fragment current-visible" data-fragment-index="0">
+							<p style="opacity: 0.7">Bipolar Gaussian Receptive Field</p>
+							<p style="font-size: 0.6em; opacity: 0.5;">convolutional kernels</p>
+							<img style="width: 80%" src="resources/bipolar_gaussian_rf.png">
+						</div>
+					</div>
+
+				</section>
+
+				<section>
+					<h4 style="margin-top: 1em;">Tactile Population Coding</h4>
+					<p style="opacity: 0.7">tactile orientation map</p>
+					<img class="r-stretch" src="resources/hidden_layer.png">
+				</section>
+			</section>
+
+			<section>
+				<h4 style="margin-top: 1em;">STDP with Winner-Take-All</h4>
+				<p style="opacity: 0.7">Lateral Inhibition</p>
+				<img class="r-stretch" src="resources/wta_circuit.png">
+				<p style="font-size: 0.5em; opacity: 0.5;">Kappel, D., Nessler, B., & Maass, W. (2014). STDP
+					Installs in Winner-Take-All Circuits an Online Approximation to Hidden Markov Model Learning.
+					PLoS Computational Biology, 10(3), e1003511.
+				</p>
+			</section>
+			<section>
+				<h4 style="margin-top: 1em;">Results</h4>
+				<p style="opacity: 0.7">Spike Trains</p>
+				<img class="r-stretch" src="resources/spike_trains.png">
+			</section>
+
+		</div>
+
+	</div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/math/math.min.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="node_modules/reveal.js-menu/menu.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/w3-include-HTML.js"></script>
+	
+
+</body>
+
+
+</html>
